@@ -4,7 +4,7 @@ This package provides a basic interface for working with partially observable Ma
 
 Installation:
 ```julia
-Pkg.clone("git@bitbucket.org:sisl/POMDPs.jl.git")
+Pkg.clone("https://github.com/sisl/POMDPs.jl.git")
 ```
 
 ## Basic Types
