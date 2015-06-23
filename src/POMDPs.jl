@@ -25,7 +25,8 @@ export
     lowerbound,
     upperbound,
     getindex,
-    create_distribution,
+    create_transition,
+    create_observation,
 
     # Solver types
     Solver,
@@ -50,12 +51,6 @@ include("belief.jl")
 include("distribution.jl")
 include("solver.jl")
 include("policy.jl")
-
-
-# state, action, observation spaces
-# parametrize?
-#abstract POMDP{S <: Space, A <: Space, O <: Space}
-
 
 end
 
