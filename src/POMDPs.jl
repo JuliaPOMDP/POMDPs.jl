@@ -28,6 +28,13 @@ export
     create_transition,
     create_observation,
 
+    # Interpolants and access functions
+    AbstractInterpolants,
+    length,
+    interpolants!,
+    weight,
+    index,
+
     # Solver types
     Solver,
     SerialSolver,
@@ -49,6 +56,7 @@ export
 include("pomdp.jl")
 include("belief.jl")
 include("distribution.jl")
+include("interpolants.jl")
 include("solver.jl")
 include("policy.jl")
 
