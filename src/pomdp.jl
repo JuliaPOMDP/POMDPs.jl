@@ -6,6 +6,7 @@ abstract POMDP
 states(pomdp::POMDP)       = error("$(typeof(pomdp)) does not implement states") 
 actions!(acts::Vector{Any}, pomdp::POMDP, state::Any) = error("$(typeof(pomdp)) does not implement actions") 
 observations(pomdp::POMDP) = error("$(typeof(pomdp)) does not implement observations") 
+convert!(x::Vector{Float64}, state::Any) = error("$(typeof(state)) does not implement convert")
 
 # return the space sizes
 # for huge spaces, collect might not be the best choice - let user implement?

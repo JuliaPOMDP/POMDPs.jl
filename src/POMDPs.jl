@@ -15,6 +15,7 @@ export
     reward,
     create_action,
     create_state,
+    convert!,
 
     # Spaces, Distributions and accessor functions
     AbstractDistribution,
@@ -30,6 +31,7 @@ export
 
     # Interpolants and access functions
     AbstractInterpolants,
+    create_interpolants,
     length,
     interpolants!,
     weight,
