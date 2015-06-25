@@ -14,8 +14,8 @@ n_states(pomdp::POMDP)       = error("$(typeof(pomdp)) does not implement num_st
 n_actions(pomdp::POMDP)      = error("$(typeof(pomdp)) does not implement num_actions")
 n_observations(pomdp::POMDP) = error("$(typeof(pomdp)) does not implement num_observations")
 
-transition!(pomdp::POMDP, state::Any, action::Any)  = error("$(typeof(pomdp)) does not implement transition!") # returns a distributions over neighbors
-observation!(pomdp::POMDP, state::Any, action::Any) = error("$(typeof(pomdp)) does not implement observation!") # returns a distributions over observations
+transition!(distribution, pomdp::POMDP, state::Any, action::Any)  = error("$(typeof(pomdp)) does not implement transition!") # returns a distributions over neighbors
+observation!(distribution, pomdp::POMDP, state::Any, action::Any) = error("$(typeof(pomdp)) does not implement observation!") # returns a distributions over observations
 reward(pomdp::POMDP, state::Any, action::Any)      = error("$(typeof(pomdp)) does not implement reward") # immediate reward
 
 create_state(pomdp::POMDP) = error("$(typeof(pomdp)) does not implement create_state") # returns a state

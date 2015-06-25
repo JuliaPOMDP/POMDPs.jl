@@ -39,8 +39,6 @@ export
 
     # Solver types
     Solver,
-    SerialSolver,
-    ParallelSolver,
     solve,
     solve!,
 
