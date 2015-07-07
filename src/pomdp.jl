@@ -1,9 +1,11 @@
 # POMDP model functions
 
 abstract POMDP
+# for discrete solvers
+abstract DiscretePOMDP <: POMDP
 
 # return a space type
-states(pomdp::POMDP)       = error("$(typeof(pomdp)) does not implement states") 
+states(pomdp::POMDP) = error("$(typeof(pomdp)) does not implement states") 
 actions!(acts::Vector{Any}, pomdp::POMDP, state::Any) = error("$(typeof(pomdp)) does not implement actions") 
 observations(pomdp::POMDP) = error("$(typeof(pomdp)) does not implement observations") 
 convert!(x::Vector{Float64}, state::Any) = error("$(typeof(state)) does not implement convert")

@@ -3,22 +3,30 @@ module POMDPs
 export 
     # Abstract type
     POMDP,
+    DiscretePOMDP,
+    # Discrete Functions
+    n_states,
+    n_actions,
+    n_observations,
     # Model functions
     states,
     actions!,
     observations,
-    n_states,
-    n_actions,
-    n_observations,
     transition!,
     observation!,
     reward,
     create_action,
     create_state,
+    create_observation,
     convert!,
 
     # Spaces, Distributions and accessor functions
     AbstractDistribution,
+    DiscreteDistribution,
+    # Discrete Functions
+    index,
+    weight,
+    # Common Functions
     Space, 
     rand!,
     pdf,
@@ -26,6 +34,7 @@ export
     lowerbound,
     upperbound,
     getindex,
+    domain,
     create_transition,
     create_observation,
 
