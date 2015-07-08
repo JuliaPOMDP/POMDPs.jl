@@ -10,11 +10,15 @@ export
     n_observations,
     # Model functions
     states,
+    states!,
+    actions,
     actions!,
     observations,
+    observations!,
     transition!,
     observation!,
     reward,
+    # Need below?;
     create_action,
     create_state,
     create_observation,
@@ -62,9 +66,9 @@ export
     get_value
 
 
+include("distribution.jl")
 include("pomdp.jl")
 include("belief.jl")
-include("distribution.jl")
 include("interpolants.jl")
 include("solver.jl")
 include("policy.jl")
