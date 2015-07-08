@@ -15,6 +15,8 @@ export
     actions!,
     observations,
     observations!,
+    fully_obs_space,
+    part_obs_space,
     transition!,
     observation!,
     reward,
@@ -31,7 +33,7 @@ export
     index,
     weight,
     # Common Functions
-    Space, 
+    AbstractSpace, 
     rand!,
     pdf,
     dimensions,
@@ -41,6 +43,8 @@ export
     domain,
     create_transition,
     create_observation,
+    create_fully_obs_transition,
+    create_partially_obs_transition,
 
     # Interpolants and access functions
     AbstractInterpolants,
@@ -66,8 +70,8 @@ export
     get_value
 
 
-include("distribution.jl")
 include("pomdp.jl")
+include("distribution.jl")
 include("belief.jl")
 include("interpolants.jl")
 include("solver.jl")

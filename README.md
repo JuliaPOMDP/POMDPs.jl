@@ -19,9 +19,11 @@ The basic types are
 
 ## Model functions
 
-- `states(pomdp::POMDP)` returns something that might be iterable (e.g., 1:100)
-- `actions!(actions::Array, pomdp::POMDP, state)` fills the actions array with valid actions from current state
-- `observations(pomdp::POMDP)` returns something that might be iterable (e.g., 1:100)
+- `states(pomdp::POMDP)` returns the complete state space 
+- `actions(pomdp::POMDP)` returns the complete action space
+- `actions!(aspace::AbstractSpace, pomdp::POMDP, state::Any)` changes aspace to the action space accessible from the given state
+- `observations(pomdp::POMDP)` returns the complete observation space
+- `observations!(ospace::AbstractSpace, pomdp::POMDP, state::Any)` changes ospace to the obsevation space accessible from the given state
 - `reward(pomdp::POMDP, state, action)` returns reward
 - `transition!(distribution, pomdp::POMDP, state, action)` changes the transition distribution to the one availiabe from the current state-action pair 
 - `observation!(distribution, pomdp::POMDP, action, state)` changes the observation distribution to the one availiabe from the current state-action pair 
