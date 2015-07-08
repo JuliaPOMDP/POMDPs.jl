@@ -65,7 +65,6 @@ export
 
     # Policy
     Policy,
-    DiscretePolicy,
     get_action,
     get_value
 
