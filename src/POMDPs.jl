@@ -46,14 +46,6 @@ export
     create_fully_obs_transition,
     create_partially_obs_transition,
 
-    # Interpolants and access functions
-    AbstractInterpolants,
-    create_interpolants,
-    length,
-    interpolants!,
-    weight,
-    index,
-
     # Solver types
     Solver,
     solve,
@@ -62,11 +54,12 @@ export
     # Belieds
     Belief,
     update_belief,
+    update_belief!,
 
     # Policy
     Policy,
-    get_action,
-    get_value
+    action,
+    value
 
 
 include("pomdp.jl")
