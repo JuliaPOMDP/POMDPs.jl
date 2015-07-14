@@ -24,17 +24,16 @@ export
     create_action,
     create_state,
     create_observation,
-    convert!,
 
     # Spaces, Distributions and accessor functions
     AbstractDistribution,
     DiscreteDistribution,
+    AbstractSpace, 
     # Discrete Functions
     length,
     index,
     weight,
     # Common Functions
-    AbstractSpace, 
     rand!,
     pdf,
     dimensions,
@@ -44,8 +43,6 @@ export
     domain,
     create_transition,
     create_observation,
-    create_fully_obs_transition,
-    create_partially_obs_transition,
 
     # Solver types
     Solver,
