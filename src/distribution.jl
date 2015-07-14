@@ -7,14 +7,11 @@ create_observation(pomdp::POMDP) = error("$(typeof(pomdp)) does not implement cr
 rand!(state::Any, d::AbstractDistribution, rand::AbstractRNG=GLOABL_RNG)  = error("$(typeof(d)) does not implement rand") # fills with a random state
 pdf(d::AbstractDistribution, x::Any)        = error("$(typeof(d)) does not implement pdf") # returns a probability
 
-
-create_fully_obs_transition(pomdp::POMDP) = error("$(typeof(pomdp)) does not implement create_fully_obs_transition") # creates a dsitribution 
-create_partially_obs_transition(pomdp::POMDP) = error("$(typeof(pomdp)) does not implement create_part_obs_transition") # creates a dsitribution 
-
 abstract DiscreteDistribution
 
 Base.length(d::DiscreteDistribution) = error("$(typeof(d)) does not implement length") 
-
+weight(d::DiscreteDistribution, i::Int) = error("$(typeof(d)) does not implement weight")
+index(d::DiscreteDistribution, i::Int) = error("$(typeof(d)) does not implement index")
 
 typealias AbstractSpace AbstractDistribution
 
@@ -33,5 +30,3 @@ actions!(acts::AbstractSpace, pomdp::POMDP, state::Any) = error("$(typeof(pomdp)
 observations(pomdp::POMDP) = error("$(typeof(pomdp)) does not implement observations") 
 observations!(obs::AbstractSpace, pomdp::POMDP, state::Any) = error("$(typeof(pomdp)) does not implement observations!") 
 
-fully_obs_space(pomdp::POMDP) = error("$(typeof(pomdp)) does not implement fully_obs_space") 
-part_obs_space(pomdp::POMDP) = error("$(typeof(pomdp)) does not implement part_obs_space") 

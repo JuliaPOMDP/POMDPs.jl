@@ -30,6 +30,7 @@ export
     AbstractDistribution,
     DiscreteDistribution,
     # Discrete Functions
+    length,
     index,
     weight,
     # Common Functions
@@ -65,7 +66,6 @@ export
 include("pomdp.jl")
 include("distribution.jl")
 include("belief.jl")
-include("interpolants.jl")
 include("solver.jl")
 include("policy.jl")
 
