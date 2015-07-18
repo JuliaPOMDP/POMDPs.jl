@@ -35,7 +35,7 @@ The basic types are
 ## Distribution Functions
 
 - `rand!(sample, d::AbstractDistribution)` fill with random sample from distribution
-- `pdf(d::AbstractDistribution, x)` probaiblity density at x from distribution
+- `pdf(d::AbstractDistribution, x)` value of probablity distribution function at x
 - `create_transition(pomdp::POMDP)` returns a transition distribution
 - `create_observation(pomdp::POMDP)` returns an observation distribution
 
