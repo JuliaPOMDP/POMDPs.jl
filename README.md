@@ -28,8 +28,6 @@ The basic types are
 - `reward(pomdp::POMDP, state::Any, action::Any)` returns the immidiate reward for the state-action pair
 - `transition!(distribution, pomdp::POMDP, state, action)` changes the transition distribution to the one availiabe from the current state-action pair 
 - `observation!(distribution, pomdp::POMDP, action, state)` changes the observation distribution to the one availiabe from the current state-action pair 
-- `create_state(pomdp::POMDP)` returns an initial state
-- `create_action(pomdp::POMDP)` returns an initial action
 
 
 ## Distribution Functions
@@ -51,8 +49,8 @@ The basic types are
 
 
 ## Policy Functions
-- `get_action(policy::Policy, belief::Any)` returns an action for the current belief given the policy
+- `get_action(policy::Policy, belief::Belief)` returns an action for the current belief given the policy
 - `get_action(policy::Policy, state::Any)` returns an action for the current state given the policy
-- `get_value(policy::Policy, belief::Any)` returns the expected value for the current belief given the policy
+- `get_value(policy::Policy, belief::Belief)` returns the expected value for the current belief given the policy
 - `get_value(policy::Policy, state::Any)` returns the expected value for the current state given the policy
 
