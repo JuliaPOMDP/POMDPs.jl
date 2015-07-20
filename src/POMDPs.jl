@@ -9,6 +9,7 @@ export
     n_actions,
     n_observations,
     # Model functions
+    discount,
     states,
     states!,
     actions,
