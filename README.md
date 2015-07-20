@@ -20,6 +20,7 @@ The basic types are
 
 ## Model functions
 
+- `discount(pomdp::POMDP)` returns the discount
 - `states(pomdp::POMDP)` returns the complete state space 
 - `actions(pomdp::POMDP)` returns the complete action space
 - `actions!(aspace::AbstractSpace, pomdp::POMDP, state::Any)` changes aspace to the action space accessible from the given state
