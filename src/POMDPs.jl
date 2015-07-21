@@ -21,6 +21,7 @@ export
     transition!,
     observation!,
     reward,
+    isterminal,
     # Need below?;
     create_action,
     create_state,

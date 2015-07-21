@@ -17,3 +17,5 @@ reward(pomdp::POMDP, state::Any, action::Any)      = error("$(typeof(pomdp)) doe
 
 create_state(pomdp::POMDP) = error("$(typeof(pomdp)) does not implement create_state") # returns a state
 create_action(pomdp::POMDP) = error("$(typeof(pomdp)) does not implement create_action") # returns an action
+
+isterminal(pomdp::POMDP, state::Any) = false # checks if a state is terminal
