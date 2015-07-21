@@ -29,6 +29,7 @@ The basic types are
 - `reward(pomdp::POMDP, state::Any, action::Any)` returns the immidiate reward for the state-action pair
 - `transition!(distribution, pomdp::POMDP, state, action)` changes the transition distribution to the one availiabe from the current state-action pair 
 - `observation!(distribution, pomdp::POMDP, action, state)` changes the observation distribution to the one availiabe from the current state-action pair 
+- `isterminal(pomdp::POMDP, state::Any)` checks if a state is terminal
 
 
 ## Distribution Functions
