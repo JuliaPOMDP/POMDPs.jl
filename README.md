@@ -27,6 +27,7 @@ The basic types are
 - `observations(pomdp::POMDP)` returns the complete observation space
 - `observations!(ospace::AbstractSpace, pomdp::POMDP, state::Any)` changes ospace to the obsevation space accessible from the given state
 - `reward(pomdp::POMDP, state::Any, action::Any)` returns the immidiate reward for the state-action pair
+- `reward(pomdp::POMDP, state::Any, action::Any, statep::Any)` returns the immidiate reward for the s-a-s' triple
 - `transition!(distribution, pomdp::POMDP, state, action)` changes the transition distribution to the one availiabe from the current state-action pair 
 - `observation!(distribution, pomdp::POMDP, state, action)` changes the observation distribution to the one availiabe from the current state-action pair 
 - `isterminal(pomdp::POMDP, state::Any)` checks if a state is terminal
