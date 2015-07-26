@@ -52,8 +52,8 @@ The basic types are
 
 
 ## Policy Functions
-- `get_action(policy::Policy, belief::Belief)` returns an action for the current belief given the policy
-- `get_action(policy::Policy, state::Any)` returns an action for the current state given the policy
-- `get_value(policy::Policy, belief::Belief)` returns the expected value for the current belief given the policy
-- `get_value(policy::Policy, state::Any)` returns the expected value for the current state given the policy
+- `action(policy::Policy, belief::Belief)` returns an action for the current belief given the policy
+- `action(policy::Policy, state::Any)` returns an action for the current state given the policy
+- `value(policy::Policy, belief::Belief)` returns the expected value for the current belief given the policy
+- `value(policy::Policy, state::Any)` returns the expected value for the current state given the policy
 
