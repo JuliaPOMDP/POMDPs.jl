@@ -2,8 +2,6 @@
 
 abstract POMDP
 
-abstract DiscretePOMDP <: POMDP
-
 # return the space sizes
 n_states(pomdp::POMDP)       = error("$(typeof(pomdp)) does not implement num_states")
 n_actions(pomdp::POMDP)      = error("$(typeof(pomdp)) does not implement num_actions")

@@ -12,7 +12,6 @@ Pkg.clone("https://github.com/sisl/POMDPs.jl.git")
 The basic types are
 
 - `POMDP`
-- `DsicretePOMDP`
 - `AbstractDistribution`
 - `AbstractSpace`
 - `Solver`
