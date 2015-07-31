@@ -4,7 +4,7 @@ abstract AbstractDistribution
 
 create_transition_distribution(pomdp::POMDP) = error("$(typeof(pomdp)) does not implement create_transition_distribution") # creates a dsitribution 
 create_observation_distribution(pomdp::POMDP) = error("$(typeof(pomdp)) does not implement create_observation_distribution") # creates a dsitribution 
-rand!(rng::AbstractRNG, state::Any, d::AbstractDistribution)  = error("$(typeof(d)) does not implement rand") # fills with a random state
+rand!(rng::AbstractRNG, state::Any, d::AbstractDistribution)  = error("$(typeof(d)) does not implement rand!") # fills with a random state
 pdf(d::AbstractDistribution, x::Any)        = error("$(typeof(d)) does not implement pdf") # returns a probability
 
 abstract DiscreteDistribution
