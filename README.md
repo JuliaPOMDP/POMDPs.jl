@@ -30,14 +30,16 @@ The basic types are
 - `transition!(distribution, pomdp::POMDP, state, action)` changes the transition distribution to the one availiabe from the current state-action pair 
 - `observation!(distribution, pomdp::POMDP, state, action)` changes the observation distribution to the one availiabe from the current state and previous action 
 - `isterminal(pomdp::POMDP, state::Any)` checks if a state is terminal
+- `create_state(pomdp::POMDP)` creates a single state object (for preallocation purposes)
+- `create_observation(pomdp::POMDP)` creates a single observation object (for preallocation purposes)
 
 
 ## Distribution Functions
 
 - `rand!(rng::AbstractRNG, sample, d::AbstractDistribution)` fill with random sample from distribution
 - `pdf(d::AbstractDistribution, x)` value of probablity distribution function at x
-- `create_transition(pomdp::POMDP)` returns a transition distribution
-- `create_observation(pomdp::POMDP)` returns an observation distribution
+- `create_transition_distribution(pomdp::POMDP)` returns a transition distribution
+- `create_observation_distribution(pomdp::POMDP)` returns an observation distribution
 
 
 ## Space Functions

@@ -23,7 +23,6 @@ export
     reward,
     isterminal,
     # Need below?;
-    create_action,
     create_state,
     create_observation,
 
@@ -43,15 +42,15 @@ export
     upperbound,
     getindex,
     domain,
-    create_transition,
-    create_observation,
+    create_transition_distribution,
+    create_observation_distribution,
 
     # Solver types
     Solver,
     solve,
     solve!,
 
-    # Belieds
+    # Beliefs
     Belief,
     update_belief,
     update_belief!,
@@ -59,7 +58,10 @@ export
     # Policy
     Policy,
     action,
-    value
+    value,
+
+    # Simulation
+    simulate
 
 
 include("pomdp.jl")
@@ -67,6 +69,7 @@ include("distribution.jl")
 include("belief.jl")
 include("solver.jl")
 include("policy.jl")
+include("simulate.jl")
 
 end
 

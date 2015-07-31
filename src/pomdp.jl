@@ -15,6 +15,6 @@ reward(pomdp::POMDP, state::Any, action::Any) = error("$(typeof(pomdp)) does not
 reward(pomdp::POMDP, state::Any, action::Any, statep::Any) = reward(pomdp,state,action) # immediate reward
 
 create_state(pomdp::POMDP) = error("$(typeof(pomdp)) does not implement create_state") # returns a state
-create_action(pomdp::POMDP) = error("$(typeof(pomdp)) does not implement create_action") # returns an action
+create_observation(pomdp::POMDP) = error("$(typeof(pomdp)) does not implement create_observation") # returns an observation
 
 isterminal(pomdp::POMDP, state::Any) = false # checks if a state is terminal
