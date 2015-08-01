@@ -1,4 +1,3 @@
-using Debug
 """
 Return the reward for a single simulation of the pomdp.
 
