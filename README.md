@@ -14,6 +14,7 @@ The basic types are
 - `POMDP`
 - `AbstractDistribution`
 - `AbstractSpace`
+- `Belief`
 - `Solver`
 - `Policy`
 
@@ -58,3 +59,7 @@ The basic types are
 - `value(policy::Policy, belief::Belief)` returns the expected value for the current belief given the policy
 - `value(policy::Policy, state::Any)` returns the expected value for the current state given the policy
 
+
+## Belief Functions
+- `update_belief!(b::Belief, pomdp::POMDP, action::Any, obs::Any)` updates the belief b given the previous belief, the
+  action and the observation
