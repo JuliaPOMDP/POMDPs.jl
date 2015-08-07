@@ -29,7 +29,7 @@ function simulate(pomdp::POMDP,
     sp = create_state(pomdp)
     o = create_observation(pomdp)
 
-    while disc > eps && !isterminal(s)
+    while disc > eps && !isterminal(pomdp, s)
         a = action(policy, b)
         r += disc*reward(pomdp, s, a)
 
