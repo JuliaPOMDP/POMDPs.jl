@@ -65,7 +65,7 @@ The basic types are
   action and the observation
 
 ## Simulation Functions
--`simulate(pomdp::POMDP, policy::Policy,initial_belief::Belief,rng=MersenneTwister(),eps=0.0,initial_state=nothing)` 
+- `simulate(pomdp::POMDP, policy::Policy,initial_belief::Belief,rng=MersenneTwister(),eps=0.0,initial_state=nothing)` 
 runs a simulation using the specified polciy and returns the accumulated reward
--`simulate(mdp::POMDP, policy::Policy,initial_state::Any,rng=MersenneTwister(),eps=0.0)` runs a simulation using the
+- `simulate(mdp::POMDP, policy::Policy,initial_state::Any,rng=MersenneTwister(),eps=0.0)` runs a simulation using the
 specified polciy and returns the accumulated reward
