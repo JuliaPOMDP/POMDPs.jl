@@ -5,6 +5,15 @@ This package provides a basic interface for working with partially observable Ma
 Installation:
 ```julia
 Pkg.clone("https://github.com/sisl/POMDPs.jl.git")
+
+## Supported Solvers
+The following MDP solvers are supported:
+* [Value Iteration](https://github.com/sisl/DiscreteValueIteration.jl)
+* [Monte Carlo Tree Search](https://github.com/sisl/MCTS.jl)
+
+The following POMDP solvers are supported:
+* [QMDP](https://github.com/sisl/QMDP.jl)
+* [SARSOP](https://github.com/sisl/SARSOP.jl)
 ```
 
 ## Basic Types
@@ -70,11 +79,4 @@ runs a simulation using the specified polciy and returns the accumulated reward
 - `simulate(mdp::POMDP, policy::Policy,initial_state::Any,rng=MersenneTwister(),eps=0.0)` runs a simulation using the
 specified polciy and returns the accumulated reward
 
-## Supported Solvers
-The following MDP solvers are supported:
-* [Value Iteration](https://github.com/sisl/DiscreteValueIteration.jl)
-* [Monte Carlo Tree Search](https://github.com/sisl/MCTS.jl)
 
-The following POMDP solvers are supported:
-* [QMDP](https://github.com/sisl/QMDP.jl)
-* [SARSOP](https://github.com/sisl/SARSOP.jl)
