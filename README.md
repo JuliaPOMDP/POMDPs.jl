@@ -5,6 +5,7 @@ This package provides a basic interface for working with partially observable Ma
 Installation:
 ```julia
 Pkg.clone("https://github.com/sisl/POMDPs.jl.git")
+```
 
 ## Supported Solvers
 The following MDP solvers are supported:
@@ -14,7 +15,6 @@ The following MDP solvers are supported:
 The following POMDP solvers are supported:
 * [QMDP](https://github.com/sisl/QMDP.jl)
 * [SARSOP](https://github.com/sisl/SARSOP.jl)
-```
 
 ## Basic Types
 
