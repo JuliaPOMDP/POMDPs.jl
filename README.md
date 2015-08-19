@@ -34,11 +34,11 @@ The basic types are
 - `actions(pomdp::POMDP)` returns the complete action space
 - `actions!(aspace::AbstractSpace, pomdp::POMDP, state::Any)` changes aspace to the action space accessible from the given state
 - `observations(pomdp::POMDP)` returns the complete observation space
-- `observations!(ospace::AbstractSpace, pomdp::POMDP, state::Any)` changes ospace to the obsevation space accessible from the given state
-- `reward(pomdp::POMDP, state::Any, action::Any)` returns the immidiate reward for the state-action pair
-- `reward(pomdp::POMDP, state::Any, action::Any, statep::Any)` returns the immidiate reward for the s-a-s' triple
-- `transition!(distribution, pomdp::POMDP, state, action)` changes the transition distribution to the one availiabe from the current state-action pair 
-- `observation!(distribution, pomdp::POMDP, state, action)` changes the observation distribution to the one availiabe from the current state and previous action 
+- `observations!(ospace::AbstractSpace, pomdp::POMDP, state::Any)` changes ospace to the observation space accessible from the given state
+- `reward(pomdp::POMDP, state::Any, action::Any)` returns the immediate reward for the state-action pair
+- `reward(pomdp::POMDP, state::Any, action::Any, statep::Any)` returns the immediate reward for the s-a-s' triple
+- `transition!(distribution, pomdp::POMDP, state, action)` changes the transition distribution to the one available from the current state-action pair 
+- `observation!(distribution, pomdp::POMDP, state, action)` changes the observation distribution to the one available from the current state and previous action 
 - `isterminal(pomdp::POMDP, state::Any)` checks if a state is terminal
 - `create_state(pomdp::POMDP)` creates a single state object (for preallocation purposes)
 - `create_observation(pomdp::POMDP)` creates a single observation object (for preallocation purposes)
@@ -47,7 +47,7 @@ The basic types are
 ## Distribution Functions
 
 - `rand!(rng::AbstractRNG, sample, d::AbstractDistribution)` fill with random sample from distribution
-- `pdf(d::AbstractDistribution, x)` value of probablity distribution function at x
+- `pdf(d::AbstractDistribution, x)` value of probability distribution function at x
 - `create_transition_distribution(pomdp::POMDP)` returns a transition distribution
 - `create_observation_distribution(pomdp::POMDP)` returns an observation distribution
 
@@ -75,8 +75,8 @@ The basic types are
 
 ## Simulation Functions
 - `simulate(pomdp::POMDP, policy::Policy,initial_belief::Belief,rng=MersenneTwister(),eps=0.0,initial_state=nothing)` 
-runs a simulation using the specified polciy and returns the accumulated reward
+runs a simulation using the specified policy and returns the accumulated reward
 - `simulate(mdp::POMDP, policy::Policy,initial_state::Any,rng=MersenneTwister(),eps=0.0)` runs a simulation using the
-specified polciy and returns the accumulated reward
+specified policy and returns the accumulated reward
 
 
