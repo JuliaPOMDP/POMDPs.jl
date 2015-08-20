@@ -6,10 +6,12 @@ export
     # Abstract type
     POMDP,
     DiscretePOMDP,
+
     # Discrete Functions
     n_states,
     n_actions,
     n_observations,
+    
     # Model functions
     discount,
     states,
@@ -24,6 +26,7 @@ export
     observation!,
     reward,
     isterminal,
+    
     # Need below?;
     create_state,
     create_observation,
@@ -32,10 +35,12 @@ export
     AbstractDistribution,
     DiscreteDistribution,
     AbstractSpace, 
+    
     # Discrete Functions
     length,
     index,
     weight,
+    
     # Common Functions
     rand!,
     pdf,
@@ -51,6 +56,15 @@ export
     Solver,
     solve,
     solve!,
+    
+    # States
+    State,
+    
+    # Actions
+    Action,
+
+    # Observations
+    Observation,
 
     # Beliefs
     Belief,
