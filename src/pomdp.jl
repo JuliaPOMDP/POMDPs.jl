@@ -5,6 +5,7 @@ abstract POMDP
 typealias State Any
 typealias Action Any
 typealias Observation Any
+typealias Reward Float64
 
 # return the space sizes
 n_states(pomdp::POMDP)       = error("$(typeof(pomdp)) does not implement num_states")
