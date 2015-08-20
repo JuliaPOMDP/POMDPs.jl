@@ -66,6 +66,9 @@ export
     # Observations
     Observation,
 
+    # Rewards
+    Reward,
+
     # Beliefs
     Belief,
     update_belief,
