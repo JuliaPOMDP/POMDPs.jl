@@ -70,7 +70,7 @@ The basic types are
 
 
 ## Belief Functions
-- `update_belief!(b::Belief, pomdp::POMDP, action::Any, obs::Any)` updates the belief b given the previous belief, the
+- `update_belief!(b::Belief, pomdp::POMDP, bold::Belief, action::Any, obs::Any)` updates the belief b given the old belief, the
   action and the observation
 
 ## Simulation Functions
