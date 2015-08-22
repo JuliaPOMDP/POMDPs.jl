@@ -23,3 +23,5 @@ create_state(pomdp::POMDP) = error("$(typeof(pomdp)) does not implement create_s
 create_observation(pomdp::POMDP) = error("$(typeof(pomdp)) does not implement create_observation") # returns an observation
 
 isterminal(pomdp::POMDP, state::State) = false # checks if a state is terminal
+
+index(pomdp::POMDP, state::State) = error("$(typeof(pomdp)) does not implement index")

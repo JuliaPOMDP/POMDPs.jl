@@ -42,6 +42,7 @@ The basic types are
 - `isterminal(pomdp::POMDP, state::Any)` checks if a state is terminal
 - `create_state(pomdp::POMDP)` creates a single state object (for preallocation purposes)
 - `create_observation(pomdp::POMDP)` creates a single observation object (for preallocation purposes)
+- `index(pomdp::POMDP, state::State)` returns the index of the given state for a discrete POMDP 
 
 
 ## Distribution Functions

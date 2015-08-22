@@ -51,6 +51,7 @@ export
     domain,
     create_transition_distribution,
     create_observation_distribution,
+    create_belief,
 
     # Solver types
     Solver,
