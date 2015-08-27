@@ -8,11 +8,11 @@ Pkg.clone("https://github.com/sisl/POMDPs.jl.git")
 ```
 
 ## Supported Solvers
-The following MDP solvers are supported:
+The following MDP solvers support this interface:
 * [Value Iteration](https://github.com/sisl/DiscreteValueIteration.jl)
 * [Monte Carlo Tree Search](https://github.com/sisl/MCTS.jl)
 
-The following POMDP solvers are supported:
+The following POMDP solvers support this interface:
 * [QMDP](https://github.com/sisl/QMDP.jl)
 * [SARSOP](https://github.com/sisl/SARSOP.jl)
 
