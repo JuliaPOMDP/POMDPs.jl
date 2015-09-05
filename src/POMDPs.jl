@@ -22,8 +22,8 @@ export
     observations!,
     fully_obs_space,
     part_obs_space,
-    transition!,
-    observation!,
+    transition,
+    observation,
     reward,
     isterminal,
     
@@ -72,8 +72,7 @@ export
 
     # Beliefs
     Belief,
-    update_belief,
-    update_belief!,
+    belief,
 
     # Policy
     Policy,

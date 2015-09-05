@@ -8,6 +8,9 @@ Pkg.clone("https://github.com/sisl/POMDPs.jl.git")
 ```
 
 ## Supported Solvers
+
+**TODO**: Update these solvers after ! interface change
+
 The following MDP solvers support this interface:
 * [Value Iteration](https://github.com/sisl/DiscreteValueIteration.jl)
 * [Monte Carlo Tree Search](https://github.com/sisl/MCTS.jl)
@@ -37,8 +40,8 @@ The basic types are
 - `observations!(ospace::AbstractSpace, pomdp::POMDP, state::Any)` changes ospace to the observation space accessible from the given state
 - `reward(pomdp::POMDP, state::Any, action::Any)` returns the immediate reward for the state-action pair
 - `reward(pomdp::POMDP, state::Any, action::Any, statep::Any)` returns the immediate reward for the s-a-s' triple
-- `transition!(distribution, pomdp::POMDP, state, action)` changes the transition distribution to the one available from the current state-action pair 
-- `observation!(distribution, pomdp::POMDP, state, action)` changes the observation distribution to the one available from the current state and previous action 
+- `transition(pomdp::POMDP, state, action, distribution=create_transition_distribution(pomdp))` changes `distribution` to the transition distribution from the current state-action pair 
+- `observation(pomdp::POMDP, state, action, distribution=create_transition_distribution(pomdp))` changes `distribution` to the observation distribution from the current state and *previous* action 
 - `isterminal(pomdp::POMDP, state::Any)` checks if a state is terminal
 - `create_state(pomdp::POMDP)` creates a single state object (for preallocation purposes)
 - `create_observation(pomdp::POMDP)` creates a single observation object (for preallocation purposes)
@@ -71,8 +74,8 @@ The basic types are
 
 
 ## Belief Functions
-- `update_belief!(b::Belief, pomdp::POMDP, bold::Belief, action::Any, obs::Any)` updates the belief b given the old belief, the
-  action and the observation
+- `create_belief(pomdp::POMDP)` creates a belief object (for preallocation purposes)
+- `belief(pomdp::POMDP, bold::Belief, action::Any, obs::Any, distribution::Belief=create_belief(pomdp))` changes `distribution` to the belief given the old belief and the latest action and observation
 
 ## Simulation Functions
 - `simulate(pomdp::POMDP, policy::Policy,initial_belief::Belief,rng=MersenneTwister(),eps=0.0,initial_state=nothing)` 

@@ -33,10 +33,10 @@ function simulate(pomdp::POMDP,
         a = action(policy, b)
         r += disc*reward(pomdp, s, a)
 
-        transition!(trans_dist, pomdp, s, a)
+        trans_dist = transition(pomdp, s, a, trans_dist)
         rand!(rng, sp, trans_dist)
 
-        observation!(obs_dist, pomdp, sp, a)
+        obs_dist = observation(pomdp, sp, a, obs_dist)
         rand!(rng, o, obs_dist)
 
         # alternates using the memory allocated for s and sp so nothing new has to be allocated
@@ -44,7 +44,7 @@ function simulate(pomdp::POMDP,
         s = sp
         sp = tmp
 
-        update_belief!(b, pomdp, a, o)
+        b = belief(pomdp, b, a, o, b)
 
         disc*=discount(pomdp)
     end
