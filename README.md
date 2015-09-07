@@ -35,9 +35,9 @@ The basic types are
 - `discount(pomdp::POMDP)` returns the discount
 - `states(pomdp::POMDP)` returns the complete state space 
 - `actions(pomdp::POMDP)` returns the complete action space
-- `actions!(aspace::AbstractSpace, pomdp::POMDP, state::Any)` changes aspace to the action space accessible from the given state
+- `actions(pomdp::POMDP, state::Any, aspace::AbstractSpace=actions(pomdp))` modifies `aspace` to the action space accessible from the given state and returns it
 - `observations(pomdp::POMDP)` returns the complete observation space
-- `observations!(ospace::AbstractSpace, pomdp::POMDP, state::Any)` changes ospace to the observation space accessible from the given state
+- `observations(pomdp::POMDP, state::Any, ospace::AbstractSpace)` modifies `ospace` to the observation space accessible from the given state and returns it
 - `reward(pomdp::POMDP, state::Any, action::Any)` returns the immediate reward for the state-action pair
 - `reward(pomdp::POMDP, state::Any, action::Any, statep::Any)` returns the immediate reward for the s-a-s' triple
 - `transition(pomdp::POMDP, state, action, distribution=create_transition_distribution(pomdp))` changes `distribution` to the transition distribution from the current state-action pair 
@@ -63,7 +63,6 @@ The basic types are
 ## Solver functions
 
 - `solve(solver::Solver, pomdp::POMDP)` returns a policy
-- `solve!(policy, solver::Solver, pomdp::POMDP)` fills the policy
 
 
 ## Policy Functions

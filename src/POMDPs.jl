@@ -15,11 +15,8 @@ export
     # Model functions
     discount,
     states,
-    states!,
     actions,
-    actions!,
     observations,
-    observations!,
     fully_obs_space,
     part_obs_space,
     transition,
@@ -56,7 +53,6 @@ export
     # Solver types
     Solver,
     solve,
-    solve!,
     
     # States
     State,

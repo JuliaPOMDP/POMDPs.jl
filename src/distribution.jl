@@ -24,9 +24,9 @@ domain(s::AbstractSpace) = error("$(typeof(s)) does not implement domain")
 
 # return a space type
 states(pomdp::POMDP) = error("$(typeof(pomdp)) does not implement states") 
-states!(sts::AbstractSpace, pomdp::POMDP, state::Any) = error("$(typeof(pomdp)) does not implement states!") 
+states(pomdp::POMDP, state::Any, sts::AbstractSpace=states(pomdp)) = error("$(typeof(pomdp)) does not implement states") 
 actions(pomdp::POMDP) = error("$(typeof(pomdp)) does not implement actions") 
-actions!(acts::AbstractSpace, pomdp::POMDP, state::Any) = error("$(typeof(pomdp)) does not implement actions!") 
+actions(pomdp::POMDP, state::Any, acts::AbstractSpace=actions(pomdp)) = error("$(typeof(pomdp)) does not implement actions") 
 observations(pomdp::POMDP) = error("$(typeof(pomdp)) does not implement observations") 
-observations!(obs::AbstractSpace, pomdp::POMDP, state::Any) = error("$(typeof(pomdp)) does not implement observations!") 
+observations(pomdp::POMDP, state::Any, obs::AbstractSpace=observations(pomdp)) = error("$(typeof(pomdp)) does not implement observations") 
 
