@@ -62,7 +62,8 @@ The basic types are
 
 ## Solver functions
 
-- `solve(solver::Solver, pomdp::POMDP)` returns a policy
+- `create_policy(solver::Solver, pomdp::POMDP)` creates a policy object (for preallocation purposes)
+- `solve(solver::Solver, pomdp::POMDP, policy::Policy=create_policy(solver, pomdp))` solves the POMDP and modifies `policy` to be the solution of `pomdp` and returns it
 
 
 ## Policy Functions
