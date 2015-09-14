@@ -67,10 +67,11 @@ The basic types are
 
 
 ## Policy Functions
-- `action(policy::Policy, belief::Belief)` returns an action for the current belief given the policy
-- `action(policy::Policy, state::Any)` returns an action for the current state given the policy
+- `action(pomdp::POMDP, policy::Policy, belief::Belief, action=create_action(pomdp))` returns an action for the current belief given the policy
+- `action(pomdp::POMDP, policy::Policy, state::Any, action=create_action(pomdp))` returns an action for the current state given the policy
 - `value(policy::Policy, belief::Belief)` returns the expected value for the current belief given the policy
 - `value(policy::Policy, state::Any)` returns the expected value for the current state given the policy
+- `create_action(pomdp::POMDP)` returns an action (for preallocation purposes)
 
 
 ## Belief Functions
