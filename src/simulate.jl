@@ -29,7 +29,7 @@ function simulate(pomdp::POMDP,
     sp = create_state(pomdp)
     o = create_observation(pomdp)
     a = create_action(pomdp)
-    bp = create_belief(pomdp)
+    bp = deepcopy(initial_belief)
 
     while disc > eps && !isterminal(pomdp, s)
         a = action(pomdp, policy, b, a)
