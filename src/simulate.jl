@@ -28,9 +28,11 @@ function simulate(pomdp::POMDP,
     trans_dist = create_transition_distribution(pomdp)
     sp = create_state(pomdp)
     o = create_observation(pomdp)
+    a = create_action(pomdp)
+    bp = create_belief(pomdp)
 
     while disc > eps && !isterminal(pomdp, s)
-        a = action(policy, b)
+        a = action(pomdp, policy, b, a)
         r += disc*reward(pomdp, s, a)
 
         trans_dist = transition(pomdp, s, a, trans_dist)
@@ -44,7 +46,10 @@ function simulate(pomdp::POMDP,
         s = sp
         sp = tmp
 
-        b = belief(pomdp, b, a, o, b)
+        bp = belief(pomdp, b, a, o, bp)
+        tmpb = b
+        b = bp
+        bp = tmpb
 
         disc*=discount(pomdp)
     end

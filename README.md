@@ -41,7 +41,7 @@ The basic types are
 - `reward(pomdp::POMDP, state::Any, action::Any)` returns the immediate reward for the state-action pair
 - `reward(pomdp::POMDP, state::Any, action::Any, statep::Any)` returns the immediate reward for the s-a-s' triple
 - `transition(pomdp::POMDP, state, action, distribution=create_transition_distribution(pomdp))` modifies `distribution` to the transition distribution from the current state-action pair and returns it
-- `observation(pomdp::POMDP, state, action, distribution=create_transition_distribution(pomdp))` modifies `distribution` to the observation distribution from the current state and *previous* action and returns it
+- `observation(pomdp::POMDP, state, action, distribution=create_observation_distribution(pomdp))` modifies `distribution` to the observation distribution from the current state and *previous* action and returns it
 - `isterminal(pomdp::POMDP, state::Any)` checks if a state is terminal
 - `create_state(pomdp::POMDP)` creates a single state object (for preallocation purposes)
 - `create_observation(pomdp::POMDP)` creates a single observation object (for preallocation purposes)
@@ -67,10 +67,11 @@ The basic types are
 
 
 ## Policy Functions
-- `action(policy::Policy, belief::Belief)` returns an action for the current belief given the policy
-- `action(policy::Policy, state::Any)` returns an action for the current state given the policy
+- `action(pomdp::POMDP, policy::Policy, belief::Belief, action=create_action(pomdp))` returns an action for the current belief given the policy
+- `action(pomdp::POMDP, policy::Policy, state::Any, action=create_action(pomdp))` returns an action for the current state given the policy
 - `value(policy::Policy, belief::Belief)` returns the expected value for the current belief given the policy
 - `value(policy::Policy, state::Any)` returns the expected value for the current state given the policy
+- `create_action(pomdp::POMDP)` returns an action (for preallocation purposes)
 
 
 ## Belief Functions
