@@ -11,8 +11,8 @@ abstract Belief <: AbstractDistribution
 # returns an initial belief
 initial_belief(pomdp::POMDP, belief = create_belief(pomdp)) = error("$(typeof(pomdp)) does not implement create_belief")
 
-# in most cases create_belief can be aliased to initial_belief
+# returns any belief 
 create_belief(pomdp::POMDP) = error("$(typeof(pomdp)) does not implement create_belief")
 
 # updates the belief given the old belief (bold), the action and the observation
-belief(pomdp::POMDP, bold::Belief, action::Any, obs::Any, bnew::Belief=create_belief(pomdp)) = error("$(typeof(pomdp)) does not implement belief")
+belief(pomdp::POMDP, belief_old::Belief, action::Any, obs::Any, belief_new::Belief=create_belief(pomdp)) = error("$(typeof(pomdp)) does not implement belief")
