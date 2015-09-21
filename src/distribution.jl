@@ -13,7 +13,7 @@ Base.length(d::DiscreteDistribution) = error("$(typeof(d)) does not implement le
 weight(d::DiscreteDistribution, i::Int) = error("$(typeof(d)) does not implement weight")
 index(d::DiscreteDistribution, i::Int) = error("$(typeof(d)) does not implement index")
 
-typealias AbstractSpace AbstractDistribution
+abstract AbstractSpace 
 
 dimensions(s::AbstractSpace) = error("$(typeof(s)) does not implement dimensions") # returns an integer
 lowerbound(s::AbstractSpace, i::Int) = error("$(typeof(s)) does not implement lowerbound") # returns bound of dim i
