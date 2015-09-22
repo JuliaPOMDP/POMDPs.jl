@@ -1,4 +1,9 @@
-
+#################################################################
+# This file defines the abstract distribution and space type
+# AbstractDistribution: the abstract super type for the transition and observation distributions
+# DiscreteDistribution: discrete distributions support state indexing and length functions
+# AbstractSpace: the abstract super type for the state, action and observation spaces
+#################################################################
 
 abstract AbstractDistribution
 
@@ -7,13 +12,13 @@ create_observation_distribution(pomdp::POMDP) = error("$(typeof(pomdp)) does not
 rand!(rng::AbstractRNG, state::Any, d::AbstractDistribution) = error("$(typeof(d)) does not implement rand!") # fills with a random state
 pdf(d::AbstractDistribution, x::Any) = error("$(typeof(d)) does not implement pdf") # returns a probability
 
-abstract DiscreteDistribution
+abstract DiscreteDistribution <: AbstractDistribution
 
 Base.length(d::DiscreteDistribution) = error("$(typeof(d)) does not implement length") 
 weight(d::DiscreteDistribution, i::Int) = error("$(typeof(d)) does not implement weight")
 index(d::DiscreteDistribution, i::Int) = error("$(typeof(d)) does not implement index")
 
-typealias AbstractSpace AbstractDistribution
+abstract AbstractSpace 
 
 dimensions(s::AbstractSpace) = error("$(typeof(s)) does not implement dimensions") # returns an integer
 lowerbound(s::AbstractSpace, i::Int) = error("$(typeof(s)) does not implement lowerbound") # returns bound of dim i
