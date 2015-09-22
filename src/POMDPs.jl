@@ -49,6 +49,7 @@ export
     create_transition_distribution,
     create_observation_distribution,
     create_belief,
+    initial_belief,
 
     # Solver types
     Solver,
