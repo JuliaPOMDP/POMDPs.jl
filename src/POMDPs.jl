@@ -77,6 +77,7 @@ export
     value,
 
     # Simulation
+    Simulator,
     simulate
 
 
@@ -85,7 +86,7 @@ include("distribution.jl")
 include("belief.jl")
 include("solver.jl")
 include("policy.jl")
-include("simulate.jl")
+include("simulator.jl")
 
 end
 

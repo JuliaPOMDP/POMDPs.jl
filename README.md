@@ -29,6 +29,7 @@ The basic types are
 - `Belief`
 - `Solver`
 - `Policy`
+- `Simulator`
 
 ## Model functions
 
@@ -79,9 +80,4 @@ The basic types are
 - `belief(pomdp::POMDP, bold::Belief, action::Any, obs::Any, distribution::Belief=create_belief(pomdp))` modifies `distribution` to the belief given the old belief and the latest action and observation and returns the updated belief. `bold` and `distribution` should *not* be references to the same object
 
 ## Simulation Functions
-- `simulate(pomdp::POMDP, policy::Policy,initial_belief::Belief,rng=MersenneTwister(),eps=0.0,initial_state=nothing)` 
-runs a simulation using the specified policy and returns the accumulated reward
-- `simulate(mdp::POMDP, policy::Policy,initial_state::Any,rng=MersenneTwister(),eps=0.0)` runs a simulation using the
-specified policy and returns the accumulated reward
-
-
+- `simulate(simulator::Simulator, pomdp::POMDP, policy::Policy)` runs a simulation using the specified policy and returns the accumulated reward
