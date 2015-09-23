@@ -17,8 +17,6 @@ export
     states,
     actions,
     observations,
-    fully_obs_space,
-    part_obs_space,
     transition,
     observation,
     reward,
