@@ -27,6 +27,7 @@ export
     # Need below?;
     create_state,
     create_observation,
+    create_action,
 
     # Spaces, Distributions and accessor functions
     AbstractDistribution,
