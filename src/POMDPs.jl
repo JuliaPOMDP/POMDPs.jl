@@ -17,8 +17,6 @@ export
     states,
     actions,
     observations,
-    fully_obs_space,
-    part_obs_space,
     transition,
     observation,
     reward,
@@ -27,6 +25,7 @@ export
     # Need below?;
     create_state,
     create_observation,
+    create_action,
 
     # Spaces, Distributions and accessor functions
     AbstractDistribution,
