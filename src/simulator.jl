@@ -7,4 +7,4 @@
 abstract Simulator
 
 # runs a simulation
-simulate(simulator::Simulator, pomdp::POMDP, policy::Policy) = error("No implementation of simulate for a simulator of type $(typeof(sim)), pomdp of type $(typeof(pomdp)), and policy of type $(typeof(policy))")
+simulate(simulator::Simulator, pomdp::POMDP, policy::Policy) = error("No implementation of simulate for a simulator of type $(typeof(simulator)), pomdp of type $(typeof(pomdp)), and policy of type $(typeof(policy))")
