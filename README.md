@@ -77,7 +77,7 @@ The basic types are
 
 ## Belief Functions
 - `create_belief(pomdp::POMDP)` creates a belief object (for preallocation purposes)
-- `belief(pomdp::POMDP, bold::Belief, action::Any, obs::Any, distribution::Belief=create_belief(pomdp))` modifies `distribution` to the belief given the old belief and the latest action and observation and returns the updated belief. `bold` and `distribution` should *not* be references to the same object
+- `belief(pomdp::POMDP, belief_old::Belief, action::Any, obs::Any, belief_new::Belief=create_belief(pomdp))` modifies `belief_new` to the belief given the old belief and the latest action and observation and returns the updated belief. `belief_old` and `belief_new` should *not* be references to the same object
 
 ## Simulation Functions
 - `simulate(simulator::Simulator, pomdp::POMDP, policy::Policy)` runs a simulation using the specified policy and returns the accumulated reward
