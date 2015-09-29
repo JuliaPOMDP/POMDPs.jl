@@ -10,9 +10,9 @@ abstract Policy
 create_action(pomdp::POMDP) = error("$(typeof(pomdp)) does not implement create_action")
 
 # returns the action according to policy p given the belief
-action(pomdp::POMDP, p::Policy, belief::Belief, action=create_action(pomdp)) = error("$(typeof(p)) does not implement action")
+#action(pomdp::POMDP, p::Policy, belief::Belief, action=create_action(pomdp)) = error("$(typeof(p)) does not implement action")
 # returns the utility value from policy p given the belief
-value(p::Policy, belief::Belief) = error("$(typeof(p)) does not implement value")
+#value(p::Policy, belief::Belief) = error("$(typeof(p)) does not implement value")
 
 # returns the action according to policy p given the state
 action(pomdp::POMDP, p::Policy, state::State, action=create_action(pomdp)) = error("$(typeof(p)) does not implement action")

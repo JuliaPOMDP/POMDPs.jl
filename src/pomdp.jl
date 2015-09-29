@@ -2,9 +2,9 @@
 
 abstract POMDP
 
-typealias State Any
-typealias Action Any
-typealias Observation Any
+abstract State
+abstract Action
+abstract Observation
 typealias Reward Float64
 
 # return the space sizes
