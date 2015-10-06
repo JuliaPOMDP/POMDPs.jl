@@ -2,6 +2,13 @@
 
 This package provides a basic interface for working with partially observable Markov decision processes (POMDPs).
 
+The goal is to provide a common programming vocabulary for researchers and students to use primarily for three tasks:
+
+1. Expressing problems using the POMDP format. 
+2. Writing solver software.
+3. Running simulations efficiently.
+
+
 Installation:
 ```julia
 Pkg.clone("https://github.com/sisl/POMDPs.jl.git")
@@ -9,7 +16,7 @@ Pkg.clone("https://github.com/sisl/POMDPs.jl.git")
 
 ## Supported Solvers
 
-**TODO**: Update these solvers after ! interface change
+**TODO**: Update these solvers after interface changes
 
 The following MDP solvers support this interface:
 * [Value Iteration](https://github.com/sisl/DiscreteValueIteration.jl)
@@ -19,65 +26,79 @@ The following POMDP solvers support this interface:
 * [QMDP](https://github.com/sisl/QMDP.jl)
 * [SARSOP](https://github.com/sisl/SARSOP.jl)
 
-## Basic Types
 
-The basic types are
+## Core Interface
 
-- `POMDP`
-- `AbstractDistribution`
-- `AbstractSpace`
-- `Belief`
-- `Solver`
-- `Policy`
-- `Simulator`
+The core interface provides tools to express problems and define solvers.
 
-## Model functions
+### Distributions
+
+`AbstractDistribution`
+`AbstractSpace`
+
+- `rand!(rng::AbstractRNG, sample, d::AbstractDistribution)` fill with random sample from distribution
+- `pdf(d::AbstractDistribution, x)` value of probability distribution function at x
+
+### Problem Model
+
+`POMDP`
+`State`
+`Action`
+`Observation`
 
 - `discount(pomdp::POMDP)` returns the discount
 - `states(pomdp::POMDP)` returns the complete state space 
 - `actions(pomdp::POMDP)` returns the complete action space
-- `actions(pomdp::POMDP, state::Any, aspace::AbstractSpace=actions(pomdp))` modifies `aspace` to the action space accessible from the given state and returns it
+- `actions(pomdp::POMDP, state::State, aspace::AbstractSpace=actions(pomdp))` modifies `aspace` to the action space accessible from the given state and returns it
 - `observations(pomdp::POMDP)` returns the complete observation space
-- `observations(pomdp::POMDP, state::Any, ospace::AbstractSpace)` modifies `ospace` to the observation space accessible from the given state and returns it
-- `reward(pomdp::POMDP, state::Any, action::Any)` returns the immediate reward for the state-action pair
-- `reward(pomdp::POMDP, state::Any, action::Any, statep::Any)` returns the immediate reward for the s-a-s' triple
+- `observations(pomdp::POMDP, state::State, ospace::AbstractSpace)` modifies `ospace` to the observation space accessible from the given state and returns it
+- `reward(pomdp::POMDP, state::State, action::Action)` returns the immediate reward for the state-action pair
+- `reward(pomdp::POMDP, state::Action, action::Action, statep::State)` returns the immediate reward for the s-a-s' triple
 - `transition(pomdp::POMDP, state, action, distribution=create_transition_distribution(pomdp))` modifies `distribution` to the transition distribution from the current state-action pair and returns it
 - `observation(pomdp::POMDP, state, action, distribution=create_observation_distribution(pomdp))` modifies `distribution` to the observation distribution from the current state and *previous* action and returns it
-- `isterminal(pomdp::POMDP, state::Any)` checks if a state is terminal
+- `isterminal(pomdp::POMDP, state::State)` checks if a state is terminal
+
+### Solvers and Polices
+
+`Solver`
+`Policy`
+
+- `solve(solver::Solver, pomdp::POMDP, policy::Policy=create_policy(solver, pomdp))` solves the POMDP and modifies `policy` to be the solution of `pomdp` and returns it
+- `action(pomdp::POMDP, policy::Policy, belief::Belief, action=create_action(pomdp))` returns an action for the current belief given the policy
+- `action(pomdp::POMDP, policy::Policy, state::State, action=create_action(pomdp))` returns an action for the current state given the policy
+
+### Belief
+
+`Belief`
+`BeliefUpdater`
+
+- `update(updater::BeliefUpdater, belief_old::Belief, action::Action, obs::Observation, belief_new::Belief=create_belief(updater))` modifies `belief_new` to the belief given the old belief and the latest action and observation and returns the updated belief. `belief_old` and `belief_new` should *not* be references to the same object
+
+
+### Simulation
+
+`Simulator`
+
+- `simulate(simulator::Simulator, pomdp::POMDP, policy::Policy)` runs a simulation using the specified policy and returns the accumulated reward
+
+## Convenience Functions
+
+Several convenience functions are also provided in the interface
+
+- `index(pomdp::POMDP, state::State)` returns the index of the given state for a discrete POMDP 
+- `domain(space::AbstractSpace)` returns an iterator over a space
+- `value(policy::Policy, belief::Belief)` returns the expected value for the current belief given the policy
+- `value(policy::Policy, state::State)` returns the expected value for the current state given the policy
+- `convert_belief(updater::BeliefUpdater, b::Belief)` returns a belief that can be updated using `updater` that has a similar distribution to `b` (this conversion may be lossy)
+- `updater(p::Policy)` returns a default BeliefUpdater appropriate for a belief type that policy `p` can use
+
+## Object Allocators
+
 - `create_state(pomdp::POMDP)` creates a single state object (for preallocation purposes)
 - `create_observation(pomdp::POMDP)` creates a single observation object (for preallocation purposes)
-- `index(pomdp::POMDP, state::State)` returns the index of the given state for a discrete POMDP 
-
-
-## Distribution Functions
-
-- `rand!(rng::AbstractRNG, sample, d::AbstractDistribution)` fill with random sample from distribution
-- `pdf(d::AbstractDistribution, x)` value of probability distribution function at x
 - `create_transition_distribution(pomdp::POMDP)` returns a transition distribution
 - `create_observation_distribution(pomdp::POMDP)` returns an observation distribution
-
-
-## Space Functions
-- `domain(space::AbstractSpace)` returns an iterator over a space
-
-
-## Solver functions
-
 - `create_policy(solver::Solver, pomdp::POMDP)` creates a policy object (for preallocation purposes)
-- `solve(solver::Solver, pomdp::POMDP, policy::Policy=create_policy(solver, pomdp))` solves the POMDP and modifies `policy` to be the solution of `pomdp` and returns it
-
-
-## Policy Functions
-- `action(pomdp::POMDP, policy::Policy, belief::Belief, action=create_action(pomdp))` returns an action for the current belief given the policy
-- `action(pomdp::POMDP, policy::Policy, state::Any, action=create_action(pomdp))` returns an action for the current state given the policy
-- `value(policy::Policy, belief::Belief)` returns the expected value for the current belief given the policy
-- `value(policy::Policy, state::Any)` returns the expected value for the current state given the policy
 - `create_action(pomdp::POMDP)` returns an action (for preallocation purposes)
+- `create_belief(updater::BeliefUpdater)` creates a belief object (for preallocation purposes)
 
-
-## Belief Functions
-- `create_belief(pomdp::POMDP)` creates a belief object (for preallocation purposes)
-- `belief(pomdp::POMDP, belief_old::Belief, action::Any, obs::Any, belief_new::Belief=create_belief(pomdp))` modifies `belief_new` to the belief given the old belief and the latest action and observation and returns the updated belief. `belief_old` and `belief_new` should *not* be references to the same object
-
-## Simulation Functions
-- `simulate(simulator::Simulator, pomdp::POMDP, policy::Policy)` runs a simulation using the specified policy and returns the accumulated reward
