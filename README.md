@@ -68,8 +68,8 @@ The core interface provides tools to express problems, program solvers, and setu
 `Policy`
 
 - `solve(solver::Solver, pomdp::POMDP, policy::Policy=create_policy(solver, pomdp))` solves the POMDP and modifies `policy` to be the solution of `pomdp` and returns it
-- `action(pomdp::POMDP, policy::Policy, belief::Belief, action=create_action(pomdp))` returns an action for the current belief given the policy
-- `action(pomdp::POMDP, policy::Policy, state::State, action=create_action(pomdp))` returns an action for the current state given the policy
+- `action(policy::Policy, belief::Belief, action=create_action(pomdp))` returns an action for the current belief given the policy
+- `action(policy::Policy, state::State, action=create_action(pomdp))` returns an action for the current state given the policy
 
 ### Belief
 
@@ -115,7 +115,7 @@ In many cases, it is more efficient to fill pre-allocated objects with new data 
 
 ## Reference Simulation Implementation
 
-This reference simulation implementation shows how the various functions will be used.
+This reference simulation implementation shows how the various functions will be used. Please note that this example is written for clarity and not efficiency (see [TODO: link to main doc] for efficiency tips).
 
 ```julia
 type ReferenceSimulator
@@ -125,7 +125,31 @@ end
 
 function simulate(simulator::ReferenceSimulator, pomdp::POMDP, policy::Policy, updater::BeliefUpdater, initial_belief::Belief)
 
-# TODO: fill this in
+    s = create_state(pomdp)
+    o = create_observation(pomdp)
+    rand!(sim.rng, s, initial_belief)
+    
+    b = convert_belief(updater, initial_belief)
+
+    step = 1
+    disc = 1.0
+    r = 0.0
+
+    while step <= sim.max_steps && !isterminal(pomdp, s)
+        a = action(policy, b)
+        r += disc*reward(pomdp, s, a)
+
+        trans_dist = transition(pomdp, s, a)
+        rand!(sim.rng, s, trans_dist)
+
+        obs_dist = observation(pomdp, s, a)
+        rand!(sim.rng, o, obs_dist)
+
+        b = update(updater, b, a, o)
+
+        disc *= discount(pomdp)
+        step += 1
+    end
 
 end
 
