@@ -82,9 +82,6 @@ The core interface provides tools to express problems, program solvers, and setu
 
 - `update(updater::BeliefUpdater, belief_old::Belief, action::Action, obs::Observation, belief_new::Belief=create_belief(updater))` modifies `belief_new` to the belief given the old belief and the latest action and observation and returns the updated belief. 
 
-<!-- `belief_old` and `belief_new` should *not* be references to the same object
--->
-
 ### Simulation
 
 `Simulator`
