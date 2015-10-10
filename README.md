@@ -35,6 +35,10 @@ The following POMDP solvers support this interface:
 
 The core interface provides tools to express problems, program solvers, and setup simulations.
 
+**XXX** This section is commented for now because it may not be up to date. We should figure out a way to auto-generate it from documentation in the source files.
+
+<!--
+
 ### Distributions
 
 `AbstractDistribution`
@@ -112,6 +116,8 @@ In many cases, it is more efficient to fill pre-allocated objects with new data 
 - `create_policy(solver::Solver, pomdp::POMDP)` creates a policy object (for preallocation purposes)
 - `create_action(pomdp::POMDP)` returns an action (for preallocation purposes)
 - `create_belief(updater::BeliefUpdater)` creates a belief object (for preallocation purposes)
+
+-->
 
 ## Reference Simulation Implementation
 
