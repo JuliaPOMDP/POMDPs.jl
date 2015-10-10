@@ -81,6 +81,7 @@ export
     simulate
 
 
+include("errors.jl")
 include("pomdp.jl")
 include("distribution.jl")
 include("belief.jl")

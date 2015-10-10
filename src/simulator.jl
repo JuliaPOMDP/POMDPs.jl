@@ -7,4 +7,4 @@
 abstract Simulator
 
 # runs a simulation
-simulate(simulator::Simulator, pomdp::POMDP, policy::Policy, updater::BeliefUpdater, initial_belief::Belief) = error("No implementation of simulate for simulator::$(typeof(simulator)), pomdp::$(typeof(pomdp)), and policy::$(typeof(policy)), updater::$(typeof(updater))")
+@pomdp_func simulate(simulator::Simulator, pomdp::POMDP, policy::Policy, updater::BeliefUpdater, initial_belief::Belief)
