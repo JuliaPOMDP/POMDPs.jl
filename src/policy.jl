@@ -10,7 +10,7 @@ abstract Policy
 @pomdp_func create_action(pomdp::POMDP)
 
 # returns the action according to policy p given the state
-@pomdp_func action(pomdp::POMDP, p::Policy, state::State, action=create_action(pomdp))
+@pomdp_func action(p::Policy, state::State, action=create_action(pomdp))
 
 # returns a BeliefUpdater appropriate for the policy
 @pomdp_func updater(policy::Policy)
