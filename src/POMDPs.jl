@@ -69,7 +69,10 @@ export
 
     # Beliefs
     Belief,
-    belief,
+    BeliefUpdater,
+    initial_belief,
+    update,
+    convert_belief,
 
     # Policy
     Policy,

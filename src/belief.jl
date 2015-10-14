@@ -20,4 +20,4 @@ abstract BeliefUpdater
 @pomdp_func update(updater::BeliefUpdater, belief_old::Belief, action::Action, obs::Observation, belief_new::Belief=create_belief(updater))
 
 # creates a Belief that can be updated by BeliefUpdater from the belief argument
-@pomdp_func convert_belief(updater::BeliefUpdater, belief::Belief)
+@pomdp_func convert_belief(updater::BeliefUpdater, belief::Belief) = belief

@@ -4,6 +4,9 @@
 ###############################################################
 
 macro pomdp_func(signature)
+    if signature.head == :(=) # in this case a default implementation has already been supplied
+        return esc(signature)
+    end
     @assert signature.head == :call
 
     # get the names of all the arguments
