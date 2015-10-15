@@ -22,6 +22,6 @@ typealias Reward Float64
 @pomdp_func create_state(pomdp::POMDP)
 @pomdp_func create_observation(pomdp::POMDP)
 
-@pomdp_func isterminal(pomdp::POMDP, state::State)
+@pomdp_func isterminal(pomdp::POMDP, state::State) = false
 
 @pomdp_func index(pomdp::POMDP, state::State)
