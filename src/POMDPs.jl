@@ -77,6 +77,7 @@ export
     # Policy
     Policy,
     action,
+    updater,
     value,
 
     # Simulation
