@@ -10,10 +10,12 @@ abstract Belief <: AbstractDistribution
 abstract BeliefUpdater
 
 # returns an initial belief
-# XXX [Zach] I got rid of the second argument for this
-@pomdp_func initial_belief(pomdp::POMDP)
+@pomdp_func initial_belief(pomdp::POMDP, belief::Belief = create_belief(pomdp))
 
-# returns any belief 
+# allocates and returns an empty problem-native belief structure
+@pomdp_func create_belief(pomdp::POMDP)
+
+# allocates and returns an empty belief structure of type used by BeliefUpdater
 @pomdp_func create_belief(updater::BeliefUpdater)
 
 # updates the belief given the old belief (belief_old), the action and the observation
