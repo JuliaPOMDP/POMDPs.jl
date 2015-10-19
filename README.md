@@ -9,8 +9,6 @@ Pkg.clone("https://github.com/sisl/POMDPs.jl.git")
 
 ## Supported Solvers
 
-**TODO**: Update these solvers after ! interface change
-
 The following MDP solvers support this interface:
 * [Value Iteration](https://github.com/sisl/DiscreteValueIteration.jl)
 * [Monte Carlo Tree Search](https://github.com/sisl/MCTS.jl)
@@ -18,6 +16,8 @@ The following MDP solvers support this interface:
 The following POMDP solvers support this interface:
 * [QMDP](https://github.com/sisl/QMDP.jl)
 * [SARSOP](https://github.com/sisl/SARSOP.jl)
+
+To get started, follow the tutorial in [this](http://nbviewer.ipython.org/github/sisl/POMDPs.jl/blob/master/examples/GridWorld.ipynb) notebook.
 
 ## Basic Types
 
