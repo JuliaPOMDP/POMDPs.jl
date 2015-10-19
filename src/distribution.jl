@@ -16,7 +16,7 @@ abstract DiscreteDistribution <: AbstractDistribution
 
 Base.length(d::DiscreteDistribution) = error("$(typeof(d)) does not implement length") 
 weight(d::DiscreteDistribution, i::Int) = error("$(typeof(d)) does not implement weight")
-index(d::DiscreteDistribution, i::Int) = error("$(typeof(d)) does not implement index")
+index(pomdp::POMDP, d::DiscreteDistribution, i::Int) = error("$(typeof(d)) does not implement index")
 
 abstract AbstractSpace 
 
