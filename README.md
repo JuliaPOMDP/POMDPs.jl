@@ -14,13 +14,7 @@ The goal is to provide a common programming vocabulary for researchers and stude
 Pkg.clone("https://github.com/sisl/POMDPs.jl.git")
 ```
 
-## Basic Example
-
-**TODO**
-
 ## Supported Solvers
-
-**TODO**: Update these solvers after interface changes
 
 The following MDP solvers support this interface:
 * [Value Iteration](https://github.com/sisl/DiscreteValueIteration.jl)
@@ -30,14 +24,14 @@ The following POMDP solvers support this interface:
 * [QMDP](https://github.com/sisl/QMDP.jl)
 * [SARSOP](https://github.com/sisl/SARSOP.jl)
 
+**TODO** check if this tutorial still works
+To get started, follow the tutorial in [this](http://nbviewer.ipython.org/github/sisl/POMDPs.jl/blob/master/examples/GridWorld.ipynb) notebook.
 
 ## Core Interface
 
 The core interface provides tools to express problems, program solvers, and setup simulations.
 
-**XXX** This section is commented for now because it may not be up to date. We should figure out a way to auto-generate it from documentation in the source files.
 
-<!--
 
 ### Distributions
 
@@ -114,7 +108,6 @@ In many cases, it is more efficient to fill pre-allocated objects with new data 
 - `create_action(pomdp::POMDP)` returns an action (for preallocation purposes)
 - `create_belief(updater::BeliefUpdater)` creates a belief object (for preallocation purposes)
 
--->
 
 ## Reference Simulation Implementation
 
