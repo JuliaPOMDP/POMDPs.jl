@@ -25,6 +25,7 @@ The following POMDP solvers support this interface:
 * [SARSOP](https://github.com/sisl/SARSOP.jl)
 
 **TODO** check if this tutorial still works
+
 To get started, follow the tutorial in [this](http://nbviewer.ipython.org/github/sisl/POMDPs.jl/blob/master/examples/GridWorld.ipynb) notebook.
 
 ## Core Interface
