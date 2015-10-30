@@ -37,7 +37,7 @@ The core interface provides tools to express problems, program solvers, and setu
 
 ### Distributions
 
-- `AbstractDistribution` - Base type for a probability distribution
+`AbstractDistribution` - Base type for a probability distribution
 
 - `rand!(rng::AbstractRNG, sample, d::AbstractDistribution)` fill with random sample from distribution
 - `pdf(d::AbstractDistribution, x)` value of probability distribution function at x
@@ -46,11 +46,15 @@ The core interface provides tools to express problems, program solvers, and setu
 
 ### Problem Model
 
-- `POMDP` - Base type for a problem definition
-- `AbstractSpace` - Base type for state, action, and observation spaces
-- `State` - Base type for states
-- `Action` - Base type for actions
-- `Observation` - Base type for observations
+`POMDP` - Base type for a problem definition
+
+`AbstractSpace` - Base type for state, action, and observation spaces
+
+`State` - Base type for states
+
+`Action` - Base type for actions
+
+`Observation` - Base type for observations
 
 - `states(pomdp::POMDP)` returns the complete state space 
 - `actions(pomdp::POMDP)` returns the complete action space
@@ -64,7 +68,7 @@ The core interface provides tools to express problems, program solvers, and setu
 - `discount(pomdp::POMDP)` returns the discount factor
 - `isterminal(pomdp::POMDP, state::State)` checks if a state is terminal
 
-**XXX** Missing functions such as `n_states`, `n_actions` (see `src/pomdp`)
+**XXX** Missing functions such as `n_states`, `n_actions` (see `src/pomdp.jl`)
 
 ### Solvers and Polices
 
@@ -77,14 +81,14 @@ The core interface provides tools to express problems, program solvers, and setu
 
 ### Belief
 
-- `Belief` - Base type for an object representing some knowledge about the state (often a probability distribution)
-- `BeliefUpdater` - Base type for an object that defines how a belief should be updated
+`Belief` - Base type for an object representing some knowledge about the state (often a probability distribution)
+`BeliefUpdater` - Base type for an object that defines how a belief should be updated
 
 - `update(updater::BeliefUpdater, belief_old::Belief, action::Action, obs::Observation, belief_new::Belief=create_belief(updater))` modifies `belief_new` to the belief given the old belief (`belief_old`) and the latest action and observation and returns the updated belief. 
 
 ### Simulation
 
-- `Simulator` - Base type for an object defining how a simulation should be carried out
+`Simulator` - Base type for an object defining how a simulation should be carried out
 
 - `simulate(simulator::Simulator, pomdp::POMDP, policy::Policy, updater::BeliefUpdater, initial_belief::Belief)` runs a simulation using the specified policy and returns the accumulated reward
 
