@@ -4,7 +4,8 @@
 # creating Simulator types
 #################################################################
 
+# Base type for an object defining how a simulation should be carried out
 abstract Simulator
 
-# runs a simulation
+# runs a simulation using the specified policy and returns the accumulated reward
 @pomdp_func simulate(simulator::Simulator, pomdp::POMDP, policy::Policy, updater::BeliefUpdater, initial_belief::Belief)

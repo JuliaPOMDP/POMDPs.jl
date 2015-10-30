@@ -6,13 +6,13 @@
 
 abstract Policy
 
-# initializes the MDP/POMDP action
+# creates an action object (for preallocation purposes)
 @pomdp_func create_action(pomdp::POMDP)
 
-# returns the action according to policy p given the state
+# returns a default BeliefUpdater appropriate for a belief type that policy `p` can use
 @pomdp_func action(p::Policy, state::State, action=create_action(pomdp))
 
-# returns a BeliefUpdater appropriate for the policy
+# returns a default BeliefUpdater appropriate for a belief type that policy `p` can use
 @pomdp_func updater(policy::Policy)
 
 # returns the utility value from policy p given the belief

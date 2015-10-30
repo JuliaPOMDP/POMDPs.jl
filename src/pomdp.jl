@@ -12,6 +12,7 @@ typealias Reward Float64
 @pomdp_func n_actions(pomdp::POMDP)
 @pomdp_func n_observations(pomdp::POMDP)
 
+# return the discount factor
 @pomdp_func discount(pomdp::POMDP)
 
 @pomdp_func transition(pomdp::POMDP, state::State, action::Action, distribution=create_transition_distribution(pomdp))

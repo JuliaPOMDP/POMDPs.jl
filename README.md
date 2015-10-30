@@ -32,22 +32,25 @@ To get started, follow the tutorial in [this](http://nbviewer.ipython.org/github
 
 The core interface provides tools to express problems, program solvers, and setup simulations.
 
+**TODO** this list is not complete! there are some functions in src missing documentation that were not included here
 
 
 ### Distributions
 
-`AbstractDistribution`
+- `AbstractDistribution` - Base type for a probability distribution
 
 - `rand!(rng::AbstractRNG, sample, d::AbstractDistribution)` fill with random sample from distribution
 - `pdf(d::AbstractDistribution, x)` value of probability distribution function at x
 
+**XXX** There are functions missing from this list that are included in `src/distribution.jl`
+
 ### Problem Model
 
-`POMDP`
-`AbstractSpace`
-`State`
-`Action`
-`Observation`
+- `POMDP` - Base type for a problem definition
+- `AbstractSpace` - Base type for state, action, and observation spaces
+- `State` - Base type for states
+- `Action` - Base type for actions
+- `Observation` - Base type for observations
 
 - `states(pomdp::POMDP)` returns the complete state space 
 - `actions(pomdp::POMDP)` returns the complete action space
@@ -61,10 +64,12 @@ The core interface provides tools to express problems, program solvers, and setu
 - `discount(pomdp::POMDP)` returns the discount factor
 - `isterminal(pomdp::POMDP, state::State)` checks if a state is terminal
 
+**XXX** Missing functions such as `n_states`, `n_actions` (see `src/pomdp`)
+
 ### Solvers and Polices
 
-`Solver`
-`Policy`
+`Solver` - Base type a solver
+`Policy` - Base type for a policy (a map from every possible belief, or more abstract policy state, to an optimal or suboptimal action)
 
 - `solve(solver::Solver, pomdp::POMDP, policy::Policy=create_policy(solver, pomdp))` solves the POMDP and modifies `policy` to be the solution of `pomdp` and returns it
 - `action(policy::Policy, belief::Belief, action=create_action(pomdp))` returns an action for the current belief given the policy
@@ -72,14 +77,14 @@ The core interface provides tools to express problems, program solvers, and setu
 
 ### Belief
 
-`Belief`
-`BeliefUpdater`
+- `Belief` - Base type for an object representing some knowledge about the state (often a probability distribution)
+- `BeliefUpdater` - Base type for an object that defines how a belief should be updated
 
-- `update(updater::BeliefUpdater, belief_old::Belief, action::Action, obs::Observation, belief_new::Belief=create_belief(updater))` modifies `belief_new` to the belief given the old belief and the latest action and observation and returns the updated belief. 
+- `update(updater::BeliefUpdater, belief_old::Belief, action::Action, obs::Observation, belief_new::Belief=create_belief(updater))` modifies `belief_new` to the belief given the old belief (`belief_old`) and the latest action and observation and returns the updated belief. 
 
 ### Simulation
 
-`Simulator`
+- `Simulator` - Base type for an object defining how a simulation should be carried out
 
 - `simulate(simulator::Simulator, pomdp::POMDP, policy::Policy, updater::BeliefUpdater, initial_belief::Belief)` runs a simulation using the specified policy and returns the accumulated reward
 
@@ -92,8 +97,8 @@ Several convenience functions are also provided in the interface to provide stan
 - `index(pomdp::POMDP, state::State)` returns the index of the given state for a discrete POMDP 
 - `initial_belief(pomdp::POMDP)` returns an example initial belief for the pomdp
 - `domain(space::AbstractSpace)` returns an iterator over a space
-- `value(policy::Policy, belief::Belief)` returns the expected value for the current belief given the policy
-- `value(policy::Policy, state::State)` returns the expected value for the current state given the policy
+- `value(policy::Policy, belief::Belief)` returns the utility value from policy p given the belief
+- `value(policy::Policy, state::State)` returns the utility value from policy p given the state
 - `convert_belief(updater::BeliefUpdater, b::Belief)` returns a belief that can be updated using `updater` that has a similar distribution to `b` (this conversion may be lossy)
 - `updater(p::Policy)` returns a default BeliefUpdater appropriate for a belief type that policy `p` can use
 
@@ -106,8 +111,9 @@ In many cases, it is more efficient to fill pre-allocated objects with new data 
 - `create_transition_distribution(pomdp::POMDP)` returns a transition distribution
 - `create_observation_distribution(pomdp::POMDP)` returns an observation distribution
 - `create_policy(solver::Solver, pomdp::POMDP)` creates a policy object (for preallocation purposes)
-- `create_action(pomdp::POMDP)` returns an action (for preallocation purposes)
-- `create_belief(updater::BeliefUpdater)` creates a belief object (for preallocation purposes)
+- `create_action(pomdp::POMDP)` creates an action object (for preallocation purposes)
+- `create_belief(updater::BeliefUpdater)` creates a belief object of the type used by `updater` (for preallocation purposes)
+- `create_belief(pomdp::POMDP)` creates an empty problem-native belief object (for preallocation purposes)
 
 
 ## Reference Simulation Implementation
