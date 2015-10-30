@@ -46,9 +46,9 @@ The core interface provides tools to express problems, program solvers, and setu
 
 ### Problem Model
 
-`POMDP` - Base type for a problem definition\
-`AbstractSpace` - Base type for state, action, and observation spaces\
-`State` - Base type for states
+`POMDP` - Base type for a problem definition<br>
+`AbstractSpace` - Base type for state, action, and observation spaces<br>
+`State` - Base type for states<br>
 `Action` - Base type for actions<br>
 `Observation` - Base type for observations
 
@@ -68,7 +68,7 @@ The core interface provides tools to express problems, program solvers, and setu
 
 ### Solvers and Polices
 
-`Solver` - Base type a solver
+`Solver` - Base type a solver<br>
 `Policy` - Base type for a policy (a map from every possible belief, or more abstract policy state, to an optimal or suboptimal action)
 
 - `solve(solver::Solver, pomdp::POMDP, policy::Policy=create_policy(solver, pomdp))` solves the POMDP and modifies `policy` to be the solution of `pomdp` and returns it
@@ -77,7 +77,7 @@ The core interface provides tools to express problems, program solvers, and setu
 
 ### Belief
 
-`Belief` - Base type for an object representing some knowledge about the state (often a probability distribution)
+`Belief` - Base type for an object representing some knowledge about the state (often a probability distribution)<br>
 `BeliefUpdater` - Base type for an object that defines how a belief should be updated
 
 - `update(updater::BeliefUpdater, belief_old::Belief, action::Action, obs::Observation, belief_new::Belief=create_belief(updater))` modifies `belief_new` to the belief given the old belief (`belief_old`) and the latest action and observation and returns the updated belief. 
