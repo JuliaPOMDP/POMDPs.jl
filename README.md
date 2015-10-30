@@ -46,14 +46,10 @@ The core interface provides tools to express problems, program solvers, and setu
 
 ### Problem Model
 
-`POMDP` - Base type for a problem definition
-
-`AbstractSpace` - Base type for state, action, and observation spaces
-
+`POMDP` - Base type for a problem definition\
+`AbstractSpace` - Base type for state, action, and observation spaces\
 `State` - Base type for states
-
-`Action` - Base type for actions
-
+`Action` - Base type for actions<br>
 `Observation` - Base type for observations
 
 - `states(pomdp::POMDP)` returns the complete state space 
