@@ -7,31 +7,35 @@
 
 abstract AbstractDistribution
 
-create_transition_distribution(pomdp::POMDP) = error("$(typeof(pomdp)) does not implement create_transition_distribution") # creates a dsitribution 
-create_observation_distribution(pomdp::POMDP) = error("$(typeof(pomdp)) does not implement create_observation_distribution") # creates a dsitribution 
-rand!(rng::AbstractRNG, state::Any, d::AbstractDistribution) = error("$(typeof(d)) does not implement rand!") # fills with a random state
-pdf(d::AbstractDistribution, x::Any) = error("$(typeof(d)) does not implement pdf") # returns a probability
+@pomdp_func create_transition_distribution(pomdp::POMDP)
+@pomdp_func create_observation_distribution(pomdp::POMDP)
+@pomdp_func rand!(rng::AbstractRNG, state::Any, d::AbstractDistribution)
+@pomdp_func pdf(d::AbstractDistribution, x::Any)
 
 abstract DiscreteDistribution <: AbstractDistribution
 
-Base.length(d::DiscreteDistribution) = error("$(typeof(d)) does not implement length") 
-weight(d::DiscreteDistribution, i::Int) = error("$(typeof(d)) does not implement weight")
-index(pomdp::POMDP, d::DiscreteDistribution, i::Int) = error("$(typeof(d)) does not implement index")
+@pomdp_func Base.length(d::DiscreteDistribution)
+@pomdp_func weight(d::DiscreteDistribution, i::Int)
+@pomdp_func index(pomdp::POMDP, d::DiscreteDistribution, i::Int)
 
 abstract AbstractSpace 
 
-dimensions(s::AbstractSpace) = error("$(typeof(s)) does not implement dimensions") # returns an integer
-lowerbound(s::AbstractSpace, i::Int) = error("$(typeof(s)) does not implement lowerbound") # returns bound of dim i
-upperbound(s::AbstractSpace, i::Int) = error("$(typeof(s)) does not implement upperbound") # returns bound of dim i 
-Base.getindex(s::AbstractSpace, i::Int) = error("$(typeof(s)) does not implement getindex") # returns distribution for dim i
+# returns an integer
+@pomdp_func dimensions(s::AbstractSpace)
+# returns bound of dim i
+@pomdp_func lowerbound(s::AbstractSpace, i::Int)
+# returns bound of dim i
+@pomdp_func upperbound(s::AbstractSpace, i::Int)
+# returns distribution for dim i
+@pomdp_func Base.getindex(s::AbstractSpace, i::Int)
 
-domain(s::AbstractSpace) = error("$(typeof(s)) does not implement domain")
+@pomdp_func domain(s::AbstractSpace)
 
 # return a space type
-states(pomdp::POMDP) = error("$(typeof(pomdp)) does not implement states") 
-states(pomdp::POMDP, state::Any, sts::AbstractSpace=states(pomdp)) = error("$(typeof(pomdp)) does not implement states") 
-actions(pomdp::POMDP) = error("$(typeof(pomdp)) does not implement actions") 
-actions(pomdp::POMDP, state::Any, acts::AbstractSpace=actions(pomdp)) = error("$(typeof(pomdp)) does not implement actions") 
-observations(pomdp::POMDP) = error("$(typeof(pomdp)) does not implement observations") 
-observations(pomdp::POMDP, state::Any, obs::AbstractSpace=observations(pomdp)) = error("$(typeof(pomdp)) does not implement observations") 
+@pomdp_func states(pomdp::POMDP)
+@pomdp_func states(pomdp::POMDP, state::Any, sts::AbstractSpace=states(pomdp))
+@pomdp_func actions(pomdp::POMDP)
+@pomdp_func actions(pomdp::POMDP, state::Any, acts::AbstractSpace=actions(pomdp))
+@pomdp_func observations(pomdp::POMDP)
+@pomdp_func observations(pomdp::POMDP, state::Any, obs::AbstractSpace=observations(pomdp))
 

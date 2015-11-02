@@ -69,11 +69,15 @@ export
 
     # Beliefs
     Belief,
-    belief,
+    BeliefUpdater,
+    initial_belief,
+    update,
+    convert_belief,
 
     # Policy
     Policy,
     action,
+    updater,
     value,
 
     # Simulation
@@ -81,6 +85,7 @@ export
     simulate
 
 
+include("errors.jl")
 include("pomdp.jl")
 include("distribution.jl")
 include("belief.jl")
