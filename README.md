@@ -60,8 +60,7 @@ The core interface provides tools to express problems, program solvers, and setu
 - `reward(pomdp::POMDP, state::State, action::Action)` returns the immediate reward for the state-action pair
 - `reward(pomdp::POMDP, state::State, action::Action, statep::State)` returns the immediate reward for the s-a-s' triple
 - `transition(pomdp::POMDP, state::State, action::Action, distribution=create_transition_distribution(pomdp))` modifies `distribution` to the transition distribution from the current state-action pair and returns it
-- `observation(pomdp::POMDP, state::State, action::Action, statep::State, distribution=create_observation_distribution(pomdp))` modifi
-es `distribution` to the observation distribution for the s-a-s' tuple (state, action, and next state) and returns it
+- `observation(pomdp::POMDP, state::State, action::Action, statep::State, distribution=create_observation_distribution(pomdp))` modifies `distribution` to the observation distribution for the s-a-s' tuple (state, action, and next state) and returns it
 - `discount(pomdp::POMDP)` returns the discount factor
 - `isterminal(pomdp::POMDP, state::State)` checks if a state is terminal
 
