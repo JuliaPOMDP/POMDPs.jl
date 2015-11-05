@@ -16,7 +16,7 @@ typealias Reward Float64
 @pomdp_func discount(pomdp::POMDP)
 
 @pomdp_func transition(pomdp::POMDP, state::State, action::Action, distribution=create_transition_distribution(pomdp))
-@pomdp_func observation(pomdp::POMDP, state::State, action::Action, distribution=create_observation_distribution(pomdp))
+@pomdp_func observation(pomdp::POMDP, state::State, action::Action, statep::State, distribution=create_observation_distribution(pomdp))
 @pomdp_func reward(pomdp::POMDP, state::State, action::Action)
 @pomdp_func reward(pomdp::POMDP, state::State, action::Action, statep::State)
 
