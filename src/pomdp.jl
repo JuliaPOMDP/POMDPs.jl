@@ -8,20 +8,21 @@ abstract Observation
 typealias Reward Float64
 
 # return the space sizes
-n_states(pomdp::POMDP)       = error("$(typeof(pomdp)) does not implement num_states")
-n_actions(pomdp::POMDP)      = error("$(typeof(pomdp)) does not implement num_actions")
-n_observations(pomdp::POMDP) = error("$(typeof(pomdp)) does not implement num_observations")
+@pomdp_func n_states(pomdp::POMDP)
+@pomdp_func n_actions(pomdp::POMDP)
+@pomdp_func n_observations(pomdp::POMDP)
 
-discount(pomdp::POMDP)  = error("$(typeof(pomdp)) does not implement discount")
+# return the discount factor
+@pomdp_func discount(pomdp::POMDP)
 
-transition(pomdp::POMDP, state::State, action::Action, distribution=create_transition_distribution(pomdp))  = error("$(typeof(pomdp)) does not implement transition")
-observation(pomdp::POMDP, state::State, action::Action, distribution=create_observation_distribution(pomdp)) = error("$(typeof(pomdp)) does not implement observation")
-reward(pomdp::POMDP, state::State, action::Action) = error("$(typeof(pomdp)) does not implement reward")
-reward(pomdp::POMDP, state::State, action::Action, statep::State) = reward(pomdp,state,action)
+@pomdp_func transition(pomdp::POMDP, state::State, action::Action, distribution=create_transition_distribution(pomdp))
+@pomdp_func observation(pomdp::POMDP, state::State, action::Action, statep::State, distribution=create_observation_distribution(pomdp))
+@pomdp_func reward(pomdp::POMDP, state::State, action::Action)
+@pomdp_func reward(pomdp::POMDP, state::State, action::Action, statep::State)
 
-create_state(pomdp::POMDP) = error("$(typeof(pomdp)) does not implement create_state")
-create_observation(pomdp::POMDP) = error("$(typeof(pomdp)) does not implement create_observation")
+@pomdp_func create_state(pomdp::POMDP)
+@pomdp_func create_observation(pomdp::POMDP)
 
-isterminal(pomdp::POMDP, state::State) = false
+@pomdp_func isterminal(pomdp::POMDP, state::State) = false
 
-index(pomdp::POMDP, state::State) = error("$(typeof(pomdp)) does not implement index")
+@pomdp_func index(pomdp::POMDP, state::State)

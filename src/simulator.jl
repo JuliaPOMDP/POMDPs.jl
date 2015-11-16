@@ -4,7 +4,8 @@
 # creating Simulator types
 #################################################################
 
+# Base type for an object defining how a simulation should be carried out
 abstract Simulator
 
-# runs a simulation
-simulate(simulator::Simulator, pomdp::POMDP, policy::Policy) = error("No implementation of simulate for a simulator of type $(typeof(simulator)), pomdp of type $(typeof(pomdp)), and policy of type $(typeof(policy))")
+# runs a simulation using the specified policy and returns the accumulated reward
+@pomdp_func simulate(simulator::Simulator, pomdp::POMDP, policy::Policy, updater::BeliefUpdater, initial_belief::Belief)

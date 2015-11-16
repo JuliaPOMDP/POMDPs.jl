@@ -7,12 +7,19 @@
 # For tools supportng belief updates see POMDPToolbox.jl
 
 abstract Belief <: AbstractDistribution
+abstract BeliefUpdater
 
-# returns an initial belief
-initial_belief(pomdp::POMDP, belief = create_belief(pomdp)) = error("$(typeof(pomdp)) does not implement initial_belief")
+# returns an example initial belief for the pomdp
+@pomdp_func initial_belief(pomdp::POMDP, belief::Belief = create_belief(pomdp))
 
-# returns any belief 
-create_belief(pomdp::POMDP) = error("$(typeof(pomdp)) does not implement create_belief")
+# allocates and returns an empty problem-native belief structure
+@pomdp_func create_belief(pomdp::POMDP)
+
+# creates a belief object of the type used by `updater` (for preallocation purposes)
+@pomdp_func create_belief(updater::BeliefUpdater)
 
 # updates the belief given the old belief (belief_old), the action and the observation
-belief(pomdp::POMDP, belief_old::Belief, action::Any, obs::Any, belief_new::Belief=create_belief(pomdp)) = error("$(typeof(pomdp)) does not implement belief")
+@pomdp_func update(updater::BeliefUpdater, belief_old::Belief, action::Action, obs::Observation, belief_new::Belief=create_belief(updater))
+
+# returns a belief that can be updated using `updater` that has a similar distribution to `b` (this conversion may be lossy)
+@pomdp_func convert_belief(updater::BeliefUpdater, belief::Belief, new_belief::Belief=create_belief(updater)) = belief
