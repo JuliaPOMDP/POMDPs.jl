@@ -19,3 +19,4 @@ abstract Policy
 @pomdp_func value(p::Policy, belief::Belief)
 # returns the utility value from policy p given the state
 @pomdp_func value(p::Policy, state::State)
+
