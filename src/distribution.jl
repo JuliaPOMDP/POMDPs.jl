@@ -11,6 +11,7 @@ abstract AbstractDistribution
 @pomdp_func create_observation_distribution(pomdp::POMDP)
 @pomdp_func rand!(rng::AbstractRNG, state::Any, d::AbstractDistribution)
 @pomdp_func pdf(d::AbstractDistribution, x::Any)
+@pomdp_func domain(d::AbstractDistribution)
 
 abstract DiscreteDistribution <: AbstractDistribution
 
