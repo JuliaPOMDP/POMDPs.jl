@@ -23,6 +23,7 @@ The following MDP solvers support this interface:
 The following POMDP solvers support this interface:
 * [QMDP](https://github.com/sisl/QMDP.jl)
 * [SARSOP](https://github.com/sisl/SARSOP.jl)
+* [POMCP](https://github.com/sisl/POMCP.jl)
 
 ## Tutorials
 
