@@ -63,7 +63,6 @@ The core interface provides tools to express problems, program solvers, and setu
 - `actions(pomdp::POMDP, state::State, aspace::AbstractSpace=actions(pomdp))` modifies `aspace` to the action space accessible from the given state and returns it
 - `observations(pomdp::POMDP)` returns the complete observation space
 - `observations(pomdp::POMDP, state::State, ospace::AbstractSpace)` modifies `ospace` to the observation space accessible from the given state and returns it
-- `reward(pomdp::POMDP, state::State, action::Action)` returns the immediate reward for the state-action pair
 - `reward(pomdp::POMDP, state::State, action::Action, statep::State)` returns the immediate reward for the s-a-s' triple
 - `transition(pomdp::POMDP, state::State, action::Action, distribution=create_transition_distribution(pomdp))` modifies `distribution` to the transition distribution from the current state-action pair and returns it
 - `observation(pomdp::POMDP, state::State, action::Action, statep::State, distribution=create_observation_distribution(pomdp))` modifies `distribution` to the observation distribution for the s-a-s' tuple (state, action, and next state) and returns it
