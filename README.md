@@ -77,8 +77,8 @@ The core interface provides tools to express problems, program solvers, and setu
 `Policy` - Base type for a policy (a map from every possible belief, or more abstract policy state, to an optimal or suboptimal action)
 
 - `solve(solver::Solver, pomdp::POMDP, policy::Policy=create_policy(solver, pomdp))` solves the POMDP and modifies `policy` to be the solution of `pomdp` and returns it
-- `action(policy::Policy, belief::Belief)` or `action(policy::Policy, belief::Belief, action::Action)` returns an action for the current belief given the policy (the method with three arguments modifies `action` and returns it)
-- `action(policy::Policy, state::State)` or `action(policy::Policy, state::State, action::Action)` returns an action for the current state given the policy
+- `action(policy::Policy, belief::Belief)` or `action(policy::Policy, belief::Belief, act::Action)` returns an action for the current belief given the policy (the method with three arguments modifies `act` and returns it)
+- `action(policy::Policy, state::State)` or `action(policy::Policy, state::State, act::Action)` returns an action for the current state given the policy
 
 ### Belief
 
