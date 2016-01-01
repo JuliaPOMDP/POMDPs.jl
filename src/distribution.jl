@@ -1,8 +1,7 @@
 #################################################################
-# This file defines the abstract distribution and space type
+# This file defines the abstract distribution type
 # AbstractDistribution: the abstract super type for the transition and observation distributions
 # DiscreteDistribution: discrete distributions support state indexing and length functions
-# AbstractSpace: the abstract super type for the state, action and observation spaces
 #################################################################
 
 abstract AbstractDistribution
@@ -18,26 +17,3 @@ abstract DiscreteDistribution <: AbstractDistribution
 @pomdp_func Base.length(d::DiscreteDistribution)
 @pomdp_func weight(d::DiscreteDistribution, i::Int)
 @pomdp_func index(pomdp::POMDP, d::DiscreteDistribution, i::Int)
-
-abstract AbstractSpace 
-
-# returns an integer
-@pomdp_func dimensions(s::AbstractSpace)
-# returns bound of dim i
-@pomdp_func lowerbound(s::AbstractSpace, i::Int)
-# returns bound of dim i
-@pomdp_func upperbound(s::AbstractSpace, i::Int)
-# sample a space
-@pomdp_func rand!(rng::AbstractRNG, state::Any, d::AbstractSpace)
-
-@pomdp_func domain(s::AbstractSpace)
-
-# return a space type
-@pomdp_func states(pomdp::POMDP)
-@pomdp_func states(pomdp::POMDP, state::State, sts::AbstractSpace=states(pomdp))
-@pomdp_func actions(pomdp::POMDP)
-@pomdp_func actions(pomdp::POMDP, state::State, acts::AbstractSpace=actions(pomdp))
-@pomdp_func actions(pomdp::POMDP, belief::Belief, acts::AbstractSpace=actions(pomdp))
-@pomdp_func observations(pomdp::POMDP)
-@pomdp_func observations(pomdp::POMDP, state::State, obs::AbstractSpace=observations(pomdp))
-
