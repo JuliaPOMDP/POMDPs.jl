@@ -61,6 +61,7 @@ The core interface provides tools to express problems, program solvers, and setu
 - `states(pomdp::POMDP)` returns the complete state space 
 - `actions(pomdp::POMDP)` returns the complete action space
 - `actions(pomdp::POMDP, state::State, aspace::AbstractSpace=actions(pomdp))` modifies `aspace` to the action space accessible from the given state and returns it
+- `actions(pomdp::POMDP, belief::Belief, aspace::AbstractSpace=actions(pomdp))` modifies `aspace` to the action space accessible from the states with nonzero belief and returns it
 - `observations(pomdp::POMDP)` returns the complete observation space
 - `observations(pomdp::POMDP, state::State, ospace::AbstractSpace)` modifies `ospace` to the observation space accessible from the given state and returns it
 - `reward(pomdp::POMDP, state::State, action::Action, statep::State)` returns the immediate reward for the s-a-s' triple

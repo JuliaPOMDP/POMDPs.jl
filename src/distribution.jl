@@ -37,6 +37,7 @@ abstract AbstractSpace
 @pomdp_func states(pomdp::POMDP, state::State, sts::AbstractSpace=states(pomdp))
 @pomdp_func actions(pomdp::POMDP)
 @pomdp_func actions(pomdp::POMDP, state::State, acts::AbstractSpace=actions(pomdp))
+@pomdp_func actions(pomdp::POMDP, belief::Belief, acts::AbstractSpace=actions(pomdp))
 @pomdp_func observations(pomdp::POMDP)
 @pomdp_func observations(pomdp::POMDP, state::State, obs::AbstractSpace=observations(pomdp))
 
