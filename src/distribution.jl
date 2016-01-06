@@ -4,8 +4,6 @@
 # DiscreteDistribution: discrete distributions support state indexing and length functions
 #################################################################
 
-abstract AbstractDistribution
-
 @pomdp_func create_transition_distribution(pomdp::POMDP)
 @pomdp_func create_observation_distribution(pomdp::POMDP)
 @pomdp_func rand!(rng::AbstractRNG, state::Any, d::AbstractDistribution)
