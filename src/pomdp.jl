@@ -25,5 +25,6 @@ abstract AbstractDistribution
 @pomdp_func create_observation(pomdp::POMDP)
 
 @pomdp_func isterminal(pomdp::POMDP, state::State) = false
+@pomdp_func isterminal(pomdp::POMDP, observation::Observation) = false
 
 @pomdp_func index(pomdp::POMDP, state::State)
