@@ -58,7 +58,8 @@ The core interface provides tools to express problems, program solvers, and setu
 `Action` - Base type for actions<br>
 `Observation` - Base type for observations
 
-- `states(pomdp::POMDP)` returns the complete state space 
+- `states(pomdp::POMDP)` returns the complete state space
+- `states(pomdp::POMDP, state::State, sts::AbstractSpace=states(pomdp))` modifies `sts` to the state space accessible from the given state and returns it 
 - `actions(pomdp::POMDP)` returns the complete action space
 - `actions(pomdp::POMDP, state::State, aspace::AbstractSpace=actions(pomdp))` modifies `aspace` to the action space accessible from the given state and returns it
 - `actions(pomdp::POMDP, belief::Belief, aspace::AbstractSpace=actions(pomdp))` modifies `aspace` to the action space accessible from the states with nonzero belief and returns it
@@ -103,6 +104,10 @@ Several convenience functions are also provided in the interface to provide stan
 - `index(pomdp::POMDP, state::State)` returns the index of the given state for a discrete POMDP 
 - `initial_belief(pomdp::POMDP)` returns an example initial belief for the pomdp
 - `domain(space::AbstractSpace)` returns an iterator over a space
+- `dimensions(s::AbstractSpace)` returns the number (integer) of dimensions in a space
+- `lowerbound(s::AbstractSpace, i::Int)` returns the lower bound of dimension `i`
+- `upperbound(s::AbstractSpace, i::Int)` returns the upper bound of dimension `i`
+- `rand!(rng::AbstractRNG, state::Any, d::AbstractSpace)` samples a space
 - `value(policy::Policy, belief::Belief)` returns the utility value from policy p given the belief
 - `value(policy::Policy, state::State)` returns the utility value from policy p given the state
 - `convert_belief(updater::BeliefUpdater, b::Belief)` returns a belief that can be updated using `updater` that has a similar distribution to `b` (this conversion may be lossy)
