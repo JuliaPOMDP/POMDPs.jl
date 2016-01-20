@@ -152,16 +152,19 @@ function simulate(simulator::ReferenceSimulator, pomdp::POMDP, policy::Policy, u
 
     while step <= sim.max_steps && !isterminal(pomdp, s)
         a = action(policy, b)
-        r += disc*reward(pomdp, s, a)
 
+        sp = create_state(pomdp)
         trans_dist = transition(pomdp, s, a)
-        rand!(sim.rng, s, trans_dist)
+        rand!(sim.rng, sp, trans_dist)
 
-        obs_dist = observation(pomdp, s, a)
+        r += disc*reward(pomdp, s, a, sp)
+
+        obs_dist = observation(pomdp, s, a, sp)
         rand!(sim.rng, o, obs_dist)
 
         b = update(updater, b, a, o)
 
+        s = sp
         disc *= discount(pomdp)
         step += 1
     end
