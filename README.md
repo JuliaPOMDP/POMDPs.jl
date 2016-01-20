@@ -104,7 +104,7 @@ Several convenience functions are also provided in the interface to provide stan
 
 - `index(pomdp::POMDP, state::State)` returns the index of the given state for a discrete POMDP 
 - `initial_belief(pomdp::POMDP)` returns an example initial belief for the pomdp
-- `domain(space::AbstractSpace)` returns an iterator over a space
+- `iterator(space::AbstractSpace)` returns an iterator over a space or an iterable object containing the space (such as an array)
 - `dimensions(s::AbstractSpace)` returns the number (integer) of dimensions in a space
 - `lowerbound(s::AbstractSpace, i::Int)` returns the lower bound of dimension `i`
 - `upperbound(s::AbstractSpace, i::Int)` returns the upper bound of dimension `i`

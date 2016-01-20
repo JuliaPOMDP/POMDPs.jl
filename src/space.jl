@@ -13,8 +13,10 @@ abstract AbstractSpace
 @pomdp_func upperbound(s::AbstractSpace, i::Int)
 # sample a space
 @pomdp_func rand!(rng::AbstractRNG, state::Any, d::AbstractSpace)
-
+#TODO: remove this?
 @pomdp_func domain(s::AbstractSpace)
+# return an iterable object corresponding to the space
+@pomdp_func iterator(s::AbstractSpace)
 
 # return a space type
 @pomdp_func states(pomdp::POMDP)

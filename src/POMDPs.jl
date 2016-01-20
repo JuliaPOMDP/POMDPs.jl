@@ -45,6 +45,7 @@ export
     upperbound,
     getindex,
     domain,
+    iterator,
     create_transition_distribution,
     create_observation_distribution,
     create_belief,
