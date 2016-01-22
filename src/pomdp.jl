@@ -19,6 +19,7 @@ abstract AbstractDistribution
 
 @pomdp_func transition(pomdp::POMDP, state::State, action::Action, distribution::AbstractDistribution=create_transition_distribution(pomdp))
 @pomdp_func observation(pomdp::POMDP, state::State, action::Action, statep::State, distribution::AbstractDistribution=create_observation_distribution(pomdp))
+@pomdp_func observation(pomdp::POMDP, state::State, action::Action, distribution::AbstractDistribution=create_observation_distribution(pomdp))
 @pomdp_func reward(pomdp::POMDP, state::State, action::Action, statep::State)
 
 @pomdp_func create_state(pomdp::POMDP)
