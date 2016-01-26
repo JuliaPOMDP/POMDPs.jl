@@ -38,7 +38,7 @@ export
     weight,
     
     # Common Functions
-    rand!,
+    rand,
     pdf,
     dimensions,
     lowerbound,

@@ -11,8 +11,8 @@ abstract AbstractSpace
 @pomdp_func lowerbound(s::AbstractSpace, i::Int)
 # returns bound of dim i
 @pomdp_func upperbound(s::AbstractSpace, i::Int)
-# sample a space
-@pomdp_func rand!(rng::AbstractRNG, state::Any, d::AbstractSpace)
+# sample a space and return the sample
+@pomdp_func rand(rng::AbstractRNG, state::Any, d::AbstractSpace)
 # return an iterable object corresponding to the space
 @pomdp_func iterator(s::AbstractSpace)
 
