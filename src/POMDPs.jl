@@ -1,6 +1,6 @@
 module POMDPs
 
-import Base.rand!
+import Base.rand
 
 export 
     # Abstract type
