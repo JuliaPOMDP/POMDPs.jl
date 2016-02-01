@@ -45,7 +45,7 @@ The core interface provides tools to express problems, program solvers, and setu
 
 `AbstractDistribution` - Base type for a probability distribution
 
-- `rand(rng::AbstractRNG, sample, d::AbstractDistribution)` fill with random sample from distribution and return the sample
+- `rand(rng::AbstractRNG, d::AbstractDistribution, sample::Any)` fill with random sample from distribution and return the sample
 - `pdf(d::AbstractDistribution, x)` value of probability distribution function at x
 
 **XXX** There are functions missing from this list that are included in `src/distribution.jl`
@@ -109,7 +109,7 @@ Several convenience functions are also provided in the interface to provide stan
 - `dimensions(s::AbstractSpace)` returns the number (integer) of dimensions in a space
 - `lowerbound(s::AbstractSpace, i::Int)` returns the lower bound of dimension `i`
 - `upperbound(s::AbstractSpace, i::Int)` returns the upper bound of dimension `i`
-- `rand(rng::AbstractRNG, state::Any, d::AbstractSpace)` fill with random sample from space and return the sample
+- `rand(rng::AbstractRNG, d::AbstractSpace, sample::Any)` fill with random sample from space and return the sample
 - `value(policy::Policy, belief::Belief)` returns the utility value from policy p given the belief
 - `value(policy::Policy, state::State)` returns the utility value from policy p given the state
 - `convert_belief(updater::BeliefUpdater, b::Belief)` returns a belief that can be updated using `updater` that has a similar distribution to `b` (this conversion may be lossy)
@@ -143,7 +143,7 @@ function simulate(simulator::ReferenceSimulator, pomdp::POMDP, policy::Policy, u
 
     s = create_state(pomdp)
     o = create_observation(pomdp)
-    rand(sim.rng, s, initial_belief)
+    rand(sim.rng, initial_belief, s)
     
     b = convert_belief(updater, initial_belief)
 
@@ -156,12 +156,12 @@ function simulate(simulator::ReferenceSimulator, pomdp::POMDP, policy::Policy, u
 
         sp = create_state(pomdp)
         trans_dist = transition(pomdp, s, a)
-        rand(sim.rng, sp, trans_dist)
+        rand(sim.rng, trans_dist, sp)
 
         r += disc*reward(pomdp, s, a, sp)
 
         obs_dist = observation(pomdp, s, a, sp)
-        rand(sim.rng, o, obs_dist)
+        rand(sim.rng, obs_dist, o)
 
         b = update(updater, b, a, o)
 
