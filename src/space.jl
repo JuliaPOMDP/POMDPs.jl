@@ -3,24 +3,24 @@
 # AbstractSpace: the abstract super type for the state, action and observation spaces
 #################################################################
 
-abstract AbstractSpace{T}
+abstract AbstractSpace 
 
 # returns an integer
-@pomdp_func dimensions{T}(s::AbstractSpace{T})
+@pomdp_func dimensions(s::AbstractSpace)
 # returns bound of dim i
-@pomdp_func lowerbound{T}(s::AbstractSpace{T}, i::Int)
+@pomdp_func lowerbound(s::AbstractSpace, i::Int)
 # returns bound of dim i
-@pomdp_func upperbound{T}(s::AbstractSpace{T}, i::Int)
+@pomdp_func upperbound(s::AbstractSpace, i::Int)
 # sample a space and return the sample
-@pomdp_func rand{T}(rng::AbstractRNG, d::AbstractSpace{T}, state::T)
+@pomdp_func rand(rng::AbstractRNG, d::AbstractSpace, state::Any)
 # return an iterable object corresponding to the space
-@pomdp_func iterator{T}(s::AbstractSpace{T})
+@pomdp_func iterator(s::AbstractSpace)
 
 # return a space type
-@pomdp_func states{S,A,O}(pomdp::POMDP{S,A,O})
-@pomdp_func states{S,A,O}(pomdp::POMDP{S,A,O}, state::S, sts::AbstractSpace{S}=states(pomdp))
-@pomdp_func actions{S,A,O}(pomdp::POMDP{S,A,O})
-@pomdp_func actions{S,A,O}(pomdp::POMDP{S,A,O}, state::S, acts::AbstractSpace{A}=actions(pomdp))
-@pomdp_func actions{S,A,O}(pomdp::POMDP{S,A,O}, belief::Belief{S}, acts::AbstractSpace{A}=actions(pomdp))
-@pomdp_func observations{S,A,O}(pomdp::POMDP{S,A,O})
-@pomdp_func observations{S,A,O}(pomdp::POMDP{S,A,O}, state::S, obs::AbstractSpace{O}=observations(pomdp))
+@pomdp_func states(pomdp::POMDP)
+@pomdp_func states(pomdp::POMDP, state::State, sts::AbstractSpace=states(pomdp))
+@pomdp_func actions(pomdp::POMDP)
+@pomdp_func actions(pomdp::POMDP, state::State, acts::AbstractSpace=actions(pomdp))
+@pomdp_func actions(pomdp::POMDP, belief::Belief, acts::AbstractSpace=actions(pomdp))
+@pomdp_func observations(pomdp::POMDP)
+@pomdp_func observations(pomdp::POMDP, state::State, obs::AbstractSpace=observations(pomdp))

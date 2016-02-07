@@ -4,14 +4,14 @@
 # DiscreteDistribution: discrete distributions support state indexing and length functions
 #################################################################
 
-@pomdp_func create_transition_distribution{S,A,O}(pomdp::POMDP{S,A,O})
-@pomdp_func create_observation_distribution{S,A,O}(pomdp::POMDP{S,A,O})
-@pomdp_func rand{T}(rng::AbstractRNG, d::AbstractDistribution{T}, sample::T)
-@pomdp_func pdf{T}(d::AbstractDistribution{T}, x::T)
-@pomdp_func domain{T}(d::AbstractDistribution{T})
+@pomdp_func create_transition_distribution(pomdp::POMDP)
+@pomdp_func create_observation_distribution(pomdp::POMDP)
+@pomdp_func rand(rng::AbstractRNG, d::AbstractDistribution, sample::Any)
+@pomdp_func pdf(d::AbstractDistribution, x::Any)
+@pomdp_func domain(d::AbstractDistribution)
 
-abstract DiscreteDistribution{T} <: AbstractDistribution{T}
+abstract DiscreteDistribution <: AbstractDistribution
 
-@pomdp_func Base.length{T}(d::DiscreteDistribution{T})
-@pomdp_func weight{T}(d::DiscreteDistribution{T}, i::Int)
-@pomdp_func index{S,A,O,T}(pomdp::POMDP{S,A,O}, d::DiscreteDistribution{T}, i::Int)
+@pomdp_func Base.length(d::DiscreteDistribution)
+@pomdp_func weight(d::DiscreteDistribution, i::Int)
+@pomdp_func index(pomdp::POMDP, d::DiscreteDistribution, i::Int)
