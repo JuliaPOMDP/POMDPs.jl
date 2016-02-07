@@ -1,31 +1,36 @@
 # POMDP model functions
 
-abstract POMDP
+abstract POMDP{S,A,O}
 
-abstract State
-abstract Action
-abstract Observation
+# abstract State
+# abstract Action
+# abstract Observation
 typealias Reward Float64
 
-abstract AbstractDistribution
+abstract AbstractDistribution{T}
 
 # return the space sizes
-@pomdp_func n_states(pomdp::POMDP)
-@pomdp_func n_actions(pomdp::POMDP)
-@pomdp_func n_observations(pomdp::POMDP)
+@pomdp_func n_states{S,A,O}(pomdp::POMDP{S,A,O})
+@pomdp_func n_actions{S,A,O}(pomdp::POMDP{S,A,O})
+@pomdp_func n_observations{S,A,O}(pomdp::POMDP{S,A,O})
 
 # return the discount factor
-@pomdp_func discount(pomdp::POMDP)
+@pomdp_func discount{S,A,O}(pomdp::POMDP{S,A,O})
 
-@pomdp_func transition(pomdp::POMDP, state::State, action::Action, distribution::AbstractDistribution=create_transition_distribution(pomdp))
-@pomdp_func observation(pomdp::POMDP, state::State, action::Action, statep::State, distribution::AbstractDistribution=create_observation_distribution(pomdp))
-@pomdp_func observation(pomdp::POMDP, state::State, action::Action, distribution::AbstractDistribution=create_observation_distribution(pomdp))
-@pomdp_func reward(pomdp::POMDP, state::State, action::Action, statep::State)
+@pomdp_func transition{S,A,O}(pomdp::POMDP{S,A,O}, state::S, action::A, distribution::AbstractDistribution{S}=create_transition_distribution(pomdp))
+@pomdp_func observation{S,A,O}(pomdp::POMDP{S,A,O}, state::S, action::A, statep::S, distribution::AbstractDistribution{O}=create_observation_distribution(pomdp))
+@pomdp_func observation{S,A,O}(pomdp::POMDP{S,A,O}, state::S, action::A, distribution::AbstractDistribution{O}=create_observation_distribution(pomdp))
+@pomdp_func reward{S,A,O}(pomdp::POMDP{S,A,O}, state::S, action::A, statep::S)
 
-@pomdp_func create_state(pomdp::POMDP)
-@pomdp_func create_observation(pomdp::POMDP)
+#@pomdp_func create_state{S,A,O}(pomdp::POMDP{S,A,O})
+#@pomdp_func create_observation{S,A,O}(pomdp::POMDP{S,A,O})
 
-@pomdp_func isterminal(pomdp::POMDP, state::State) = false
-@pomdp_func isterminal(pomdp::POMDP, observation::Observation) = false
+@pomdp_func isterminal_obs{S,A,O}(pomdp::POMDP{S,A,O}, observation::O) = false
+@pomdp_func isterminal{S,A,O}(pomdp::POMDP{S,A,O}, state::S) = false
 
-@pomdp_func index(pomdp::POMDP, state::State)
+# @pomdp_func isterminal(pomdp::POMDP, observation::Any) = false
+# @pomdp_func isterminal_obs(pomdp::POMDP, state::Any) = false
+
+@pomdp_func index{S,A,O}(pomdp::POMDP{S,A,O}, x::Any)
+# @pomdp_func index{S,A,O}(pomdp::POMDP{S,A,O}, action::A)
+# @pomdp_func index{S,A,O}(pomdp::POMDP{S,A,O}, obs::O)

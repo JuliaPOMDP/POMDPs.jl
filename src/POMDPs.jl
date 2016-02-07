@@ -1,6 +1,6 @@
 module POMDPs
 
-import Base.rand!
+import Base.rand
 
 export 
     # Abstract type
@@ -21,6 +21,7 @@ export
     observation,
     reward,
     isterminal,
+    isterminal_obs,
     
     # Need below?;
     create_state,
@@ -93,7 +94,7 @@ include("space.jl")
 include("solver.jl")
 include("policy.jl")
 include("simulator.jl")
-include("docs.jl")
+#include("docs.jl")
 
 end
 
