@@ -31,6 +31,6 @@ abstract AbstractDistribution{T}
 # @pomdp_func isterminal(pomdp::POMDP, observation::Any) = false
 # @pomdp_func isterminal_obs(pomdp::POMDP, state::Any) = false
 
-@pomdp_func index{S,A,O}(pomdp::POMDP{S,A,O}, x::Any)
-# @pomdp_func index{S,A,O}(pomdp::POMDP{S,A,O}, action::A)
-# @pomdp_func index{S,A,O}(pomdp::POMDP{S,A,O}, obs::O)
+@pomdp_func state_index{S,A,O}(pomdp::POMDP{S,A,O}, s::S)
+@pomdp_func action_index{S,A,O}(pomdp::POMDP{S,A,O}, a::A)
+@pomdp_func obs_index{S,A,O}(pomdp::POMDP{S,A,O}, o::O)

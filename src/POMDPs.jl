@@ -35,7 +35,9 @@ export
     
     # Discrete Functions
     length,
-    index,
+    state_index,
+    action_index,
+    obs_index,
     weight,
     
     # Common Functions
