@@ -9,6 +9,7 @@
 @pomdp_func rand(rng::AbstractRNG, d::AbstractDistribution, sample::Any)
 @pomdp_func pdf(d::AbstractDistribution, x::Any)
 @pomdp_func iterator(d::AbstractDistribution)
+@pomdp_func domain(d::AbstractDistribution)
 
 abstract DiscreteDistribution <: AbstractDistribution
 
