@@ -151,18 +151,18 @@ Base type for a probability distribution
 AbstractDistribution
 
 """
-    rand!(rng::AbstractRNG, sample, d::AbstractDistribution)
+    rand(rng::AbstractRNG, d::AbstractDistribution, sample)
 
 Fill sample with a random element from distribution d. The sample can be a state, action or observation.
 """
-rand!(rng::AbstractRNG, sample, d::AbstractDistribution)
+rand(rng::AbstractRNG, d::AbstractDistribution, sample)
 
 """
-    rand!(rng::AbstractRNG, sample, s::AbstractSpace)
+    rand(rng::AbstractRNG, s::AbstractSpace, sample)
 
 Fill sample with a random element from space s. The sample can be a state, action or observation.
 """
-rand!(rng::AbstractRNG, sample, s::AbstractSpace)
+rand(rng::AbstractRNG, s::AbstractSpace, sample)
 
 """
     pdf(d::AbstractDistribution, x)
@@ -328,11 +328,11 @@ Returns the index of the given state for a discrete POMDP
 index(pomdp::POMDP, s::State)
 
 """
-    domain(space::AbstractSpace)
+    iterator(space::AbstractSpace)
 
 Returns an iterator over a space
 """
-domain(space::AbstractSpace)
+iterator(space::AbstractSpace)
 
 
 
