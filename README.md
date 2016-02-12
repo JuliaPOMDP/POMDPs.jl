@@ -28,7 +28,7 @@ The following POMDP solvers support this interface:
 To install a solver run the following command:
 ```julia
 using POMDPs
-# the following command adds the SARSOP solver
+# the following command adds the SARSOP solver, you can add any supported solver this way
 POMDPs.add("SARSOP") 
 ```
 
