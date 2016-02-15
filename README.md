@@ -17,11 +17,11 @@ Pkg.clone("https://github.com/sisl/POMDPs.jl.git")
 ## Supported Solvers
 
 The following MDP solvers support this interface:
-* [Value Iteration](https://github.com/sisl/DiscreteValueIteration.jl)
-* [Monte Carlo Tree Search](https://github.com/sisl/MCTS.jl)
+* [Value Iteration](https://github.com/JuliaPOMDP/DiscreteValueIteration.jl)
+* [Monte Carlo Tree Search](https://github.com/JuliaPOMDP/MCTS.jl)
 
 The following POMDP solvers support this interface:
-* [QMDP](https://github.com/JuiaPOMDP/QMDP.jl)
+* [QMDP](https://github.com/JuliaPOMDP/QMDP.jl)
 * [SARSOP](https://github.com/JuliaPOMDP/SARSOP.jl)
 * [POMCP](https://github.com/JuliaPOMDP/POMCP.jl)
 * [POMDPSolve](https://github.com/JuliaPOMDP/POMDPSolve.jl)
