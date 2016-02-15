@@ -7,4 +7,5 @@ const SUPPORTED_SOLVERS = Set{AbstractString}(
                            "MCTS",
                            "QMDP",
                            "SARSOP",
-                           "POMCP"])
+                           "POMCP",
+                           "POMDPSolve"])
