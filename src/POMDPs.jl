@@ -5,7 +5,6 @@ import Base.rand
 export 
     # Abstract type
     POMDP,
-    DiscretePOMDP,
 
     # Discrete Functions
     n_states,
@@ -23,11 +22,6 @@ export
     isterminal,
     isterminal_obs,
     
-    # Need below?;
-    create_state,
-    create_observation,
-    create_action,
-
     # Spaces, Distributions and accessor functions
     AbstractDistribution,
     DiscreteDistribution,
@@ -57,18 +51,10 @@ export
     Solver,
     solve,
     
-    # States
-    State,
-    
-    # Actions
-    Action,
-    create_action,
-
-    # Observations
-    Observation,
-
+    #=
     # Rewards
     Reward,
+    =#
 
     # Beliefs
     Belief,

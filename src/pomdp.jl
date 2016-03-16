@@ -2,10 +2,7 @@
 
 abstract POMDP{S,A,O}
 
-# abstract State
-# abstract Action
-# abstract Observation
-typealias Reward Float64
+# typealias Reward Float64
 
 abstract AbstractDistribution{T}
 
