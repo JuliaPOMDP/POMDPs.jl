@@ -2,8 +2,6 @@
 
 abstract POMDP{S,A,O}
 
-# typealias Reward Float64
-
 abstract AbstractDistribution{T}
 
 # return the space sizes
