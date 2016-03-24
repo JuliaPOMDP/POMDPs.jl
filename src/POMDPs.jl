@@ -5,6 +5,7 @@ import Base.rand
 export 
     # Abstract type
     POMDP,
+    MDP,
 
     # Discrete Functions
     n_states,
