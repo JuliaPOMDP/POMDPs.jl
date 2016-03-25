@@ -80,6 +80,7 @@ export
 include("errors.jl")
 include("constants.jl")
 include("utils.jl")
+include("default_constructors.jl")
 include("pomdp.jl")
 include("distribution.jl")
 include("belief.jl")
