@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/JuliaPOMDP/POMDPs.jl.svg?branch=master)](https://travis-ci.org/JuliaPOMDP/POMDPs.jl)
+
 # POMDPs
 
 This package provides a basic interface for working with partially observable Markov decision processes (POMDPs).
