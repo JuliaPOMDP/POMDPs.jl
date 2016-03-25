@@ -11,7 +11,7 @@ The goal is to provide a common programming vocabulary for researchers and stude
 
 ## Installation
 ```julia
-Pkg.clone("https://github.com/JuliaPOMDPs/POMDPs.jl.git")
+Pkg.clone("https://github.com/JuliaPOMDP/POMDPs.jl.git")
 ```
 
 ## Supported Solvers
