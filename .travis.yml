@@ -1,0 +1,10 @@
+language: julia
+os:
+  - linux
+julia:
+  - release
+notifications:
+  email: false
+script:
+  - if [[ -a .git/shallow ]]; then git fetch --unshallow; fi
+  - julia --check-bounds=yes -e 'Pkg.clone(pwd()); Pkg.test("POMDPs")'
