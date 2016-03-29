@@ -1,7 +1,7 @@
 # POMDP model functions
 
 abstract POMDP{S,A,O}
-typealias MDP{S,A} POMDP{S,A,S}
+abstract MDP{S,A} <: POMDP{S,A,S}
 
 abstract AbstractDistribution{T}
 
