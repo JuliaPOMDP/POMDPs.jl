@@ -1,6 +1,19 @@
 # POMDP model functions
+"""
+Abstract base type for a partially observable Markov decision process.
 
+    S: state type
+    A: action type
+    O: observation type
+"""
 abstract POMDP{S,A,O}
+
+"""
+Abstract base type for a fully observable Markov decision process.
+
+    S: state type
+    A: action type
+"""
 abstract MDP{S,A} <: POMDP{S,A,S}
 
 abstract AbstractDistribution{T}
@@ -10,7 +23,11 @@ abstract AbstractDistribution{T}
 @pomdp_func n_actions{S,A,O}(pomdp::POMDP{S,A,O})
 @pomdp_func n_observations{S,A,O}(pomdp::POMDP{S,A,O})
 
-# return the discount factor
+"""
+    discount{S,A,O}(pomdp::POMDP{S,A,O})
+
+Return the discount factor for the problem.
+"""
 @pomdp_func discount{S,A,O}(pomdp::POMDP{S,A,O})
 
 @pomdp_func transition{S,A,O}(pomdp::POMDP{S,A,O}, state::S, action::A, distribution::AbstractDistribution{S}=create_transition_distribution(pomdp))
