@@ -20,24 +20,6 @@ AbstractSpace
 
 
 """
-Base type for states
-"""
-State
-
-
-"""
-Base type for actions
-"""
-Action
-
-
-"""
-Base type for observation
-"""
-Observation
-
-
-"""
     states(pomdp::POMDP)
     
 Returns the complete state space of a POMDP. 
