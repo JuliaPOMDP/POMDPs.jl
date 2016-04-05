@@ -6,10 +6,8 @@
 
 abstract Policy
 
-@pomdp_func action(p::Policy, s, a)
-@pomdp_func action(p::Policy, s)
-@pomdp_func action(p::Policy, b::Belief, a)
-@pomdp_func action(p::Policy, b::Belief)
+@pomdp_func action(p::Policy, state_or_belief, action)
+@pomdp_func action(p::Policy, state_or_belief)
 
 # returns a default BeliefUpdater appropriate for a belief type that policy `p` can use
 @pomdp_func updater(policy::Policy)

@@ -1,3 +1,6 @@
+"""
+Provides a basic interface for defining and solving MDPs/POMDPs
+"""
 module POMDPs
 
 import Base.rand

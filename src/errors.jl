@@ -3,6 +3,9 @@
 # throws an error if the interface function is not implemented.
 ###############################################################
 
+"""
+Provide a default function implementation that throws an error when called.
+"""
 macro pomdp_func(signature)
     if signature.head == :(=) # in this case a default implementation has already been supplied
         return esc(signature)
@@ -34,17 +37,18 @@ macro pomdp_func(signature)
 
     body = Expr(:call, :error, parse("\"$error_string\""))
 
-    return Expr(:function, esc(signature), body)
+    return Expr(:function, esc(signature), esc(body))
 end
 
-# strip_arg strips anything extra (type annotations, default values, etc) from an argument
-# for now this cannot handle keyword arguments (it will throw an error)
+"""
+Strip anything extra (type annotations, default values, etc) from an argument.
 
+For now this cannot handle keyword arguments (it will throw an error).
+"""
 strip_arg(arg::Symbol) = arg # once we have a symbol, we have stripped everything, so we can just return it
-
 function strip_arg(arg_expr::Expr) 
-    if arg_expr.head == :parameters # keywork argument
-        error("extract_arg_names can't handle keyword args yet (parsing arg expression $(arg_expr))")
+    if arg_expr.head == :parameters # keyword argument
+        error("strip_arg can't handle keyword args yet (parsing arg expression $(arg_expr))")
     elseif arg_expr.head == :(::) # argument is type annotated, remove the annotation
         return strip_arg(arg_expr.args[1])
     elseif arg_expr.head == :kw # argument has a default value, remove the default

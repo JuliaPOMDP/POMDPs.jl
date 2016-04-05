@@ -28,7 +28,7 @@ abstract AbstractDistribution{T}
 
 Return the discount factor for the problem.
 """
-@pomdp_func discount{S,A,O}(pomdp::POMDP{S,A,O})
+@pomdp_func discount(pomdp::POMDP)
 
 @pomdp_func transition{S,A,O}(pomdp::POMDP{S,A,O}, state::S, action::A, distribution::AbstractDistribution{S}=create_transition_distribution(pomdp))
 @pomdp_func observation{S,A,O}(pomdp::POMDP{S,A,O}, state::S, action::A, statep::S, distribution::AbstractDistribution{O}=create_observation_distribution(pomdp))
