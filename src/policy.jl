@@ -4,21 +4,17 @@
 # The policy is extracted through calls to the action() function.
 #################################################################
 
-abstract Policy{S,A,O}
+abstract Policy
 
-# creates an action object (for preallocation purposes)
-#@pomdp_func create_action{S,A,O}(pomdp::POMDP{S,A,O})
-
-# returns a default BeliefUpdater appropriate for a belief type that policy `p` can use
-@pomdp_func action{S,A,O}(p::Policy{S,A,O}, s::S, a::A)
-@pomdp_func action{S,A,O}(p::Policy{S,A,O}, s::S)
-@pomdp_func action{S,A,O}(p::Policy{S,A,O}, b::Belief{S}, a::A)
-@pomdp_func action{S,A,O}(p::Policy{S,A,O}, b::Belief{S})
+@pomdp_func action(p::Policy, s, a)
+@pomdp_func action(p::Policy, s)
+@pomdp_func action(p::Policy, b::Belief, a)
+@pomdp_func action(p::Policy, b::Belief)
 
 # returns a default BeliefUpdater appropriate for a belief type that policy `p` can use
-@pomdp_func updater{S,A,O}(policy::Policy{S,A,O})
+@pomdp_func updater(policy::Policy)
 
 # returns the utility value from policy p given the belief
-@pomdp_func value{S,A,O}(p::Policy{S,A,O}, belief::Belief{S})
+@pomdp_func value(p::Policy, belief::Belief)
 # returns the utility value from policy p given the state
-@pomdp_func value{S,A,O}(p::Policy{S,A,O}, state::S)
+@pomdp_func value(p::Policy, state)

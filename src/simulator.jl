@@ -5,7 +5,7 @@
 #################################################################
 
 # Base type for an object defining how a simulation should be carried out
-abstract Simulator{S,A,O}
+abstract Simulator
 
 # runs a simulation using the specified policy and returns the accumulated reward
-@pomdp_func simulate{S,A,O}(simulator::Simulator{S,A,O}, pomdp::POMDP{S,A,O}, policy::Policy{S,A,O}, updater::BeliefUpdater{S,A,O}, initial_belief::Belief{S})
+@pomdp_func simulate{S,A,O}(simulator::Simulator, pomdp::POMDP{S,A,O}, policy::Policy, updater::BeliefUpdater, initial_belief::Belief)
