@@ -102,6 +102,8 @@ search: reward
 
     {docs}
     add
+    @pomdp_func
+    strip_arg
 
 ## Constants
     

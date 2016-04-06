@@ -1,3 +1,6 @@
+"""
+Provides a basic interface for defining and solving MDPs/POMDPs
+"""
 module POMDPs
 
 import Base.rand
@@ -88,7 +91,6 @@ include("space.jl")
 include("solver.jl")
 include("policy.jl")
 include("simulator.jl")
-#include("docs.jl")
 
 end
 

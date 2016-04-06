@@ -49,7 +49,7 @@ Returns the number of actions in `pomdp`. Used for discrete models only.
 
 Return the discount factor for the problem.
 """
-@pomdp_func discount{S,A,O}(pomdp::POMDP{S,A,O})
+@pomdp_func discount(pomdp::POMDP)
 
 """
     transition{S,A,O}(pomdp::POMDP{S,A,O}, state::S, action::A,

@@ -10,6 +10,7 @@ The goal is to provide a common programming vocabulary for researchers and stude
 2. Writing solver software.
 3. Running simulations efficiently.
 
+For problems and solvers that only use a generative model (rather than explicit transition and observation distributions), see also [GenerativeModels.jl](https://github.com/JuliaPOMDP/GenerativeModels.jl).
 
 ## Installation
 ```julia
@@ -34,7 +35,9 @@ using POMDPs
 # the following command adds the SARSOP solver, you can add any supported solver this way
 POMDPs.add("SARSOP") 
 ```
+## Documentation
 
+TODO: Link to documentation
 
 ## Tutorials
 
