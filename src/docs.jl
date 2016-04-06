@@ -7,20 +7,17 @@ POMDPs
 ####################### Problem Model ###########################
 #################################################################
 
-"""
-Base type for a POMDP model, defined by the user
-"""
-POMDP
-
 
 """
-Base type for state, action and observation spaces
+Base type for state, action and observation spaces.
+    
+    T: type that parametarizes the space (state, action, or observation)
 """
 AbstractSpace
 
 
 """
-    states(pomdp::POMDP)
+    states{S,A,O}(pomdp::POMDP{S,A,O})
     
 Returns the complete state space of a POMDP. 
 """
@@ -28,132 +25,193 @@ states
 
 
 """
-    actions(pomdp::POMDP)
+    actions{S,A,O}(pomdp::POMDP{S,A,O})
 
 Returns the entire action space of a POMDP.
 """
-actions(pomdp::POMDP)
+actions{S,A,O}(pomdp::POMDP{S,A,O})
 
 
 """
-    actions(pomdp::POMDP, state::State, aspace::AbstractSpace)
+    actions{S,A,O}(pomdp::POMDP{S,A,O}, state::S, aspace::AbstractSpace{A})
 
 Modifies aspace to the action space accessible from the given state and returns it.
 """
-actions(pomdp::POMDP, state::State, aspace::AbstractSpace)
+actions{S,A,O}(pomdp::POMDP{S,A,O}, state::S, aspace::AbstractSpace{A})
 
 
 """
-    actions(pomdp::POMDP, belief::Belief, aspace::AbstractSpace)
+    actions{S,A,O}(pomdp::POMDP{S,A,O}, belief::Belief{S}, aspace::AbstractSpace{A})
 
 Modifies aspace to the action space accessible from the states with nonzero belief and returns it.
 """
-actions(pomdp::POMDP, belief::Belief, aspace::AbstractSpace)
+actions{S,A,O}(pomdp::POMDP{S,A,O}, belief::Belief{S}, aspace::AbstractSpace{A})
 
 
 """
-    observations(pomdp::POMDP)
+    observations{S,A,O}(pomdp::POMDP{S,A,O})
 
 Returns the entire observation space.
 """
-observations(pomdp::POMDP)
-
+observations{S,A,O}(pomdp::POMDP{S,A,O})
 
 """
-    observations(pomdp::POMDP, state::State, ospace::AbstractSpace)
+    observations{S,A,O}(pomdp::POMDP{S,A,O}, state::S, obs::AbstractSpace{O}=observations(pomdp))
 
 Modifies ospace to the observation space accessible from the given state and returns it.
 """
-observations(pomdp::POMDP, state::State, ospace::AbstractSpace)
+observations{S,A,O}(pomdp::POMDP{S,A,O}, state::S, obs::AbstractSpace{O}=observations(pomdp))
 
 
 """
-    reward(pomdp::POMDP, state::State, action::Action, statep::State)
+    reward{S,A,O}(pomdp::POMDP{S,A,O}, state::S, action::A, statep::S)
 
 Returns the immediate reward for the s-a-s' triple
 """
-reward
+reward{S,A,O}(pomdp::POMDP{S,A,O}, state::S, action::A, statep::S)
 
 
 """
-    transition(pomdp::POMDP, state::State, action::Action)
+    reward{S,A,O}(pomdp::POMDP{S,A,O}, state::S, action::A)
+
+Returns the immediate reward for the s-a pair
+"""
+reward{S,A,O}(pomdp::POMDP{S,A,O}, state::S, action::A)
+
+
+"""
+    transition{S,A,O}(pomdp::POMDP{S,A,O}, state::S, action::A,
+distribution::AbstractDistribution{S}=create_transition_distribution(pomdp))
 
 Returns the transition distribution from the current state-action pair
 """
-transition(pomdp::POMDP, state::State, action::Action)
-
-"""
-    transition(pomdp::POMDP, state::State, action::Action, distribution::AbstractDistribution)
-
-Modifies distribution to the transition distribution from the current state-action pair and returns it
-"""
-transition(pomdp::POMDP, state::State, action::Action, distribution::AbstractDistribution)
+transition{S,A,O}(pomdp::POMDP{S,A,O}, state::S, action::A,
+distribution::AbstractDistribution{S}=create_transition_distribution(pomdp))
 
 
 """
-    observation(pomdp::POMDP, state::State, action::Action, statep::State)
+    observation{S,A,O}(pomdp::POMDP{S,A,O}, state::S, action::A, statep::S, distribution::AbstractDistribution{O}=create_observation_distribution(pomdp))
 
 Returns the observation distribution for the s-a-s' tuple (state, action, and next state)
 """
-observation(pomdp::POMDP, state::State, action::Action, statep::State)
-
+observation{S,A,O}(pomdp::POMDP{S,A,O}, state::S, action::A, statep::S, distribution::AbstractDistribution{O}=create_observation_distribution(pomdp))
 
 """
-    observation(pomdp::POMDP, state::State, action::Action, statep::State, distribution::AbstractDistribution)
+    observation{S,A,O}(pomdp::POMDP{S,A,O}, state::S, action::A, distribution::AbstractDistribution{O}=create_observation_distribution(pomdp))
 
 Modifies distribution to the observation distribution for the s-a-s' tuple (state, action, and next state) and returns it
 """
-observation(pomdp::POMDP, state::State, action::Action, statep::State, distribution::AbstractDistribution)
+observation{S,A,O}(pomdp::POMDP{S,A,O}, state::S, action::A, distribution::AbstractDistribution{O}=create_observation_distribution(pomdp))
 
 
 """
-    discount(pomdp::POMDP)
-
-Returns the discount factor
-"""
-discount
-
-
-"""
-    isterminal(pomdp::POMDP, s::State)
+    isterminal{S,A,O}(pomdp::POMDP{S,A,O}, state::S)
 
 Checks if state s is terminal
 """
-isterminal
+isterminal{S,A,O}(pomdp::POMDP{S,A,O}, state::S)
 
 
+"""
+    isterminal_obs{S,A,O}(pomdp::POMDP{S,A,O}, observation::O)
+Checks if an observation is terminal.
+"""
+isterminal_obs{S,A,O}(pomdp::POMDP{S,A,O}, observation::O)
+
+
+"""
+    n_states{S,A,O}(pomdp::POMDP{S,A,O})
+
+Returns the number of states in `pomdp`. Used for discrete models only.
+"""
+n_states{S,A,O}(pomdp::POMDP{S,A,O})
+
+"""
+    n_actions{S,A,O}(pomdp::POMDP{S,A,O})
+
+Returns the number of actions in `pomdp`. Used for discrete models only.
+"""
+n_actions{S,A,O}(pomdp::POMDP{S,A,O})
+
+"""
+    n_observations{S,A,O}(pomdp::POMDP{S,A,O})
+
+Returns the number of actions in `pomdp`. Used for discrete models only.
+"""
+n_observations{S,A,O}(pomdp::POMDP{S,A,O})
+
+"""
+    state_index{S,A,O}(pomdp::POMDP{S,A,O}, s::S)
+
+Returns the integer index of state `s`. Used for discrete models only.
+"""
+state_index{S,A,O}(pomdp::POMDP{S,A,O}, s::S)
+
+"""
+    action_index{S,A,O}(pomdp::POMDP{S,A,O}, a::A)
+
+Returns the integer index of action `a`. Used for discrete models only.
+"""
+action_index{S,A,O}(pomdp::POMDP{S,A,O}, a::A)
+
+"""
+    obs_index{S,A,O}(pomdp::POMDP{S,A,O}, o::O)
+
+Returns the integer index of observation `o`. Used for discrete models only.
+"""
+obs_index{S,A,O}(pomdp::POMDP{S,A,O}, o::O)
 
 #################################################################
 ####################### Distributions ###########################
 #################################################################
 
 """
-Base type for a probability distribution
+Abstract type for a probability distribution.
+
+    T: type over which distribution is over (state, action, or observation)
 """
 AbstractDistribution
 
 """
-    rand(rng::AbstractRNG, d::AbstractDistribution, sample)
+    rand{T}(rng::AbstractRNG, d::AbstractDistribution{T}, sample::T)
 
 Fill sample with a random element from distribution d. The sample can be a state, action or observation.
 """
-rand(rng::AbstractRNG, d::AbstractDistribution, sample)
+rand{T}(rng::AbstractRNG, d::AbstractDistribution{T}, sample::T)
+
 
 """
-    rand(rng::AbstractRNG, s::AbstractSpace, sample)
+    rand{T}(rng::AbstractRNG, d::AbstractSpace{T}, state::T)
 
-Fill sample with a random element from space s. The sample can be a state, action or observation.
+Fill sample with a random element from space d. The sample can be a state, action or observation.
 """
-rand(rng::AbstractRNG, s::AbstractSpace, sample)
+rand{T}(rng::AbstractRNG, d::AbstractSpace{T}, state::T)
 
 """
-    pdf(d::AbstractDistribution, x)
+    pdf{T}(d::AbstractDistribution{T}, x::T)
 
 Value of probability distribution function at x
 """
-pdf
+pdf{T}(d::AbstractDistribution{T}, x::T)
 
 
+"""
+    create_transition_distribution{S,A,O}(pomdp::POMDP{S,A,O})
+
+Creates a transition distribution for model `pomdp`. This
+could be a custom type, array, or any other sensible container.
+The transition distirubtion is over states.
+"""
+create_transition_distribution{S,A,O}(pomdp::POMDP{S,A,O})
+
+"""
+    create_observation_distribution{S,A,O}(pomdp::POMDP{S,A,O})
+
+Creates an observation distribution for model `pomdp`. This
+could be a custom type, array, or any other sensible container.
+The observation distirubtion is over observations.
+"""
+create_observation_distribution{S,A,O}(pomdp::POMDP{S,A,O})
 
 
 #################################################################
@@ -165,208 +223,3 @@ Base type for an MDP/POMDP solver
 """
 Solver
 
-"""
-Base type for a policy (a map from every possible belief, or more abstract policy state, to an optimal or suboptimal action)
-"""
-Policy
-
-"""
-    solve(solver::Solver, pomdp::POMDP)
-
-Solves the POMDP using method associated with solver, and returns a policy. 
-"""
-solve(solver::Solver, pomdp::POMDP)
-
-"""
-    solve(solver::Solver, pomdp::POMDP, policy::Policy)
-
-Solves the POMDP and modifies policy to be the solution of pomdp and returns it
-"""
-solve(solver::Solver, pomdp::POMDP, policy::Policy)
-
-
-"""
-    action(policy::Policy, belief::Belief)
-
-Returns an action for the current belief, given the policy
-
-"""
-action(policy::Policy, belief::Belief)
-
-"""
-    action(policy::Policy, belief::Belief, a::Action)
-
-Fills and returns action a for the current belief, given the policy
-"""
-action(policy::Policy, belief::Belief, a::Action)
-
-"""
-    action(policy::Policy, s::State)
-
-Returns an action for the current state, given the policy
-
-"""
-action(policy::Policy, s::State)
-
-"""
-    action(policy::Policy, s::State, a::Action)
-
-Fills and returns action a for the current state, given the policy
-"""
-action(policy::Policy, s::State, a::Action)
-
-"""
-    value(policy::Policy, s::State)
-
-Returns the utility value from a given state
-"""
-value(policy::Policy, s::State)
-
-"""
-    value(policy::Policy, b::Belief)
-
-Returns the utility value from a given belief
-"""
-value(policy::Policy, b::Belief)
-
-
-
-#################################################################
-############################ Belief #############################
-#################################################################
-
-"""
-Base type for an object representing some knowledge about the state (often a probability distribution)
-"""
-Belief
-
-"""
-Base type for an object that defines how a belief should be updated
-"""
-BeliefUpdater
-
-"""
-    update(updater::BeliefUpdater, belief_old::Belief, action::Action, obs::Observation)
-
-Returns a new instance of an updated belief given the old belief (belief_old) and the latest action and observation 
-"""
-update(updater::BeliefUpdater, belief_old::Belief, action::Action, obs::Observation)
-
-"""
-    update(updater::BeliefUpdater, belief_old::Belief, action::Action, obs::Observation, belief_new::Belief)
-
-Modifies belief_new to the belief given the old belief (belief_old) and the latest action and observation and returns
-the updated belief
-"""
-update(updater::BeliefUpdater, belief_old::Belief, action::Action, obs::Observation, belief_new::Belief)
-
-"""
-    initial_belief(pomdp::POMDP)
-
-Returns an initial belief for the pomdp
-"""
-initial_belief
-
-"""
-    convert_belief(updater::BeliefUpdater, b::Belief)
-
-Returns a belief that can be updated using updater that has a similar distribution to b
-"""
-convert_belief
-
-"""
-    updater(p::Policy)
-Returns a default BeliefUpdater appropriate for the passed in policy
-"""
-updater
-
-#################################################################
-############################ Simulation #########################
-#################################################################
-
-"""
-Base type for an object defining how a simulation should be carried out
-"""
-Simulator
-
-"""
-    simulate(simulator::Simulator, pomdp::POMDP, policy::Policy, updater::BeliefUpdater, initial_belief::Belief)
-
-Runs a simulation using the specified policy and returns the accumulated reward
-"""
-simulate
-
-
-
-#################################################################
-######################### Convenience ###########################
-#################################################################
-
-"""
-    index(pomdp::POMDP, state::State)
-
-Returns the index of the given state for a discrete POMDP
-"""
-index(pomdp::POMDP, s::State)
-
-"""
-    iterator(space::AbstractSpace)
-
-Returns an iterator over a space
-"""
-iterator(space::AbstractSpace)
-
-
-
-#################################################################
-############################ Creators ###########################
-#################################################################
-
-"""
-    create_state(pomdp::POMDP)
-
-Creates a single state object (for preallocation purposes)
-"""
-create_state(pomdp::POMDP)
-
-"""
-    create_observation(pomdp::POMDP)
-
-Creates a single observation object (for preallocation purposes)
-"""
-create_observation(pomdp::POMDP)
-
-"""
-    create_transition_distribution(pomdp::POMDP)
-
-Returns a transition distribution
-"""
-create_transition_distribution(pomdp::POMDP)
-
-"""
-    create_observation_distribution(pomdp::POMDP)
-
-Returns an observation distribution
-"""
-create_observation_distribution(pomdp::POMDP)
-
-"""
-    create_policy(solver::Solver, pomdp::POMDP)
-
-Creates a policy object (for preallocation purposes)
-"""
-create_policy(solver::Solver, pomdp::POMDP)
-
-"""
-    create_action(pomdp::POMDP)
-
-Creates an action object (for preallocation purposes)
-"""
-create_action(pomdp::POMDP)
-
-"""
-    create_belief(pomdp::POMDP)
-
-Creates a belief either to be used by updater or pomdp
-"""
-create_belief(pomdp::POMDP)

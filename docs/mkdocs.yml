@@ -1,0 +1,32 @@
+site_name:        POMDPs.jl
+repo_url:         https://github.com/JuliaPOMDP/POMDPs.jl 
+site_description: API for solving partially observable Markov decision processes in Julia.
+site_author:      Maxim Egorov
+
+theme: readthedocs
+
+extra:
+  palette:
+    primary: 'indigo'
+    accent:  'blue'
+
+extra_css:
+  - assets/Documenter.css
+
+markdown_extensions:
+  - codehilite
+  - extra
+  - tables
+  - fenced_code
+
+extra_javascript:
+  - https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML
+  - assets/mathjaxhelper.js
+
+docs_dir: 'build'
+
+pages:
+- Home: index.md
+- Manual: guide.md
+- API: api.md
+

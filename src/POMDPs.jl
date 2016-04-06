@@ -88,7 +88,7 @@ include("space.jl")
 include("solver.jl")
 include("policy.jl")
 include("simulator.jl")
-include("docs.jl")
+#include("docs.jl")
 
 end
 
