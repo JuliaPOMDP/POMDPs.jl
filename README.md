@@ -35,9 +35,6 @@ using POMDPs
 # the following command adds the SARSOP solver, you can add any supported solver this way
 POMDPs.add("SARSOP") 
 ```
-## Documentation
-
-TODO: Link to documentation
 
 ## Tutorials
 
