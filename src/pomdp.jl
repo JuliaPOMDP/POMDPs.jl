@@ -60,18 +60,18 @@ Returns the transition distribution from the current state-action pair
 @pomdp_func transition{S,A,O}(pomdp::POMDP{S,A,O}, state::S, action::A, distribution::AbstractDistribution{S}=create_transition_distribution(pomdp))
 
 """
-    observation{S,A,O}(pomdp::POMDP{S,A,O}, state::S, action::A, statep::S, distribution::AbstractDistribution{O}=create_observation_distribution(pomdp))
-
-Returns the observation distribution for the s-a-s' tuple (state, action, and next state)
-"""
-@pomdp_func observation{S,A,O}(pomdp::POMDP{S,A,O}, state::S, action::A, statep::S, distribution::AbstractDistribution{O}=create_observation_distribution(pomdp))
-
-"""
     observation{S,A,O}(pomdp::POMDP{S,A,O}, action::A, statep::S, distribution::AbstractDistribution{O}=create_observation_distribution(pomdp))
 
 Modifies distribution to the observation distribution for the a-s' tuple (action and next state) and returns it
 """
 @pomdp_func observation{S,A,O}(pomdp::POMDP{S,A,O}, action::A, statep::S, distribution::AbstractDistribution{O}=create_observation_distribution(pomdp))
+
+"""
+    observation{S,A,O}(pomdp::POMDP{S,A,O}, state::S, action::A, statep::S, distribution::AbstractDistribution{O}=create_observation_distribution(pomdp))
+
+Returns the observation distribution for the s-a-s' tuple (state, action, and next state)
+"""
+@pomdp_func observation{S,A,O}(pomdp::POMDP{S,A,O}, state::S, action::A, statep::S, distribution::AbstractDistribution{O}) # removed =create_observation_distribution(pomdp) to resolve ambiguity - problems should still implement this with an optional 5th argument
 
 """
     reward{S,A,O}(pomdp::POMDP{S,A,O}, state::S, action::A, statep::S)
@@ -87,8 +87,21 @@ Returns the immediate reward for the s-a pair
 """
 @pomdp_func reward{S,A,O}(pomdp::POMDP{S,A,O}, state::S, action::A)
 
-#@pomdp_func create_state{S,A,O}(pomdp::POMDP{S,A,O})
-#@pomdp_func create_observation{S,A,O}(pomdp::POMDP{S,A,O})
+"""
+    create_state{S,A,O}(pomdp::POMDP{S,A,O})
+
+Create a state object (for preallocation purposes).
+"""
+@pomdp_func create_state{S,A,O}(pomdp::POMDP{S,A,O})
+create_state{S<:Number,A,O}(pomdp::POMDP{S,A,O}) = zero(S)
+
+"""
+    create_observation{S,A,O}(pomdp::POMDP{S,A,O})
+
+Create an observation object (for preallocation purposes).
+"""
+@pomdp_func create_observation{S,A,O}(pomdp::POMDP{S,A,O})
+create_observation{S,A,O<:Number}(pomdp::POMDP{S,A,O}) = zero(O)
 
 """
     isterminal{S,A,O}(pomdp::POMDP{S,A,O}, state::S)

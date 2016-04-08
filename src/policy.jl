@@ -9,8 +9,13 @@ Base type for a policy (a map from every possible belief, or more abstract polic
 """
 abstract Policy{S,A,O}
 
-# creates an action object (for preallocation purposes)
-#@pomdp_func create_action{S,A,O}(pomdp::POMDP{S,A,O})
+"""
+    create_action{S,A,O}(pomdp::POMDP{S,A,O})
+
+Creates an action object (for preallocation purposes)
+"""
+@pomdp_func create_action{S,A,O}(pomdp::POMDP{S,A,O})
+create_action{S,A<:Number,O}(pomdp::POMDP{S,A,O}) = zero(A)
 
 """
     action{S,A,O}(p::Policy{S,A,O}, s::S, a::A)
