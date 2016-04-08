@@ -67,11 +67,11 @@ Returns the observation distribution for the s-a-s' tuple (state, action, and ne
 @pomdp_func observation{S,A,O}(pomdp::POMDP{S,A,O}, state::S, action::A, statep::S, distribution::AbstractDistribution{O}=create_observation_distribution(pomdp))
 
 """
-    observation{S,A,O}(pomdp::POMDP{S,A,O}, state::S, action::A, distribution::AbstractDistribution{O}=create_observation_distribution(pomdp))
+    observation{S,A,O}(pomdp::POMDP{S,A,O}, action::A, statep::S, distribution::AbstractDistribution{O}=create_observation_distribution(pomdp))
 
-Modifies distribution to the observation distribution for the s-a-s' tuple (state, action, and next state) and returns it
+Modifies distribution to the observation distribution for the a-s' tuple (action and next state) and returns it
 """
-@pomdp_func observation{S,A,O}(pomdp::POMDP{S,A,O}, state::S, action::A, distribution::AbstractDistribution{O}=create_observation_distribution(pomdp))
+@pomdp_func observation{S,A,O}(pomdp::POMDP{S,A,O}, action::A, statep::S, distribution::AbstractDistribution{O}=create_observation_distribution(pomdp))
 
 """
     reward{S,A,O}(pomdp::POMDP{S,A,O}, state::S, action::A, statep::S)
@@ -99,6 +99,7 @@ Checks if state s is terminal
 
 """
     isterminal_obs{S,A,O}(pomdp::POMDP{S,A,O}, observation::O)
+
 Checks if an observation is terminal.
 """
 @pomdp_func isterminal{S,A,O}(pomdp::POMDP{S,A,O}, state::S) = false
