@@ -7,7 +7,7 @@
 """
 Base type for a policy (a map from every possible belief, or more abstract policy state, to an optimal or suboptimal action)
 """
-abstract Policy{S,A,O}
+abstract Policy
 
 """
     create_action{S,A,O}(pomdp::POMDP{S,A,O})
@@ -18,52 +18,61 @@ Creates an action object (for preallocation purposes)
 create_action{S,A<:Number,O}(pomdp::POMDP{S,A,O}) = zero(A)
 
 """
-    action{S,A,O}(p::Policy{S,A,O}, s::S, a::A)
+    action(p::Policy, state_or_belief, action)
 
-Fills and returns action a for the current state, given the policy
+Fills and returns action based on the current state or belief, given the policy
 """
-@pomdp_func action{S,A,O}(p::Policy{S,A,O}, s::S, a::A)
-
-"""
-    action(policy::Policy, s::State)
-
-Returns an action for the current state, given the policy
+@pomdp_func action(policy::Policy, state_or_belief, action)
 
 """
-@pomdp_func action{S,A,O}(p::Policy{S,A,O}, s::S)
+    action(policy::Policy, state_or_belief)
+
+Returns an action for the current state or belief, given the policy
 
 """
-    action{S,A,O}(p::Policy{S,A,O}, b::Belief{S}, a::A)
+@pomdp_func action(policy::Policy, state_or_belief)
+
+# removed because of #70
+#=
+"""
+    action{S,A}(p::Policy, b::Belief{S}, a::A)
 
 Fills and returns action a for the current belief, given the policy
 """
-@pomdp_func action{S,A,O}(p::Policy{S,A,O}, b::Belief{S}, a::A)
+@pomdp_func action{S,A}(p::Policy, b::Belief{S}, a::A)
+=#
 
+# removed because of #70
+#=
 """
-    action{S,A,O}(policy::Policy{S,A,O}, belief::Belief{S})
+    action{S}(policy::Policy, belief::Belief{S})
 
 Returns an action for the current belief, given the policy
 
 """
-@pomdp_func action{S,A,O}(p::Policy{S,A,O}, b::Belief{S})
+@pomdp_func action(p::Policy, b::Belief)
+=#
 
 """
-    updater{S,A,O}(policy::Policy{S,A,O})
+    updater(policy::Policy)
 
 Returns a default BeliefUpdater appropriate for a belief type that policy `p` can use
 """
-@pomdp_func updater{S,A,O}(policy::Policy{S,A,O})
+@pomdp_func updater(policy::Policy)
 
+# removed because of #70
+#=
 """
-    value{S,A,O}(p::Policy{S,A,O}, belief::Belief{S})
+    value(p::Policy, belief::Belief)
 
 Returns the utility value from policy p given the belief
 """
-@pomdp_func value{S,A,O}(p::Policy{S,A,O}, belief::Belief{S})
+@pomdp_func value(p::Policy, belief::Belief)
+=#
 
 """
-    value{S,A,O}(p::Policy{S,A,O}, state::S)
+    value{S}(p::Policy, state_or_belief)
 
 Returns the utility value from policy p given the state
 """
-@pomdp_func value{S,A,O}(p::Policy{S,A,O}, state::S)
+@pomdp_func value(p::Policy, state_or_belief)

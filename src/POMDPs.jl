@@ -58,11 +58,6 @@ export
     Solver,
     solve,
     
-    #=
-    # Rewards
-    Reward,
-    =#
-
     # Beliefs
     Belief,
     BeliefUpdater,
@@ -96,4 +91,3 @@ include("policy.jl")
 include("simulator.jl")
 
 end
-
