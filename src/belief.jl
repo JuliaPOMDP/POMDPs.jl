@@ -40,7 +40,7 @@ Creates a belief object of the type used by `updater` (preallocates memory)
 @pomdp_func create_belief{S,A,O}(updater::BeliefUpdater{S,A,O})
 
 """
-    @pomdp_func update{S,A,O}(updater::BeliefUpdater{S,A,O}, belief_old::Belief{S}, action::A, obs::O,
+    update{S,A,O}(updater::BeliefUpdater{S,A,O}, belief_old::Belief{S}, action::A, obs::O,
     belief_new::Belief{S}=create_belief(updater))
 
 Returns a new instance of an updated belief given `belief_old` and the latest action and observation.
