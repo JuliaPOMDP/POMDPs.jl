@@ -3,24 +3,86 @@
 # AbstractSpace: the abstract super type for the state, action and observation spaces
 #################################################################
 
-abstract AbstractSpace 
+"""
+Base type for state, action and observation spaces.
+    
+    T: type that parametarizes the space (state, action, or observation)
+"""
+abstract AbstractSpace{T}
 
-# returns an integer
-@pomdp_func dimensions(s::AbstractSpace)
-# returns bound of dim i
-@pomdp_func lowerbound(s::AbstractSpace, i::Int)
-# returns bound of dim i
-@pomdp_func upperbound(s::AbstractSpace, i::Int)
-# sample a space and return the sample
-@pomdp_func rand(rng::AbstractRNG, d::AbstractSpace, state::Any)
-# return an iterable object corresponding to the space
-@pomdp_func iterator(s::AbstractSpace)
+"""
+    dimensions{T}(s::AbstractSpace{T})
 
-# return a space type
-@pomdp_func states(pomdp::POMDP)
-@pomdp_func states(pomdp::POMDP, state::State, sts::AbstractSpace=states(pomdp))
-@pomdp_func actions(pomdp::POMDP)
-@pomdp_func actions(pomdp::POMDP, state::State, acts::AbstractSpace=actions(pomdp))
-@pomdp_func actions(pomdp::POMDP, belief::Belief, acts::AbstractSpace=actions(pomdp))
-@pomdp_func observations(pomdp::POMDP)
-@pomdp_func observations(pomdp::POMDP, state::State, obs::AbstractSpace=observations(pomdp))
+Returns the number of dimensions in space `s`.
+"""
+@pomdp_func dimensions{T}(s::AbstractSpace{T})
+
+"""
+    rand{T}(rng::AbstractRNG, d::AbstractSpace{T}, sample::T)
+
+Returns a random `sample` from space `s`.
+"""
+@pomdp_func rand{T}(rng::AbstractRNG, d::AbstractSpace{T}, sample::T)
+
+"""
+    iterator{T}(s::AbstractSpace{T})
+
+Returns an iterable type (array or custom iterator) corresponding to space `s`. 
+"""
+@pomdp_func iterator{T}(s::AbstractSpace{T})
+
+@pomdp_func lowerbound{T}(s::AbstractSpace{T}, i::Int)
+@pomdp_func upperbound{T}(s::AbstractSpace{T}, i::Int)
+
+"""
+    states(problem::POMDP)
+    states(problem::MDP)
+    
+Returns the complete state space of a POMDP. 
+"""
+@pomdp_func states(problem::Union{POMDP,MDP})
+
+"""
+    states{S,A,O}(problem::POMDP{S,A,O}, state::S)
+    states{S,A}(problem::MDP{S,A}, state::S)
+    
+Returns a subset of the state space reachable from `state`. 
+"""
+@pomdp_func states{S,A}(problem::Union{POMDP{S,A},MDP{S,A}}, state::S, sts::AbstractSpace{S}=states(problem))
+
+"""
+    actions(problem::POMDP)
+    actions(problem::MDP)
+
+Returns the entire action space of a POMDP.
+"""
+@pomdp_func actions(problem::Union{POMDP,MDP})
+
+"""
+    actions{S,A,O}(problem::POMDP{S,A,O}, state::S, aspace::AbstractSpace{A})
+    actions{S,A}(problem::MDP{S,A}, state::S, aspace::AbstractSpace{A})
+
+Modifies aspace to the action space accessible from the given state and returns it.
+"""
+@pomdp_func actions{S,A}(problem::Union{MDP{S,A},POMDP{S,A}}, state::S, acts::AbstractSpace{A}=actions(problem))
+
+"""
+    actions{S,A,O}(problem::POMDP{S,A,O}, belief::Belief, aspace::AbstractSpace{A})
+
+Modifies aspace to the action space accessible from the states with nonzero belief and returns it.
+"""
+@pomdp_func actions{S,A,O}(problem::POMDP{S,A,O}, belief::Belief, acts::AbstractSpace{A}=actions(problem))
+
+"""
+    observations(problem::POMDP)
+
+Returns the entire observation space.
+"""
+@pomdp_func observations(problem::POMDP)
+
+"""
+    observations{S,A,O}(problem::POMDP{S,A,O}, state::S, obs::AbstractSpace{O}=observations(problem))
+
+Modifies ospace to the observation space accessible from the given state and returns it.
+"""
+@pomdp_func observations{S,A,O}(problem::POMDP{S,A,O}, state::S, obs::AbstractSpace{O}=observations(problem))

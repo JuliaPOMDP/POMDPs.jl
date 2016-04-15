@@ -1,5 +1,20 @@
 
+"""
+Base type for an MDP/POMDP solver
+"""
 abstract Solver
 
-create_policy(solver::Solver, pomdp::POMDP) = error("$(typeof(pomdp)) does not implement create_policy")
-solve(solver::Solver, pomdp::POMDP, policy=create_policy(solver, pomdp)) = error("$(typeof(solver)) does not implement solve for model $(typeof(pomdp))")
+"""
+    create_policy(solver::Solver, problem::POMDP)
+    create_policy(solver::Solver, problem::MDP)
+
+Creates a policy object (for preallocation purposes)
+"""
+@pomdp_func create_policy(solver::Solver, problem::Union{POMDP,MDP})
+
+"""
+    solve(solver::Solver, problem::POMDP, policy=create_policy(solver, problem))
+
+Solves the POMDP using method associated with solver, and returns a policy. 
+"""
+@pomdp_func solve(solver::Solver, problem::Union{POMDP,MDP}, policy=create_policy(solver, problem))

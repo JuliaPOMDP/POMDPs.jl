@@ -1,3 +1,6 @@
+"""
+Provides a basic interface for defining and solving MDPs/POMDPs
+"""
 module POMDPs
 
 import Base.rand
@@ -5,7 +8,7 @@ import Base.rand
 export 
     # Abstract type
     POMDP,
-    DiscretePOMDP,
+    MDP,
 
     # Discrete Functions
     n_states,
@@ -21,12 +24,8 @@ export
     observation,
     reward,
     isterminal,
+    isterminal_obs,
     
-    # Need below?;
-    create_state,
-    create_observation,
-    create_action,
-
     # Spaces, Distributions and accessor functions
     AbstractDistribution,
     DiscreteDistribution,
@@ -34,7 +33,9 @@ export
     
     # Discrete Functions
     length,
-    index,
+    state_index,
+    action_index,
+    obs_index,
     weight,
     
     # Common Functions
@@ -45,6 +46,9 @@ export
     upperbound,
     getindex,
     iterator,
+    create_state,
+    create_action,
+    create_observation,
     create_transition_distribution,
     create_observation_distribution,
     create_belief,
@@ -54,19 +58,6 @@ export
     Solver,
     solve,
     
-    # States
-    State,
-    
-    # Actions
-    Action,
-    create_action,
-
-    # Observations
-    Observation,
-
-    # Rewards
-    Reward,
-
     # Beliefs
     Belief,
     BeliefUpdater,
@@ -97,7 +88,5 @@ include("space.jl")
 include("solver.jl")
 include("policy.jl")
 include("simulator.jl")
-include("docs.jl")
 
 end
-
