@@ -12,4 +12,4 @@ script:
   - julia --check-bounds=yes -e 'Pkg.clone(pwd()); Pkg.test("POMDPs")'
 after_success:
   - julia -e 'Pkg.clone("https://github.com/MichaelHatherly/Documenter.jl")'
-  - julia -e 'cd(Pkg.dir("PACKAGE_NAME")); include(joinpath("docs", "make.jl"))'
+  - julia -e 'cd(Pkg.dir("POMDPs")); include(joinpath("docs", "make.jl"))'
