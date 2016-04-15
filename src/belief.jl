@@ -17,18 +17,18 @@ Abstract type for an object that defines how a belief should be updated
 abstract BeliefUpdater
 
 """
-    initial_belief{S,A,O}(pomdp::POMDP{S,A,O}, belief::Belief = create_belief(pomdp))
+    initial_belief(pomdp::POMDP, belief::Belief = create_belief(pomdp))
 
 Returns an initial belief for the pomdp.
 """
-@pomdp_func initial_belief{S,A,O}(pomdp::POMDP{S,A,O}, belief::Belief = create_belief(pomdp))
+@pomdp_func initial_belief(pomdp::POMDP, belief::Belief = create_belief(pomdp))
 
 """
     create_belief(pomdp::POMDP)
 
 Creates a belief either to be used by updater or pomdp
 """
-@pomdp_func create_belief{S,A,O}(pomdp::POMDP{S,A,O})
+@pomdp_func create_belief(pomdp::POMDP)
 
 """
     create_belief(updater::BeliefUpdater)

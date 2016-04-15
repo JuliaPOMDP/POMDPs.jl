@@ -10,29 +10,35 @@ Base type for a policy (a map from every possible belief, or more abstract polic
 abstract Policy
 
 """
-    create_action{S,A,O}(pomdp::POMDP{S,A,O})
+    create_action(problem::POMDP)
+    create_action(problem::MDP)
 
 Creates an action object (for preallocation purposes)
 """
-@pomdp_func create_action{S,A,O}(pomdp::POMDP{S,A,O})
+@pomdp_func create_action(problem::Union{POMDP,MDP})
 
 # default implementation for numeric types
-create_action{S,A<:Number,O}(pomdp::POMDP{S,A,O}) = zero(A)
+create_action{S,A<:Number}(problem::Union{POMDP{S,A},MDP{S,A}}) = zero(A)
 
 """
-    action(p::Policy, state_or_belief, action)
+    action(p::Policy, x::Any, action)
+    action(p::Policy, x::Belief, action)
 
-Fills and returns action based on the current state or belief, given the policy
+Fills and returns action based on the current state or belief, given the policy.
+
+If an MDP is being simulated, x will be a state; if a POMDP is being simulated, x will be a Belief
 """
-@pomdp_func action(policy::Policy, state_or_belief, action)
+@pomdp_func action(policy::Policy, x::Any, action::Any)
 
 """
-    action(policy::Policy, state_or_belief)
+    action(policy::Policy, x::Any)
+    action(policy::Policy, x::Belief)
 
 Returns an action for the current state or belief, given the policy
 
+If an MDP is being simulated, x will be a state; if a POMDP is being simulated, x will be a Belief
 """
-@pomdp_func action(policy::Policy, state_or_belief)
+@pomdp_func action(policy::Policy, x::Any)
 
 
 """
@@ -43,8 +49,9 @@ Returns a default BeliefUpdater appropriate for a belief type that policy `p` ca
 @pomdp_func updater(policy::Policy)
 
 """
-    value{S}(p::Policy, state_or_belief)
+    value{S}(p::Policy, x::Any)
+    value{S}(p::Policy, x::Belief)
 
 Returns the utility value from policy p given the state
 """
-@pomdp_func value(p::Policy, state_or_belief)
+@pomdp_func value(p::Policy, x::Any)

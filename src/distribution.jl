@@ -5,18 +5,20 @@
 #################################################################
 
 """
-    create_transition_distribution{S,A,O}(pomdp::POMDP{S,A,O})
+    create_transition_distribution(problem::POMDP)
+    create_transition_distribution(problem::MDP)
 
 Returns a transition distribution (for memory preallocation).
 """
-@pomdp_func create_transition_distribution{S,A,O}(pomdp::POMDP{S,A,O})
+@pomdp_func create_transition_distribution(problem::Union{POMDP,MDP})
 
 """
-    create_observation_distribution{S,A,O}(pomdp::POMDP{S,A,O})
+    create_observation_distribution(problem::POMDP)
+    create_observation_distribution(problem::MDP)
 
 Returns an observation distribution (for memory preallocation).
 """
-@pomdp_func create_observation_distribution{S,A,O}(pomdp::POMDP{S,A,O})
+@pomdp_func create_observation_distribution(problem::Union{POMDP,MDP})
 
 """
     rand{T}(rng::AbstractRNG, d::AbstractDistribution{T}, sample::T)
@@ -39,4 +41,4 @@ Value of probability distribution `d` function at sample `x`.
 abstract DiscreteDistribution{T} <: AbstractDistribution{T}
 @pomdp_func Base.length{T}(d::DiscreteDistribution{T})
 @pomdp_func weight{T}(d::DiscreteDistribution{T}, i::Int)
-@pomdp_func index{S,A,O,T}(pomdp::POMDP{S,A,O}, d::DiscreteDistribution{T}, i::Int)
+@pomdp_func index{T}(problem::Union{POMDP,MDP}, d::DiscreteDistribution{T}, i::Int)
