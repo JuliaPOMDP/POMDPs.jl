@@ -93,6 +93,8 @@ Returns the immediate reward for the s-a pair
 Create a state object (for preallocation purposes).
 """
 @pomdp_func create_state{S,A,O}(pomdp::POMDP{S,A,O})
+
+# default implementation for numeric types
 create_state{S<:Number,A,O}(pomdp::POMDP{S,A,O}) = zero(S)
 
 """
@@ -101,6 +103,8 @@ create_state{S<:Number,A,O}(pomdp::POMDP{S,A,O}) = zero(S)
 Create an observation object (for preallocation purposes).
 """
 @pomdp_func create_observation{S,A,O}(pomdp::POMDP{S,A,O})
+
+# default implementation for numeric types
 create_observation{S,A,O<:Number}(pomdp::POMDP{S,A,O}) = zero(O)
 
 """

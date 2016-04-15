@@ -15,6 +15,8 @@ abstract Policy
 Creates an action object (for preallocation purposes)
 """
 @pomdp_func create_action{S,A,O}(pomdp::POMDP{S,A,O})
+
+# default implementation for numeric types
 create_action{S,A<:Number,O}(pomdp::POMDP{S,A,O}) = zero(A)
 
 """
@@ -32,26 +34,6 @@ Returns an action for the current state or belief, given the policy
 """
 @pomdp_func action(policy::Policy, state_or_belief)
 
-# removed because of #70
-#=
-"""
-    action{S,A}(p::Policy, b::Belief{S}, a::A)
-
-Fills and returns action a for the current belief, given the policy
-"""
-@pomdp_func action{S,A}(p::Policy, b::Belief{S}, a::A)
-=#
-
-# removed because of #70
-#=
-"""
-    action{S}(policy::Policy, belief::Belief{S})
-
-Returns an action for the current belief, given the policy
-
-"""
-@pomdp_func action(p::Policy, b::Belief)
-=#
 
 """
     updater(policy::Policy)
@@ -59,16 +41,6 @@ Returns an action for the current belief, given the policy
 Returns a default BeliefUpdater appropriate for a belief type that policy `p` can use
 """
 @pomdp_func updater(policy::Policy)
-
-# removed because of #70
-#=
-"""
-    value(p::Policy, belief::Belief)
-
-Returns the utility value from policy p given the belief
-"""
-@pomdp_func value(p::Policy, belief::Belief)
-=#
 
 """
     value{S}(p::Policy, state_or_belief)

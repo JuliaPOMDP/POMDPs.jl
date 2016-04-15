@@ -63,11 +63,11 @@ Modifies aspace to the action space accessible from the given state and returns 
 @pomdp_func actions{S,A,O}(pomdp::POMDP{S,A,O}, state::S, acts::AbstractSpace{A}=actions(pomdp))
 
 """
-    actions{S,A,O}(pomdp::POMDP{S,A,O}, belief::Belief{S}, aspace::AbstractSpace{A})
+    actions{S,A,O}(pomdp::POMDP{S,A,O}, belief::Belief, aspace::AbstractSpace{A})
 
 Modifies aspace to the action space accessible from the states with nonzero belief and returns it.
 """
-@pomdp_func actions{S,A,O}(pomdp::POMDP{S,A,O}, belief::Belief{S}, acts::AbstractSpace{A}=actions(pomdp))
+@pomdp_func actions{S,A,O}(pomdp::POMDP{S,A,O}, belief::Belief, acts::AbstractSpace{A}=actions(pomdp))
 
 """
     observations{S,A,O}(pomdp::POMDP{S,A,O})

@@ -8,22 +8,20 @@
 
 """
 Abstract type for an object representing some knowledge about the state (often a probability distribution)
-
-    T: the type over which the belief is over (e.g. state)
 """
-abstract Belief{T} <: AbstractDistribution{T}
+abstract Belief
 
 """
 Abstract type for an object that defines how a belief should be updated
 """
-abstract BeliefUpdater{S,A,O}
+abstract BeliefUpdater
 
 """
-    initial_belief{S,A,O}(pomdp::POMDP{S,A,O}, belief::Belief{S} = create_belief(pomdp))
+    initial_belief{S,A,O}(pomdp::POMDP{S,A,O}, belief::Belief = create_belief(pomdp))
 
 Returns an initial belief for the pomdp.
 """
-@pomdp_func initial_belief{S,A,O}(pomdp::POMDP{S,A,O}, belief::Belief{S} = create_belief(pomdp))
+@pomdp_func initial_belief{S,A,O}(pomdp::POMDP{S,A,O}, belief::Belief = create_belief(pomdp))
 
 """
     create_belief(pomdp::POMDP)
@@ -33,25 +31,25 @@ Creates a belief either to be used by updater or pomdp
 @pomdp_func create_belief{S,A,O}(pomdp::POMDP{S,A,O})
 
 """
-    create_belief{S,A,O}(updater::BeliefUpdater{S,A,O})
+    create_belief(updater::BeliefUpdater)
 
 Creates a belief object of the type used by `updater` (preallocates memory)
 """
-@pomdp_func create_belief{S,A,O}(updater::BeliefUpdater{S,A,O})
+@pomdp_func create_belief(updater::BeliefUpdater)
 
 """
-    update{S,A,O}(updater::BeliefUpdater{S,A,O}, belief_old::Belief{S}, action::A, obs::O,
-    belief_new::Belief{S}=create_belief(updater))
+    update(updater::BeliefUpdater, belief_old::Belief, action, obs,
+    belief_new::Belief=create_belief(updater))
 
 Returns a new instance of an updated belief given `belief_old` and the latest action and observation.
 """
-@pomdp_func update{S,A,O}(updater::BeliefUpdater{S,A,O}, belief_old::Belief{S}, action::A, obs::O, belief_new::Belief{S}=create_belief(updater))
+@pomdp_func update(updater::BeliefUpdater, belief_old::Belief, action::Any, obs::Any, belief_new::Belief=create_belief(updater))
 
 # returns a belief that can be updated using `updater` that has a similar distribution to `b` (this conversion may be lossy)
 """
-    convert_belief{S,A,O}(updater::BeliefUpdater{S,A,O}, belief::Belief{S},
-    new_belief::Belief{S}=create_belief(updater)) = belief
+    convert_belief(updater::BeliefUpdater, belief::Belief,
+    new_belief::Belief=create_belief(updater)) = belief
 
 Returns a belief that can be updated using `updater` that has a similar distribution to `belief`.
 """
-@pomdp_func convert_belief{S,A,O}(updater::BeliefUpdater{S,A,O}, belief::Belief{S}, new_belief::Belief{S}=create_belief(updater)) = belief
+@pomdp_func convert_belief(updater::BeliefUpdater, belief::Belief, new_belief::Belief=create_belief(updater)) = belief
