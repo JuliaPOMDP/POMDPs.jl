@@ -4,6 +4,8 @@
 
 This package provides a basic interface for working with partially observable Markov decision processes (POMDPs).
 
+NEWS: We recently made a significant change to the interface, introducing parametric types (see issue #56). If you wish to continue using the old interface, the v0.1 release may be used, but we recommend that all projects update to the new version.
+
 The goal is to provide a common programming vocabulary for researchers and students to use primarily for three tasks:
 
 1. Expressing problems using the POMDP format. 
