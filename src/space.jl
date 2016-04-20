@@ -67,11 +67,11 @@ Modifies aspace to the action space accessible from the given state and returns 
 @pomdp_func actions{S,A}(problem::Union{MDP{S,A},POMDP{S,A}}, state::S, acts::AbstractSpace{A}=actions(problem))
 
 """
-    actions{S,A,O}(problem::POMDP{S,A,O}, belief::Belief, aspace::AbstractSpace{A})
+    actions{S,A,O,B}(problem::POMDP{S,A,O}, belief::B, aspace::AbstractSpace{A})
 
 Modifies aspace to the action space accessible from the states with nonzero belief and returns it.
 """
-@pomdp_func actions{S,A,O}(problem::POMDP{S,A,O}, belief::Belief, acts::AbstractSpace{A}=actions(problem))
+@pomdp_func actions{S,A,O,B}(problem::POMDP{S,A,O}, belief::B, acts::AbstractSpace{A}=actions(problem))
 
 """
     observations(problem::POMDP)

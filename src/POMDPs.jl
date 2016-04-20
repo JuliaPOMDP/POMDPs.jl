@@ -4,6 +4,7 @@ Provides a basic interface for defining and solving MDPs/POMDPs
 module POMDPs
 
 import Base.rand
+import Base.convert
 
 export 
     # Abstract type
@@ -52,18 +53,17 @@ export
     create_transition_distribution,
     create_observation_distribution,
     create_belief,
-    initial_belief,
+    initial_state_distribution,
 
     # Solver types
     Solver,
     solve,
     
     # Beliefs
-    Belief,
-    BeliefUpdater,
+    Updater,
     initial_belief,
     update,
-    convert_belief,
+    convert,
 
     # Policy
     Policy,
