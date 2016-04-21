@@ -4,7 +4,6 @@ Provides a basic interface for defining and solving MDPs/POMDPs
 module POMDPs
 
 import Base.rand
-import Base.convert
 
 export 
     # Abstract type
@@ -61,9 +60,8 @@ export
     
     # Beliefs
     Updater,
-    initial_belief,
     update,
-    convert,
+    initialize_belief,
 
     # Policy
     Policy,
