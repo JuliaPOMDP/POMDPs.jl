@@ -1,9 +1,6 @@
 #################################################################
 ######################## BELIEF #################################
 #################################################################
-# The abstract Belief type implements initialization (initial_belief and create_belief)
-# and update (belief) methods for POMDP beliefs.
-# For discrete problems, it can be usually be represented as a vector.
 # For tools supportng belief updates see POMDPToolbox.jl
 
 
@@ -63,7 +60,7 @@ The conversion may be lossy. This function is also idempotent, i.e. there is a
 default implementation that passes the belief through when it is already the
 correct type: `initialize_belief{B}(updater::Updater{B}, belief::B) = belief`
 """
-@pomdp_func initialize_belief(updater::Updater, initial_state_dist::any, new_belief=create_belief(updater))
+@pomdp_func initialize_belief(updater::Updater, initial_state_dist::Any, new_belief=create_belief(updater))
 
 # default implementation if the input is the same type as the output
 initialize_belief{B}(updater::Updater{B}, belief::B, new_belief=create_belief(updater)) = belief
