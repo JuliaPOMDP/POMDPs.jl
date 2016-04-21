@@ -48,11 +48,22 @@ Returns a new instance of an updated belief given `belief_old` and the latest ac
 """
 @pomdp_func update{B,A,O}(updater::Updater, belief_old::B, action::A, obs::O, belief_new::B=create_belief(updater))
 
-# returns a belief that can be updated using `updater` that has a similar distribution to `b` (this conversion may be lossy)
 """
-    convert_belief{B}(updater::Updater, belief::B,
-    new_belief::B=create_belief(updater)) = belief
+    initialize_belief{B}(updater::Updater{B}, 
+                         state_distribution::AbstractDistribution,
+                         new_belief::B=create_belief(updater))
+    initialize_belief{B}(updater::Updater{B},
+                         belief::Any,
+                         new_belief::B=create_belief(updater))
 
-Returns a belief that can be updated using `updater` that has a similar distribution to `belief`.
+Returns a belief that can be updated using `updater` that has similar
+distribution to `state_distribution` or `belief`.
+
+The conversion may be lossy. This function is also idempotent, i.e. there is a
+default implementation that passes the belief through when it is already the
+correct type: `initialize_belief{B}(updater::Updater{B}, belief::B) = belief`
 """
-@pomdp_func convert{B}(updater::Updater, initial_state_dist::AbstractDistribution, belief::B=create_belief(updater)) = belief
+@pomdp_func initialize_belief(updater::Updater, initial_state_dist::any, new_belief=create_belief(updater))
+
+# default implementation if the input is the same type as the output
+initialize_belief{B}(updater::Updater{B}, belief::B, new_belief=create_belief(updater)) = belief
