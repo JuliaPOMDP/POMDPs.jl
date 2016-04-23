@@ -34,6 +34,13 @@ Value of probability distribution `d` function at sample `x`.
 """
 @pomdp_func pdf{T}(d::AbstractDistribution{T}, x::T)
 
+"""
+    iterator{T}(d::AbstractDistribution{T})
+
+Returns an iterable type (array or custom iterator) corresponding to distribution `d`. 
+"""
+@pomdp_func iterator{T}(d::AbstractDistribution{T})
+
 # TODO (max): does this have a purpose now that we have iterator?
 @pomdp_func domain{T}(d::AbstractDistribution{T})
 

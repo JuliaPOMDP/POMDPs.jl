@@ -6,8 +6,10 @@
 
 """
 Base type for a policy (a map from every possible belief, or more abstract policy state, to an optimal or suboptimal action)
+
+    B: a belief (or policy state) that represents the knowledge an agent has about the state of the system
 """
-abstract Policy
+abstract Policy{B}
 
 """
     create_action(problem::POMDP)
@@ -21,37 +23,34 @@ Creates an action object (for preallocation purposes)
 create_action{S,A<:Number}(problem::Union{POMDP{S,A},MDP{S,A}}) = zero(A)
 
 """
-    action(p::Policy, x::Any, action)
-    action(p::Policy, x::Belief, action)
+    action{B}(p::Policy, x::B, action)
 
 Fills and returns action based on the current state or belief, given the policy.
-
-If an MDP is being simulated, x will be a state; if a POMDP is being simulated, x will be a Belief
+B is a generalized information state - can be a state in an MDP, a distribution in POMDP,
+or any other representation needed to make a decision using the given policy. 
 """
-@pomdp_func action(policy::Policy, x::Any, action::Any)
+@pomdp_func action{B,A}(policy::Policy, x::B, action::A)
 
 """
-    action(policy::Policy, x::Any)
-    action(policy::Policy, x::Belief)
+    action{B}(policy::Policy, x::B)
 
 Returns an action for the current state or belief, given the policy
 
-If an MDP is being simulated, x will be a state; if a POMDP is being simulated, x will be a Belief
+If an MDP is being simulated, x will be a state; if a POMDP is being simulated, x will be a belief
 """
-@pomdp_func action(policy::Policy, x::Any)
+@pomdp_func action{B}(policy::Policy, x::B)
 
 
 """
     updater(policy::Policy)
 
-Returns a default BeliefUpdater appropriate for a belief type that policy `p` can use
+Returns a default Updater appropriate for a belief type that policy `p` can use
 """
 @pomdp_func updater(policy::Policy)
 
 """
-    value{S}(p::Policy, x::Any)
-    value{S}(p::Policy, x::Belief)
+    value{B}(p::Policy, x::B)
 
 Returns the utility value from policy p given the state
 """
-@pomdp_func value(p::Policy, x::Any)
+@pomdp_func value{B}(p::Policy, x::B)

@@ -52,18 +52,16 @@ export
     create_transition_distribution,
     create_observation_distribution,
     create_belief,
-    initial_belief,
+    initial_state_distribution,
 
     # Solver types
     Solver,
     solve,
     
     # Beliefs
-    Belief,
-    BeliefUpdater,
-    initial_belief,
+    Updater,
     update,
-    convert_belief,
+    initialize_belief,
 
     # Policy
     Policy,
