@@ -63,4 +63,4 @@ correct type: `initialize_belief{B}(updater::Updater{B}, belief::B) = belief`
 @pomdp_func initialize_belief(updater::Updater, initial_state_dist::Any, new_belief=create_belief(updater))
 
 # default implementation if the input is the same type as the output
-initialize_belief{B}(updater::Updater{B}, belief::B, new_belief=create_belief(updater)) = belief
+initialize_belief{B}(updater::Updater{B}, belief::B, new_belief::B=create_belief(updater)) = belief
