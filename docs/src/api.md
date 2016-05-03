@@ -1,4 +1,4 @@
-# Solver Documentation
+# API Documentation
 
 Documentation for the `POMDPs.jl` user interface. You can get help for any type or 
 function in the module by typing `?` in the Julia REPL followed by the name of 
@@ -43,8 +43,7 @@ search: reward
     AbstractDistribution
     Solver
     Policy
-    Belief
-    BeliefUpdater
+    Updater
 
 ## Model Functions
 
@@ -57,13 +56,16 @@ search: reward
     observation
     isterminal
     isterminal_obs
+    discount
     n_states
     n_actions
     n_observations
     state_index
     action_index
     obs_index
-    discount
+    create_state
+    create_action
+    create_observation
 
 ## Distribution/Space Functions
 
@@ -72,16 +74,16 @@ search: reward
     pdf
     dimensions
     iterator
+    initial_state_distribution
     create_transition_distribution
     create_observation_distribution
 
 ## Belief Functions
 
     {docs}
-    initial_belief
-    create_belief
     update
-    convert_belief
+    create_belief
+    initialize_belief
 
 ## Policy and Solver Functions
 
