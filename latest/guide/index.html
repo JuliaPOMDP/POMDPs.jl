@@ -76,7 +76,7 @@
                 
                     <li><a class="toctree-l4" href="#usage">Usage</a></li>
                 
-                    <li><a class="toctree-l4" href="#example-simulation-implementation">Example Simulation Implementation</a></li>
+                    <li><a class="toctree-l4" href="#example-simulation">Example Simulation</a></li>
                 
             
             </ul>
@@ -152,46 +152,69 @@
 <li><a href="http://nbviewer.ipython.org/github/sisl/POMDPs.jl/blob/master/examples/Tiger.ipynb">POMDP Tutorial</a> gives an overview of using SARSOP and QMDP to solve the tiger problem</li>
 </ul>
 <p>If you are trying to write your own algorithm for solving MDPs or POMDPs with this interface take a look at the API section of this guide. </p>
-<p><a id='Example-Simulation-Implementation-1'></a></p>
-<h2 id="example-simulation-implementation">Example Simulation Implementation</h2>
-<p>This reference simulation implementation shows how the various functions will be used. Please note that this example is written for clarity and not efficiency.</p>
-<div class="codehilite"><pre><span></span><span class="k">type</span><span class="nc"> ReferenceSimulator</span>
+<p><a id='Example-Simulation-1'></a></p>
+<h2 id="example-simulation">Example Simulation</h2>
+<p>The following code snippets show how some of the most important functions in the interface are to be used together. (Please note that this example is written for clarity and not efficiency; several other simulators are available in the <a href="">JuliaPOMDP/POMDPToolbox.jl</a> package.)</p>
+<p>First, here is a definition of a simple simulator showing the use of the important functions <a href="../api/#Base.Random.rand"><code>rand</code></a>, <a href="../api/#POMDPs.initialize_belief"><code>initialize_belief</code></a>, <a href="../api/#POMDPs.isterminal"><code>isterminal</code></a>, <a href="../api/#POMDPs.action"><code>action</code></a>, <a href="../api/#POMDPs.transition"><code>transition</code></a>, <a href="../api/#POMDPs.reward"><code>reward</code></a>, <a href="../api/#POMDPs.observation"><code>observation</code></a>, <a href="../api/#POMDPs.update"><code>update</code></a>, and <a href="../api/#POMDPs.discount"><code>discount</code></a>.</p>
+<div class="codehilite"><pre><span></span><span class="k">using</span> <span class="n">POMDPs</span>
+
+<span class="k">type</span><span class="nc"> ReferenceSimulator</span>
     <span class="n">rng</span><span class="p">::</span><span class="n">AbstractRNG</span>
-    <span class="n">max_steps</span>
+    <span class="n">max_steps</span><span class="p">::</span><span class="kt">Int</span>
 <span class="k">end</span>
 
-<span class="k">function</span><span class="nf"> simulate</span><span class="p">(</span><span class="n">simulator</span><span class="p">::</span><span class="n">ReferenceSimulator</span><span class="p">,</span> <span class="n">pomdp</span><span class="p">::</span><span class="n">POMDP</span><span class="p">,</span> <span class="n">policy</span><span class="p">::</span><span class="n">Policy</span><span class="p">,</span> <span class="n">updater</span><span class="p">::</span><span class="n">BeliefUpdater</span><span class="p">,</span> <span class="n">initial_belief</span><span class="p">::</span><span class="n">Belief</span><span class="p">)</span>
+<span class="k">function</span><span class="nf"> simulate</span><span class="p">{</span><span class="n">S</span><span class="p">,</span><span class="n">A</span><span class="p">,</span><span class="n">O</span><span class="p">,</span><span class="n">B</span><span class="p">}(</span><span class="n">sim</span><span class="p">::</span><span class="n">ReferenceSimulator</span><span class="p">,</span>
+                           <span class="n">pomdp</span><span class="p">::</span><span class="n">POMDP</span><span class="p">{</span><span class="n">S</span><span class="p">,</span><span class="n">A</span><span class="p">,</span><span class="n">O</span><span class="p">},</span>
+                           <span class="n">policy</span><span class="p">::</span><span class="n">Policy</span><span class="p">,</span>
+                           <span class="n">updater</span><span class="p">::</span><span class="n">Updater</span><span class="p">{</span><span class="n">B</span><span class="p">},</span>
+                           <span class="n">initial_distribution</span><span class="p">::</span><span class="n">AbstractDistribution</span><span class="p">)</span>
 
-    <span class="n">s</span> <span class="o">=</span> <span class="n">create_state</span><span class="p">(</span><span class="n">pomdp</span><span class="p">)</span>
-    <span class="n">o</span> <span class="o">=</span> <span class="n">create_observation</span><span class="p">(</span><span class="n">pomdp</span><span class="p">)</span>
-    <span class="n">rand</span><span class="p">(</span><span class="n">sim</span><span class="o">.</span><span class="n">rng</span><span class="p">,</span> <span class="n">initial_belief</span><span class="p">,</span> <span class="n">s</span><span class="p">)</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="n">rand</span><span class="p">(</span><span class="n">sim</span><span class="o">.</span><span class="n">rng</span><span class="p">,</span> <span class="n">initial_distribution</span><span class="p">)</span>
+    <span class="n">b</span> <span class="o">=</span> <span class="n">initialize_belief</span><span class="p">(</span><span class="n">updater</span><span class="p">,</span> <span class="n">initial_distribution</span><span class="p">)</span>
 
-    <span class="n">b</span> <span class="o">=</span> <span class="n">convert_belief</span><span class="p">(</span><span class="n">updater</span><span class="p">,</span> <span class="n">initial_belief</span><span class="p">)</span>
+    <span class="n">disc</span> <span class="o">=</span> <span class="mf">1.0</span>
+    <span class="n">r_total</span> <span class="o">=</span> <span class="mf">0.0</span>
 
     <span class="n">step</span> <span class="o">=</span> <span class="mi">1</span>
-    <span class="n">disc</span> <span class="o">=</span> <span class="mf">1.0</span>
-    <span class="n">r</span> <span class="o">=</span> <span class="mf">0.0</span>
 
-    <span class="k">while</span> <span class="n">step</span> <span class="o">&lt;=</span> <span class="n">sim</span><span class="o">.</span><span class="n">max_steps</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="n">isterminal</span><span class="p">(</span><span class="n">pomdp</span><span class="p">,</span> <span class="n">s</span><span class="p">)</span>
+    <span class="k">while</span> <span class="o">!</span><span class="n">isterminal</span><span class="p">(</span><span class="n">pomdp</span><span class="p">,</span> <span class="n">s</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="n">step</span> <span class="o">&lt;=</span> <span class="n">sim</span><span class="o">.</span><span class="n">max_steps</span>
         <span class="n">a</span> <span class="o">=</span> <span class="n">action</span><span class="p">(</span><span class="n">policy</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
 
-        <span class="n">sp</span> <span class="o">=</span> <span class="n">create_state</span><span class="p">(</span><span class="n">pomdp</span><span class="p">)</span>
         <span class="n">trans_dist</span> <span class="o">=</span> <span class="n">transition</span><span class="p">(</span><span class="n">pomdp</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span>
-        <span class="n">rand</span><span class="p">(</span><span class="n">sim</span><span class="o">.</span><span class="n">rng</span><span class="p">,</span> <span class="n">trans_dist</span><span class="p">,</span> <span class="n">sp</span><span class="p">)</span>
+        <span class="n">sp</span> <span class="o">=</span> <span class="n">rand</span><span class="p">(</span><span class="n">sim</span><span class="o">.</span><span class="n">rng</span><span class="p">,</span> <span class="n">trans_dist</span><span class="p">)</span>
 
-        <span class="n">r</span> <span class="o">+=</span> <span class="n">disc</span><span class="o">*</span><span class="n">reward</span><span class="p">(</span><span class="n">pomdp</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">sp</span><span class="p">)</span>
+        <span class="n">r_total</span> <span class="o">+=</span> <span class="n">disc</span><span class="o">*</span><span class="n">reward</span><span class="p">(</span><span class="n">pomdp</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">sp</span><span class="p">)</span>
 
         <span class="n">obs_dist</span> <span class="o">=</span> <span class="n">observation</span><span class="p">(</span><span class="n">pomdp</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">sp</span><span class="p">)</span>
-        <span class="n">rand</span><span class="p">(</span><span class="n">sim</span><span class="o">.</span><span class="n">rng</span><span class="p">,</span> <span class="n">obs_dist</span><span class="p">,</span> <span class="n">o</span><span class="p">)</span>
+        <span class="n">o</span> <span class="o">=</span> <span class="n">rand</span><span class="p">(</span><span class="n">sim</span><span class="o">.</span><span class="n">rng</span><span class="p">,</span> <span class="n">obs_dist</span><span class="p">)</span>
 
         <span class="n">b</span> <span class="o">=</span> <span class="n">update</span><span class="p">(</span><span class="n">updater</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">o</span><span class="p">)</span>
 
-        <span class="n">s</span> <span class="o">=</span> <span class="n">sp</span>
         <span class="n">disc</span> <span class="o">*=</span> <span class="n">discount</span><span class="p">(</span><span class="n">pomdp</span><span class="p">)</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="n">sp</span>
         <span class="n">step</span> <span class="o">+=</span> <span class="mi">1</span>
     <span class="k">end</span>
 
+    <span class="k">return</span> <span class="n">r_total</span>
 <span class="k">end</span>
+</pre></div>
+
+
+<p>The following snippet shows how a solver should be used to solve a problem and run a simulation.</p>
+<div class="codehilite"><pre><span></span><span class="k">using</span> <span class="n">SARSOP</span>
+<span class="k">using</span> <span class="n">POMDPModels</span>
+
+<span class="n">solver</span> <span class="o">=</span> <span class="n">SARSOP</span><span class="p">()</span>
+
+<span class="n">problem</span> <span class="o">=</span> <span class="n">BabyPOMDP</span><span class="p">()</span>
+
+<span class="n">policy</span> <span class="o">=</span> <span class="n">solve</span><span class="p">(</span><span class="n">solver</span><span class="p">,</span> <span class="n">problem</span><span class="p">)</span>
+<span class="n">up</span> <span class="o">=</span> <span class="n">updater</span><span class="p">(</span><span class="n">policy</span><span class="p">)</span>
+<span class="n">sim</span> <span class="o">=</span> <span class="n">ReferenceSimulator</span><span class="p">(</span><span class="n">MersenneTwister</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="mi">10</span><span class="p">)</span>
+
+<span class="n">r</span> <span class="o">=</span> <span class="n">simulate</span><span class="p">(</span><span class="n">sim</span><span class="p">,</span> <span class="n">problem</span><span class="p">,</span> <span class="n">policy</span><span class="p">,</span> <span class="n">up</span><span class="p">,</span> <span class="n">initial_state_distribution</span><span class="p">(</span><span class="n">problem</span><span class="p">))</span>
+
+<span class="n">println</span><span class="p">(</span><span class="s">&quot;Reward: </span><span class="si">$r</span><span class="s">&quot;</span><span class="p">)</span>
 </pre></div>
               
             </div>

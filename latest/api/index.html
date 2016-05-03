@@ -77,7 +77,7 @@
         
             <ul>
             
-                <li class="toctree-l3"><a href="#solver-documentation">Solver Documentation</a></li>
+                <li class="toctree-l3"><a href="#api-documentation">API Documentation</a></li>
                 
                     <li><a class="toctree-l4" href="#contents">Contents</a></li>
                 
@@ -141,8 +141,8 @@
           <div role="main">
             <div class="section">
               
-                <p><a id='Solver-Documentation-1'></a></p>
-<h1 id="solver-documentation">Solver Documentation</h1>
+                <p><a id='API-Documentation-1'></a></p>
+<h1 id="api-documentation">API Documentation</h1>
 <p>Documentation for the <code>POMDPs.jl</code> user interface. You can get help for any type or  function in the module by typing <code>?</code> in the Julia REPL followed by the name of  type or function. For example:</p>
 <div class="codehilite"><pre><span></span><span class="n">julia</span><span class="o">&gt;</span><span class="k">using</span> <span class="n">POMDPs</span>
 <span class="n">julia</span><span class="o">&gt;?</span>
@@ -162,7 +162,7 @@
 <p><a id='Contents-1'></a></p>
 <h2 id="contents">Contents</h2>
 <ul>
-<li><a href="./#Solver-Documentation-1">Solver Documentation</a><ul>
+<li><a href="./#API-Documentation-1">API Documentation</a><ul>
 <li><a href="./#Contents-1">Contents</a></li>
 <li><a href="./#Index-1">Index</a></li>
 <li><a href="./#Types-1">Types</a></li>
@@ -183,8 +183,6 @@
 <li><a href="./#POMDPs.@pomdp_func"><code>POMDPs.@pomdp_func</code></a></li>
 <li><a href="./#POMDPs.AbstractDistribution"><code>POMDPs.AbstractDistribution</code></a></li>
 <li><a href="./#POMDPs.AbstractSpace"><code>POMDPs.AbstractSpace</code></a></li>
-<li><a href="./#POMDPs.Belief"><code>POMDPs.Belief</code></a></li>
-<li><a href="./#POMDPs.BeliefUpdater"><code>POMDPs.BeliefUpdater</code></a></li>
 <li><a href="./#POMDPs.MDP"><code>POMDPs.MDP</code></a></li>
 <li><a href="./#POMDPs.POMDP"><code>POMDPs.POMDP</code></a></li>
 <li><a href="./#POMDPs.Policy"><code>POMDPs.Policy</code></a></li>
@@ -192,18 +190,22 @@
 <li><a href="./#POMDPs.SUPPORTED_SOLVERS"><code>POMDPs.SUPPORTED_SOLVERS</code></a></li>
 <li><a href="./#POMDPs.Simulator"><code>POMDPs.Simulator</code></a></li>
 <li><a href="./#POMDPs.Solver"><code>POMDPs.Solver</code></a></li>
+<li><a href="./#POMDPs.Updater"><code>POMDPs.Updater</code></a></li>
 <li><a href="./#POMDPs.action"><code>POMDPs.action</code></a></li>
 <li><a href="./#POMDPs.action_index"><code>POMDPs.action_index</code></a></li>
 <li><a href="./#POMDPs.actions"><code>POMDPs.actions</code></a></li>
 <li><a href="./#POMDPs.add"><code>POMDPs.add</code></a></li>
-<li><a href="./#POMDPs.convert_belief"><code>POMDPs.convert_belief</code></a></li>
+<li><a href="./#POMDPs.create_action"><code>POMDPs.create_action</code></a></li>
 <li><a href="./#POMDPs.create_belief"><code>POMDPs.create_belief</code></a></li>
+<li><a href="./#POMDPs.create_observation"><code>POMDPs.create_observation</code></a></li>
 <li><a href="./#POMDPs.create_observation_distribution"><code>POMDPs.create_observation_distribution</code></a></li>
 <li><a href="./#POMDPs.create_policy"><code>POMDPs.create_policy</code></a></li>
+<li><a href="./#POMDPs.create_state"><code>POMDPs.create_state</code></a></li>
 <li><a href="./#POMDPs.create_transition_distribution"><code>POMDPs.create_transition_distribution</code></a></li>
 <li><a href="./#POMDPs.dimensions"><code>POMDPs.dimensions</code></a></li>
 <li><a href="./#POMDPs.discount"><code>POMDPs.discount</code></a></li>
-<li><a href="./#POMDPs.initial_belief"><code>POMDPs.initial_belief</code></a></li>
+<li><a href="./#POMDPs.initial_state_distribution"><code>POMDPs.initial_state_distribution</code></a></li>
+<li><a href="./#POMDPs.initialize_belief"><code>POMDPs.initialize_belief</code></a></li>
 <li><a href="./#POMDPs.isterminal"><code>POMDPs.isterminal</code></a></li>
 <li><a href="./#POMDPs.isterminal_obs"><code>POMDPs.isterminal_obs</code></a></li>
 <li><a href="./#POMDPs.iterator"><code>POMDPs.iterator</code></a></li>
@@ -270,14 +272,19 @@
 <strong><code>POMDPs.Policy</code></strong> &mdash; <em>Type</em>.</p>
 <hr />
 <p>Base type for a policy (a map from every possible belief, or more abstract policy state, to an optimal or suboptimal action)</p>
-<p><a id='POMDPs.Belief' href='#POMDPs.Belief'>#</a>
-<strong><code>POMDPs.Belief</code></strong> &mdash; <em>Type</em>.</p>
+<div class="codehilite"><pre><span></span><span class="n">B</span><span class="o">:</span> <span class="n">a</span> <span class="n">belief</span> <span class="o">(</span><span class="n">or</span> <span class="n">policy</span> <span class="n">state</span><span class="o">)</span> <span class="n">that</span> <span class="n">represents</span> <span class="n">the</span> <span class="n">knowledge</span> <span class="n">an</span> <span class="n">agent</span> <span class="n">has</span> <span class="n">about</span> <span class="n">the</span> <span class="n">state</span> <span class="n">of</span> <span class="n">the</span> <span class="n">system</span>
+</pre></div>
+
+
+<p><a id='POMDPs.Updater' href='#POMDPs.Updater'>#</a>
+<strong><code>POMDPs.Updater</code></strong> &mdash; <em>Type</em>.</p>
 <hr />
-<p>Abstract type for an object representing some knowledge about the state (often a probability distribution)</p>
-<p><a id='POMDPs.BeliefUpdater' href='#POMDPs.BeliefUpdater'>#</a>
-<strong><code>POMDPs.BeliefUpdater</code></strong> &mdash; <em>Type</em>.</p>
-<hr />
-<p>Abstract type for an object that defines how a belief should be updated</p>
+<p>Abstract type for an object that defines how the belief should be updated</p>
+<div class="codehilite"><pre><span></span><span class="n">B</span><span class="o">:</span> <span class="n">belief</span> <span class="n">type</span> <span class="n">that</span> <span class="n">parametarizes</span> <span class="n">the</span> <span class="n">updater</span>
+</pre></div>
+
+
+<p>A belief is a general construct that represents the knowledge an agent has about the state of the system. This can be a probability distribution, an action observation history or a more general representation. </p>
 <p><a id='Model-Functions-1'></a></p>
 <h2 id="model-functions">Model Functions</h2>
 <p><a id='POMDPs.states' href='#POMDPs.states'>#</a>
@@ -310,7 +317,7 @@ actions(problem::MDP)
 
 
 <p>Returns the entire action space of a POMDP.</p>
-<div class="codehilite"><pre><span></span>actions{S,A,O}(problem::POMDP{S,A,O}, belief::Belief, aspace::AbstractSpace{A})
+<div class="codehilite"><pre><span></span>actions{S,A,O,B}(problem::POMDP{S,A,O}, belief::B, aspace::AbstractSpace{A})
 </pre></div>
 
 
@@ -382,6 +389,15 @@ isterminal{S,A}(problem::MDP{S,A}, state::S)
 
 
 <p>Checks if an observation is terminal.</p>
+<p><a id='POMDPs.discount' href='#POMDPs.discount'>#</a>
+<strong><code>POMDPs.discount</code></strong> &mdash; <em>Function</em>.</p>
+<hr />
+<div class="codehilite"><pre><span></span>discount(problem::POMDP)
+discount(problem::MDP)
+</pre></div>
+
+
+<p>Return the discount factor for the problem.</p>
 <p><a id='POMDPs.n_states' href='#POMDPs.n_states'>#</a>
 <strong><code>POMDPs.n_states</code></strong> &mdash; <em>Function</em>.</p>
 <hr />
@@ -434,15 +450,32 @@ action_index{S,A}(problem::MDP{S,A}, a::A)
 
 
 <p>Returns the integer index of observation <code>o</code>. Used for discrete models only.</p>
-<p><a id='POMDPs.discount' href='#POMDPs.discount'>#</a>
-<strong><code>POMDPs.discount</code></strong> &mdash; <em>Function</em>.</p>
+<p><a id='POMDPs.create_state' href='#POMDPs.create_state'>#</a>
+<strong><code>POMDPs.create_state</code></strong> &mdash; <em>Function</em>.</p>
 <hr />
-<div class="codehilite"><pre><span></span>discount(problem::POMDP)
-discount(problem::MDP)
+<div class="codehilite"><pre><span></span>create_state(problem::POMDP)
+create_state(problem::MDP)
 </pre></div>
 
 
-<p>Return the discount factor for the problem.</p>
+<p>Create a state object (for preallocation purposes).</p>
+<p><a id='POMDPs.create_action' href='#POMDPs.create_action'>#</a>
+<strong><code>POMDPs.create_action</code></strong> &mdash; <em>Function</em>.</p>
+<hr />
+<div class="codehilite"><pre><span></span>create_action(problem::POMDP)
+create_action(problem::MDP)
+</pre></div>
+
+
+<p>Creates an action object (for preallocation purposes)</p>
+<p><a id='POMDPs.create_observation' href='#POMDPs.create_observation'>#</a>
+<strong><code>POMDPs.create_observation</code></strong> &mdash; <em>Function</em>.</p>
+<hr />
+<div class="codehilite"><pre><span></span>create_observation(problem::POMDP)
+</pre></div>
+
+
+<p>Create an observation object (for preallocation purposes).</p>
 <p><a id='Distribution/Space-Functions-1'></a></p>
 <h2 id="distributionspace-functions">Distribution/Space Functions</h2>
 <p><a id='Base.Random.rand' href='#Base.Random.rand'>#</a>
@@ -482,6 +515,19 @@ discount(problem::MDP)
 
 
 <p>Returns an iterable type (array or custom iterator) corresponding to space <code>s</code>. </p>
+<div class="codehilite"><pre><span></span>iterator{T}(d::AbstractDistribution{T})
+</pre></div>
+
+
+<p>Returns an iterable type (array or custom iterator) corresponding to distribution <code>d</code>. </p>
+<p><a id='POMDPs.initial_state_distribution' href='#POMDPs.initial_state_distribution'>#</a>
+<strong><code>POMDPs.initial_state_distribution</code></strong> &mdash; <em>Function</em>.</p>
+<hr />
+<div class="codehilite"><pre><span></span>initial_state_distribution(pomdp::POMDP)
+</pre></div>
+
+
+<p>Returns an initial belief for the pomdp.</p>
 <p><a id='POMDPs.create_transition_distribution' href='#POMDPs.create_transition_distribution'>#</a>
 <strong><code>POMDPs.create_transition_distribution</code></strong> &mdash; <em>Function</em>.</p>
 <hr />
@@ -502,18 +548,19 @@ create_observation_distribution(problem::MDP)
 <p>Returns an observation distribution (for memory preallocation).</p>
 <p><a id='Belief-Functions-1'></a></p>
 <h2 id="belief-functions">Belief Functions</h2>
-<p><a id='POMDPs.initial_belief' href='#POMDPs.initial_belief'>#</a>
-<strong><code>POMDPs.initial_belief</code></strong> &mdash; <em>Function</em>.</p>
+<p><a id='POMDPs.update' href='#POMDPs.update'>#</a>
+<strong><code>POMDPs.update</code></strong> &mdash; <em>Function</em>.</p>
 <hr />
-<div class="codehilite"><pre><span></span>initial_belief(pomdp::POMDP, belief::Belief = create_belief(pomdp))
+<div class="codehilite"><pre><span></span>update{B,A,O}(updater::Updater, belief_old::B, action::A, obs::O,
+belief_new::B=create_belief(updater))
 </pre></div>
 
 
-<p>Returns an initial belief for the pomdp.</p>
+<p>Returns a new instance of an updated belief given <code>belief_old</code> and the latest action and observation.</p>
 <p><a id='POMDPs.create_belief' href='#POMDPs.create_belief'>#</a>
 <strong><code>POMDPs.create_belief</code></strong> &mdash; <em>Function</em>.</p>
 <hr />
-<div class="codehilite"><pre><span></span>create_belief(updater::BeliefUpdater)
+<div class="codehilite"><pre><span></span>create_belief(updater::Updater)
 </pre></div>
 
 
@@ -523,24 +570,20 @@ create_observation_distribution(problem::MDP)
 
 
 <p>Creates a belief either to be used by updater or pomdp</p>
-<p><a id='POMDPs.update' href='#POMDPs.update'>#</a>
-<strong><code>POMDPs.update</code></strong> &mdash; <em>Function</em>.</p>
+<p><a id='POMDPs.initialize_belief' href='#POMDPs.initialize_belief'>#</a>
+<strong><code>POMDPs.initialize_belief</code></strong> &mdash; <em>Function</em>.</p>
 <hr />
-<div class="codehilite"><pre><span></span>update(updater::BeliefUpdater, belief_old::Belief, action, obs,
-belief_new::Belief=create_belief(updater))
+<div class="codehilite"><pre><span></span>initialize_belief{B}(updater::Updater{B}, 
+                     state_distribution::AbstractDistribution,
+                     new_belief::B=create_belief(updater))
+initialize_belief{B}(updater::Updater{B},
+                     belief::Any,
+                     new_belief::B=create_belief(updater))
 </pre></div>
 
 
-<p>Returns a new instance of an updated belief given <code>belief_old</code> and the latest action and observation.</p>
-<p><a id='POMDPs.convert_belief' href='#POMDPs.convert_belief'>#</a>
-<strong><code>POMDPs.convert_belief</code></strong> &mdash; <em>Function</em>.</p>
-<hr />
-<div class="codehilite"><pre><span></span>convert_belief(updater::BeliefUpdater, belief::Belief,
-new_belief::Belief=create_belief(updater)) = belief
-</pre></div>
-
-
-<p>Returns a belief that can be updated using <code>updater</code> that has a similar distribution to <code>belief</code>.</p>
+<p>Returns a belief that can be updated using <code>updater</code> that has similar distribution to <code>state_distribution</code> or <code>belief</code>.</p>
+<p>The conversion may be lossy. This function is also idempotent, i.e. there is a default implementation that passes the belief through when it is already the correct type: <code>initialize_belief{B}(updater::Updater{B}, belief::B) = belief</code></p>
 <p><a id='Policy-and-Solver-Functions-1'></a></p>
 <h2 id="policy-and-solver-functions">Policy and Solver Functions</h2>
 <p><a id='POMDPs.create_policy' href='#POMDPs.create_policy'>#</a>
@@ -567,29 +610,25 @@ create_policy(solver::Solver, problem::MDP)
 </pre></div>
 
 
-<p>Returns a default BeliefUpdater appropriate for a belief type that policy <code>p</code> can use</p>
+<p>Returns a default Updater appropriate for a belief type that policy <code>p</code> can use</p>
 <p><a id='POMDPs.action' href='#POMDPs.action'>#</a>
 <strong><code>POMDPs.action</code></strong> &mdash; <em>Function</em>.</p>
 <hr />
-<div class="codehilite"><pre><span></span>action(p::Policy, x::Any, action)
-action(p::Policy, x::Belief, action)
+<div class="codehilite"><pre><span></span>action{B}(p::Policy, x::B, action)
 </pre></div>
 
 
-<p>Fills and returns action based on the current state or belief, given the policy.</p>
-<p>If an MDP is being simulated, x will be a state; if a POMDP is being simulated, x will be a Belief</p>
-<div class="codehilite"><pre><span></span>action(policy::Policy, x::Any)
-action(policy::Policy, x::Belief)
+<p>Fills and returns action based on the current state or belief, given the policy. B is a generalized information state - can be a state in an MDP, a distribution in POMDP, or any other representation needed to make a decision using the given policy. </p>
+<div class="codehilite"><pre><span></span>action{B}(policy::Policy, x::B)
 </pre></div>
 
 
 <p>Returns an action for the current state or belief, given the policy</p>
-<p>If an MDP is being simulated, x will be a state; if a POMDP is being simulated, x will be a Belief</p>
+<p>If an MDP is being simulated, x will be a state; if a POMDP is being simulated, x will be a belief</p>
 <p><a id='POMDPs.value' href='#POMDPs.value'>#</a>
 <strong><code>POMDPs.value</code></strong> &mdash; <em>Function</em>.</p>
 <hr />
-<div class="codehilite"><pre><span></span>value{S}(p::Policy, x::Any)
-value{S}(p::Policy, x::Belief)
+<div class="codehilite"><pre><span></span>value{B}(p::Policy, x::B)
 </pre></div>
 
 
@@ -603,8 +642,12 @@ value{S}(p::Policy, x::Belief)
 <p><a id='POMDPs.simulate' href='#POMDPs.simulate'>#</a>
 <strong><code>POMDPs.simulate</code></strong> &mdash; <em>Function</em>.</p>
 <hr />
-<div class="codehilite"><pre><span></span>simulate{S,A,O}(simulator::Simulator, problem::POMDP{S,A,O}, policy::Policy, updater::BeliefUpdater, initial_belief::Belief) 
-simulate{S,A}(simulator::Simulator, problem::MDP{S,A}, policy::Policy, updater::BeliefUpdater, initial_belief::Belief)
+<div class="codehilite"><pre><span></span>simulate{S,A}(simulator::Simulator, problem::MDP{S,A}, policy::Policy, initial_state::S)
+</pre></div>
+
+
+<p>Runs a simulation using the specified policy and returns the accumulated reward</p>
+<div class="codehilite"><pre><span></span>simulate{S,A,O,B}(simulator::Simulator, problem::POMDP{S,A,O}, policy::Policy{B}, updater::Updater{B}, initial_belief::Union{B,AbstractDistribution{S}})
 </pre></div>
 
 
