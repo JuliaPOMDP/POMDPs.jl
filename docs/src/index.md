@@ -11,6 +11,8 @@ observable counterparts.*
 
 ## Availible Solvers
 
+The POMDPs.jl package contains only an interface to use for expressing and solving POMDPs. Solvers are contained in external packages that can be downloaded using [`POMDPs.add`]({ref}).
+
 The following MDP solvers support this interface:
 
 - [Value Iteration](https://github.com/JuliaPOMDP/DiscreteValueIteration.jl)
