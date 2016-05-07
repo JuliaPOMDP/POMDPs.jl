@@ -2,7 +2,7 @@
     "docs": [
         {
             "location": "/", 
-            "text": "POMDPs\n\n\nA Julia interface for defining, solving and simulating partially observable Markov decision processes and their fully observable counterparts.\n\n\n\n\nPackage Features\n\n\n\n\nGeneral interface that can handle problems with discrete and continuous state/action/observation spaces\n\n\nA number of popular state-of-the-art solvers availiable to use out of the box\n\n\nTools that make it easy to define problems and simulate solutions \n\n\nSimple integration of custom solvers into the existing interface\n\n\n\n\n\n\nAvailible Solvers\n\n\nThe following MDP solvers support this interface:\n\n\n\n\nValue Iteration\n\n\nMonte Carlo Tree Search\n\n\n\n\nThe following POMDP solvers support this interface:\n\n\n\n\nQMDP\n\n\nSARSOP\n\n\nPOMCP\n\n\nPOMDPSolve\n\n\n\n\n\n\nManual Outline\n\n\n\n\nAPI Documentation\n\n\nContents\n\n\nIndex\n\n\nTypes\n\n\nModel Functions\n\n\nDistribution/Space Functions\n\n\nBelief Functions\n\n\nPolicy and Solver Functions\n\n\nSimulator\n\n\nUtility Tools\n\n\nConstants\n\n\n\n\n\n\nPackage Guide\n\n\nInstallation\n\n\nUsage\n\n\nExample Simulation\n\n\n\n\n\n\nPOMDPs\n\n\nPackage Features\n\n\nAvailible Solvers\n\n\nManual Outline", 
+            "text": "POMDPs\n\n\nA Julia interface for defining, solving and simulating partially observable Markov decision processes and their fully observable counterparts.\n\n\n\n\nPackage Features\n\n\n\n\nGeneral interface that can handle problems with discrete and continuous state/action/observation spaces\n\n\nA number of popular state-of-the-art solvers availiable to use out of the box\n\n\nTools that make it easy to define problems and simulate solutions \n\n\nSimple integration of custom solvers into the existing interface\n\n\n\n\n\n\nAvailible Solvers\n\n\nThe POMDPs.jl package contains only an interface to use for expressing and solving POMDPs. Solvers are contained in external packages that can be downloaded using \nPOMDPs.add\n.\n\n\nThe following MDP solvers support this interface:\n\n\n\n\nValue Iteration\n\n\nMonte Carlo Tree Search\n\n\n\n\nThe following POMDP solvers support this interface:\n\n\n\n\nQMDP\n\n\nSARSOP\n\n\nPOMCP\n\n\nPOMDPSolve\n\n\n\n\n\n\nManual Outline\n\n\n\n\nAPI Documentation\n\n\nContents\n\n\nIndex\n\n\nTypes\n\n\nModel Functions\n\n\nDistribution/Space Functions\n\n\nBelief Functions\n\n\nPolicy and Solver Functions\n\n\nSimulator\n\n\nUtility Tools\n\n\nConstants\n\n\n\n\n\n\nPackage Guide\n\n\nInstallation\n\n\nUsage\n\n\nExample Simulation\n\n\n\n\n\n\nPOMDPs\n\n\nPackage Features\n\n\nAvailible Solvers\n\n\nManual Outline", 
             "title": "Home"
         }, 
         {
@@ -17,7 +17,7 @@
         }, 
         {
             "location": "/#availible-solvers", 
-            "text": "The following MDP solvers support this interface:   Value Iteration  Monte Carlo Tree Search   The following POMDP solvers support this interface:   QMDP  SARSOP  POMCP  POMDPSolve", 
+            "text": "The POMDPs.jl package contains only an interface to use for expressing and solving POMDPs. Solvers are contained in external packages that can be downloaded using  POMDPs.add .  The following MDP solvers support this interface:   Value Iteration  Monte Carlo Tree Search   The following POMDP solvers support this interface:   QMDP  SARSOP  POMCP  POMDPSolve", 
             "title": "Availible Solvers"
         }, 
         {
