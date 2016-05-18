@@ -8,9 +8,14 @@ julia> using POMDPs
 julia> POMDPs.add("MCTS")
 ```
 """
-function add(solver_name::AbstractString)
-    @assert solver_name in SUPPORTED_SOLVERS string("The solver: ", solver_name, " is not supported")
+function add(solver_name::AbstractString, v::Bool=true)
+    @assert solver_name in SUPPORTED_PACKAGES string("The JuliaPOMDP package: ", solver_name, " is not supported")
     full_url = string(REMOTE_URL, solver_name, ".jl")
-    Pkg.clone(full_url)
-    Pkg.build(solver_name)
+    try
+        Pkg.installed(solver_name)
+        Pkg.clone(full_url)
+        Pkg.build(solver_name)
+    catch
+        v ? (println("Solver already installed")) : (nothing)
+    end
 end
