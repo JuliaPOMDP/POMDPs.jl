@@ -6,12 +6,12 @@ observable counterparts.*
 
 - General interface that can handle problems with discrete and continuous state/action/observation spaces
 - A number of popular state-of-the-art solvers availiable to use out of the box
-- Tools that make it easy to define problems and simulate solutions 
+- Tools that make it easy to define problems and simulate solutions
 - Simple integration of custom solvers into the existing interface
 
 ## Availible Solvers
 
-The POMDPs.jl package contains only an interface to use for expressing and solving POMDPs. Solvers are contained in external packages that can be downloaded using [`POMDPs.add`]({ref}).
+The POMDPs.jl package contains only an interface to use for expressing and solving POMDPs. Solvers are contained in external packages that can be downloaded using [`POMDPs.add`](@ref).
 
 The following MDP solvers support this interface:
 
@@ -27,5 +27,5 @@ The following POMDP solvers support this interface:
 
 ## Manual Outline
 
-    {contents}
-
+```@contents
+```

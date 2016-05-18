@@ -1,4 +1,4 @@
-# Package Guide 
+# Package Guide
 
 ## Installation
 
@@ -10,7 +10,7 @@ Installation with POMDPs.jl:
 Pkg.clone("https://github.com/JuliaPOMDP/POMDPs.jl.git")
 ```
 
-The package is currently not registered in meta-data. 
+The package is currently not registered in meta-data.
 
 ## Usage
 
@@ -27,14 +27,14 @@ If you are attempting to complete the first two goals, take a look at these Jupy
 * [MDP Tutorial](http://nbviewer.ipython.org/github/sisl/POMDPs.jl/blob/master/examples/GridWorld.ipynb) for beginners gives an overview of using Value Iteration and Monte-Carlo Tree Search with the classic grid world problem
 * [POMDP Tutorial](http://nbviewer.ipython.org/github/sisl/POMDPs.jl/blob/master/examples/Tiger.ipynb) gives an overview of using SARSOP and QMDP to solve the tiger problem
 
-If you are trying to write your own algorithm for solving MDPs or POMDPs with this interface take a look at the API section of this guide. 
+If you are trying to write your own algorithm for solving MDPs or POMDPs with this interface take a look at the API section of this guide.
 
 
 ## Example Simulation
 
 The following code snippets show how some of the most important functions in the interface are to be used together. (Please note that this example is written for clarity and not efficiency; several other simulators are available in the [JuliaPOMDP/POMDPToolbox.jl]() package.)
 
-First, here is a definition of a simple simulator showing the use of the important functions [`rand`]({ref}), [`initialize_belief`]({ref}), [`isterminal`]({ref}), [`action`]({ref}), [`transition`]({ref}), [`reward`]({ref}), [`observation`]({ref}), [`update`]({ref}), and [`discount`]({ref}).
+First, here is a definition of a simple simulator showing the use of the important functions [`rand`](@ref), [`initialize_belief`](@ref), [`isterminal`](@ref), [`action`](@ref), [`transition`](@ref), [`reward`](@ref), [`observation`](@ref), [`update`](@ref), and [`discount`](@ref).
 
 ```julia
 using POMDPs
