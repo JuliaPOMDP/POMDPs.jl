@@ -12,7 +12,6 @@ function add(solver_name::AbstractString, v::Bool=true)
     @assert solver_name in SUPPORTED_PACKAGES string("The JuliaPOMDP package: ", solver_name, " is not supported")
     full_url = string(REMOTE_URL, solver_name, ".jl")
     try
-        Pkg.installed(solver_name)
         Pkg.clone(full_url)
         Pkg.build(solver_name)
     catch
