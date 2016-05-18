@@ -1,7 +1,7 @@
 # API Documentation
 
-Documentation for the `POMDPs.jl` user interface. You can get help for any type or 
-function in the module by typing `?` in the Julia REPL followed by the name of 
+Documentation for the `POMDPs.jl` user interface. You can get help for any type or
+function in the module by typing `?` in the Julia REPL followed by the name of
 type or function. For example:
 
 ```julia
@@ -20,95 +20,105 @@ search: reward
 
 ```
 
-    {meta}
-    CurrentModule = POMDPs
+```@meta
+CurrentModule = POMDPs
+```
 
 ## Contents
-    
-    {contents}
-    Pages = ["api.md"]
+
+```@contents
+Pages = ["api.md"]
+```
 
 ## Index
 
-    {index}
-    Pages = ["api.md"]
-
+```@index
+Pages = ["api.md"]
+```
 
 ## Types
 
-    {docs}
-    POMDP
-    MDP
-    AbstractSpace
-    AbstractDistribution
-    Solver
-    Policy
-    Updater
+```@docs
+POMDP
+MDP
+AbstractSpace
+AbstractDistribution
+Solver
+Policy
+Updater
+```
 
 ## Model Functions
 
-    {docs}
-    states
-    actions
-    observations
-    reward
-    transition
-    observation
-    isterminal
-    isterminal_obs
-    discount
-    n_states
-    n_actions
-    n_observations
-    state_index
-    action_index
-    obs_index
-    create_state
-    create_action
-    create_observation
+```@docs
+states
+actions
+observations
+reward
+transition
+observation
+isterminal
+isterminal_obs
+discount
+n_states
+n_actions
+n_observations
+state_index
+action_index
+obs_index
+create_state
+create_action
+create_observation
+```
 
 ## Distribution/Space Functions
 
-    {docs}
-    rand
-    pdf
-    dimensions
-    iterator
-    initial_state_distribution
-    create_transition_distribution
-    create_observation_distribution
+```@docs
+rand
+pdf
+dimensions
+iterator
+initial_state_distribution
+create_transition_distribution
+create_observation_distribution
+```
 
 ## Belief Functions
 
-    {docs}
-    update
-    create_belief
-    initialize_belief
+```@docs
+update
+create_belief
+initialize_belief
+```
 
 ## Policy and Solver Functions
 
-    {docs}
-    create_policy
-    solve
-    updater
-    action
-    value
+```@docs
+create_policy
+solve
+updater
+action
+value
+```
 
 ## Simulator
 
-    {docs}
-    Simulator
-    simulate
+```@docs
+Simulator
+simulate
+```
 
 ## Utility Tools
 
-    {docs}
-    add
-    @pomdp_func
-    strip_arg
+```@docs
+add
+@pomdp_func
+strip_arg
+```
 
 ## Constants
-    
-    {docs}
-    REMOTE_URL
-    SUPPORTED_SOLVERS
+
+```@docs
+REMOTE_URL
+SUPPORTED_SOLVERS
+```
