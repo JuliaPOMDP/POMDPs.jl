@@ -18,3 +18,23 @@ function add(solver_name::AbstractString, v::Bool=true)
         v ? (println("Solver already installed")) : (nothing)
     end
 end
+
+"""
+    add_all()
+Downloads and installs all the packages supported by JuliaPOMDP
+"""
+function add_all()
+    for p in SUPPORTED_PACKAGES
+        add(p, false)
+    end
+end
+
+"""
+    availiable()
+Prints all the availiable packages in JuliaPOMDP
+"""
+function availiable()
+    for p in SUPPORTED_PACKAGES
+        println(p)
+    end
+end
