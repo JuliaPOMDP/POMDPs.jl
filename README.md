@@ -40,7 +40,7 @@ POMDPs.add("SARSOP")
 To install all the solvers, support tools and dependencies that are part of JuliaPOMDP run:
 ```julia
 using POMDPs
-POMDPs.add_all() # this make take around 10 min
+POMDPs.add_all() # this may take a few minutes
 ```
 
 ## Tutorials
