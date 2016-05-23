@@ -30,6 +30,20 @@ function add_all()
 end
 
 """
+    test_all()
+Tests all the JuliaPOMDP packages installed on your current machine.
+"""
+function test_all(v::Bool=false)
+    for p in SUPPORTED_PACKAGES
+        try
+            Pkg.test(p)
+        catch
+            v ? (println("Package ", p, "not being tested")) : (nothing)
+        end
+    end
+end
+
+"""
     availiable()
 Prints all the availiable packages in JuliaPOMDP
 """
