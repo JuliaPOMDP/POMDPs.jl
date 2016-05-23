@@ -27,6 +27,7 @@ The following POMDP solvers support this interface:
 * [QMDP](https://github.com/JuliaPOMDP/QMDP.jl)
 * [SARSOP](https://github.com/JuliaPOMDP/SARSOP.jl)
 * [POMCP](https://github.com/JuliaPOMDP/POMCP.jl)
+* [DESPOT](https://github.com/JuliaPOMDP/DESPOT.jl)
 * [POMDPSolve](https://github.com/JuliaPOMDP/POMDPSolve.jl)
 
 To install a solver run the following command:
@@ -34,6 +35,12 @@ To install a solver run the following command:
 using POMDPs
 # the following command adds the SARSOP solver, you can add any supported solver this way
 POMDPs.add("SARSOP") 
+```
+
+To install all the solvers, support tools and dependencies that are part of JuliaPOMDP run:
+```julia
+using POMDPs
+POMDPs.add_all() # this make take around 10 min
 ```
 
 ## Tutorials
