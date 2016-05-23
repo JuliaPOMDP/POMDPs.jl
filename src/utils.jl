@@ -44,10 +44,10 @@ function test_all(v::Bool=false)
 end
 
 """
-    availiable()
+    available()
 Prints all the availiable packages in JuliaPOMDP
 """
-function availiable()
+function available()
     for p in SUPPORTED_PACKAGES
         println(p)
     end
