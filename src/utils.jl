@@ -1,7 +1,8 @@
 """
-    add(solver_name::AbstractString)
+    add(solver_name::AbstractString, v::Bool=true)
 
 Downloads and installs a registered solver with name `solver_name`. 
+`v` is a verbose flag, when set to true, function will notify the user if solver is already installed.
 This function is not exported, and must be called:
 ```julia
 julia> using POMDPs
