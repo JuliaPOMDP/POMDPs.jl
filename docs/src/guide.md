@@ -7,7 +7,7 @@ The package can be installed by cloning the code from the github repository
 
 Installation with POMDPs.jl:
 ```julia
-Pkg.clone("https://github.com/JuliaPOMDP/POMDPs.jl.git")
+Pkg.add("POMDPs")
 ```
 
 The package is currently not registered in meta-data.

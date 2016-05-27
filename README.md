@@ -14,7 +14,7 @@ For problems and solvers that only use a generative model (rather than explicit 
 
 ## Installation
 ```julia
-Pkg.clone("https://github.com/JuliaPOMDP/POMDPs.jl.git")
+Pkg.add("POMDPs")
 ```
 
 ## Supported Solvers
