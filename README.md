@@ -41,6 +41,8 @@ The following POMDP solvers support this interface:
 [![Build Status](https://travis-ci.org/JuliaPOMDP/DESPOT.jl.svg?branch=master)](https://travis-ci.com/JuliaPOMDP/DESPOT.jl)
 [![Coverage Status](https://coveralls.io/repos/github/JuliaPOMDP/DESPOT.jl/badge.svg?branch=master)](https://coveralls.io/github/JuliaPOMDP/DESPOT.jl?branch=master)
 * [MCVI](https://github.com/JuliaPOMDP/MCVI.jl)
+[![Build Status](https://travis-ci.org/JuliaPOMDP/MCVI.jl.svg?branch=master)](https://travis-ci.org/JuliaPOMDP/MCVI.jl)
+[![Coverage Status](https://coveralls.io/repos/github/JuliaPOMDP/MCVI.jl/badge.svg?branch=master)](https://coveralls.io/github/JuliaPOMDP/MCVI.jl?branch=master)
 * [POMDPSolve](https://github.com/JuliaPOMDP/POMDPSolve.jl)
 [![Build Status](https://travis-ci.org/JuliaPOMDP/POMDPSolve.jl.svg?branch=master)](https://travis-ci.org/JuliaPOMDP/POMDPSolve.jl)
 [![Coverage Status](https://coveralls.io/repos/JuliaPOMDP/POMDPSolve.jl/badge.svg)](https://coveralls.io/r/JuliaPOMDP/POMDPSolve.jl)
@@ -50,8 +52,8 @@ The following support tools support this interface:
 * [POMDPModels](https://github.com/JuliaPOMDP/POMDPModels.jl)
  
 The following extensions support this interface:
-* [GenerativeModels](https://github.com/JuliaPOMDP/POMDPToolbox.jl)
-* [POMDPBounds](https://github.com/JuliaPOMDP/POMDPToolbox.jl)
+* [GenerativeModels](https://github.com/JuliaPOMDP/GenerativeModels.jl)
+* [POMDPBounds](https://github.com/JuliaPOMDP/POMDPBounds.jl)
 
 
 To install a package run the following command:
