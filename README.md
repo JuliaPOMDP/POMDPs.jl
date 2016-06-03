@@ -17,20 +17,44 @@ For problems and solvers that only use a generative model (rather than explicit 
 Pkg.add("POMDPs")
 ```
 
-## Supported Solvers
+## Supported Packages
 
 The following MDP solvers support this interface:
-* [Value Iteration](https://github.com/JuliaPOMDP/DiscreteValueIteration.jl)
-* [Monte Carlo Tree Search](https://github.com/JuliaPOMDP/MCTS.jl)
+* [Value Iteration](https://github.com/JuliaPOMDP/DiscreteValueIteration.jl) 
+[![Build Status](https://travis-ci.org/JuliaPOMDP/DiscreteValueIteration.jl.svg?branch=master)](https://travis-ci.org/JuliaPOMDP/DiscreteValueIteration.jl) 
+[![Coverage Status](https://coveralls.io/repos/github/JuliaPOMDP/DiscreteValueIteration.jl/badge.svg?branch=master)](https://coveralls.io/github/JuliaPOMDP/DiscreteValueIteration.jl?branch=master)
+* [Monte Carlo Tree Search](https://github.com/JuliaPOMDP/MCTS.jl) 
+[![Build Status](https://travis-ci.org/JuliaPOMDP/MCTS.jl.svg?branch=master)](https://travis-ci.org/JuliaPOMDP/MCTS.jl)
+[![Coverage Status](https://coveralls.io/repos/github/JuliaPOMDP/MCTS.jl/badge.svg?branch=master)](https://coveralls.io/github/JuliaPOMDP/MCTS.jl?branch=master)
 
 The following POMDP solvers support this interface:
 * [QMDP](https://github.com/JuliaPOMDP/QMDP.jl)
+[![Build Status](https://travis-ci.org/JuliaPOMDP/QMDP.jl.svg?branch=master)](https://travis-ci.org/JuliaPOMDP/QMDP.jl)
+[![Coverage Status](https://coveralls.io/repos/JuliaPOMDP/QMDP.jl/badge.svg)](https://coveralls.io/r/JuliaPOMDP/QMDP.jl)
 * [SARSOP](https://github.com/JuliaPOMDP/SARSOP.jl)
+[![Build Status](https://travis-ci.org/JuliaPOMDP/SARSOP.jl.svg?branch=master)](https://travis-ci.org/JuliaPOMDP/SARSOP.jl)
+[![Coverage Status](https://coveralls.io/repos/github/JuliaPOMDP/SARSOP.jl/badge.svg?branch=master)](https://coveralls.io/github/JuliaPOMDP/SARSOP.jl?branch=master)
 * [POMCP](https://github.com/JuliaPOMDP/POMCP.jl)
+[![Build Status](https://travis-ci.org/JuliaPOMDP/POMCP.jl.svg?branch=master)](https://travis-ci.org/JuliaPOMDP/POMCP.jl)
+[![Coverage Status](https://coveralls.io/repos/github/JuliaPOMDP/POMCP.jl/badge.svg?branch=master)](https://coveralls.io/github/JuliaPOMDP/POMCP.jl?branch=master)
 * [DESPOT](https://github.com/JuliaPOMDP/DESPOT.jl)
+[![Build Status](https://travis-ci.org/JuliaPOMDP/DESPOT.jl.svg?branch=master)](https://travis-ci.com/JuliaPOMDP/DESPOT.jl)
+[![Coverage Status](https://coveralls.io/repos/github/JuliaPOMDP/DESPOT.jl/badge.svg?branch=master)](https://coveralls.io/github/JuliaPOMDP/DESPOT.jl?branch=master)
+* [MCVI](https://github.com/JuliaPOMDP/MCVI.jl)
 * [POMDPSolve](https://github.com/JuliaPOMDP/POMDPSolve.jl)
+[![Build Status](https://travis-ci.org/JuliaPOMDP/POMDPSolve.jl.svg?branch=master)](https://travis-ci.org/JuliaPOMDP/POMDPSolve.jl)
+[![Coverage Status](https://coveralls.io/repos/JuliaPOMDP/POMDPSolve.jl/badge.svg)](https://coveralls.io/r/JuliaPOMDP/POMDPSolve.jl)
 
-To install a solver run the following command:
+The following support tools support this interface:
+* [POMDPToolbox](https://github.com/JuliaPOMDP/POMDPToolbox.jl)
+* [POMDPModels](https://github.com/JuliaPOMDP/POMDPModels.jl)
+ 
+The following extensions support this interface:
+* [GenerativeModels](https://github.com/JuliaPOMDP/POMDPToolbox.jl)
+* [POMDPBounds](https://github.com/JuliaPOMDP/POMDPToolbox.jl)
+
+
+To install a package run the following command:
 ```julia
 using POMDPs
 # the following command adds the SARSOP solver, you can add any supported solver this way
