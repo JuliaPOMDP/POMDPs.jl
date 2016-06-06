@@ -1,18 +1,4 @@
-# Package Guide
-
-## Installation
-
-The package can be installed by cloning the code from the github repository
-[POMDPs.jl](https://github.com/JuliaPOMDP/POMDPs.jl)
-
-Installation with POMDPs.jl:
-```julia
-Pkg.add("POMDPs")
-```
-
-The package is currently not registered in meta-data.
-
-## Usage
+## 
 
 POMDPs serves as the interface used by a number of packages under the [JuliaPOMDP]() framework. It is essentially the
 agreed upon API used by all the other packages in JuliaPOMDP. If you are using this framework, you may be trying to

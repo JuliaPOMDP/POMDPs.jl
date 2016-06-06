@@ -112,6 +112,9 @@ simulate
 
 ```@docs
 add
+add_all
+test_all
+available
 @pomdp_func
 strip_arg
 ```
@@ -120,5 +123,5 @@ strip_arg
 
 ```@docs
 REMOTE_URL
-SUPPORTED_SOLVERS
+SUPPORTED_PACKAGES
 ```
