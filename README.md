@@ -74,9 +74,7 @@ There are number of packages that rely on the POMDPs.jl interface including MDP 
 Start the Julia REPL and run the following:
 ```julia
 using POMDPs
-POMDPs.add("POMDPModels")
-POMDPs.add("POMDPToolbox")
-POMDPs.add("QMDP")
+using POMDPModels, POMDPToolbox, QMDP
 # initialize problem and solver
 pomdp = TigerPOMDP() # from POMDPModels
 solver = QMDPSolver() # from QMDP
