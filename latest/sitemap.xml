@@ -3,16 +3,48 @@
 
     
     <url>
-     <loc>None/</loc>
-     <lastmod>2016-05-18</lastmod>
+     <loc>None/about/</loc>
+     <lastmod>2016-06-06</lastmod>
      <changefreq>daily</changefreq>
     </url>
     
 
     
     <url>
-     <loc>None/guide/</loc>
-     <lastmod>2016-05-18</lastmod>
+     <loc>None/install/</loc>
+     <lastmod>2016-06-06</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+    
+
+    
+    <url>
+     <loc>None/get_started/</loc>
+     <lastmod>2016-06-06</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+    
+
+    
+    <url>
+     <loc>None/def_pomdp/</loc>
+     <lastmod>2016-06-06</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+    
+
+    
+    <url>
+     <loc>None/def_solver/</loc>
+     <lastmod>2016-06-06</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+    
+
+    
+    <url>
+     <loc>None/concepts/</loc>
+     <lastmod>2016-06-06</lastmod>
      <changefreq>daily</changefreq>
     </url>
     
@@ -20,7 +52,7 @@
     
     <url>
      <loc>None/api/</loc>
-     <lastmod>2016-05-18</lastmod>
+     <lastmod>2016-06-06</lastmod>
      <changefreq>daily</changefreq>
     </url>
     

@@ -8,7 +8,7 @@
   
   <meta name="author" content="Maxim Egorov">
   
-  <title>Manual - POMDPs.jl</title>
+  <title>Getting Started - POMDPs.jl</title>
   
 
   <link rel="shortcut icon" href="../img/favicon.ico">
@@ -24,9 +24,9 @@
   
   <script>
     // Current page data
-    var mkdocs_page_name = "Manual";
-    var mkdocs_page_input_path = "guide.md";
-    var mkdocs_page_url = "/guide/";
+    var mkdocs_page_name = "Getting Started";
+    var mkdocs_page_input_path = "get_started.md";
+    var mkdocs_page_url = "/get_started/";
   </script>
   
   <script src="../js/jquery-2.1.1.min.js"></script>
@@ -46,7 +46,7 @@
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
       <div class="wy-side-nav-search">
-        <a href=".." class="icon icon-home"> POMDPs.jl</a>
+        <a href="../about/" class="icon icon-home"> POMDPs.jl</a>
         <div role="search">
   <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" />
@@ -59,27 +59,49 @@
           
             <li>
     <li class="toctree-l1 ">
-        <a class="" href="..">Home</a>
+        <a class="" href="../about/">About</a>
+        
+    </li>
+<li>
+          
+            <li>
+    <li class="toctree-l1 ">
+        <a class="" href="../install/">Installation</a>
         
     </li>
 <li>
           
             <li>
     <li class="toctree-l1 current">
-        <a class="current" href="./">Manual</a>
+        <a class="current" href="./">Getting Started</a>
         
             <ul>
             
-                <li class="toctree-l3"><a href="#package-guide">Package Guide</a></li>
-                
-                    <li><a class="toctree-l4" href="#installation">Installation</a></li>
-                
-                    <li><a class="toctree-l4" href="#usage">Usage</a></li>
-                
-                    <li><a class="toctree-l4" href="#example-simulation">Example Simulation</a></li>
+                <li class="toctree-l3"><a href="#example-simulation">Example Simulation</a></li>
                 
             
             </ul>
+        
+    </li>
+<li>
+          
+            <li>
+    <li class="toctree-l1 ">
+        <a class="" href="../def_pomdp/">Defining a POMDP</a>
+        
+    </li>
+<li>
+          
+            <li>
+    <li class="toctree-l1 ">
+        <a class="" href="../def_solver/">Defining a Solver</a>
+        
+    </li>
+<li>
+          
+            <li>
+    <li class="toctree-l1 ">
+        <a class="" href="../concepts/">Concepts and Architecture</a>
         
     </li>
 <li>
@@ -101,7 +123,7 @@
       
       <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
         <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-        <a href="..">POMDPs.jl</a>
+        <a href="../about/">POMDPs.jl</a>
       </nav>
 
       
@@ -109,11 +131,11 @@
         <div class="rst-content">
           <div role="navigation" aria-label="breadcrumbs navigation">
   <ul class="wy-breadcrumbs">
-    <li><a href="..">Docs</a> &raquo;</li>
+    <li><a href="../about/">Docs</a> &raquo;</li>
     
       
     
-    <li>Manual</li>
+    <li>Getting Started</li>
     <li class="wy-breadcrumbs-aside">
       
         
@@ -127,19 +149,8 @@
           <div role="main">
             <div class="section">
               
-                <p><a id='Package-Guide-1'></a></p>
-<h1 id="package-guide">Package Guide</h1>
-<p><a id='Installation-1'></a></p>
-<h2 id="installation">Installation</h2>
-<p>The package can be installed by cloning the code from the github repository <a href="https://github.com/JuliaPOMDP/POMDPs.jl">POMDPs.jl</a></p>
-<p>Installation with POMDPs.jl:</p>
-<div class="codehilite"><pre><span></span><span class="n">Pkg</span><span class="o">.</span><span class="n">clone</span><span class="p">(</span><span class="s">&quot;https://github.com/JuliaPOMDP/POMDPs.jl.git&quot;</span><span class="p">)</span>
-</pre></div>
-
-
-<p>The package is currently not registered in meta-data.</p>
-<p><a id='Usage-1'></a></p>
-<h2 id="usage">Usage</h2>
+                <p><a id='-1'></a></p>
+<h2 id="_1"></h2>
 <p>POMDPs serves as the interface used by a number of packages under the <a href="">JuliaPOMDP</a> framework. It is essentially the agreed upon API used by all the other packages in JuliaPOMDP. If you are using this framework, you may be trying to accomplish one or more of the following three goals:</p>
 <ul>
 <li>Solve a decision or planning problem with stochastic dynamics (MDP) or partial observability (POMDP)</li>
@@ -223,10 +234,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../api/" class="btn btn-neutral float-right" title="API">Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="../def_pomdp/" class="btn btn-neutral float-right" title="Defining a POMDP">Next <span class="icon icon-circle-arrow-right"></span></a>
       
       
-        <a href=".." class="btn btn-neutral" title="Home"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../install/" class="btn btn-neutral" title="Installation"><span class="icon icon-circle-arrow-left"></span> Previous</a>
       
     </div>
   
@@ -254,10 +265,10 @@
           <a href="https://github.com/JuliaPOMDP/POMDPs.jl" class="icon icon-github" style="float: left; color: #fcfcfc"> GitHub</a>
       
       
-        <span><a href=".." style="color: #fcfcfc;">&laquo; Previous</a></span>
+        <span><a href="../install/" style="color: #fcfcfc;">&laquo; Previous</a></span>
       
       
-        <span style="margin-left: 15px"><a href="../api/" style="color: #fcfcfc">Next &raquo;</a></span>
+        <span style="margin-left: 15px"><a href="../def_pomdp/" style="color: #fcfcfc">Next &raquo;</a></span>
       
     </span>
 </div>

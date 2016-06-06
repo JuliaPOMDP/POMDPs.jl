@@ -46,7 +46,7 @@
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
       <div class="wy-side-nav-search">
-        <a href=".." class="icon icon-home"> POMDPs.jl</a>
+        <a href="../about/" class="icon icon-home"> POMDPs.jl</a>
         <div role="search">
   <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" />
@@ -59,14 +59,42 @@
           
             <li>
     <li class="toctree-l1 ">
-        <a class="" href="..">Home</a>
+        <a class="" href="../about/">About</a>
         
     </li>
 <li>
           
             <li>
     <li class="toctree-l1 ">
-        <a class="" href="../guide/">Manual</a>
+        <a class="" href="../install/">Installation</a>
+        
+    </li>
+<li>
+          
+            <li>
+    <li class="toctree-l1 ">
+        <a class="" href="../get_started/">Getting Started</a>
+        
+    </li>
+<li>
+          
+            <li>
+    <li class="toctree-l1 ">
+        <a class="" href="../def_pomdp/">Defining a POMDP</a>
+        
+    </li>
+<li>
+          
+            <li>
+    <li class="toctree-l1 ">
+        <a class="" href="../def_solver/">Defining a Solver</a>
+        
+    </li>
+<li>
+          
+            <li>
+    <li class="toctree-l1 ">
+        <a class="" href="../concepts/">Concepts and Architecture</a>
         
     </li>
 <li>
@@ -115,7 +143,7 @@
       
       <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
         <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-        <a href="..">POMDPs.jl</a>
+        <a href="../about/">POMDPs.jl</a>
       </nav>
 
       
@@ -123,7 +151,7 @@
         <div class="rst-content">
           <div role="navigation" aria-label="breadcrumbs navigation">
   <ul class="wy-breadcrumbs">
-    <li><a href="..">Docs</a> &raquo;</li>
+    <li><a href="../about/">Docs</a> &raquo;</li>
     
       
     
@@ -179,22 +207,23 @@
 <p><a id='Index-1'></a></p>
 <h2 id="index">Index</h2>
 <ul>
-<li><a href="./#Base.Random.rand"><code>Base.Random.rand</code></a></li>
-<li><a href="./#POMDPs.@pomdp_func"><code>POMDPs.@pomdp_func</code></a></li>
+<li><a href="./#POMDPs.REMOTE_URL"><code>POMDPs.REMOTE_URL</code></a></li>
+<li><a href="./#POMDPs.SUPPORTED_PACKAGES"><code>POMDPs.SUPPORTED_PACKAGES</code></a></li>
 <li><a href="./#POMDPs.AbstractDistribution"><code>POMDPs.AbstractDistribution</code></a></li>
 <li><a href="./#POMDPs.AbstractSpace"><code>POMDPs.AbstractSpace</code></a></li>
 <li><a href="./#POMDPs.MDP"><code>POMDPs.MDP</code></a></li>
 <li><a href="./#POMDPs.POMDP"><code>POMDPs.POMDP</code></a></li>
 <li><a href="./#POMDPs.Policy"><code>POMDPs.Policy</code></a></li>
-<li><a href="./#POMDPs.REMOTE_URL"><code>POMDPs.REMOTE_URL</code></a></li>
-<li><a href="./#POMDPs.SUPPORTED_SOLVERS"><code>POMDPs.SUPPORTED_SOLVERS</code></a></li>
 <li><a href="./#POMDPs.Simulator"><code>POMDPs.Simulator</code></a></li>
 <li><a href="./#POMDPs.Solver"><code>POMDPs.Solver</code></a></li>
 <li><a href="./#POMDPs.Updater"><code>POMDPs.Updater</code></a></li>
+<li><a href="./#Base.Random.rand"><code>Base.Random.rand</code></a></li>
 <li><a href="./#POMDPs.action"><code>POMDPs.action</code></a></li>
 <li><a href="./#POMDPs.action_index"><code>POMDPs.action_index</code></a></li>
 <li><a href="./#POMDPs.actions"><code>POMDPs.actions</code></a></li>
 <li><a href="./#POMDPs.add"><code>POMDPs.add</code></a></li>
+<li><a href="./#POMDPs.add_all"><code>POMDPs.add_all</code></a></li>
+<li><a href="./#POMDPs.available"><code>POMDPs.available</code></a></li>
 <li><a href="./#POMDPs.create_action"><code>POMDPs.create_action</code></a></li>
 <li><a href="./#POMDPs.create_belief"><code>POMDPs.create_belief</code></a></li>
 <li><a href="./#POMDPs.create_observation"><code>POMDPs.create_observation</code></a></li>
@@ -222,10 +251,12 @@
 <li><a href="./#POMDPs.state_index"><code>POMDPs.state_index</code></a></li>
 <li><a href="./#POMDPs.states"><code>POMDPs.states</code></a></li>
 <li><a href="./#POMDPs.strip_arg"><code>POMDPs.strip_arg</code></a></li>
+<li><a href="./#POMDPs.test_all"><code>POMDPs.test_all</code></a></li>
 <li><a href="./#POMDPs.transition"><code>POMDPs.transition</code></a></li>
 <li><a href="./#POMDPs.update"><code>POMDPs.update</code></a></li>
 <li><a href="./#POMDPs.updater"><code>POMDPs.updater</code></a></li>
 <li><a href="./#POMDPs.value"><code>POMDPs.value</code></a></li>
+<li><a href="./#POMDPs.@pomdp_func"><code>POMDPs.@pomdp_func</code></a></li>
 </ul>
 <p><a id='Types-1'></a></p>
 <h2 id="types">Types</h2>
@@ -604,26 +635,47 @@ create_policy(solver::Solver, problem::MDP)
 </pre></div>
 
 
-<p>Runs a simulation using the specified policy and returns the accumulated reward</p>
+<p>Run a simulation using the specified policy and returns the accumulated reward</p>
 <div class="codehilite"><pre><span></span>simulate{S,A,O,B}(simulator::Simulator, problem::POMDP{S,A,O}, policy::Policy{B}, updater::Updater{B}, initial_belief::Union{B,AbstractDistribution{S}})
 </pre></div>
 
 
-<p>Runs a simulation using the specified policy and returns the accumulated reward</p>
+<p>Run a simulation using the specified policy and returns the accumulated reward</p>
 <p><a id='Utility-Tools-1'></a></p>
 <h2 id="utility-tools">Utility Tools</h2>
 <p><a id='POMDPs.add' href='#POMDPs.add'>#</a>
 <strong><code>POMDPs.add</code></strong> &mdash; <em>Function</em>.</p>
-<div class="codehilite"><pre><span></span>add(solver_name::AbstractString)
+<div class="codehilite"><pre><span></span>add(solver_name::AbstractString, v::Bool=true)
 </pre></div>
 
 
-<p>Downloads and installs a registered solver with name <code>solver_name</code>.  This function is not exported, and must be called:</p>
+<p>Downloads and installs a registered solver with name <code>solver_name</code>.  <code>v</code> is a verbose flag, when set to true, function will notify the user if solver is already installed. This function is not exported, and must be called:</p>
 <div class="codehilite"><pre><span></span><span class="n">julia</span><span class="o">&gt;</span> <span class="k">using</span> <span class="n">POMDPs</span>
 <span class="n">julia</span><span class="o">&gt;</span> <span class="n">POMDPs</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s">&quot;MCTS&quot;</span><span class="p">)</span>
 </pre></div>
 
 
+<p><a id='POMDPs.add_all' href='#POMDPs.add_all'>#</a>
+<strong><code>POMDPs.add_all</code></strong> &mdash; <em>Function</em>.</p>
+<div class="codehilite"><pre><span></span>add_all()
+</pre></div>
+
+
+<p>Downloads and installs all the packages supported by JuliaPOMDP</p>
+<p><a id='POMDPs.test_all' href='#POMDPs.test_all'>#</a>
+<strong><code>POMDPs.test_all</code></strong> &mdash; <em>Function</em>.</p>
+<div class="codehilite"><pre><span></span>test_all()
+</pre></div>
+
+
+<p>Tests all the JuliaPOMDP packages installed on your current machine.</p>
+<p><a id='POMDPs.available' href='#POMDPs.available'>#</a>
+<strong><code>POMDPs.available</code></strong> &mdash; <em>Function</em>.</p>
+<div class="codehilite"><pre><span></span>available()
+</pre></div>
+
+
+<p>Prints all the availiable packages in JuliaPOMDP</p>
 <p><a id='POMDPs.@pomdp_func' href='#POMDPs.@pomdp_func'>#</a>
 <strong><code>POMDPs.@pomdp_func</code></strong> &mdash; <em>Macro</em>.</p>
 <p>Provide a default function implementation that throws an error when called.</p>
@@ -636,9 +688,9 @@ create_policy(solver::Solver, problem::MDP)
 <p><a id='POMDPs.REMOTE_URL' href='#POMDPs.REMOTE_URL'>#</a>
 <strong><code>POMDPs.REMOTE_URL</code></strong> &mdash; <em>Constant</em>.</p>
 <p>url to remote JuliaPOMDP organization repo</p>
-<p><a id='POMDPs.SUPPORTED_SOLVERS' href='#POMDPs.SUPPORTED_SOLVERS'>#</a>
-<strong><code>POMDPs.SUPPORTED_SOLVERS</code></strong> &mdash; <em>Constant</em>.</p>
-<p>Set containing string names of officially supported solvers  (e.g. <code>MCTS</code>, <code>SARSOP</code>, etc).  If you have a validated solver that supports the POMDPs.jl API, contact the developers to add your solver to this list. </p>
+<p><a id='POMDPs.SUPPORTED_PACKAGES' href='#POMDPs.SUPPORTED_PACKAGES'>#</a>
+<strong><code>POMDPs.SUPPORTED_PACKAGES</code></strong> &mdash; <em>Constant</em>.</p>
+<p>Set containing string names of officially supported solvers and utility packages (e.g. <code>MCTS</code>, <code>SARSOP</code>, <code>POMDPToolbox</code>, etc).  If you have a validated solver that supports the POMDPs.jl API, contact the developers to add your solver to this list. </p>
               
             </div>
           </div>
@@ -647,7 +699,7 @@ create_policy(solver::Solver, problem::MDP)
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
       
-        <a href="../guide/" class="btn btn-neutral" title="Manual"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../concepts/" class="btn btn-neutral" title="Concepts and Architecture"><span class="icon icon-circle-arrow-left"></span> Previous</a>
       
     </div>
   
@@ -675,7 +727,7 @@ create_policy(solver::Solver, problem::MDP)
           <a href="https://github.com/JuliaPOMDP/POMDPs.jl" class="icon icon-github" style="float: left; color: #fcfcfc"> GitHub</a>
       
       
-        <span><a href="../guide/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+        <span><a href="../concepts/" style="color: #fcfcfc;">&laquo; Previous</a></span>
       
       
     </span>
