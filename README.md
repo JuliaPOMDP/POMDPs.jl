@@ -100,4 +100,4 @@ The following tutorials aim to get you up to speed with POMDPs.jl:
 
 ## Documentation
 
-Detailed documentation can be found [here](http://juliapomdp.github.io/POMDPs.jl/latest/).
+Detailed documentation can be found [here](http://juliapomdp.github.io/POMDPs.jl/stable/).
