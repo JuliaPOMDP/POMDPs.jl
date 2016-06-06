@@ -49,7 +49,11 @@ The following POMDP solvers support this interface:
 
 The following support tools support this interface:
 * [POMDPToolbox](https://github.com/JuliaPOMDP/POMDPToolbox.jl)
+[![Build Status](https://travis-ci.org/JuliaPOMDP/POMDPToolbox.jl.svg?branch=master)](https://travis-ci.org/JuliaPOMDP/POMDPToolbox.jl)
+[![Coverage Status](https://coveralls.io/repos/github/JuliaPOMDP/POMDPToolbox.jl/badge.svg?branch=master)](https://coveralls.io/github/JuliaPOMDP/POMDPToolbox.jl?branch=master)
 * [POMDPModels](https://github.com/JuliaPOMDP/POMDPModels.jl)
+[![Build Status](https://travis-ci.org/JuliaPOMDP/POMDPModels.jl.svg?branch=master)](https://travis-ci.org/JuliaPOMDP/POMDPModels.jl)
+[![Coverage Status](https://coveralls.io/repos/github/JuliaPOMDP/POMDPModels.jl/badge.svg?branch=master)](https://coveralls.io/github/JuliaPOMDP/POMDPModels.jl?branch=master)
  
 The following extensions support this interface:
 * [GenerativeModels](https://github.com/JuliaPOMDP/GenerativeModels.jl)
