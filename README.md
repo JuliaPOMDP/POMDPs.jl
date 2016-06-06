@@ -18,6 +18,19 @@ To install POMDPs.jl, run the following from the Julia REPL:
 Pkg.add("POMDPs")
 ```
 
+To install a supported JuliaPOMDP package run the following command:
+```julia
+using POMDPs
+# the following command installs the SARSOP solver, you can add any supported solver this way
+POMDPs.add("SARSOP") 
+```
+
+To install all the solvers, support tools and dependencies that are part of JuliaPOMDP run:
+```julia
+using POMDPs
+POMDPs.add_all() # this may take a few minutes
+```
+
 ## Supported Packages
 
 There are number of packages that rely on the POMDPs.jl interface including MDP and POMDP solvers, support tools, and extensions to the POMDPs.jl interface. 
@@ -56,21 +69,27 @@ There are number of packages that rely on the POMDPs.jl interface including MDP 
 | [GenerativeModels](https://github.com/JuliaPOMDP/GenerativeModels.jl) |  | 
 | [POMDPBounds](https://github.com/JuliaPOMDP/POMDPBounds.jl) |  | 
 
+## Quick Start
 
-
-
-To install a package run the following command:
+Start the Julia REPL and run the following:
 ```julia
 using POMDPs
-# the following command adds the SARSOP solver, you can add any supported solver this way
-POMDPs.add("SARSOP") 
+POMDPs.add("POMDPModels")
+POMDPs.add("POMDPToolbox")
+POMDPs.add("QMDP")
+# initialize problem and solver
+pomdp = TigerPOMDP() # from POMDPModels
+solver = QMDPSolver() # from QMDP
+# compute a policy
+policy = solve(solver, pomdp)
+#evaluate the policy
+belief_updater = updater(policy) # the default QMPD belief updater (discrete Bayesian filter)
+init_dist = initial_state_distribution(pomdp) # from POMDPModels
+stats = simulate(HistoryRecorder(max_steps=100), pomdp, policy, belief_updater, init_dist) # run 100 step simulation
 ```
+The code above solves the Tiger POMDP using the QMDP algorithm, and evaluates its performance. 
 
-To install all the solvers, support tools and dependencies that are part of JuliaPOMDP run:
-```julia
-using POMDPs
-POMDPs.add_all() # this may take a few minutes
-```
+
 
 ## Tutorials
 
