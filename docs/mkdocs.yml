@@ -26,11 +26,12 @@ extra_javascript:
 docs_dir: 'build'
 
 pages:
-- About: about.md
+- About: index.md
 - Installation: install.md
 - Getting Started: get_started.md
 - Defining a POMDP: def_pomdp.md
 - Defining a Solver: def_solver.md
 - Concepts and Architecture: concepts.md
 - API: api.md
+- Frequently Asked Questions: faq.md
 

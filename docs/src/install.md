@@ -1,4 +1,4 @@
-## Installation
+# Installation
 
 If you have a running Julia distriubtion (Julia 0.4 or greaer), you have everything you need to install POMDPs.jl. To install the package, simply
 run the following from the Julia REPL:
