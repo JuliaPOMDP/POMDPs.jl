@@ -1,36 +1,40 @@
-## Getting Started
+# Getting Started
 
-POMDPs serves as the interface used by a number of packages under the [JuliaPOMDP]() framework. It is essentially the
-agreed upon API used by all the other packages in JuliaPOMDP. If you are using this framework, you may be trying to
-accomplish one or more of the following three goals:
+Before writing our own POMDP problems or solvers, let's try out some of the availiable solvers and problem models
+availible in JuliaPOMDP.
 
-- Solve a decision or planning problem with stochastic dynamics (MDP) or partial observability (POMDP)
-- Evaluate a solution in simulation
-- Test your custom algorithm for solving MDPs or POMDPs against other state-of-the-art algorithms
-
-If you are attempting to complete the first two goals, take a look at these Jupyer Notebook tutorials:
-
-* [MDP Tutorial](http://nbviewer.ipython.org/github/sisl/POMDPs.jl/blob/master/examples/GridWorld.ipynb) for beginners gives an overview of using Value Iteration and Monte-Carlo Tree Search with the classic grid world problem
-* [POMDP Tutorial](http://nbviewer.ipython.org/github/sisl/POMDPs.jl/blob/master/examples/Tiger.ipynb) gives an overview of using SARSOP and QMDP to solve the tiger problem
-
-If you are trying to write your own algorithm for solving MDPs or POMDPs with this interface take a look at the API section of this guide.
-
-
-The following snippet shows how a solver should be used to solve a problem and run a simulation.
+Here is a short piece of code that solves the Tiger POMDP using SARSOP, and evaluates the results. Note that you must
+have the SARSOP, POMDPModels, and POMDPToolbox modules installed. 
 
 ```julia
-using SARSOP
-using POMDPModels
+using SARSOP, POMDPModels, POMDPToolbox
 
-solver = SARSOP()
+# initialize problem and solver
+pomdp = TigerPOMDP() # from POMDPModels
+solver = SARSOPSolver() # from SARSOP
 
-problem = BabyPOMDP()
+# compute a policy
+policy = solve(solver, pomdp)
 
-policy = solve(solver, problem)
-up = updater(policy)
-sim = ReferenceSimulator(MersenneTwister(1), 10)
-
-r = simulate(sim, problem, policy, up, initial_state_distribution(problem))
-
-println("Reward: $r")
+#evaluate the policy
+belief_updater = updater(policy) # the default QMPD belief updater (discrete Bayesian filter)
+init_dist = initial_state_distribution(pomdp) # from POMDPModels
+hist = HistoryRecorder(max_steps=100) # from POMDPToolbox
+r = simulate(hist, pomdp, policy, belief_updater, init_dist) # run 100 step simulation
 ```
+
+The first part of the code loads the desired packages and initializes the problem and the solver. Next, we compute a
+POMDP policy. Lastly, we evaluate the results. 
+
+There are a few things to mention here. First, the TigerPOMDP type implements all the functions required by
+SARSOPSolver to compute a policy. Second, each policy has a default updater (essentially a filter used to update the
+belief of the POMDP). To learn more about Updaters check out the Concepts section. We can also play around with the
+history.
+
+```julia
+hist.state_hist
+hist.observation_hist
+```
+
+
+

@@ -30,11 +30,13 @@ CurrentModule = POMDPs
 Pages = ["api.md"]
 ```
 
+
 ## Index
 
 ```@index
 Pages = ["api.md"]
 ```
+
 
 ## Types
 
@@ -47,6 +49,7 @@ Solver
 Policy
 Updater
 ```
+
 
 ## Model Functions
 
@@ -125,3 +128,4 @@ strip_arg
 REMOTE_URL
 SUPPORTED_PACKAGES
 ```
+
