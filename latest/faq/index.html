@@ -114,6 +114,8 @@
             
                 <li class="toctree-l3"><a href="#frequently-asked-questions-faq">Frequently Asked Questions (FAQ)</a></li>
                 
+                    <li><a class="toctree-l4" href="#how-do-i-save-my-policies">How do I save my policies?</a></li>
+                
             
             </ul>
         
@@ -157,7 +159,13 @@
             <div class="section">
               
                 <p><a id='Frequently-Asked-Questions-(FAQ)-1'></a></p>
-<h2 id="frequently-asked-questions-faq">Frequently Asked Questions (FAQ)</h2>
+<h1 id="frequently-asked-questions-faq">Frequently Asked Questions (FAQ)</h1>
+<p><a id='How-do-I-save-my-policies?-1'></a></p>
+<h2 id="how-do-i-save-my-policies">How do I save my policies?</h2>
+<p>We reccomend using <a href="https://github.com/JuliaIO/JLD.jl">JLD</a> to save the whole policy object. This is the simplest, and failry efficient way to save Julia objects. JLD uses HDF5 format underneath. If you've already computed a policy, you can simply run:</p>
+<div class="codehilite"><pre><span></span><span class="k">using</span> <span class="n">JLD</span>
+<span class="n">save</span><span class="p">(</span><span class="s">&quot;my_policy.jld&quot;</span><span class="p">,</span> <span class="s">&quot;policy&quot;</span><span class="p">,</span> <span class="n">policy</span><span class="p">)</span> 
+</pre></div>
               
             </div>
           </div>

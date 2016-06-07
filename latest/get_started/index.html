@@ -157,34 +157,30 @@
             <div class="section">
               
                 <p><a id='Getting-Started-1'></a></p>
-<h2 id="getting-started">Getting Started</h2>
-<p>POMDPs serves as the interface used by a number of packages under the <a href="">JuliaPOMDP</a> framework. It is essentially the agreed upon API used by all the other packages in JuliaPOMDP. If you are using this framework, you may be trying to accomplish one or more of the following three goals:</p>
-<ul>
-<li>Solve a decision or planning problem with stochastic dynamics (MDP) or partial observability (POMDP)</li>
-<li>Evaluate a solution in simulation</li>
-<li>Test your custom algorithm for solving MDPs or POMDPs against other state-of-the-art algorithms</li>
-</ul>
-<p>If you are attempting to complete the first two goals, take a look at these Jupyer Notebook tutorials:</p>
-<ul>
-<li><a href="http://nbviewer.ipython.org/github/sisl/POMDPs.jl/blob/master/examples/GridWorld.ipynb">MDP Tutorial</a> for beginners gives an overview of using Value Iteration and Monte-Carlo Tree Search with the classic grid world problem</li>
-<li><a href="http://nbviewer.ipython.org/github/sisl/POMDPs.jl/blob/master/examples/Tiger.ipynb">POMDP Tutorial</a> gives an overview of using SARSOP and QMDP to solve the tiger problem</li>
-</ul>
-<p>If you are trying to write your own algorithm for solving MDPs or POMDPs with this interface take a look at the API section of this guide.</p>
-<p>The following snippet shows how a solver should be used to solve a problem and run a simulation.</p>
-<div class="codehilite"><pre><span></span><span class="k">using</span> <span class="n">SARSOP</span>
-<span class="k">using</span> <span class="n">POMDPModels</span>
+<h1 id="getting-started">Getting Started</h1>
+<p>Before writing our own POMDP problems or solvers, let's try out some of the availiable solvers and problem models availible in JuliaPOMDP.</p>
+<p>Here is a short piece of code that solves the Tiger POMDP using SARSOP, and evaluates the results. Note that you must have the SARSOP, POMDPModels, and POMDPToolbox modules installed. </p>
+<div class="codehilite"><pre><span></span><span class="k">using</span> <span class="n">SARSOP</span><span class="p">,</span> <span class="n">POMDPModels</span><span class="p">,</span> <span class="n">POMDPToolbox</span>
 
-<span class="n">solver</span> <span class="o">=</span> <span class="n">SARSOP</span><span class="p">()</span>
+<span class="c"># initialize problem and solver</span>
+<span class="n">pomdp</span> <span class="o">=</span> <span class="n">TigerPOMDP</span><span class="p">()</span> <span class="c"># from POMDPModels</span>
+<span class="n">solver</span> <span class="o">=</span> <span class="n">SARSOPSolver</span><span class="p">()</span> <span class="c"># from SARSOP</span>
 
-<span class="n">problem</span> <span class="o">=</span> <span class="n">BabyPOMDP</span><span class="p">()</span>
+<span class="c"># compute a policy</span>
+<span class="n">policy</span> <span class="o">=</span> <span class="n">solve</span><span class="p">(</span><span class="n">solver</span><span class="p">,</span> <span class="n">pomdp</span><span class="p">)</span>
 
-<span class="n">policy</span> <span class="o">=</span> <span class="n">solve</span><span class="p">(</span><span class="n">solver</span><span class="p">,</span> <span class="n">problem</span><span class="p">)</span>
-<span class="n">up</span> <span class="o">=</span> <span class="n">updater</span><span class="p">(</span><span class="n">policy</span><span class="p">)</span>
-<span class="n">sim</span> <span class="o">=</span> <span class="n">ReferenceSimulator</span><span class="p">(</span><span class="n">MersenneTwister</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="mi">10</span><span class="p">)</span>
+<span class="c">#evaluate the policy</span>
+<span class="n">belief_updater</span> <span class="o">=</span> <span class="n">updater</span><span class="p">(</span><span class="n">policy</span><span class="p">)</span> <span class="c"># the default QMPD belief updater (discrete Bayesian filter)</span>
+<span class="n">init_dist</span> <span class="o">=</span> <span class="n">initial_state_distribution</span><span class="p">(</span><span class="n">pomdp</span><span class="p">)</span> <span class="c"># from POMDPModels</span>
+<span class="n">hist</span> <span class="o">=</span> <span class="n">HistoryRecorder</span><span class="p">(</span><span class="n">max_steps</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span> <span class="c"># from POMDPToolbox</span>
+<span class="n">r</span> <span class="o">=</span> <span class="n">simulate</span><span class="p">(</span><span class="n">hist</span><span class="p">,</span> <span class="n">pomdp</span><span class="p">,</span> <span class="n">policy</span><span class="p">,</span> <span class="n">belief_updater</span><span class="p">,</span> <span class="n">init_dist</span><span class="p">)</span> <span class="c"># run 100 step simulation</span>
+</pre></div>
 
-<span class="n">r</span> <span class="o">=</span> <span class="n">simulate</span><span class="p">(</span><span class="n">sim</span><span class="p">,</span> <span class="n">problem</span><span class="p">,</span> <span class="n">policy</span><span class="p">,</span> <span class="n">up</span><span class="p">,</span> <span class="n">initial_state_distribution</span><span class="p">(</span><span class="n">problem</span><span class="p">))</span>
 
-<span class="n">println</span><span class="p">(</span><span class="s">&quot;Reward: </span><span class="si">$r</span><span class="s">&quot;</span><span class="p">)</span>
+<p>The first part of the code loads the desired packages and initializes the problem and the solver. Next, we compute a POMDP policy. Lastly, we evaluate the results. </p>
+<p>There are a few things to mention here. First, the TigerPOMDP type implements all the functions required by SARSOPSolver to compute a policy. Second, each policy has a default updater (essentially a filter used to update the belief of the POMDP). To learn more about Updaters check out the Concepts section. We can also play around with the history.</p>
+<div class="codehilite"><pre><span></span><span class="n">hist</span><span class="o">.</span><span class="n">state_hist</span>
+<span class="n">hist</span><span class="o">.</span><span class="n">observation_hist</span>
 </pre></div>
               
             </div>
