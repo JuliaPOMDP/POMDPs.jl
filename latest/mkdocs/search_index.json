@@ -1,48 +1,48 @@
 {
     "docs": [
         {
-            "location": "/about/", 
-            "text": "POMDPs\n\n\nA Julia interface for defining, solving and simulating partially observable Markov decision processes and their fully observable counterparts.\n\n\n\n\nPackage Features\n\n\n\n\nGeneral interface that can handle problems with discrete and continuous state/action/observation spaces\n\n\nA number of popular state-of-the-art solvers availiable to use out of the box\n\n\nTools that make it easy to define problems and simulate solutions\n\n\nSimple integration of custom solvers into the existing interface\n\n\n\n\n\n\nAvailible Packages\n\n\nThe POMDPs.jl package contains the interface used for expressing and solving Markov decision processes (MDPs) and partially observable Markov decision processes (POMDPs) in the Julia programming language. The \nJuliaPOMDP\n community maintains these packages. The packages currently maintained by JuliaPOMDP are as follows: \n\n\n\n\nMDP solvers:\n\n\n\n\nValue Iteration\n\n\nMonte Carlo Tree Search\n\n\n\n\n\n\nPOMDP solvers:\n\n\n\n\nQMDP\n\n\nSARSOP\n\n\nPOMCP\n\n\nDESPOT\n\n\nMCVI\n\n\nPOMDPSolve\n\n\n\n\n\n\nSupport Tools:\n\n\n\n\nPOMDPToolbox\n\n\nPOMDPModels\n\n\n\n\n\n\nInterface Extensions:\n\n\n\n\nGenerativeModels\n\n\nPOMDPBounds\n\n\n\n\n\n\nManual Outline\n\n\n- [Installation](install.md#Installation-1)\n\n\n\n\n\n\n\nPOMDPs\n\n\nPackage Features\n\n\nAvailible Packages\n\n\nManual Outline\n\n\n\n\nExample Simulation\n\n\n\n\n\n\nAPI Documentation\n\n\nContents\n\n\nIndex\n\n\nTypes\n\n\nModel Functions\n\n\nDistribution/Space Functions\n\n\nBelief Functions\n\n\nPolicy and Solver Functions\n\n\nSimulator\n\n\nUtility Tools\n\n\nConstants", 
+            "location": "/", 
+            "text": "POMDPs\n\n\nA Julia interface for defining, solving and simulating partially observable Markov decision processes and their fully observable counterparts.\n\n\n\n\nPackage Features\n\n\n\n\nGeneral interface that can handle problems with discrete and continuous state/action/observation spaces\n\n\nA number of popular state-of-the-art solvers availiable to use out of the box\n\n\nTools that make it easy to define problems and simulate solutions\n\n\nSimple integration of custom solvers into the existing interface\n\n\n\n\n\n\nAvailible Packages\n\n\nThe POMDPs.jl package contains the interface used for expressing and solving Markov decision processes (MDPs) and partially observable Markov decision processes (POMDPs) in the Julia programming language. The \nJuliaPOMDP\n community maintains these packages. The packages currently maintained by JuliaPOMDP are as follows: \n\n\n\n\nMDP solvers:\n\n\n\n\nValue Iteration\n\n\nMonte Carlo Tree Search\n\n\n\n\n\n\nPOMDP solvers:\n\n\n\n\nQMDP\n\n\nSARSOP\n\n\nPOMCP\n\n\nDESPOT\n\n\nMCVI\n\n\nPOMDPSolve\n\n\n\n\n\n\nSupport Tools:\n\n\n\n\nPOMDPToolbox\n\n\nPOMDPModels\n\n\n\n\n\n\nInterface Extensions:\n\n\n\n\nGenerativeModels\n\n\nPOMDPBounds\n\n\n\n\n\n\nManual Outline\n\n\n\n\nPOMDPs\n\n\nPackage Features\n\n\nAvailible Packages\n\n\nManual Outline\n\n\n\n\n\n\nDefining a POMDP\n\n\nFrequently Asked Questions (FAQ)\n\n\n\n\n\n\nInstallation\n\n\nGetting Started\n\n\n\n\n\n\nAPI Documentation\n\n\nContents\n\n\nIndex\n\n\nTypes\n\n\nModel Functions\n\n\nDistribution/Space Functions\n\n\nBelief Functions\n\n\nPolicy and Solver Functions\n\n\nSimulator\n\n\nUtility Tools\n\n\nConstants\n\n\n\n\n\n\nConcepts\n\n\nArchitecture\n\n\nDefining a Solver", 
             "title": "About"
         }, 
         {
-            "location": "/about/#pomdps", 
+            "location": "/#pomdps", 
             "text": "A Julia interface for defining, solving and simulating partially observable Markov decision processes and their fully observable counterparts.", 
             "title": "POMDPs"
         }, 
         {
-            "location": "/about/#package-features", 
+            "location": "/#package-features", 
             "text": "General interface that can handle problems with discrete and continuous state/action/observation spaces  A number of popular state-of-the-art solvers availiable to use out of the box  Tools that make it easy to define problems and simulate solutions  Simple integration of custom solvers into the existing interface", 
             "title": "Package Features"
         }, 
         {
-            "location": "/about/#availible-packages", 
+            "location": "/#availible-packages", 
             "text": "The POMDPs.jl package contains the interface used for expressing and solving Markov decision processes (MDPs) and partially observable Markov decision processes (POMDPs) in the Julia programming language. The  JuliaPOMDP  community maintains these packages. The packages currently maintained by JuliaPOMDP are as follows:", 
             "title": "Availible Packages"
         }, 
         {
-            "location": "/about/#mdp-solvers", 
+            "location": "/#mdp-solvers", 
             "text": "Value Iteration  Monte Carlo Tree Search", 
             "title": "MDP solvers:"
         }, 
         {
-            "location": "/about/#pomdp-solvers", 
+            "location": "/#pomdp-solvers", 
             "text": "QMDP  SARSOP  POMCP  DESPOT  MCVI  POMDPSolve", 
             "title": "POMDP solvers:"
         }, 
         {
-            "location": "/about/#support-tools", 
+            "location": "/#support-tools", 
             "text": "POMDPToolbox  POMDPModels", 
             "title": "Support Tools:"
         }, 
         {
-            "location": "/about/#interface-extensions", 
+            "location": "/#interface-extensions", 
             "text": "GenerativeModels  POMDPBounds", 
             "title": "Interface Extensions:"
         }, 
         {
-            "location": "/about/#manual-outline", 
-            "text": "- [Installation](install.md#Installation-1)   POMDPs  Package Features  Availible Packages  Manual Outline   Example Simulation    API Documentation  Contents  Index  Types  Model Functions  Distribution/Space Functions  Belief Functions  Policy and Solver Functions  Simulator  Utility Tools  Constants", 
+            "location": "/#manual-outline", 
+            "text": "POMDPs  Package Features  Availible Packages  Manual Outline    Defining a POMDP  Frequently Asked Questions (FAQ)    Installation  Getting Started    API Documentation  Contents  Index  Types  Model Functions  Distribution/Space Functions  Belief Functions  Policy and Solver Functions  Simulator  Utility Tools  Constants    Concepts  Architecture  Defining a Solver", 
             "title": "Manual Outline"
         }, 
         {
@@ -57,28 +57,48 @@
         }, 
         {
             "location": "/get_started/", 
-            "text": "POMDPs serves as the interface used by a number of packages under the \nJuliaPOMDP\n framework. It is essentially the agreed upon API used by all the other packages in JuliaPOMDP. If you are using this framework, you may be trying to accomplish one or more of the following three goals:\n\n\n\n\nSolve a decision or planning problem with stochastic dynamics (MDP) or partial observability (POMDP)\n\n\nEvaluate a solution in simulation\n\n\nTest your custom algorithm for solving MDPs or POMDPs against other state-of-the-art algorithms\n\n\n\n\nIf you are attempting to complete the first two goals, take a look at these Jupyer Notebook tutorials:\n\n\n\n\nMDP Tutorial\n for beginners gives an overview of using Value Iteration and Monte-Carlo Tree Search with the classic grid world problem\n\n\nPOMDP Tutorial\n gives an overview of using SARSOP and QMDP to solve the tiger problem\n\n\n\n\nIf you are trying to write your own algorithm for solving MDPs or POMDPs with this interface take a look at the API section of this guide.\n\n\n\n\nExample Simulation\n\n\nThe following code snippets show how some of the most important functions in the interface are to be used together. (Please note that this example is written for clarity and not efficiency; several other simulators are available in the \nJuliaPOMDP/POMDPToolbox.jl\n package.)\n\n\nFirst, here is a definition of a simple simulator showing the use of the important functions \nrand\n, \ninitialize_belief\n, \nisterminal\n, \naction\n, \ntransition\n, \nreward\n, \nobservation\n, \nupdate\n, and \ndiscount\n.\n\n\nusing\n \nPOMDPs\n\n\n\ntype\n ReferenceSimulator\n\n    \nrng\n::\nAbstractRNG\n\n    \nmax_steps\n::\nInt\n\n\nend\n\n\n\nfunction\n simulate\n{\nS\n,\nA\n,\nO\n,\nB\n}(\nsim\n::\nReferenceSimulator\n,\n\n                           \npomdp\n::\nPOMDP\n{\nS\n,\nA\n,\nO\n},\n\n                           \npolicy\n::\nPolicy\n,\n\n                           \nupdater\n::\nUpdater\n{\nB\n},\n\n                           \ninitial_distribution\n::\nAbstractDistribution\n)\n\n\n    \ns\n \n=\n \nrand\n(\nsim\n.\nrng\n,\n \ninitial_distribution\n)\n\n    \nb\n \n=\n \ninitialize_belief\n(\nupdater\n,\n \ninitial_distribution\n)\n\n\n    \ndisc\n \n=\n \n1.0\n\n    \nr_total\n \n=\n \n0.0\n\n\n    \nstep\n \n=\n \n1\n\n\n    \nwhile\n \n!\nisterminal\n(\npomdp\n,\n \ns\n)\n \n \nstep\n \n=\n \nsim\n.\nmax_steps\n\n        \na\n \n=\n \naction\n(\npolicy\n,\n \nb\n)\n\n\n        \ntrans_dist\n \n=\n \ntransition\n(\npomdp\n,\n \ns\n,\n \na\n)\n\n        \nsp\n \n=\n \nrand\n(\nsim\n.\nrng\n,\n \ntrans_dist\n)\n\n\n        \nr_total\n \n+=\n \ndisc\n*\nreward\n(\npomdp\n,\n \ns\n,\n \na\n,\n \nsp\n)\n\n\n        \nobs_dist\n \n=\n \nobservation\n(\npomdp\n,\n \ns\n,\n \na\n,\n \nsp\n)\n\n        \no\n \n=\n \nrand\n(\nsim\n.\nrng\n,\n \nobs_dist\n)\n\n\n        \nb\n \n=\n \nupdate\n(\nupdater\n,\n \nb\n,\n \na\n,\n \no\n)\n\n\n        \ndisc\n \n*=\n \ndiscount\n(\npomdp\n)\n\n        \ns\n \n=\n \nsp\n\n        \nstep\n \n+=\n \n1\n\n    \nend\n\n\n    \nreturn\n \nr_total\n\n\nend\n\n\n\n\n\n\nThe following snippet shows how a solver should be used to solve a problem and run a simulation.\n\n\nusing\n \nSARSOP\n\n\nusing\n \nPOMDPModels\n\n\n\nsolver\n \n=\n \nSARSOP\n()\n\n\n\nproblem\n \n=\n \nBabyPOMDP\n()\n\n\n\npolicy\n \n=\n \nsolve\n(\nsolver\n,\n \nproblem\n)\n\n\nup\n \n=\n \nupdater\n(\npolicy\n)\n\n\nsim\n \n=\n \nReferenceSimulator\n(\nMersenneTwister\n(\n1\n),\n \n10\n)\n\n\n\nr\n \n=\n \nsimulate\n(\nsim\n,\n \nproblem\n,\n \npolicy\n,\n \nup\n,\n \ninitial_state_distribution\n(\nproblem\n))\n\n\n\nprintln\n(\nReward: \n$r\n)", 
+            "text": "Getting Started\n\n\nPOMDPs serves as the interface used by a number of packages under the \nJuliaPOMDP\n framework. It is essentially the agreed upon API used by all the other packages in JuliaPOMDP. If you are using this framework, you may be trying to accomplish one or more of the following three goals:\n\n\n\n\nSolve a decision or planning problem with stochastic dynamics (MDP) or partial observability (POMDP)\n\n\nEvaluate a solution in simulation\n\n\nTest your custom algorithm for solving MDPs or POMDPs against other state-of-the-art algorithms\n\n\n\n\nIf you are attempting to complete the first two goals, take a look at these Jupyer Notebook tutorials:\n\n\n\n\nMDP Tutorial\n for beginners gives an overview of using Value Iteration and Monte-Carlo Tree Search with the classic grid world problem\n\n\nPOMDP Tutorial\n gives an overview of using SARSOP and QMDP to solve the tiger problem\n\n\n\n\nIf you are trying to write your own algorithm for solving MDPs or POMDPs with this interface take a look at the API section of this guide.\n\n\nThe following snippet shows how a solver should be used to solve a problem and run a simulation.\n\n\nusing\n \nSARSOP\n\n\nusing\n \nPOMDPModels\n\n\n\nsolver\n \n=\n \nSARSOP\n()\n\n\n\nproblem\n \n=\n \nBabyPOMDP\n()\n\n\n\npolicy\n \n=\n \nsolve\n(\nsolver\n,\n \nproblem\n)\n\n\nup\n \n=\n \nupdater\n(\npolicy\n)\n\n\nsim\n \n=\n \nReferenceSimulator\n(\nMersenneTwister\n(\n1\n),\n \n10\n)\n\n\n\nr\n \n=\n \nsimulate\n(\nsim\n,\n \nproblem\n,\n \npolicy\n,\n \nup\n,\n \ninitial_state_distribution\n(\nproblem\n))\n\n\n\nprintln\n(\nReward: \n$r\n)", 
             "title": "Getting Started"
         }, 
         {
-            "location": "/get_started/#example-simulation", 
-            "text": "The following code snippets show how some of the most important functions in the interface are to be used together. (Please note that this example is written for clarity and not efficiency; several other simulators are available in the  JuliaPOMDP/POMDPToolbox.jl  package.)  First, here is a definition of a simple simulator showing the use of the important functions  rand ,  initialize_belief ,  isterminal ,  action ,  transition ,  reward ,  observation ,  update , and  discount .  using   POMDPs  type  ReferenceSimulator \n     rng :: AbstractRNG \n     max_steps :: Int  end  function  simulate { S , A , O , B }( sim :: ReferenceSimulator , \n                            pomdp :: POMDP { S , A , O }, \n                            policy :: Policy , \n                            updater :: Updater { B }, \n                            initial_distribution :: AbstractDistribution ) \n\n     s   =   rand ( sim . rng ,   initial_distribution ) \n     b   =   initialize_belief ( updater ,   initial_distribution ) \n\n     disc   =   1.0 \n     r_total   =   0.0 \n\n     step   =   1 \n\n     while   ! isterminal ( pomdp ,   s )     step   =   sim . max_steps \n         a   =   action ( policy ,   b ) \n\n         trans_dist   =   transition ( pomdp ,   s ,   a ) \n         sp   =   rand ( sim . rng ,   trans_dist ) \n\n         r_total   +=   disc * reward ( pomdp ,   s ,   a ,   sp ) \n\n         obs_dist   =   observation ( pomdp ,   s ,   a ,   sp ) \n         o   =   rand ( sim . rng ,   obs_dist ) \n\n         b   =   update ( updater ,   b ,   a ,   o ) \n\n         disc   *=   discount ( pomdp ) \n         s   =   sp \n         step   +=   1 \n     end \n\n     return   r_total  end   The following snippet shows how a solver should be used to solve a problem and run a simulation.  using   SARSOP  using   POMDPModels  solver   =   SARSOP ()  problem   =   BabyPOMDP ()  policy   =   solve ( solver ,   problem )  up   =   updater ( policy )  sim   =   ReferenceSimulator ( MersenneTwister ( 1 ),   10 )  r   =   simulate ( sim ,   problem ,   policy ,   up ,   initial_state_distribution ( problem ))  println ( Reward:  $r )", 
-            "title": "Example Simulation"
+            "location": "/get_started/#getting-started", 
+            "text": "POMDPs serves as the interface used by a number of packages under the  JuliaPOMDP  framework. It is essentially the agreed upon API used by all the other packages in JuliaPOMDP. If you are using this framework, you may be trying to accomplish one or more of the following three goals:   Solve a decision or planning problem with stochastic dynamics (MDP) or partial observability (POMDP)  Evaluate a solution in simulation  Test your custom algorithm for solving MDPs or POMDPs against other state-of-the-art algorithms   If you are attempting to complete the first two goals, take a look at these Jupyer Notebook tutorials:   MDP Tutorial  for beginners gives an overview of using Value Iteration and Monte-Carlo Tree Search with the classic grid world problem  POMDP Tutorial  gives an overview of using SARSOP and QMDP to solve the tiger problem   If you are trying to write your own algorithm for solving MDPs or POMDPs with this interface take a look at the API section of this guide.  The following snippet shows how a solver should be used to solve a problem and run a simulation.  using   SARSOP  using   POMDPModels  solver   =   SARSOP ()  problem   =   BabyPOMDP ()  policy   =   solve ( solver ,   problem )  up   =   updater ( policy )  sim   =   ReferenceSimulator ( MersenneTwister ( 1 ),   10 )  r   =   simulate ( sim ,   problem ,   policy ,   up ,   initial_state_distribution ( problem ))  println ( Reward:  $r )", 
+            "title": "Getting Started"
         }, 
         {
             "location": "/def_pomdp/", 
+            "text": "Defining a POMDP", 
+            "title": "Defining a POMDP"
+        }, 
+        {
+            "location": "/def_pomdp/#defining-a-pomdp", 
             "text": "", 
             "title": "Defining a POMDP"
         }, 
         {
             "location": "/def_solver/", 
+            "text": "Defining a Solver", 
+            "title": "Defining a Solver"
+        }, 
+        {
+            "location": "/def_solver/#defining-a-solver", 
             "text": "", 
             "title": "Defining a Solver"
         }, 
         {
             "location": "/concepts/", 
-            "text": "", 
+            "text": "Concepts\n\n\n\n\nArchitecture", 
             "title": "Concepts and Architecture"
+        }, 
+        {
+            "location": "/concepts/#concepts", 
+            "text": "", 
+            "title": "Concepts"
+        }, 
+        {
+            "location": "/concepts/#architecture", 
+            "text": "", 
+            "title": "Architecture"
         }, 
         {
             "location": "/api/", 
@@ -139,6 +159,16 @@
             "location": "/api/#constants", 
             "text": "#  POMDPs.REMOTE_URL     Constant .  url to remote JuliaPOMDP organization repo  #  POMDPs.SUPPORTED_PACKAGES     Constant .  Set containing string names of officially supported solvers and utility packages (e.g.  MCTS ,  SARSOP ,  POMDPToolbox , etc).  If you have a validated solver that supports the POMDPs.jl API, contact the developers to add your solver to this list.", 
             "title": "Constants"
+        }, 
+        {
+            "location": "/faq/", 
+            "text": "Frequently Asked Questions (FAQ)", 
+            "title": "Frequently Asked Questions"
+        }, 
+        {
+            "location": "/faq/#frequently-asked-questions-faq", 
+            "text": "", 
+            "title": "Frequently Asked Questions (FAQ)"
         }
     ]
 }

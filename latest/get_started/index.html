@@ -46,7 +46,7 @@
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
       <div class="wy-side-nav-search">
-        <a href="../about/" class="icon icon-home"> POMDPs.jl</a>
+        <a href=".." class="icon icon-home"> POMDPs.jl</a>
         <div role="search">
   <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" />
@@ -59,7 +59,7 @@
           
             <li>
     <li class="toctree-l1 ">
-        <a class="" href="../about/">About</a>
+        <a class="" href="..">About</a>
         
     </li>
 <li>
@@ -77,7 +77,7 @@
         
             <ul>
             
-                <li class="toctree-l3"><a href="#example-simulation">Example Simulation</a></li>
+                <li class="toctree-l3"><a href="#getting-started">Getting Started</a></li>
                 
             
             </ul>
@@ -113,6 +113,13 @@
     </li>
 <li>
           
+            <li>
+    <li class="toctree-l1 ">
+        <a class="" href="../faq/">Frequently Asked Questions</a>
+        
+    </li>
+<li>
+          
         </ul>
       </div>
       &nbsp;
@@ -123,7 +130,7 @@
       
       <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
         <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-        <a href="../about/">POMDPs.jl</a>
+        <a href="..">POMDPs.jl</a>
       </nav>
 
       
@@ -131,7 +138,7 @@
         <div class="rst-content">
           <div role="navigation" aria-label="breadcrumbs navigation">
   <ul class="wy-breadcrumbs">
-    <li><a href="../about/">Docs</a> &raquo;</li>
+    <li><a href="..">Docs</a> &raquo;</li>
     
       
     
@@ -149,8 +156,8 @@
           <div role="main">
             <div class="section">
               
-                <p><a id='-1'></a></p>
-<h2 id="_1"></h2>
+                <p><a id='Getting-Started-1'></a></p>
+<h2 id="getting-started">Getting Started</h2>
 <p>POMDPs serves as the interface used by a number of packages under the <a href="">JuliaPOMDP</a> framework. It is essentially the agreed upon API used by all the other packages in JuliaPOMDP. If you are using this framework, you may be trying to accomplish one or more of the following three goals:</p>
 <ul>
 <li>Solve a decision or planning problem with stochastic dynamics (MDP) or partial observability (POMDP)</li>
@@ -163,54 +170,6 @@
 <li><a href="http://nbviewer.ipython.org/github/sisl/POMDPs.jl/blob/master/examples/Tiger.ipynb">POMDP Tutorial</a> gives an overview of using SARSOP and QMDP to solve the tiger problem</li>
 </ul>
 <p>If you are trying to write your own algorithm for solving MDPs or POMDPs with this interface take a look at the API section of this guide.</p>
-<p><a id='Example-Simulation-1'></a></p>
-<h2 id="example-simulation">Example Simulation</h2>
-<p>The following code snippets show how some of the most important functions in the interface are to be used together. (Please note that this example is written for clarity and not efficiency; several other simulators are available in the <a href="">JuliaPOMDP/POMDPToolbox.jl</a> package.)</p>
-<p>First, here is a definition of a simple simulator showing the use of the important functions <a href="../api/#Base.Random.rand"><code>rand</code></a>, <a href="../api/#POMDPs.initialize_belief"><code>initialize_belief</code></a>, <a href="../api/#POMDPs.isterminal"><code>isterminal</code></a>, <a href="../api/#POMDPs.action"><code>action</code></a>, <a href="../api/#POMDPs.transition"><code>transition</code></a>, <a href="../api/#POMDPs.reward"><code>reward</code></a>, <a href="../api/#POMDPs.observation"><code>observation</code></a>, <a href="../api/#POMDPs.update"><code>update</code></a>, and <a href="../api/#POMDPs.discount"><code>discount</code></a>.</p>
-<div class="codehilite"><pre><span></span><span class="k">using</span> <span class="n">POMDPs</span>
-
-<span class="k">type</span><span class="nc"> ReferenceSimulator</span>
-    <span class="n">rng</span><span class="p">::</span><span class="n">AbstractRNG</span>
-    <span class="n">max_steps</span><span class="p">::</span><span class="kt">Int</span>
-<span class="k">end</span>
-
-<span class="k">function</span><span class="nf"> simulate</span><span class="p">{</span><span class="n">S</span><span class="p">,</span><span class="n">A</span><span class="p">,</span><span class="n">O</span><span class="p">,</span><span class="n">B</span><span class="p">}(</span><span class="n">sim</span><span class="p">::</span><span class="n">ReferenceSimulator</span><span class="p">,</span>
-                           <span class="n">pomdp</span><span class="p">::</span><span class="n">POMDP</span><span class="p">{</span><span class="n">S</span><span class="p">,</span><span class="n">A</span><span class="p">,</span><span class="n">O</span><span class="p">},</span>
-                           <span class="n">policy</span><span class="p">::</span><span class="n">Policy</span><span class="p">,</span>
-                           <span class="n">updater</span><span class="p">::</span><span class="n">Updater</span><span class="p">{</span><span class="n">B</span><span class="p">},</span>
-                           <span class="n">initial_distribution</span><span class="p">::</span><span class="n">AbstractDistribution</span><span class="p">)</span>
-
-    <span class="n">s</span> <span class="o">=</span> <span class="n">rand</span><span class="p">(</span><span class="n">sim</span><span class="o">.</span><span class="n">rng</span><span class="p">,</span> <span class="n">initial_distribution</span><span class="p">)</span>
-    <span class="n">b</span> <span class="o">=</span> <span class="n">initialize_belief</span><span class="p">(</span><span class="n">updater</span><span class="p">,</span> <span class="n">initial_distribution</span><span class="p">)</span>
-
-    <span class="n">disc</span> <span class="o">=</span> <span class="mf">1.0</span>
-    <span class="n">r_total</span> <span class="o">=</span> <span class="mf">0.0</span>
-
-    <span class="n">step</span> <span class="o">=</span> <span class="mi">1</span>
-
-    <span class="k">while</span> <span class="o">!</span><span class="n">isterminal</span><span class="p">(</span><span class="n">pomdp</span><span class="p">,</span> <span class="n">s</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="n">step</span> <span class="o">&lt;=</span> <span class="n">sim</span><span class="o">.</span><span class="n">max_steps</span>
-        <span class="n">a</span> <span class="o">=</span> <span class="n">action</span><span class="p">(</span><span class="n">policy</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
-
-        <span class="n">trans_dist</span> <span class="o">=</span> <span class="n">transition</span><span class="p">(</span><span class="n">pomdp</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span>
-        <span class="n">sp</span> <span class="o">=</span> <span class="n">rand</span><span class="p">(</span><span class="n">sim</span><span class="o">.</span><span class="n">rng</span><span class="p">,</span> <span class="n">trans_dist</span><span class="p">)</span>
-
-        <span class="n">r_total</span> <span class="o">+=</span> <span class="n">disc</span><span class="o">*</span><span class="n">reward</span><span class="p">(</span><span class="n">pomdp</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">sp</span><span class="p">)</span>
-
-        <span class="n">obs_dist</span> <span class="o">=</span> <span class="n">observation</span><span class="p">(</span><span class="n">pomdp</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">sp</span><span class="p">)</span>
-        <span class="n">o</span> <span class="o">=</span> <span class="n">rand</span><span class="p">(</span><span class="n">sim</span><span class="o">.</span><span class="n">rng</span><span class="p">,</span> <span class="n">obs_dist</span><span class="p">)</span>
-
-        <span class="n">b</span> <span class="o">=</span> <span class="n">update</span><span class="p">(</span><span class="n">updater</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">o</span><span class="p">)</span>
-
-        <span class="n">disc</span> <span class="o">*=</span> <span class="n">discount</span><span class="p">(</span><span class="n">pomdp</span><span class="p">)</span>
-        <span class="n">s</span> <span class="o">=</span> <span class="n">sp</span>
-        <span class="n">step</span> <span class="o">+=</span> <span class="mi">1</span>
-    <span class="k">end</span>
-
-    <span class="k">return</span> <span class="n">r_total</span>
-<span class="k">end</span>
-</pre></div>
-
-
 <p>The following snippet shows how a solver should be used to solve a problem and run a simulation.</p>
 <div class="codehilite"><pre><span></span><span class="k">using</span> <span class="n">SARSOP</span>
 <span class="k">using</span> <span class="n">POMDPModels</span>
