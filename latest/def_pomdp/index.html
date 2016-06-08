@@ -169,198 +169,188 @@
 <h2 id="functional-form-pomdp">Functional Form POMDP</h2>
 <p>The first, and most straighforward way to define a POMDP problem is to implement the model functions that you may need. For example, all POMDPs will need <code>transition</code>, <code>reward</code>, and <code>observation</code> functions. In this example we'll start with the simple Tiger POMDP problem. We want to use the SARSOP solver to compute a policy. To use a solver from JuliaPOMDP, a problem writer must define a set of functions required by the solver. To see what functions are required by SARSOP, check out its documentation <a href="#href">here</a>. </p>
 <p>Let's first define the Tiger POMDP type.</p>
-<div class="codehilite"><pre><span></span><span class="k">using</span> <span class="n">POMDPs</span> <span class="c"># load the interface</span>
-<span class="k">type</span><span class="nc"> TigerPOMDP</span> <span class="o">&lt;:</span> <span class="n">POMDP</span><span class="p">{</span><span class="kt">Bool</span><span class="p">,</span> <span class="kt">Int64</span><span class="p">,</span> <span class="kt">Bool</span><span class="p">}</span> <span class="c"># parametarized inheritance POMDP{state, action, observation}</span>
-    <span class="n">r_listen</span><span class="p">::</span><span class="kt">Float64</span> <span class="c"># reward for listening (negative)</span>
-    <span class="n">r_findtiger</span><span class="p">::</span><span class="kt">Float64</span> <span class="c"># reward for finding the tiger (negative)</span>
-    <span class="n">r_escapetiger</span><span class="p">::</span><span class="kt">Float64</span> <span class="c"># reward for escaping</span>
-    <span class="n">p_listen_correctly</span><span class="p">::</span><span class="kt">Float64</span> <span class="c"># probbility that we hear the tiger correctly</span>
-    <span class="n">discount_factor</span><span class="p">::</span><span class="kt">Float64</span> <span class="c"># discount factor</span>
-<span class="k">end</span>
-<span class="n">TigerPOMDP</span><span class="p">()</span> <span class="o">=</span> <span class="n">TigerPOMDP</span><span class="p">(</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">100.0</span><span class="p">,</span> <span class="mf">10.0</span><span class="p">,</span> <span class="mf">0.85</span><span class="p">,</span> <span class="mf">0.95</span><span class="p">)</span> <span class="c"># default contructor</span>
-</pre></div>
-
+<pre><code class="julia">using POMDPs # load the interface
+type TigerPOMDP &lt;: POMDP{Bool, Int64, Bool} # parametarized inheritance POMDP{state, action, observation}
+    r_listen::Float64 # reward for listening (negative)
+    r_findtiger::Float64 # reward for finding the tiger (negative)
+    r_escapetiger::Float64 # reward for escaping
+    p_listen_correctly::Float64 # probbility that we hear the tiger correctly
+    discount_factor::Float64 # discount factor
+end
+TigerPOMDP() = TigerPOMDP(-1.0, -100.0, 10.0, 0.85, 0.95) # default contructor
+</code></pre>
 
 <p>Notice that the <code>TigerPOMDP</code> is inheriting from the abstract <code>POMDP</code> type that comes from POMDPs.jl. The abstract <code>POMDP</code> is parametarized by a <code>Bool</code>, <code>Int64</code>, <code>Bool</code> combination with the syntax <code>TigerPOMDP &lt;: POMDP{Bool, Int64, Bool}</code>. The parametarization defines how we choose to represent the state, actions, and observations in our problem. In the <code>TigerPOMDP</code> we use a boolean to represent our states and observations (because there are two of each) and an integer to represent our actions (because there are 3). If you wanted to create a custom concrete type to represent your states, actions, or observations you could do that as well. Let's say we made a type to represent our states called <code>AwesomeTigerState</code>. That type could contain integers, floats, arrays, or other complex data structures (depending on what's convenient). We would then parametrize the Tiger POMDP in the following way: <code>type TigerPOMDP &lt;: POMDP{AwesomeTigerState, Int64, Bool}</code>.</p>
 <p>Now, let's consider another important component of POMDPs, probability distributions. In the POMDPs.jl interface, we think in terms of distribution types. We want to be able to sample from these distriubtions and compute their probability masses or densities. In the Tiger POMDP, our distriubtions are over binary variables (boolean state or observation), so we can implement a simple version of a Bernoulli distribution.</p>
-<div class="codehilite"><pre><span></span><span class="k">type</span><span class="nc"> TigerDistribution</span> <span class="o">&lt;:</span> <span class="n">AbstractDistribution</span> <span class="c"># inherits from a POMDPs.jl abstract type</span>
-    <span class="n">p</span><span class="p">::</span><span class="kt">Float64</span> <span class="c"># probability of 1</span>
-    <span class="n">it</span><span class="p">::</span><span class="n">Vector</span><span class="p">{</span><span class="kt">Bool</span><span class="p">}</span> <span class="c"># pre-allocate the domain of the distriubtion</span>
-<span class="k">end</span>
-<span class="n">TigerDistribution</span><span class="p">()</span> <span class="o">=</span> <span class="n">TigerDistribution</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="p">[</span><span class="n">true</span><span class="p">,</span> <span class="n">false</span><span class="p">])</span> <span class="c"># default constructo</span>
+<pre><code class="julia">type TigerDistribution &lt;: AbstractDistribution # inherits from a POMDPs.jl abstract type
+    p::Float64 # probability of 1
+    it::Vector{Bool} # pre-allocate the domain of the distriubtion
+end
+TigerDistribution() = TigerDistribution(0.5, [true, false]) # default constructo
 
-<span class="n">iterator</span><span class="p">(</span><span class="n">d</span><span class="p">::</span><span class="n">TigerDistribution</span><span class="p">)</span> <span class="o">=</span> <span class="n">d</span><span class="o">.</span><span class="n">it</span> <span class="c"># convenience function used by discrete solvers (iterator over the discrete distriubtion)</span>
-</pre></div>
-
+iterator(d::TigerDistribution) = d.it # convenience function used by discrete solvers (iterator over the discrete distriubtion)
+</code></pre>
 
 <p>Let's implement the pdf and rand function that returns the probability mass and samples from the distribution.</p>
-<div class="codehilite"><pre><span></span><span class="c"># returns the probability mass </span>
-<span class="k">function</span><span class="nf"> pdf</span><span class="p">(</span><span class="n">d</span><span class="p">::</span><span class="n">TigerDistribution</span><span class="p">,</span> <span class="n">so</span><span class="p">::</span><span class="kt">Bool</span><span class="p">)</span>
-    <span class="n">so</span> <span class="o">?</span> <span class="p">(</span><span class="k">return</span> <span class="n">d</span><span class="o">.</span><span class="n">p</span><span class="p">)</span> <span class="p">:</span> <span class="p">(</span><span class="k">return</span> <span class="mf">1.0</span><span class="o">-</span><span class="n">d</span><span class="o">.</span><span class="n">p</span><span class="p">)</span>
-<span class="k">end</span>
+<pre><code class="julia"># returns the probability mass 
+function pdf(d::TigerDistribution, so::Bool)
+    so ? (return d.p) : (return 1.0-d.p)
+end
 
-<span class="c"># samples the dsitribution</span>
-<span class="n">rand</span><span class="p">(</span><span class="n">rng</span><span class="p">::</span><span class="n">AbstractRNG</span><span class="p">,</span> <span class="n">d</span><span class="p">::</span><span class="n">TigerDistribution</span><span class="p">,</span> <span class="n">s</span><span class="p">::</span><span class="kt">Bool</span><span class="p">)</span> <span class="o">=</span> <span class="n">rand</span><span class="p">(</span><span class="n">rng</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="n">d</span><span class="o">.</span><span class="n">p</span>
-</pre></div>
-
+# samples the dsitribution
+rand(rng::AbstractRNG, d::TigerDistribution, s::Bool) = rand(rng) &lt;= d.p
+</code></pre>
 
 <p>We also want some convenience functions for initializing the distriubtions.</p>
-<div class="codehilite"><pre><span></span><span class="n">create_transition_distribution</span><span class="p">(::</span><span class="n">TigerPOMDP</span><span class="p">)</span> <span class="o">=</span> <span class="n">TigerDistribution</span><span class="p">()</span>
-<span class="n">create_observation_distribution</span><span class="p">(::</span><span class="n">TigerPOMDP</span><span class="p">)</span> <span class="o">=</span> <span class="n">TigerDistribution</span><span class="p">()</span>
-</pre></div>
-
+<pre><code class="julia">create_transition_distribution(::TigerPOMDP) = TigerDistribution()
+create_observation_distribution(::TigerPOMDP) = TigerDistribution()
+</code></pre>
 
 <p>Let's define our transition, observation, and reward functions.</p>
-<div class="codehilite"><pre><span></span><span class="k">function</span><span class="nf"> transition</span><span class="p">(</span><span class="n">pomdp</span><span class="p">::</span><span class="n">TigerPOMDP</span><span class="p">,</span> <span class="n">s</span><span class="p">::</span><span class="kt">Bool</span><span class="p">,</span> <span class="n">a</span><span class="p">::</span><span class="kt">Int64</span><span class="p">,</span> <span class="n">d</span><span class="p">::</span><span class="n">TigerDistribution</span><span class="o">=</span><span class="n">create_transition_distribution</span><span class="p">(</span><span class="n">pomdp</span><span class="p">))</span>
-    <span class="c"># Resets the problem after opening door; does nothing after listening        </span>
-    <span class="k">if</span> <span class="n">a</span> <span class="o">==</span> <span class="mi">1</span> <span class="o">||</span> <span class="n">a</span> <span class="o">==</span> <span class="mi">2</span>
-        <span class="n">d</span><span class="o">.</span><span class="n">p</span> <span class="o">=</span> <span class="mf">0.5</span>
-    <span class="k">elseif</span> <span class="n">s</span>
-        <span class="n">d</span><span class="o">.</span><span class="n">p</span> <span class="o">=</span> <span class="mf">1.0</span>
-    <span class="k">else</span>
-        <span class="n">d</span><span class="o">.</span><span class="n">p</span> <span class="o">=</span> <span class="mf">0.0</span>
-    <span class="k">end</span>
-    <span class="n">d</span>
-<span class="k">end</span>
+<pre><code class="julia">function transition(pomdp::TigerPOMDP, s::Bool, a::Int64, d::TigerDistribution=create_transition_distribution(pomdp))
+    # Resets the problem after opening door; does nothing after listening        
+    if a == 1 || a == 2
+        d.p = 0.5
+    elseif s
+        d.p = 1.0
+    else
+        d.p = 0.0
+    end
+    d
+end
 
-<span class="k">function</span><span class="nf"> observation</span><span class="p">(</span><span class="n">pomdp</span><span class="p">::</span><span class="n">TigerPOMDP</span><span class="p">,</span> <span class="n">s</span><span class="p">::</span><span class="kt">Bool</span><span class="p">,</span> <span class="n">a</span><span class="p">::</span><span class="kt">Int64</span><span class="p">,</span> <span class="n">d</span><span class="p">::</span><span class="n">TigerDistribution</span><span class="o">=</span><span class="n">create_observation_distribution</span><span class="p">(</span><span class="n">pomdp</span><span class="p">))</span>
-    <span class="c"># correct observation wiht prob pc        </span>
-    <span class="n">pc</span> <span class="o">=</span> <span class="n">pomdp</span><span class="o">.</span><span class="n">p_listen_correctly</span>
-    <span class="k">if</span> <span class="n">a</span> <span class="o">==</span> <span class="mi">0</span>
-        <span class="n">s</span> <span class="o">?</span> <span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">p</span> <span class="o">=</span> <span class="n">pc</span><span class="p">)</span> <span class="p">:</span> <span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">p</span> <span class="o">=</span> <span class="mf">1.0</span><span class="o">-</span><span class="n">pc</span><span class="p">)</span>
-    <span class="k">else</span>
-        <span class="n">d</span><span class="o">.</span><span class="n">p</span> <span class="o">=</span> <span class="mf">0.5</span>
-    <span class="k">end</span>
-    <span class="n">d</span>
-<span class="k">end</span>
-<span class="c"># convenience function</span>
-<span class="k">function</span><span class="nf"> observation</span><span class="p">(</span><span class="n">pomdp</span><span class="p">::</span><span class="n">TigerPOMDP</span><span class="p">,</span> <span class="n">s</span><span class="p">::</span><span class="kt">Bool</span><span class="p">,</span> <span class="n">a</span><span class="p">::</span><span class="kt">Int64</span><span class="p">,</span> <span class="n">sp</span><span class="p">::</span><span class="kt">Bool</span><span class="p">,</span> <span class="n">d</span><span class="p">::</span><span class="n">TigerDistribution</span><span class="o">=</span><span class="n">create_observation_distribution</span><span class="p">(</span><span class="n">pomdp</span><span class="p">))</span>
-    <span class="k">return</span> <span class="n">observation</span><span class="p">(</span><span class="n">pomdp</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span>
-<span class="k">end</span>
+function observation(pomdp::TigerPOMDP, s::Bool, a::Int64, d::TigerDistribution=create_observation_distribution(pomdp))
+    # correct observation wiht prob pc        
+    pc = pomdp.p_listen_correctly
+    if a == 0
+        s ? (d.p = pc) : (d.p = 1.0-pc)
+    else
+        d.p = 0.5
+    end
+    d
+end
+# convenience function
+function observation(pomdp::TigerPOMDP, s::Bool, a::Int64, sp::Bool, d::TigerDistribution=create_observation_distribution(pomdp))
+    return observation(pomdp, s, a, d)
+end
 
-<span class="k">function</span><span class="nf"> reward</span><span class="p">(</span><span class="n">pomdp</span><span class="p">::</span><span class="n">TigerPOMDP</span><span class="p">,</span> <span class="n">s</span><span class="p">::</span><span class="kt">Bool</span><span class="p">,</span> <span class="n">a</span><span class="p">::</span><span class="kt">Int64</span><span class="p">)</span>
-    <span class="c"># rewarded for escaping, penalized for listening and getting caught</span>
-    <span class="n">r</span> <span class="o">=</span> <span class="mf">0.0</span>
-    <span class="n">a</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">?</span> <span class="p">(</span><span class="n">r</span><span class="o">+=</span><span class="n">pomdp</span><span class="o">.</span><span class="n">r_listen</span><span class="p">)</span> <span class="p">:</span> <span class="p">(</span><span class="n">nothing</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">a</span> <span class="o">==</span> <span class="mi">1</span>
-        <span class="n">s</span> <span class="o">?</span> <span class="p">(</span><span class="n">r</span> <span class="o">+=</span> <span class="n">pomdp</span><span class="o">.</span><span class="n">r_findtiger</span><span class="p">)</span> <span class="p">:</span> <span class="p">(</span><span class="n">r</span> <span class="o">+=</span> <span class="n">pomdp</span><span class="o">.</span><span class="n">r_escapetiger</span><span class="p">)</span>
-    <span class="k">end</span>
-    <span class="k">if</span> <span class="n">a</span> <span class="o">==</span> <span class="mi">2</span>
-        <span class="n">s</span> <span class="o">?</span> <span class="p">(</span><span class="n">r</span> <span class="o">+=</span> <span class="n">pomdp</span><span class="o">.</span><span class="n">r_escapetiger</span><span class="p">)</span> <span class="p">:</span> <span class="p">(</span><span class="n">r</span> <span class="o">+=</span> <span class="n">pomdp</span><span class="o">.</span><span class="n">r_findtiger</span><span class="p">)</span>
-    <span class="k">end</span>
-    <span class="k">return</span> <span class="n">r</span>
-<span class="k">end</span>
-<span class="c"># convenience function</span>
-<span class="n">reward</span><span class="p">(</span><span class="n">pomdp</span><span class="p">::</span><span class="n">TigerPOMDP</span><span class="p">,</span> <span class="n">s</span><span class="p">::</span><span class="kt">Bool</span><span class="p">,</span> <span class="n">a</span><span class="p">::</span><span class="kt">Int64</span><span class="p">,</span> <span class="n">sp</span><span class="p">::</span><span class="kt">Bool</span><span class="p">)</span> <span class="o">=</span> <span class="n">reward</span><span class="p">(</span><span class="n">pomdp</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span>
-</pre></div>
-
+function reward(pomdp::TigerPOMDP, s::Bool, a::Int64)
+    # rewarded for escaping, penalized for listening and getting caught
+    r = 0.0
+    a == 0 ? (r+=pomdp.r_listen) : (nothing)
+    if a == 1
+        s ? (r += pomdp.r_findtiger) : (r += pomdp.r_escapetiger)
+    end
+    if a == 2
+        s ? (r += pomdp.r_escapetiger) : (r += pomdp.r_findtiger)
+    end
+    return r
+end
+# convenience function
+reward(pomdp::TigerPOMDP, s::Bool, a::Int64, sp::Bool) = reward(pomdp, s, a)
+</code></pre>
 
 <p>The last important component of a POMDP are the spaces. There is a special <code>AbstractSpace</code> type in POMDPs.jl which all spaces inherit from. We define the state, action, and observation spaces below as well as functions for intializing them and sampling from them.</p>
-<div class="codehilite"><pre><span></span><span class="c"># STATE SPACE</span>
-<span class="k">type</span><span class="nc"> TigerStateSpace</span> <span class="o">&lt;:</span> <span class="n">AbstractSpace</span>
-    <span class="n">states</span><span class="p">::</span><span class="n">Vector</span><span class="p">{</span><span class="kt">Bool</span><span class="p">}</span> <span class="c"># states are boolean</span>
-<span class="k">end</span>
-<span class="c"># initialize the state space</span>
-<span class="n">states</span><span class="p">(::</span><span class="n">TigerPOMDP</span><span class="p">)</span> <span class="o">=</span> <span class="n">TigerStateSpace</span><span class="p">([</span><span class="n">true</span><span class="p">,</span> <span class="n">false</span><span class="p">])</span>
-<span class="c"># for iterating over discrete spaces</span>
-<span class="n">iterator</span><span class="p">(</span><span class="n">space</span><span class="p">::</span><span class="n">TigerStateSpace</span><span class="p">)</span> <span class="o">=</span> <span class="n">space</span><span class="o">.</span><span class="n">states</span>
-<span class="n">dimensions</span><span class="p">(::</span><span class="n">TigerStateSpace</span><span class="p">)</span> <span class="o">=</span> <span class="mi">1</span>
-<span class="c"># sample from the state sapce</span>
-<span class="n">rand</span><span class="p">(</span><span class="n">rng</span><span class="p">::</span><span class="n">AbstractRNG</span><span class="p">,</span> <span class="n">space</span><span class="p">::</span><span class="n">TigerStateSpace</span><span class="p">,</span> <span class="n">s</span><span class="p">::</span><span class="kt">Bool</span><span class="p">)</span> <span class="o">=</span> <span class="n">rand</span><span class="p">(</span><span class="n">rng</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mf">0.5</span> <span class="o">?</span> <span class="p">(</span><span class="k">return</span> <span class="n">true</span><span class="p">)</span> <span class="p">:</span> <span class="p">(</span><span class="k">return</span> <span class="n">false</span><span class="p">)</span>
+<pre><code class="julia"># STATE SPACE
+type TigerStateSpace &lt;: AbstractSpace
+    states::Vector{Bool} # states are boolean
+end
+# initialize the state space
+states(::TigerPOMDP) = TigerStateSpace([true, false])
+# for iterating over discrete spaces
+iterator(space::TigerStateSpace) = space.states
+dimensions(::TigerStateSpace) = 1
+# sample from the state sapce
+rand(rng::AbstractRNG, space::TigerStateSpace, s::Bool) = rand(rng) &gt; 0.5 ? (return true) : (return false)
 
-<span class="c"># ACTION SPACE</span>
-<span class="k">type</span><span class="nc"> TigerActionSpace</span> <span class="o">&lt;:</span> <span class="n">AbstractSpace</span>
-    <span class="n">actions</span><span class="p">::</span><span class="n">Vector</span><span class="p">{</span><span class="kt">Int64</span><span class="p">}</span> <span class="c"># three possible actions</span>
-<span class="k">end</span>
-<span class="c"># initialize the action space</span>
-<span class="n">actions</span><span class="p">(::</span><span class="n">TigerPOMDP</span><span class="p">)</span> <span class="o">=</span> <span class="n">TigerActionSpace</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">])</span>
-<span class="c"># iterate of the action space</span>
-<span class="n">iterator</span><span class="p">(</span><span class="n">space</span><span class="p">::</span><span class="n">TigerActionSpace</span><span class="p">)</span> <span class="o">=</span> <span class="n">space</span><span class="o">.</span><span class="n">actions</span>
-<span class="n">dimensions</span><span class="p">(::</span><span class="n">TigerActionSpace</span><span class="p">)</span> <span class="o">=</span> <span class="mi">1</span>
-<span class="c"># sample from the aciton space</span>
-<span class="n">rand</span><span class="p">(</span><span class="n">rng</span><span class="p">::</span><span class="n">AbstractRNG</span><span class="p">,</span> <span class="n">space</span><span class="p">::</span><span class="n">TigerActionSpace</span><span class="p">,</span> <span class="n">a</span><span class="p">::</span><span class="kt">Int64</span><span class="p">)</span> <span class="o">=</span> <span class="n">rand</span><span class="p">(</span><span class="n">rng</span><span class="p">,</span> <span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">)</span>
+# ACTION SPACE
+type TigerActionSpace &lt;: AbstractSpace
+    actions::Vector{Int64} # three possible actions
+end
+# initialize the action space
+actions(::TigerPOMDP) = TigerActionSpace([0,1,2])
+# iterate of the action space
+iterator(space::TigerActionSpace) = space.actions
+dimensions(::TigerActionSpace) = 1
+# sample from the aciton space
+rand(rng::AbstractRNG, space::TigerActionSpace, a::Int64) = rand(rng, 0:2)
 
-<span class="c"># OBSERVATION SPACE</span>
-<span class="k">type</span><span class="nc"> TigerObservationSpace</span> <span class="o">&lt;:</span> <span class="n">AbstractSpace</span>
-    <span class="n">obs</span><span class="p">::</span><span class="n">Vector</span><span class="p">{</span><span class="kt">Bool</span><span class="p">}</span>
-<span class="k">end</span>
-<span class="c"># initialize</span>
-<span class="n">observations</span><span class="p">(::</span><span class="n">TigerPOMDP</span><span class="p">)</span> <span class="o">=</span> <span class="n">TigerObservationSpace</span><span class="p">([</span><span class="n">true</span><span class="p">,</span> <span class="n">false</span><span class="p">])</span>
-<span class="c"># iterate over obs space</span>
-<span class="n">iterator</span><span class="p">(</span><span class="n">space</span><span class="p">::</span><span class="n">TigerObservationSpace</span><span class="p">)</span> <span class="o">=</span> <span class="n">space</span><span class="o">.</span><span class="n">obs</span>
-<span class="n">dimensions</span><span class="p">(::</span><span class="n">TigerObservationSpace</span><span class="p">)</span> <span class="o">=</span> <span class="mi">1</span>
-<span class="c"># sample from the obs sapce</span>
-<span class="n">rand</span><span class="p">(</span><span class="n">rng</span><span class="p">::</span><span class="n">AbstractRNG</span><span class="p">,</span> <span class="n">space</span><span class="p">::</span><span class="n">TigerObservationSpace</span><span class="p">,</span> <span class="n">s</span><span class="p">::</span><span class="kt">Bool</span><span class="p">)</span> <span class="o">=</span> <span class="n">rand</span><span class="p">(</span><span class="n">rng</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mf">0.5</span> <span class="o">?</span> <span class="p">(</span><span class="k">return</span> <span class="n">true</span><span class="p">)</span> <span class="p">:</span> <span class="p">(</span><span class="k">return</span> <span class="n">false</span><span class="p">)</span>
-</pre></div>
-
+# OBSERVATION SPACE
+type TigerObservationSpace &lt;: AbstractSpace
+    obs::Vector{Bool}
+end
+# initialize
+observations(::TigerPOMDP) = TigerObservationSpace([true, false])
+# iterate over obs space
+iterator(space::TigerObservationSpace) = space.obs
+dimensions(::TigerObservationSpace) = 1
+# sample from the obs sapce
+rand(rng::AbstractRNG, space::TigerObservationSpace, s::Bool) = rand(rng) &gt; 0.5 ? (return true) : (return false)
+</code></pre>
 
 <p>The last important component of a POMDP is the initial distribution over the state space. In POMDPs.jl we make a strong distinction between this distribution and a belief. In most literature these two concepts are considered the same. However, in most general terms, a belief is something that is mapped to an action using a POMDP policy. If the policy is represented as something other than alpha-vectors (a policy graph, tree, or a reccurent neural netowrk to give a few examples), it may not make sense to think of a belief as a probability distribution over the state space. Thus, in POMDPs.jl we abstract the concept of a belief beyond a probability distribution (of course it can be a probability distriubtion if it makes sense). </p>
 <p>In order to reconcile this difference, each policy has a function called <code>initialize_belief</code> which takes in an initial state distirubtion (this is a probability distribution over the state space) and a policy, and converts the distribution into what we call a belief in POMDPs.jl - a representation of a POMDP that is mapped to an action using the policy. </p>
 <p>Let's define the initial state distribution function for our POMDP.</p>
-<div class="codehilite"><pre><span></span><span class="n">initial_state_distribution</span><span class="p">(</span><span class="n">pomdp</span><span class="p">::</span><span class="n">TigerPOMDP</span><span class="p">)</span> <span class="o">=</span> <span class="n">TigerDistribution</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="p">[</span><span class="n">true</span><span class="p">,</span> <span class="n">false</span><span class="p">])</span>
-</pre></div>
-
+<pre><code class="julia">initial_state_distribution(pomdp::TigerPOMDP) = TigerDistribution(0.5, [true, false])
+</code></pre>
 
 <p>Now that've defined all the main components, we need to wrap up our model by creating some convenience functions below.</p>
-<div class="codehilite"><pre><span></span><span class="c"># initialization functions</span>
-<span class="n">create_state</span><span class="p">(::</span><span class="n">TigerPOMDP</span><span class="p">)</span> <span class="o">=</span> <span class="n">zero</span><span class="p">(</span><span class="kt">Bool</span><span class="p">)</span>
-<span class="n">create_observation</span><span class="p">(::</span><span class="n">TigerPOMDP</span><span class="p">)</span> <span class="o">=</span> <span class="n">zero</span><span class="p">(</span><span class="kt">Bool</span><span class="p">)</span>
-<span class="n">create_action</span><span class="p">(::</span><span class="n">TigerPOMDP</span><span class="p">)</span> <span class="o">=</span> <span class="n">zero</span><span class="p">(</span><span class="kt">Int64</span><span class="p">)</span>
+<pre><code class="julia"># initialization functions
+create_state(::TigerPOMDP) = zero(Bool)
+create_observation(::TigerPOMDP) = zero(Bool)
+create_action(::TigerPOMDP) = zero(Int64)
 
-<span class="c"># for discrete problems</span>
-<span class="n">n_states</span><span class="p">(::</span><span class="n">TigerPOMDP</span><span class="p">)</span> <span class="o">=</span> <span class="mi">2</span>
-<span class="n">n_actions</span><span class="p">(::</span><span class="n">TigerPOMDP</span><span class="p">)</span> <span class="o">=</span> <span class="mi">3</span>
-<span class="n">n_observations</span><span class="p">(::</span><span class="n">TigerPOMDP</span><span class="p">)</span> <span class="o">=</span> <span class="mi">2</span>
+# for discrete problems
+n_states(::TigerPOMDP) = 2
+n_actions(::TigerPOMDP) = 3
+n_observations(::TigerPOMDP) = 2
 
-<span class="c"># for indexing discrete states</span>
-<span class="n">state_index</span><span class="p">(::</span><span class="n">TigerPOMDP</span><span class="p">,</span> <span class="n">s</span><span class="p">::</span><span class="kt">Bool</span><span class="p">)</span> <span class="o">=</span> <span class="kt">Int64</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+# for indexing discrete states
+state_index(::TigerPOMDP, s::Bool) = Int64(s) + 1
 
-<span class="n">discount</span><span class="p">(</span><span class="n">pomdp</span><span class="p">::</span><span class="n">TigerPOMDP</span><span class="p">)</span> <span class="o">=</span> <span class="n">pomdp</span><span class="o">.</span><span class="n">discount_factor</span>
-</pre></div>
-
+discount(pomdp::TigerPOMDP) = pomdp.discount_factor
+</code></pre>
 
 <p>Now that we've defined all these functions, we can use one of the JuliaPOMDP solvers to compute and evaluate a policy. </p>
-<div class="codehilite"><pre><span></span><span class="k">using</span> <span class="n">QMDP</span><span class="p">,</span> <span class="n">POMDPToolbox</span>
+<pre><code class="julia">using QMDP, POMDPToolbox
 
-<span class="n">pomdp</span> <span class="o">=</span> <span class="n">TigerPOMDP</span><span class="p">()</span>
-<span class="n">solver</span> <span class="o">=</span> <span class="n">QMDPSolver</span><span class="p">()</span>
-<span class="n">policy</span> <span class="o">=</span> <span class="n">solve</span><span class="p">(</span><span class="n">solver</span><span class="p">,</span> <span class="n">pomdp</span><span class="p">)</span>
+pomdp = TigerPOMDP()
+solver = QMDPSolver()
+policy = solve(solver, pomdp)
 
-<span class="n">init_dist</span> <span class="o">=</span> <span class="n">initial_state_distribution</span><span class="p">(</span><span class="n">pomdp</span><span class="p">)</span>
-<span class="n">hist</span> <span class="o">=</span> <span class="n">HistoryRecorder</span><span class="p">(</span><span class="n">max_steps</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span> <span class="c"># from POMDPToolbox</span>
-<span class="n">r</span> <span class="o">=</span> <span class="n">simulate</span><span class="p">(</span><span class="n">hist</span><span class="p">,</span> <span class="n">pomdp</span><span class="p">,</span> <span class="n">policy</span><span class="p">,</span> <span class="n">belief_updater</span><span class="p">,</span> <span class="n">init_dist</span><span class="p">)</span> <span class="c"># run 100 step simulation</span>
-</pre></div>
-
+init_dist = initial_state_distribution(pomdp)
+hist = HistoryRecorder(max_steps=100) # from POMDPToolbox
+r = simulate(hist, pomdp, policy, belief_updater, init_dist) # run 100 step simulation
+</code></pre>
 
 <p>Please note that you do not need to define all the functions for most solvers. If you want to use an individual solver, you usually need only a subset of what's above. </p>
 <p><a id='Tabular-Form-POMDP-1'></a></p>
 <h2 id="tabular-form-pomdp">Tabular Form POMDP</h2>
 <p>Another way to define discrete POMDP problems is by writing them in tabular form. Specifically, if you can write the transition and observation probabilities as well as the rewards in matrix form, you can use the <code>DiscreteMDP</code> or <code>DiscretePOMDP</code> types form <code>POMDPModels</code> which automatically implements all the functions you'll need for you. Let's do this with the Tiger POMDP.</p>
-<div class="codehilite"><pre><span></span><span class="k">using</span> <span class="n">POMDPModels</span>
+<pre><code class="julia">using POMDPModels
 
-<span class="c"># write out the matrix forms</span>
+# write out the matrix forms
 
-<span class="c"># REWARDS</span>
-<span class="n">R</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mf">1.</span> <span class="o">-</span><span class="mi">100</span> <span class="mi">10</span><span class="p">;</span> <span class="o">-</span><span class="mi">1</span> <span class="mi">10</span> <span class="o">-</span><span class="mi">100</span><span class="p">]</span> <span class="c"># |S|x|A| state-action pair rewards</span>
+# REWARDS
+R = [-1. -100 10; -1 10 -100] # |S|x|A| state-action pair rewards
 
-<span class="c"># TRANSITIONS</span>
-<span class="n">T</span> <span class="o">=</span> <span class="n">zeros</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span> <span class="c"># |S|x|A|x|S|, T[s&#39;, a, s] = p(s&#39;|a,s)</span>
-<span class="n">T</span><span class="p">[:,:,</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mf">1.</span> <span class="mf">0.5</span> <span class="mf">0.5</span><span class="p">;</span> <span class="mi">0</span> <span class="mf">0.5</span> <span class="mf">0.5</span><span class="p">]</span>
-<span class="n">T</span><span class="p">[:,:,</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.</span> <span class="mf">0.5</span> <span class="mf">0.5</span><span class="p">;</span> <span class="mi">1</span> <span class="mf">0.5</span> <span class="mf">0.5</span><span class="p">]</span>
+# TRANSITIONS
+T = zeros(2,3,2) # |S|x|A|x|S|, T[s', a, s] = p(s'|a,s)
+T[:,:,1] = [1. 0.5 0.5; 0 0.5 0.5]
+T[:,:,2] = [0. 0.5 0.5; 1 0.5 0.5]
 
-<span class="c"># OBSERVATIONS</span>
-<span class="n">O</span> <span class="o">=</span> <span class="n">zeros</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span> <span class="c"># |O|x|A|x|S|, O[o, a, s] = p(o|a,s)</span>
-<span class="n">O</span><span class="p">[:,:,</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.85</span> <span class="mf">0.5</span> <span class="mf">0.5</span><span class="p">;</span> <span class="mf">0.15</span> <span class="mf">0.5</span> <span class="mf">0.5</span><span class="p">]</span>
-<span class="n">O</span><span class="p">[:,:,</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.15</span> <span class="mf">0.5</span> <span class="mf">0.5</span><span class="p">;</span> <span class="mf">0.85</span> <span class="mf">0.5</span> <span class="mf">0.5</span><span class="p">]</span>
+# OBSERVATIONS
+O = zeros(2,3,2) # |O|x|A|x|S|, O[o, a, s] = p(o|a,s)
+O[:,:,1] = [0.85 0.5 0.5; 0.15 0.5 0.5]
+O[:,:,2] = [0.15 0.5 0.5; 0.85 0.5 0.5]
 
-<span class="n">discount</span> <span class="o">=</span> <span class="mf">0.95</span>
-<span class="n">pomdp</span> <span class="o">=</span> <span class="n">DiscretePOMDP</span><span class="p">(</span><span class="n">T</span><span class="p">,</span> <span class="n">R</span><span class="p">,</span> <span class="n">O</span><span class="p">,</span> <span class="n">discount</span><span class="p">)</span>
+discount = 0.95
+pomdp = DiscretePOMDP(T, R, O, discount)
 
-<span class="c"># solve the POMDP the same way</span>
-<span class="n">solver</span> <span class="o">=</span> <span class="n">SARSOPSolver</span><span class="p">()</span>
-<span class="n">policy</span> <span class="o">=</span> <span class="n">solve</span><span class="p">(</span><span class="n">solver</span><span class="p">,</span> <span class="n">pomdp</span><span class="p">)</span>
-</pre></div>
-
+# solve the POMDP the same way
+solver = SARSOPSolver()
+policy = solve(solver, pomdp)
+</code></pre>
 
 <p>It is usually fairly simple to define smaller problems in the tabular form. However, for larger problems it can be tedious and the functional form may be preffered. You can usually use any supported POMDP solver to sovle these types of problems (the performance of the policy may vary however - SARSOP will usually outperform QMDP). </p>
 <p><a id='Continous-POMDP-1'></a></p>

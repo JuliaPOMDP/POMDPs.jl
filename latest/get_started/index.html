@@ -160,28 +160,27 @@
 <h1 id="getting-started">Getting Started</h1>
 <p>Before writing our own POMDP problems or solvers, let's try out some of the availiable solvers and problem models availible in JuliaPOMDP.</p>
 <p>Here is a short piece of code that solves the Tiger POMDP using SARSOP, and evaluates the results. Note that you must have the SARSOP, POMDPModels, and POMDPToolbox modules installed. </p>
-<div class="codehilite"><pre><span></span><span class="k">using</span> <span class="n">SARSOP</span><span class="p">,</span> <span class="n">POMDPModels</span><span class="p">,</span> <span class="n">POMDPToolbox</span>
+<pre><code class="julia">using SARSOP, POMDPModels, POMDPToolbox
 
-<span class="c"># initialize problem and solver</span>
-<span class="n">pomdp</span> <span class="o">=</span> <span class="n">TigerPOMDP</span><span class="p">()</span> <span class="c"># from POMDPModels</span>
-<span class="n">solver</span> <span class="o">=</span> <span class="n">SARSOPSolver</span><span class="p">()</span> <span class="c"># from SARSOP</span>
+# initialize problem and solver
+pomdp = TigerPOMDP() # from POMDPModels
+solver = SARSOPSolver() # from SARSOP
 
-<span class="c"># compute a policy</span>
-<span class="n">policy</span> <span class="o">=</span> <span class="n">solve</span><span class="p">(</span><span class="n">solver</span><span class="p">,</span> <span class="n">pomdp</span><span class="p">)</span>
+# compute a policy
+policy = solve(solver, pomdp)
 
-<span class="c">#evaluate the policy</span>
-<span class="n">belief_updater</span> <span class="o">=</span> <span class="n">updater</span><span class="p">(</span><span class="n">policy</span><span class="p">)</span> <span class="c"># the default QMPD belief updater (discrete Bayesian filter)</span>
-<span class="n">init_dist</span> <span class="o">=</span> <span class="n">initial_state_distribution</span><span class="p">(</span><span class="n">pomdp</span><span class="p">)</span> <span class="c"># from POMDPModels</span>
-<span class="n">hist</span> <span class="o">=</span> <span class="n">HistoryRecorder</span><span class="p">(</span><span class="n">max_steps</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span> <span class="c"># from POMDPToolbox</span>
-<span class="n">r</span> <span class="o">=</span> <span class="n">simulate</span><span class="p">(</span><span class="n">hist</span><span class="p">,</span> <span class="n">pomdp</span><span class="p">,</span> <span class="n">policy</span><span class="p">,</span> <span class="n">belief_updater</span><span class="p">,</span> <span class="n">init_dist</span><span class="p">)</span> <span class="c"># run 100 step simulation</span>
-</pre></div>
-
+#evaluate the policy
+belief_updater = updater(policy) # the default QMPD belief updater (discrete Bayesian filter)
+init_dist = initial_state_distribution(pomdp) # from POMDPModels
+hist = HistoryRecorder(max_steps=100) # from POMDPToolbox
+r = simulate(hist, pomdp, policy, belief_updater, init_dist) # run 100 step simulation
+</code></pre>
 
 <p>The first part of the code loads the desired packages and initializes the problem and the solver. Next, we compute a POMDP policy. Lastly, we evaluate the results. </p>
 <p>There are a few things to mention here. First, the TigerPOMDP type implements all the functions required by SARSOPSolver to compute a policy. Second, each policy has a default updater (essentially a filter used to update the belief of the POMDP). To learn more about Updaters check out the Concepts section. We can also play around with the history.</p>
-<div class="codehilite"><pre><span></span><span class="n">hist</span><span class="o">.</span><span class="n">state_hist</span>
-<span class="n">hist</span><span class="o">.</span><span class="n">observation_hist</span>
-</pre></div>
+<pre><code class="julia">hist.state_hist
+hist.observation_hist
+</code></pre>
               
             </div>
           </div>

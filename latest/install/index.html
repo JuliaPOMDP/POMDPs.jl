@@ -159,25 +159,22 @@
                 <p><a id='Installation-1'></a></p>
 <h1 id="installation">Installation</h1>
 <p>If you have a running Julia distriubtion (Julia 0.4 or greaer), you have everything you need to install POMDPs.jl. To install the package, simply run the following from the Julia REPL:</p>
-<div class="codehilite"><pre><span></span><span class="n">Pkg</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s">&quot;POMDPs&quot;</span><span class="p">)</span> <span class="c"># intalls the POMDPs.jl package</span>
-</pre></div>
-
+<pre><code class="julia">Pkg.add(&quot;POMDPs&quot;) # installs the POMDPs.jl package
+</code></pre>
 
 <p>Once you have POMDPs.jl installed, you can install any package that is part of the JuliaPOMDP community by running:</p>
-<div class="codehilite"><pre><span></span><span class="k">using</span> <span class="n">POMDPs</span>
-<span class="n">POMDPs</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s">&quot;SARSOP&quot;</span><span class="p">)</span> <span class="c"># installs the SARSOP solver</span>
-</pre></div>
-
+<pre><code class="julia">using POMDPs
+POMDPs.add(&quot;SARSOP&quot;) # installs the SARSOP solver
+</code></pre>
 
 <p>The code above will download and install all the dependencies automatically. All JuliaPOMDP packages have been tested on Linux and OS X, and most have been tested on Windows. </p>
 <p>To get a list of all the availible packages run:</p>
-<div class="codehilite"><pre><span></span><span class="n">POMDPs</span><span class="o">.</span><span class="n">available</span><span class="p">()</span> <span class="c"># prints a list of all the availible packages that can be installed with POMDPs.add</span>
-</pre></div>
-
+<pre><code class="julia">POMDPs.available() # prints a list of all the availible packages that can be installed with POMDPs.add
+</code></pre>
 
 <p>Due to the modular nature of the framework, you can install only the solvers/support tools you plan on using. However, if you want to install all of the supported JuliaPOMDP packages you can run the following code:</p>
-<div class="codehilite"><pre><span></span><span class="n">POMDPs</span><span class="o">.</span><span class="n">add_all</span><span class="p">()</span> <span class="c"># installs all the JuliaPOMDP packages (may take a few minutes)</span>
-</pre></div>
+<pre><code class="julia">POMDPs.add_all() # installs all the JuliaPOMDP packages (may take a few minutes)
+</code></pre>
               
             </div>
           </div>

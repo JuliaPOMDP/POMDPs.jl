@@ -100,7 +100,7 @@
             
                 <li class="toctree-l3"><a href="#concepts-and-architecture">Concepts and Architecture</a></li>
                 
-                    <li><a class="toctree-l4" href="#belief">Belief</a></li>
+                    <li><a class="toctree-l4" href="#belief-and-updater">Belief and Updater</a></li>
                 
             
             </ul>
@@ -160,10 +160,11 @@
               
                 <p><a id='Concepts-and-Architecture-1'></a></p>
 <h1 id="concepts-and-architecture">Concepts and Architecture</h1>
-<p><a id='Belief-1'></a></p>
-<h2 id="belief">Belief</h2>
+<p><a id='Belief-and-Updater-1'></a></p>
+<h2 id="belief-and-updater">Belief and Updater</h2>
 <p>The last important component of a POMDP is the initial distribution over the state of the agent. In POMDPs.jl we make a strong distinction between this distribution and a belief. In most literature these two concepts are considered the same. However, in most general terms, a belief is something that is mapped to an action using a POMDP policy. If the policy is represented as something other than alpha-vectors (a policy graph, tree, or a reccurent neural netowrk to give a few examples), it doesn't make sense to think of a belief as a probability distribution over the state space. Thus, in POMDPs.jl we abstract the concept of a belief beyond a probability distribution (of course it can be a probability distriubtion if it makes sense). </p>
 <p>In order to reconcile this difference, each policy has a function called <code>initialize_belief</code> which takes in an initial state distirubtion (this is a probability distribution over the state space of a POMDP) and a policy, and converts the distribution into what we call a belief in POMDPs.jl - a representation of a POMDP that is mapped to an action using the policy. </p>
+<p>A belief has an <code>Updater</code> type associated with it. The <code>Updater</code> implements an <code>update</code> function which updates the policy belief given an action and an observation. A function call to the update function may look like <code>update(updater, action, observation)</code>.</p>
               
             </div>
           </div>

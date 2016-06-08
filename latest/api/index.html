@@ -179,20 +179,20 @@
                 <p><a id='API-Documentation-1'></a></p>
 <h1 id="api-documentation">API Documentation</h1>
 <p>Documentation for the <code>POMDPs.jl</code> user interface. You can get help for any type or function in the module by typing <code>?</code> in the Julia REPL followed by the name of type or function. For example:</p>
-<div class="codehilite"><pre><span></span><span class="n">julia</span><span class="o">&gt;</span><span class="k">using</span> <span class="n">POMDPs</span>
-<span class="n">julia</span><span class="o">&gt;?</span>
-<span class="n">help</span><span class="o">?&gt;</span><span class="n">reward</span>
-<span class="n">search</span><span class="p">:</span> <span class="n">reward</span>
+<pre><code class="julia">julia&gt;using POMDPs
+julia&gt;?
+help?&gt;reward
+search: reward
 
-  <span class="n">reward</span><span class="p">{</span><span class="n">S</span><span class="p">,</span><span class="n">A</span><span class="p">,</span><span class="n">O</span><span class="p">}(</span><span class="n">pomdp</span><span class="p">::</span><span class="n">POMDP</span><span class="p">{</span><span class="n">S</span><span class="p">,</span><span class="n">A</span><span class="p">,</span><span class="n">O</span><span class="p">},</span> <span class="n">state</span><span class="p">::</span><span class="n">S</span><span class="p">,</span> <span class="n">action</span><span class="p">::</span><span class="n">A</span><span class="p">,</span> <span class="n">statep</span><span class="p">::</span><span class="n">S</span><span class="p">)</span>
+  reward{S,A,O}(pomdp::POMDP{S,A,O}, state::S, action::A, statep::S)
 
-  <span class="n">Returns</span> <span class="n">the</span> <span class="n">immediate</span> <span class="n">reward</span> <span class="k">for</span> <span class="n">the</span> <span class="n">s</span><span class="o">-</span><span class="n">a</span><span class="o">-</span><span class="n">s</span> <span class="n">triple</span>
+  Returns the immediate reward for the s-a-s triple
 
-  <span class="n">reward</span><span class="p">{</span><span class="n">S</span><span class="p">,</span><span class="n">A</span><span class="p">,</span><span class="n">O</span><span class="p">}(</span><span class="n">pomdp</span><span class="p">::</span><span class="n">POMDP</span><span class="p">{</span><span class="n">S</span><span class="p">,</span><span class="n">A</span><span class="p">,</span><span class="n">O</span><span class="p">},</span> <span class="n">state</span><span class="p">::</span><span class="n">S</span><span class="p">,</span> <span class="n">action</span><span class="p">::</span><span class="n">A</span><span class="p">)</span>
+  reward{S,A,O}(pomdp::POMDP{S,A,O}, state::S, action::A)
 
-  <span class="n">Returns</span> <span class="n">the</span> <span class="n">immediate</span> <span class="n">reward</span> <span class="k">for</span> <span class="n">the</span> <span class="n">s</span><span class="o">-</span><span class="n">a</span> <span class="n">pair</span>
-</pre></div>
+  Returns the immediate reward for the s-a pair
 
+</code></pre>
 
 <p><a id='Contents-1'></a></p>
 <h2 id="contents">Contents</h2>
@@ -270,33 +270,29 @@
 <p><a id='POMDPs.POMDP' href='#POMDPs.POMDP'>#</a>
 <strong><code>POMDPs.POMDP</code></strong> &mdash; <em>Type</em>.</p>
 <p>Abstract base type for a partially observable Markov decision process.</p>
-<div class="codehilite"><pre><span></span><span class="n">S</span><span class="o">:</span> <span class="n">state</span> <span class="n">type</span>
-<span class="n">A</span><span class="o">:</span> <span class="n">action</span> <span class="n">type</span>
-<span class="n">O</span><span class="o">:</span> <span class="n">observation</span> <span class="n">type</span>
-</pre></div>
-
+<pre><code>S: state type
+A: action type
+O: observation type
+</code></pre>
 
 <p><a id='POMDPs.MDP' href='#POMDPs.MDP'>#</a>
 <strong><code>POMDPs.MDP</code></strong> &mdash; <em>Type</em>.</p>
 <p>Abstract base type for a fully observable Markov decision process.</p>
-<div class="codehilite"><pre><span></span><span class="n">S</span><span class="o">:</span> <span class="n">state</span> <span class="n">type</span>
-<span class="n">A</span><span class="o">:</span> <span class="n">action</span> <span class="n">type</span>
-</pre></div>
-
+<pre><code>S: state type
+A: action type
+</code></pre>
 
 <p><a id='POMDPs.AbstractSpace' href='#POMDPs.AbstractSpace'>#</a>
 <strong><code>POMDPs.AbstractSpace</code></strong> &mdash; <em>Type</em>.</p>
 <p>Base type for state, action and observation spaces.</p>
-<div class="codehilite"><pre><span></span><span class="n">T</span><span class="o">:</span> <span class="n">type</span> <span class="n">that</span> <span class="n">parametarizes</span> <span class="n">the</span> <span class="n">space</span> <span class="o">(</span><span class="n">state</span><span class="o">,</span> <span class="n">action</span><span class="o">,</span> <span class="n">or</span> <span class="n">observation</span><span class="o">)</span>
-</pre></div>
-
+<pre><code>T: type that parametarizes the space (state, action, or observation)
+</code></pre>
 
 <p><a id='POMDPs.AbstractDistribution' href='#POMDPs.AbstractDistribution'>#</a>
 <strong><code>POMDPs.AbstractDistribution</code></strong> &mdash; <em>Type</em>.</p>
 <p>Abstract type for a probability distribution.</p>
-<div class="codehilite"><pre><span></span><span class="n">T</span><span class="o">:</span> <span class="n">type</span> <span class="n">over</span> <span class="n">which</span> <span class="n">distribution</span> <span class="k">is</span> <span class="n">over</span> <span class="o">(</span><span class="n">state</span><span class="o">,</span> <span class="n">action</span><span class="o">,</span> <span class="n">or</span> <span class="n">observation</span><span class="o">)</span>
-</pre></div>
-
+<pre><code>T: type over which distribution is over (state, action, or observation)
+</code></pre>
 
 <p><a id='POMDPs.Solver' href='#POMDPs.Solver'>#</a>
 <strong><code>POMDPs.Solver</code></strong> &mdash; <em>Type</em>.</p>
@@ -304,286 +300,247 @@
 <p><a id='POMDPs.Policy' href='#POMDPs.Policy'>#</a>
 <strong><code>POMDPs.Policy</code></strong> &mdash; <em>Type</em>.</p>
 <p>Base type for a policy (a map from every possible belief, or more abstract policy state, to an optimal or suboptimal action)</p>
-<div class="codehilite"><pre><span></span><span class="n">B</span><span class="o">:</span> <span class="n">a</span> <span class="n">belief</span> <span class="o">(</span><span class="n">or</span> <span class="n">policy</span> <span class="n">state</span><span class="o">)</span> <span class="n">that</span> <span class="n">represents</span> <span class="n">the</span> <span class="n">knowledge</span> <span class="n">an</span> <span class="n">agent</span> <span class="n">has</span> <span class="n">about</span> <span class="n">the</span> <span class="n">state</span> <span class="n">of</span> <span class="n">the</span> <span class="n">system</span>
-</pre></div>
-
+<pre><code>B: a belief (or policy state) that represents the knowledge an agent has about the state of the system
+</code></pre>
 
 <p><a id='POMDPs.Updater' href='#POMDPs.Updater'>#</a>
 <strong><code>POMDPs.Updater</code></strong> &mdash; <em>Type</em>.</p>
 <p>Abstract type for an object that defines how the belief should be updated</p>
-<div class="codehilite"><pre><span></span><span class="n">B</span><span class="o">:</span> <span class="n">belief</span> <span class="n">type</span> <span class="n">that</span> <span class="n">parametarizes</span> <span class="n">the</span> <span class="n">updater</span>
-</pre></div>
-
+<pre><code>B: belief type that parametarizes the updater
+</code></pre>
 
 <p>A belief is a general construct that represents the knowledge an agent has about the state of the system. This can be a probability distribution, an action observation history or a more general representation. </p>
 <p><a id='Model-Functions-1'></a></p>
 <h2 id="model-functions">Model Functions</h2>
 <p><a id='POMDPs.states' href='#POMDPs.states'>#</a>
 <strong><code>POMDPs.states</code></strong> &mdash; <em>Function</em>.</p>
-<div class="codehilite"><pre><span></span>states{S,A,O}(problem::POMDP{S,A,O}, state::S)
+<pre><code>states{S,A,O}(problem::POMDP{S,A,O}, state::S)
 states{S,A}(problem::MDP{S,A}, state::S)
-</pre></div>
-
+</code></pre>
 
 <p>Returns a subset of the state space reachable from <code>state</code>. </p>
-<div class="codehilite"><pre><span></span>states(problem::POMDP)
+<pre><code>states(problem::POMDP)
 states(problem::MDP)
-</pre></div>
-
+</code></pre>
 
 <p>Returns the complete state space of a POMDP. </p>
 <p><a id='POMDPs.actions' href='#POMDPs.actions'>#</a>
 <strong><code>POMDPs.actions</code></strong> &mdash; <em>Function</em>.</p>
-<div class="codehilite"><pre><span></span>actions{S,A,O}(problem::POMDP{S,A,O}, state::S, aspace::AbstractSpace{A})
+<pre><code>actions{S,A,O}(problem::POMDP{S,A,O}, state::S, aspace::AbstractSpace{A})
 actions{S,A}(problem::MDP{S,A}, state::S, aspace::AbstractSpace{A})
-</pre></div>
-
+</code></pre>
 
 <p>Modifies aspace to the action space accessible from the given state and returns it.</p>
-<div class="codehilite"><pre><span></span>actions(problem::POMDP)
+<pre><code>actions(problem::POMDP)
 actions(problem::MDP)
-</pre></div>
-
+</code></pre>
 
 <p>Returns the entire action space of a POMDP.</p>
-<div class="codehilite"><pre><span></span>actions{S,A,O,B}(problem::POMDP{S,A,O}, belief::B, aspace::AbstractSpace{A})
-</pre></div>
-
+<pre><code>actions{S,A,O,B}(problem::POMDP{S,A,O}, belief::B, aspace::AbstractSpace{A})
+</code></pre>
 
 <p>Modifies aspace to the action space accessible from the states with nonzero belief and returns it.</p>
 <p><a id='POMDPs.observations' href='#POMDPs.observations'>#</a>
 <strong><code>POMDPs.observations</code></strong> &mdash; <em>Function</em>.</p>
-<div class="codehilite"><pre><span></span>observations{S,A,O}(problem::POMDP{S,A,O}, state::S, obs::AbstractSpace{O}=observations(problem))
-</pre></div>
-
+<pre><code>observations{S,A,O}(problem::POMDP{S,A,O}, state::S, obs::AbstractSpace{O}=observations(problem))
+</code></pre>
 
 <p>Modifies ospace to the observation space accessible from the given state and returns it.</p>
-<div class="codehilite"><pre><span></span>observations(problem::POMDP)
-</pre></div>
-
+<pre><code>observations(problem::POMDP)
+</code></pre>
 
 <p>Returns the entire observation space.</p>
 <p><a id='POMDPs.reward' href='#POMDPs.reward'>#</a>
 <strong><code>POMDPs.reward</code></strong> &mdash; <em>Function</em>.</p>
-<div class="codehilite"><pre><span></span>reward{S,A,O}(problem::POMDP{S,A,O}, state::S, action::A, statep::S)
+<pre><code>reward{S,A,O}(problem::POMDP{S,A,O}, state::S, action::A, statep::S)
 reward{S,A}(problem::MDP{S,A}, state::S, action::A, statep::S)
-</pre></div>
-
+</code></pre>
 
 <p>Returns the immediate reward for the s-a-s' triple</p>
-<div class="codehilite"><pre><span></span>reward{S,A,O}(problem::POMDP{S,A,O}, state::S, action::A)
+<pre><code>reward{S,A,O}(problem::POMDP{S,A,O}, state::S, action::A)
 reward{S,A}(problem::MDP{S,A}, state::S, action::A)
-</pre></div>
-
+</code></pre>
 
 <p>Returns the immediate reward for the s-a pair</p>
 <p><a id='POMDPs.transition' href='#POMDPs.transition'>#</a>
 <strong><code>POMDPs.transition</code></strong> &mdash; <em>Function</em>.</p>
-<div class="codehilite"><pre><span></span>transition{S,A,O}(problem::POMDP{S,A,O}, state::S, action::A,
-</pre></div>
-
+<pre><code>transition{S,A,O}(problem::POMDP{S,A,O}, state::S, action::A,
+</code></pre>
 
 <p>distribution::AbstractDistribution{S}=create_transition_distribution(problem))     transition{S,A}(problem::MDP{S,A}, state::S, action::A, distribution::AbstractDistribution{S}=create_transition_distribution(problem))</p>
 <p>Returns the transition distribution from the current state-action pair</p>
 <p><a id='POMDPs.observation' href='#POMDPs.observation'>#</a>
 <strong><code>POMDPs.observation</code></strong> &mdash; <em>Function</em>.</p>
-<div class="codehilite"><pre><span></span>observation{S,A,O}(problem::POMDP{S,A,O}, state::S, action::A, statep::S, distribution::AbstractDistribution{O}=create_observation_distribution(problem))
-</pre></div>
-
+<pre><code>observation{S,A,O}(problem::POMDP{S,A,O}, state::S, action::A, statep::S, distribution::AbstractDistribution{O}=create_observation_distribution(problem))
+</code></pre>
 
 <p>Returns the observation distribution for the s-a-s' tuple (state, action, and next state)</p>
-<div class="codehilite"><pre><span></span>observation{S,A,O}(problem::POMDP{S,A,O}, action::A, statep::S, distribution::AbstractDistribution{O}=create_observation_distribution(problem))
-</pre></div>
-
+<pre><code>observation{S,A,O}(problem::POMDP{S,A,O}, action::A, statep::S, distribution::AbstractDistribution{O}=create_observation_distribution(problem))
+</code></pre>
 
 <p>Modifies distribution to the observation distribution for the a-s' tuple (action and next state) and returns it</p>
 <p><a id='POMDPs.isterminal' href='#POMDPs.isterminal'>#</a>
 <strong><code>POMDPs.isterminal</code></strong> &mdash; <em>Function</em>.</p>
-<div class="codehilite"><pre><span></span>isterminal{S,A,O}(problem::POMDP{S,A,O}, state::S)
+<pre><code>isterminal{S,A,O}(problem::POMDP{S,A,O}, state::S)
 isterminal{S,A}(problem::MDP{S,A}, state::S)
-</pre></div>
-
+</code></pre>
 
 <p>Checks if state s is terminal</p>
 <p><a id='POMDPs.isterminal_obs' href='#POMDPs.isterminal_obs'>#</a>
 <strong><code>POMDPs.isterminal_obs</code></strong> &mdash; <em>Function</em>.</p>
-<div class="codehilite"><pre><span></span>isterminal_obs{S,A,O}(problem::POMDP{S,A,O}, observation::O)
-</pre></div>
-
+<pre><code>isterminal_obs{S,A,O}(problem::POMDP{S,A,O}, observation::O)
+</code></pre>
 
 <p>Checks if an observation is terminal.</p>
 <p><a id='POMDPs.discount' href='#POMDPs.discount'>#</a>
 <strong><code>POMDPs.discount</code></strong> &mdash; <em>Function</em>.</p>
-<div class="codehilite"><pre><span></span>discount(problem::POMDP)
+<pre><code>discount(problem::POMDP)
 discount(problem::MDP)
-</pre></div>
-
+</code></pre>
 
 <p>Return the discount factor for the problem.</p>
 <p><a id='POMDPs.n_states' href='#POMDPs.n_states'>#</a>
 <strong><code>POMDPs.n_states</code></strong> &mdash; <em>Function</em>.</p>
-<div class="codehilite"><pre><span></span>n_states(problem::POMDP)
+<pre><code>n_states(problem::POMDP)
 n_states(problem::MDP)
-</pre></div>
-
+</code></pre>
 
 <p>Returns the number of states in <code>problem</code>. Used for discrete models only.</p>
 <p><a id='POMDPs.n_actions' href='#POMDPs.n_actions'>#</a>
 <strong><code>POMDPs.n_actions</code></strong> &mdash; <em>Function</em>.</p>
-<div class="codehilite"><pre><span></span>n_actions(problem::POMDP)
+<pre><code>n_actions(problem::POMDP)
 n_actions(problem::MDP)
-</pre></div>
-
+</code></pre>
 
 <p>Returns the number of actions in <code>problem</code>. Used for discrete models only.</p>
 <p><a id='POMDPs.n_observations' href='#POMDPs.n_observations'>#</a>
 <strong><code>POMDPs.n_observations</code></strong> &mdash; <em>Function</em>.</p>
-<div class="codehilite"><pre><span></span>n_observations(problem::POMDP)
-</pre></div>
-
+<pre><code>n_observations(problem::POMDP)
+</code></pre>
 
 <p>Returns the number of actions in <code>problem</code>. Used for discrete models only.</p>
 <p><a id='POMDPs.state_index' href='#POMDPs.state_index'>#</a>
 <strong><code>POMDPs.state_index</code></strong> &mdash; <em>Function</em>.</p>
-<div class="codehilite"><pre><span></span>state_index{S,A,O}(problem::POMDP{S,A,O}, s::S)
+<pre><code>state_index{S,A,O}(problem::POMDP{S,A,O}, s::S)
 state_index{S,A}(problem::MDP{S,A}, s::S)
-</pre></div>
-
+</code></pre>
 
 <p>Returns the integer index of state <code>s</code>. Used for discrete models only.</p>
 <p><a id='POMDPs.action_index' href='#POMDPs.action_index'>#</a>
 <strong><code>POMDPs.action_index</code></strong> &mdash; <em>Function</em>.</p>
-<div class="codehilite"><pre><span></span>action_index{S,A,O}(problem::POMDP{S,A,O}, a::A)
+<pre><code>action_index{S,A,O}(problem::POMDP{S,A,O}, a::A)
 action_index{S,A}(problem::MDP{S,A}, a::A)
-</pre></div>
-
+</code></pre>
 
 <p>Returns the integer index of action <code>a</code>. Used for discrete models only.</p>
 <p><a id='POMDPs.obs_index' href='#POMDPs.obs_index'>#</a>
 <strong><code>POMDPs.obs_index</code></strong> &mdash; <em>Function</em>.</p>
-<div class="codehilite"><pre><span></span>obs_index{S,A,O}(problem::POMDP{S,A,O}, o::O)
-</pre></div>
-
+<pre><code>obs_index{S,A,O}(problem::POMDP{S,A,O}, o::O)
+</code></pre>
 
 <p>Returns the integer index of observation <code>o</code>. Used for discrete models only.</p>
 <p><a id='POMDPs.create_state' href='#POMDPs.create_state'>#</a>
 <strong><code>POMDPs.create_state</code></strong> &mdash; <em>Function</em>.</p>
-<div class="codehilite"><pre><span></span>create_state(problem::POMDP)
+<pre><code>create_state(problem::POMDP)
 create_state(problem::MDP)
-</pre></div>
-
+</code></pre>
 
 <p>Create a state object (for preallocation purposes).</p>
 <p><a id='POMDPs.create_action' href='#POMDPs.create_action'>#</a>
 <strong><code>POMDPs.create_action</code></strong> &mdash; <em>Function</em>.</p>
-<div class="codehilite"><pre><span></span>create_action(problem::POMDP)
+<pre><code>create_action(problem::POMDP)
 create_action(problem::MDP)
-</pre></div>
-
+</code></pre>
 
 <p>Creates an action object (for preallocation purposes)</p>
 <p><a id='POMDPs.create_observation' href='#POMDPs.create_observation'>#</a>
 <strong><code>POMDPs.create_observation</code></strong> &mdash; <em>Function</em>.</p>
-<div class="codehilite"><pre><span></span>create_observation(problem::POMDP)
-</pre></div>
-
+<pre><code>create_observation(problem::POMDP)
+</code></pre>
 
 <p>Create an observation object (for preallocation purposes).</p>
 <p><a id='Distribution/Space-Functions-1'></a></p>
 <h2 id="distributionspace-functions">Distribution/Space Functions</h2>
 <p><a id='Base.Random.rand' href='#Base.Random.rand'>#</a>
 <strong><code>Base.Random.rand</code></strong> &mdash; <em>Function</em>.</p>
-<div class="codehilite"><pre><span></span>rand{T}(rng::AbstractRNG, d::AbstractSpace{T}, sample::T)
-</pre></div>
-
+<pre><code>rand{T}(rng::AbstractRNG, d::AbstractSpace{T}, sample::T)
+</code></pre>
 
 <p>Returns a random <code>sample</code> from space <code>s</code>.</p>
-<div class="codehilite"><pre><span></span>rand{T}(rng::AbstractRNG, d::AbstractDistribution{T}, sample::T)
-</pre></div>
-
+<pre><code>rand{T}(rng::AbstractRNG, d::AbstractDistribution{T}, sample::T)
+</code></pre>
 
 <p>Fill <code>sample</code> with a random element from distribution <code>d</code>. The sample can be a state, action or observation.</p>
 <p><a id='POMDPs.pdf' href='#POMDPs.pdf'>#</a>
 <strong><code>POMDPs.pdf</code></strong> &mdash; <em>Function</em>.</p>
-<div class="codehilite"><pre><span></span>pdf{T}(d::AbstractDistribution{T}, x::T)
-</pre></div>
-
+<pre><code>pdf{T}(d::AbstractDistribution{T}, x::T)
+</code></pre>
 
 <p>Value of probability distribution <code>d</code> function at sample <code>x</code>.</p>
 <p><a id='POMDPs.dimensions' href='#POMDPs.dimensions'>#</a>
 <strong><code>POMDPs.dimensions</code></strong> &mdash; <em>Function</em>.</p>
-<div class="codehilite"><pre><span></span>dimensions{T}(s::AbstractSpace{T})
-</pre></div>
-
+<pre><code>dimensions{T}(s::AbstractSpace{T})
+</code></pre>
 
 <p>Returns the number of dimensions in space <code>s</code>.</p>
 <p><a id='POMDPs.iterator' href='#POMDPs.iterator'>#</a>
 <strong><code>POMDPs.iterator</code></strong> &mdash; <em>Function</em>.</p>
-<div class="codehilite"><pre><span></span>iterator{T}(s::AbstractSpace{T})
-</pre></div>
-
+<pre><code>iterator{T}(s::AbstractSpace{T})
+</code></pre>
 
 <p>Returns an iterable type (array or custom iterator) corresponding to space <code>s</code>. </p>
-<div class="codehilite"><pre><span></span>iterator{T}(d::AbstractDistribution{T})
-</pre></div>
-
+<pre><code>iterator{T}(d::AbstractDistribution{T})
+</code></pre>
 
 <p>Returns an iterable type (array or custom iterator) corresponding to distribution <code>d</code>. </p>
 <p><a id='POMDPs.initial_state_distribution' href='#POMDPs.initial_state_distribution'>#</a>
 <strong><code>POMDPs.initial_state_distribution</code></strong> &mdash; <em>Function</em>.</p>
-<div class="codehilite"><pre><span></span>initial_state_distribution(pomdp::POMDP)
-</pre></div>
-
+<pre><code>initial_state_distribution(pomdp::POMDP)
+</code></pre>
 
 <p>Returns an initial belief for the pomdp.</p>
 <p><a id='POMDPs.create_transition_distribution' href='#POMDPs.create_transition_distribution'>#</a>
 <strong><code>POMDPs.create_transition_distribution</code></strong> &mdash; <em>Function</em>.</p>
-<div class="codehilite"><pre><span></span>create_transition_distribution(problem::POMDP)
+<pre><code>create_transition_distribution(problem::POMDP)
 create_transition_distribution(problem::MDP)
-</pre></div>
-
+</code></pre>
 
 <p>Returns a transition distribution (for memory preallocation).</p>
 <p><a id='POMDPs.create_observation_distribution' href='#POMDPs.create_observation_distribution'>#</a>
 <strong><code>POMDPs.create_observation_distribution</code></strong> &mdash; <em>Function</em>.</p>
-<div class="codehilite"><pre><span></span>create_observation_distribution(problem::POMDP)
+<pre><code>create_observation_distribution(problem::POMDP)
 create_observation_distribution(problem::MDP)
-</pre></div>
-
+</code></pre>
 
 <p>Returns an observation distribution (for memory preallocation).</p>
 <p><a id='Belief-Functions-1'></a></p>
 <h2 id="belief-functions">Belief Functions</h2>
 <p><a id='POMDPs.update' href='#POMDPs.update'>#</a>
 <strong><code>POMDPs.update</code></strong> &mdash; <em>Function</em>.</p>
-<div class="codehilite"><pre><span></span>update{B,A,O}(updater::Updater, belief_old::B, action::A, obs::O,
+<pre><code>update{B,A,O}(updater::Updater, belief_old::B, action::A, obs::O,
 belief_new::B=create_belief(updater))
-</pre></div>
-
+</code></pre>
 
 <p>Returns a new instance of an updated belief given <code>belief_old</code> and the latest action and observation.</p>
 <p><a id='POMDPs.create_belief' href='#POMDPs.create_belief'>#</a>
 <strong><code>POMDPs.create_belief</code></strong> &mdash; <em>Function</em>.</p>
-<div class="codehilite"><pre><span></span>create_belief(updater::Updater)
-</pre></div>
-
+<pre><code>create_belief(updater::Updater)
+</code></pre>
 
 <p>Creates a belief object of the type used by <code>updater</code> (preallocates memory)</p>
-<div class="codehilite"><pre><span></span>create_belief(pomdp::POMDP)
-</pre></div>
-
+<pre><code>create_belief(pomdp::POMDP)
+</code></pre>
 
 <p>Creates a belief either to be used by updater or pomdp</p>
 <p><a id='POMDPs.initialize_belief' href='#POMDPs.initialize_belief'>#</a>
 <strong><code>POMDPs.initialize_belief</code></strong> &mdash; <em>Function</em>.</p>
-<div class="codehilite"><pre><span></span>initialize_belief{B}(updater::Updater{B}, 
+<pre><code>initialize_belief{B}(updater::Updater{B}, 
                      state_distribution::AbstractDistribution,
                      new_belief::B=create_belief(updater))
 initialize_belief{B}(updater::Updater{B},
                      belief::Any,
                      new_belief::B=create_belief(updater))
-</pre></div>
-
+</code></pre>
 
 <p>Returns a belief that can be updated using <code>updater</code> that has similar distribution to <code>state_distribution</code> or <code>belief</code>.</p>
 <p>The conversion may be lossy. This function is also idempotent, i.e. there is a default implementation that passes the belief through when it is already the correct type: <code>initialize_belief{B}(updater::Updater{B}, belief::B) = belief</code></p>
@@ -591,44 +548,38 @@ initialize_belief{B}(updater::Updater{B},
 <h2 id="policy-and-solver-functions">Policy and Solver Functions</h2>
 <p><a id='POMDPs.create_policy' href='#POMDPs.create_policy'>#</a>
 <strong><code>POMDPs.create_policy</code></strong> &mdash; <em>Function</em>.</p>
-<div class="codehilite"><pre><span></span>create_policy(solver::Solver, problem::POMDP)
+<pre><code>create_policy(solver::Solver, problem::POMDP)
 create_policy(solver::Solver, problem::MDP)
-</pre></div>
-
+</code></pre>
 
 <p>Creates a policy object (for preallocation purposes)</p>
 <p><a id='POMDPs.solve' href='#POMDPs.solve'>#</a>
 <strong><code>POMDPs.solve</code></strong> &mdash; <em>Function</em>.</p>
-<div class="codehilite"><pre><span></span>solve(solver::Solver, problem::POMDP, policy=create_policy(solver, problem))
-</pre></div>
-
+<pre><code>solve(solver::Solver, problem::POMDP, policy=create_policy(solver, problem))
+</code></pre>
 
 <p>Solves the POMDP using method associated with solver, and returns a policy. </p>
 <p><a id='POMDPs.updater' href='#POMDPs.updater'>#</a>
 <strong><code>POMDPs.updater</code></strong> &mdash; <em>Function</em>.</p>
-<div class="codehilite"><pre><span></span>updater(policy::Policy)
-</pre></div>
-
+<pre><code>updater(policy::Policy)
+</code></pre>
 
 <p>Returns a default Updater appropriate for a belief type that policy <code>p</code> can use</p>
 <p><a id='POMDPs.action' href='#POMDPs.action'>#</a>
 <strong><code>POMDPs.action</code></strong> &mdash; <em>Function</em>.</p>
-<div class="codehilite"><pre><span></span>action{B}(p::Policy, x::B, action)
-</pre></div>
-
+<pre><code>action{B}(p::Policy, x::B, action)
+</code></pre>
 
 <p>Fills and returns action based on the current state or belief, given the policy. B is a generalized information state - can be a state in an MDP, a distribution in POMDP, or any other representation needed to make a decision using the given policy. </p>
-<div class="codehilite"><pre><span></span>action{B}(policy::Policy, x::B)
-</pre></div>
-
+<pre><code>action{B}(policy::Policy, x::B)
+</code></pre>
 
 <p>Returns an action for the current state or belief, given the policy</p>
 <p>If an MDP is being simulated, x will be a state; if a POMDP is being simulated, x will be a belief</p>
 <p><a id='POMDPs.value' href='#POMDPs.value'>#</a>
 <strong><code>POMDPs.value</code></strong> &mdash; <em>Function</em>.</p>
-<div class="codehilite"><pre><span></span>value{B}(p::Policy, x::B)
-</pre></div>
-
+<pre><code>value{B}(p::Policy, x::B)
+</code></pre>
 
 <p>Returns the utility value from policy p given the state</p>
 <p><a id='Simulator-1'></a></p>
@@ -638,49 +589,42 @@ create_policy(solver::Solver, problem::MDP)
 <p>Base type for an object defining how a simulation should be carried out</p>
 <p><a id='POMDPs.simulate' href='#POMDPs.simulate'>#</a>
 <strong><code>POMDPs.simulate</code></strong> &mdash; <em>Function</em>.</p>
-<div class="codehilite"><pre><span></span>simulate{S,A}(simulator::Simulator, problem::MDP{S,A}, policy::Policy, initial_state::S)
-</pre></div>
-
+<pre><code>simulate{S,A}(simulator::Simulator, problem::MDP{S,A}, policy::Policy, initial_state::S)
+</code></pre>
 
 <p>Run a simulation using the specified policy and returns the accumulated reward</p>
-<div class="codehilite"><pre><span></span>simulate{S,A,O,B}(simulator::Simulator, problem::POMDP{S,A,O}, policy::Policy{B}, updater::Updater{B}, initial_belief::Union{B,AbstractDistribution{S}})
-</pre></div>
-
+<pre><code>simulate{S,A,O,B}(simulator::Simulator, problem::POMDP{S,A,O}, policy::Policy{B}, updater::Updater{B}, initial_belief::Union{B,AbstractDistribution{S}})
+</code></pre>
 
 <p>Run a simulation using the specified policy and returns the accumulated reward</p>
 <p><a id='Utility-Tools-1'></a></p>
 <h2 id="utility-tools">Utility Tools</h2>
 <p><a id='POMDPs.add' href='#POMDPs.add'>#</a>
 <strong><code>POMDPs.add</code></strong> &mdash; <em>Function</em>.</p>
-<div class="codehilite"><pre><span></span>add(solver_name::AbstractString, v::Bool=true)
-</pre></div>
-
+<pre><code>add(solver_name::AbstractString, v::Bool=true)
+</code></pre>
 
 <p>Downloads and installs a registered solver with name <code>solver_name</code>.  <code>v</code> is a verbose flag, when set to true, function will notify the user if solver is already installed. This function is not exported, and must be called:</p>
-<div class="codehilite"><pre><span></span><span class="n">julia</span><span class="o">&gt;</span> <span class="k">using</span> <span class="n">POMDPs</span>
-<span class="n">julia</span><span class="o">&gt;</span> <span class="n">POMDPs</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s">&quot;MCTS&quot;</span><span class="p">)</span>
-</pre></div>
-
+<pre><code class="julia">julia&gt; using POMDPs
+julia&gt; POMDPs.add(&quot;MCTS&quot;)
+</code></pre>
 
 <p><a id='POMDPs.add_all' href='#POMDPs.add_all'>#</a>
 <strong><code>POMDPs.add_all</code></strong> &mdash; <em>Function</em>.</p>
-<div class="codehilite"><pre><span></span>add_all()
-</pre></div>
-
+<pre><code>add_all()
+</code></pre>
 
 <p>Downloads and installs all the packages supported by JuliaPOMDP</p>
 <p><a id='POMDPs.test_all' href='#POMDPs.test_all'>#</a>
 <strong><code>POMDPs.test_all</code></strong> &mdash; <em>Function</em>.</p>
-<div class="codehilite"><pre><span></span>test_all()
-</pre></div>
-
+<pre><code>test_all()
+</code></pre>
 
 <p>Tests all the JuliaPOMDP packages installed on your current machine.</p>
 <p><a id='POMDPs.available' href='#POMDPs.available'>#</a>
 <strong><code>POMDPs.available</code></strong> &mdash; <em>Function</em>.</p>
-<div class="codehilite"><pre><span></span>available()
-</pre></div>
-
+<pre><code>available()
+</code></pre>
 
 <p>Prints all the availiable packages in JuliaPOMDP</p>
 <p><a id='POMDPs.@pomdp_func' href='#POMDPs.@pomdp_func'>#</a>
