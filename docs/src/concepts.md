@@ -1,5 +1,13 @@
 # Concepts and Architecture
 
+This section outlines the three main concepts in POMDPs.jl, namely, problem, solver, and experiment. 
+Each concept has a set of abstract types associated with it that define the components of that concept, and a set of
+functions that define the behavior of that concept. 
+
+![concepts](figures/concepts.pdf "Concepts")
+
+## 
+
 ## Belief and Updater
 
 The last important component of a POMDP is the initial distribution over the state of the agent. In POMDPs.jl we make a strong distinction
@@ -18,5 +26,6 @@ policy.
 A belief has an ```Updater``` type associated with it. The ```Updater``` implements an ```update``` function which
 updates the policy belief given an action and an observation. A function call to the update function may look like
 ```update(updater, action, observation)```.
+
 
 

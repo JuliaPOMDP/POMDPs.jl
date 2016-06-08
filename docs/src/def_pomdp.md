@@ -235,7 +235,9 @@ tedious and the functional form may be preffered. You can usually use any suppor
 
 ## Continous POMDP
 
-Within the POMDPs.jl interface, we can also define problems with continuous spaces. There are a few solvers that can handle these types of problems, namely, MCVI and POMCP (with some tunning). Light-Dark problem here. What should we say about bounds? This is a good place to discuss GenerativeModels. Would also be good if we could include RL stuff somewhere (depending on Chris). 
+Within the POMDPs.jl interface, we can also define problems with continuous spaces. 
+There are a few solvers that can handle these types of problems, namely, MCVI and POMCP (with some tunning). Light-Dark problem here. What should we say about bounds? 
+
 
 
 
