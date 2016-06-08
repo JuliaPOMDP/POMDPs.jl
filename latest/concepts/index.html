@@ -160,6 +160,10 @@
               
                 <p><a id='Concepts-and-Architecture-1'></a></p>
 <h1 id="concepts-and-architecture">Concepts and Architecture</h1>
+<p>This section outlines the three main concepts in POMDPs.jl, namely, problem, solver, and experiment.  Each concept has a set of abstract types associated with it that define the components of that concept, and a set of functions that define the behavior of that concept. </p>
+<p><img alt="concepts" src="../figures/concepts.pdf" title="Concepts" /></p>
+<p><a id='-1'></a></p>
+<h2 id="_1"></h2>
 <p><a id='Belief-and-Updater-1'></a></p>
 <h2 id="belief-and-updater">Belief and Updater</h2>
 <p>The last important component of a POMDP is the initial distribution over the state of the agent. In POMDPs.jl we make a strong distinction between this distribution and a belief. In most literature these two concepts are considered the same. However, in most general terms, a belief is something that is mapped to an action using a POMDP policy. If the policy is represented as something other than alpha-vectors (a policy graph, tree, or a reccurent neural netowrk to give a few examples), it doesn't make sense to think of a belief as a probability distribution over the state space. Thus, in POMDPs.jl we abstract the concept of a belief beyond a probability distribution (of course it can be a probability distriubtion if it makes sense). </p>
