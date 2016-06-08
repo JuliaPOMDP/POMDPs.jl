@@ -4,7 +4,7 @@ This section outlines the three main concepts in POMDPs.jl, namely, problem, sol
 Each concept has a set of abstract types associated with it that define the components of that concept, and a set of
 functions that define the behavior of that concept. 
 
-![concepts](figures/concepts.pdf "Concepts")
+![concepts](https://github.com/JuliaPOMDP/POMDPs.jl/blob/master/docs/src/figures/concepts.pdf "Concepts")
 
 ## 
 
@@ -26,6 +26,7 @@ policy.
 A belief has an ```Updater``` type associated with it. The ```Updater``` implements an ```update``` function which
 updates the policy belief given an action and an observation. A function call to the update function may look like
 ```update(updater, action, observation)```.
+
 
 
 
