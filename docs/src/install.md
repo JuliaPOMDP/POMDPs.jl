@@ -3,7 +3,7 @@
 If you have a running Julia distriubtion (Julia 0.4 or greaer), you have everything you need to install POMDPs.jl. To install the package, simply
 run the following from the Julia REPL:
 ```julia
-Pkg.add("POMDPs") # intalls the POMDPs.jl package
+Pkg.add("POMDPs") # installs the POMDPs.jl package
 ```
 
 Once you have POMDPs.jl installed, you can install any package that is part of the JuliaPOMDP community by running:
@@ -26,3 +26,4 @@ if you want to install all of the supported JuliaPOMDP packages you can run the 
 ```julia
 POMDPs.add_all() # installs all the JuliaPOMDP packages (may take a few minutes)
 ```
+

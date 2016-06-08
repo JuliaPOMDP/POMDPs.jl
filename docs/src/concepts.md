@@ -1,6 +1,6 @@
 # Concepts and Architecture
 
-## Belief
+## Belief and Updater
 
 The last important component of a POMDP is the initial distribution over the state of the agent. In POMDPs.jl we make a strong distinction
 between this distribution and a belief. In most literature these two concepts are considered the same. However, in
@@ -14,5 +14,9 @@ In order to reconcile this difference, each policy has a function called ```init
 initial state distirubtion (this is a probability distribution over the state space of a POMDP) and a policy, and converts the
 distribution into what we call a belief in POMDPs.jl - a representation of a POMDP that is mapped to an action using the
 policy. 
+
+A belief has an ```Updater``` type associated with it. The ```Updater``` implements an ```update``` function which
+updates the policy belief given an action and an observation. A function call to the update function may look like
+```update(updater, action, observation)```.
 
 
