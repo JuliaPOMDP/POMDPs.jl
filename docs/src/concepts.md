@@ -56,5 +56,6 @@ A policy is a mapping from every belief that an agent might take to an action. A
 
 
 [1] *Decision Making Under Uncertainty: Theory and Application* by Mykel J. Kochenderfer, MIT Press, 2015
+
 [2] Bai, H., Hsu, D., & Lee, W. S. (2014). Integrated perception and planning in the continuous space: A POMDP approach. The International Journal of Robotics Research, 33(9), 1288-1302
 
