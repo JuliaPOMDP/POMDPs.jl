@@ -1,6 +1,6 @@
 # Defining a Solver
 
-In this seciton, we will walk through an implementation of the
+In this section, we will walk through an implementation of the
 [QMDP](http://www-anw.cs.umass.edu/~barto/courses/cs687/Cassandra-etal-POMDP.pdf) algorithm. QMDP is the fully
 observable approximation of a POMDP policy, and relies on the Q-values to determine actions. 
 
@@ -12,11 +12,11 @@ respectively. The QMDP algorithm assumes that the POMDP its solving is discrete.
 \mathcal{A} \times \mathcal{S} \rightarrow [0, 1]$ is the transition function, $R: \mathcal{S} \times \mathcal{A}
 \rightarrow \mathbb{R}$ is the reward function, and $O: \mathcal{Z} \times \mathcal{A} \times \mathcal{S} \rightarrow
 [0,1]$ is the observation function. In a POMDP, our goal is to compute a policy $\pi$ that maps beliefs to actions $\pi: b \rightarrow a$. For
-QMDP, a belief can be represented by a discrete probabiltiy distribution over the state space (although there may be
+QMDP, a belief can be represented by a discrete probability distribution over the state space (although there may be
 other ways to define a belief in general and POMDPs.jl allows this flexibility). 
 
 Before thinking about how we can compute a policy, lets first think of how we can write the optimal value function for a
-POMDP. Recall that in an MDP, the optimal value function simply represents the maximum expected utility from a given state. The idea is similar in a POMDP, but now we can think of the optimal value function with respect to a belief, and not just a single state. Since our beleif is a probability distribution over the states, we can write the value function as follows:
+POMDP. Recall that in an MDP, the optimal value function simply represents the maximum expected utility from a given state. The idea is similar in a POMDP, but now we can think of the optimal value function with respect to a belief, and not just a single state. Since our belief is a probability distribution over the states, we can write the value function as follows:
 
 $U^{*}(b) = \max_{a} \sum_{s} b(s)R(s,a)$
 
@@ -27,28 +27,28 @@ $U^{*}(b) = \max_{a} \alpha_{a}^{T}b$
 
 The $\alpha_{a}$ in the equation above is what's often called an alpha vector. These alpha vectors can be though of as
 compact representations of a POMDP policy. Just as in an MDP, we often want to compute the Q-matrix, in a POMDP, we
-want to compute these alpha vectors. Note that an aplpha vectors can be though of as a part of a piecewise linear and
+want to compute these alpha vectors. Note that an alpha vectors can be though of as a part of a piecewise linear and
 convex approximation to a POMDP value function (which is itself convex). Also note that using $R(:,a)$ as an
-apporximation for an alpha vectors will often give you a very poor approximation. So now that we know that we must
+approximation for an alpha vectors will often give you a very poor approximation. So now that we know that we must
 compute these alpha vectors, how do we do it?
 
 
 ## QMDP Algorithm
 
 One of the simplest algorithms for
-computing these alpha vectors is known as QMDP. It uses the Q-matrix $Q(s,a)$ obtained by solving the MDP associaed with
-the POMDP, and setting each alpha vector equal to the columns of that matrix $\alpha_{a} = Q(:, s)$. If you are faimilar
+computing these alpha vectors is known as QMDP. It uses the Q-matrix $Q(s,a)$ obtained by solving the MDP associated with
+the POMDP, and setting each alpha vector equal to the columns of that matrix $\alpha_{a} = Q(:, s)$. If you are familiar
 with the value iteration algorithm for MDPs, the procedure for finding these alpha vectors is identical. Let's first
 initialize the alpha vectors $\alpha_{a}^{0} = 0$ for all $s$, and then iterate
 
 $\alpha_{a}^{k+1}(s) = R(s,a) + \gamma \sum_{s'} T(s'|s,a) \max_{a'} \alpha_{a'}^{k}(s')$
 
-After enough iterations, the alpha vectors converge to the QMDP apporximation. 
+After enough iterations, the alpha vectors converge to the QMDP approximation. 
 
-Remeber that QMDP is just an approximation method, and does not gurantee that the alpha vectors you obtain actually
-represent your POMDP value function. Specifcially, QMDP has trouble in problems with information gathering actions
+Remember that QMDP is just an approximation method, and does not guarantee that the alpha vectors you obtain actually
+represent your POMDP value function. Specifically, QMDP has trouble in problems with information gathering actions
 (because we completely ignored the observation function when computing our policy). However, QMDP works very well in problems where a particular choice of action has
-little impact on the reduction in state uncertaitniy. 
+little impact on the reduction in state uncertainty. 
 
 
 ## Requirements for a Solver
@@ -92,7 +92,7 @@ QMDPSolver(;max_iterations::Int64=100, tolerance::Float64=1e-3) = QMDPSolver(max
 
 Note that the QMDPSolver inherits from the abstract Solver type that's part of POMDPs.jl. 
 
-Now, let's define a policy type. In general, the policy should contain all the information needed to map a belief to an action. As mentioned earlier, we need alpha vectors to be part of our policy. We can represent the alpha vectors using a matrix of size $\mathcal{S} \time \mathcal{A}$. Recall that in POMDPs.jl, the actions can be represented in a number of ways (Int64, concrete types, etc), so we need a way to map these actions to integers so we can index into our alpha matrix. The type looks like:
+Now, let's define a policy type. In general, the policy should contain all the information needed to map a belief to an action. As mentioned earlier, we need alpha vectors to be part of our policy. We can represent the alpha vectors using a matrix of size $\mathcal{S} \times \mathcal{A}$. Recall that in POMDPs.jl, the actions can be represented in a number of ways (Int64, concrete types, etc), so we need a way to map these actions to integers so we can index into our alpha matrix. The type looks like:
 
 ```julia
 type QMDPPolicy <: Policy
@@ -221,7 +221,7 @@ function POMDPs.initialize_belief(bu::DiscreteUpdater, initial_state_dist::Abstr
 end
 ```
 
-The function above assumes that the initial_state_dist is a distriubtion that implements a pdf function. 
+The function above assumes that the `initial_state_dist` is a distribution that implements a pdf function. 
 
 Lastly, let's define the action function which maps the belief to an action using the QMDP policy. 
 
