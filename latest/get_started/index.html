@@ -177,10 +177,7 @@ r = simulate(hist, pomdp, policy, belief_updater, init_dist) # run 100 step simu
 </code></pre>
 
 <p>The first part of the code loads the desired packages and initializes the problem and the solver. Next, we compute a POMDP policy. Lastly, we evaluate the results. </p>
-<p>There are a few things to mention here. First, the TigerPOMDP type implements all the functions required by SARSOPSolver to compute a policy. Second, each policy has a default updater (essentially a filter used to update the belief of the POMDP). To learn more about Updaters check out the Concepts section. We can also play around with the history.</p>
-<pre><code class="julia">hist.state_hist
-hist.observation_hist
-</code></pre>
+<p>There are a few things to mention here. First, the TigerPOMDP type implements all the functions required by SARSOPSolver to compute a policy. Second, each policy has a default updater (essentially a filter used to update the belief of the POMDP). To learn more about Updaters check out the Concepts section. </p>
               
             </div>
           </div>
