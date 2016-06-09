@@ -28,13 +28,8 @@ POMDP policy. Lastly, we evaluate the results.
 
 There are a few things to mention here. First, the TigerPOMDP type implements all the functions required by
 SARSOPSolver to compute a policy. Second, each policy has a default updater (essentially a filter used to update the
-belief of the POMDP). To learn more about Updaters check out the Concepts section. We can also play around with the
-history.
+belief of the POMDP). To learn more about Updaters check out the Concepts section. 
 
-```julia
-hist.state_hist
-hist.observation_hist
-```
 
 
 

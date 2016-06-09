@@ -226,7 +226,7 @@ The function above assumes that the initial_state_dist is a distriubtion that im
 Lastly, let's define the action function which maps the belief to an action using the QMDP policy. 
 
 ```julia
-function action(policy::QMDPPolicy, b::QMDPBelief)
+function POMDPs.action(policy::QMDPPolicy, b::QMDPBelief)
     alphas = policy.alphas
     ihi = 0
     vhi = -Inf
