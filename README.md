@@ -31,6 +31,39 @@ using POMDPs
 POMDPs.add_all() # this may take a few minutes
 ```
 
+## Quick Start
+
+Start the Julia REPL and run the following:
+```julia
+using POMDPs
+using POMDPModels, POMDPToolbox, QMDP
+# initialize problem and solver
+pomdp = TigerPOMDP() # from POMDPModels
+solver = QMDPSolver() # from QMDP
+# compute a policy
+policy = solve(solver, pomdp)
+#evaluate the policy
+belief_updater = updater(policy) # the default QMPD belief updater (discrete Bayesian filter)
+init_dist = initial_state_distribution(pomdp) # from POMDPModels
+stats = simulate(HistoryRecorder(max_steps=100), pomdp, policy, belief_updater, init_dist) # run 100 step simulation
+```
+The code above solves the Tiger POMDP using the QMDP algorithm, and evaluates its performance. 
+
+
+## Tutorials
+
+The following tutorials aim to get you up to speed with POMDPs.jl:
+* [MDP Tutorial](http://nbviewer.ipython.org/github/sisl/POMDPs.jl/blob/master/examples/GridWorld.ipynb) for beginners
+gives an overview of using Value Iteration and Monte-Carlo Tree Search with the classic grid world problem
+* [POMDP Tutorial](http://nbviewer.ipython.org/github/sisl/POMDPs.jl/blob/master/examples/Tiger.ipynb) gives an overview
+of using SARSOP and QMDP to solve the tiger problem
+
+
+## Documentation
+
+Detailed documentation can be found [here](http://juliapomdp.github.io/POMDPs.jl/latest/).
+
+
 ## Supported Packages
 
 Many packages use the POMDPs.jl interface, including MDP and POMDP solvers, support tools, and extensions to the POMDPs.jl interface. 
@@ -69,35 +102,3 @@ Many packages use the POMDPs.jl interface, including MDP and POMDP solvers, supp
 | [GenerativeModels](https://github.com/JuliaPOMDP/GenerativeModels.jl) |  | 
 | [POMDPBounds](https://github.com/JuliaPOMDP/POMDPBounds.jl) |  | 
 
-## Quick Start
-
-Start the Julia REPL and run the following:
-```julia
-using POMDPs
-using POMDPModels, POMDPToolbox, QMDP
-# initialize problem and solver
-pomdp = TigerPOMDP() # from POMDPModels
-solver = QMDPSolver() # from QMDP
-# compute a policy
-policy = solve(solver, pomdp)
-#evaluate the policy
-belief_updater = updater(policy) # the default QMPD belief updater (discrete Bayesian filter)
-init_dist = initial_state_distribution(pomdp) # from POMDPModels
-stats = simulate(HistoryRecorder(max_steps=100), pomdp, policy, belief_updater, init_dist) # run 100 step simulation
-```
-The code above solves the Tiger POMDP using the QMDP algorithm, and evaluates its performance. 
-
-
-
-## Tutorials
-
-The following tutorials aim to get you up to speed with POMDPs.jl:
-* [MDP Tutorial](http://nbviewer.ipython.org/github/sisl/POMDPs.jl/blob/master/examples/GridWorld.ipynb) for beginners
-  gives an overview of using Value Iteration and Monte-Carlo Tree Search with the classic grid world problem
-* [POMDP Tutorial](http://nbviewer.ipython.org/github/sisl/POMDPs.jl/blob/master/examples/Tiger.ipynb) gives an overview
-  of using SARSOP and QMDP to solve the tiger problem
-
-
-## Documentation
-
-Detailed documentation can be found [here](http://juliapomdp.github.io/POMDPs.jl/latest/).
