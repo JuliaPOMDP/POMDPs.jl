@@ -16,7 +16,7 @@ function add(solver_name::AbstractString, v::Bool=true)
         Pkg.clone(full_url)
         Pkg.build(solver_name)
     catch
-        v ? (println("Solver already installed")) : (nothing)
+        v ? (println("Package already installed")) : (nothing)
     end
 end
 
