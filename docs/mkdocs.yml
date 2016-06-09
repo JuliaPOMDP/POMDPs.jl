@@ -5,19 +5,14 @@ site_author:      Maxim Egorov
 
 theme: readthedocs
 
-extra:
-  palette:
-    primary: 'indigo'
-    accent:  'blue'
-
 extra_css:
   - assets/Documenter.css
 
 markdown_extensions:
-  - codehilite
   - extra
   - tables
   - fenced_code
+  #- mdx_math
 
 extra_javascript:
   - https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML
@@ -26,7 +21,12 @@ extra_javascript:
 docs_dir: 'build'
 
 pages:
-- Home: index.md
-- Manual: guide.md
+- About: index.md
+- Installation: install.md
+- Getting Started: get_started.md
+- Defining a POMDP: def_pomdp.md
+- Defining a Solver: def_solver.md
+- Concepts and Architecture: concepts.md
 - API: api.md
+- Frequently Asked Questions: faq.md
 
