@@ -7,7 +7,7 @@ An outline of the architecture is shown below.
 ![concepts](figures/concepts.png)
 
 The MDP and POMDP types are associated with the problem definition.
-The Solver and Policy types are associated with the solver.
+The Solver and Policy types are associated with the solver or decision-making agent.
 Typically, the Updater type is also associated with the solver, but a solver may sometimes be used with an updater that was implemented separately.
 The Simulator type is associated with the experiment. 
 
@@ -37,6 +37,7 @@ For example, if the agent is represented by a finite-state controller as is the 
 Another example is an agent represented by a recurrent neural network.
 In this case, the agent's belief is the state of the network.
 In order to accommodate a wide variety of decision-making approaches, in POMDPs.jl, we use the term "belief" to denote the set of information that the agent makes a decision on, which could be an exact state distribution, an action-observation history, a set of weighted particles, or the examples mentioned before.
+In code, the belief can be represented by any built-in or user defined type.
 
 When an action is taken and a new observation is received, the belief is updated by the belief updater.
 In code, a belief updater is represented by a concrete subtype of the `Updater` abstract type, and the `update` function defines how the belief is updated when a new observation is received.
@@ -49,7 +50,9 @@ Finally, some advanced generic belief updaters such as particle filters may be i
 
 ## Solvers and Policies
 
-A policy is a mapping from every belief that an agent might take to an action.
+Sequential decision making under uncertainty involves both online and offline calculations. In the broad sense, the term "solver" refers to both the online and ...
+
+A policy is a mapping from every belief that an agent might take to an action. A policy is represented in code by a concrete subtype of the `Policy` abstract type ...
 
 
 [1] *Decision Making Under Uncertainty: Theory and Application* by Mykel J. Kochenderfer, MIT Press, 2015
