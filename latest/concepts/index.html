@@ -92,6 +92,8 @@
                 
                     <li><a class="toctree-l4" href="#solvers-and-policies">Solvers and Policies</a></li>
                 
+                    <li><a class="toctree-l4" href="#simulators">Simulators</a></li>
+                
             
             </ul>
         
@@ -184,6 +186,9 @@
 <p>Sequential decision making under uncertainty involves both online and offline calculations. In the broad sense, the term "solver" as used in the node in the figure above refers to the package of software that performs the calculations at both of these times. However, the code is broken up into two pieces, the solver that performs calculations offline and the policy that performs calculations online.</p>
 <p>In the abstract sense, a policy is a mapping from every belief that an agent might take to an action. A policy is represented in code by a concrete subtype of the <code>Policy</code> abstract type. The programmer defines a method of the <code>action</code> function to describe what computations need to be done online. For an online solver such as POMCP, all of the decision computation occurs within <code>action</code>, while for an offline solver like SARSOP, there is very little computation within <code>action</code>.</p>
 <p>The offline portion of the computation is carried out by the solver, which is represented by a concrete subtype of the <code>Solver</code> abstract type. Computations occur within the <code>solve</code> function. For an offline solver like SARSOP, nearly all of the decision computation occurs within this function, but for some online solvers such as POMCP, <code>solve</code> merely embeds the problem in the policy.</p>
+<p><a id='Simulators-1'></a></p>
+<h2 id="simulators">Simulators</h2>
+<p>A simulator defines a way to run a single simulation. It is represented by a concrete subtype of the <code>Simulator</code> abstract type and the simulation is implemented in a method of the <code>simulate</code> function. <code>simulate</code> should return the discounted sum of the stagewise rewards, and the simulator may or may not keep track of the state trajectory or other statistics or display the simulation as it is carried out.</p>
 <p>[1] <em>Decision Making Under Uncertainty: Theory and Application</em> by Mykel J. Kochenderfer, MIT Press, 2015</p>
 <p>[2] Bai, H., Hsu, D., &amp; Lee, W. S. (2014). Integrated perception and planning in the continuous space: A POMDP approach. The International Journal of Robotics Research, 33(9), 1288-1302</p>
               
