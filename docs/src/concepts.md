@@ -63,8 +63,10 @@ For an online solver such as POMCP, all of the decision computation occurs withi
 The offline portion of the computation is carried out by the solver, which is represented by a concrete subtype of the `Solver` abstract type. Computations occur within the `solve` function.
 For an offline solver like SARSOP, nearly all of the decision computation occurs within this function, but for some online solvers such as POMCP, `solve` merely embeds the problem in the policy.
 
+## Simulators
+
+A simulator defines a way to run a single simulation. It is represented by a concrete subtype of the `Simulator` abstract type and the simulation is implemented in a method of the `simulate` function. `simulate` should return the discounted sum of the stagewise rewards, and the simulator may or may not keep track of the state trajectory or other statistics or display the simulation as it is carried out.
 
 [1] *Decision Making Under Uncertainty: Theory and Application* by Mykel J. Kochenderfer, MIT Press, 2015
 
 [2] Bai, H., Hsu, D., & Lee, W. S. (2014). Integrated perception and planning in the continuous space: A POMDP approach. The International Journal of Robotics Research, 33(9), 1288-1302
-
