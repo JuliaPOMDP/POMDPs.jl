@@ -16,7 +16,7 @@ The Simulator type is associated with the experiment.
 An MDP is a definition of a problem where the state of the problem is fully observable.
 Mathematically, an MDP is a tuple (S,A,T,R), where S is the state space, A is the action space, T is a function that defines the probability of transitioning to each state given the state and action at the previous time, and R is a reward function mapping every possible transition (s,a,s') to a real reward value.
 For more information see a textbook such as [1].
-In POMDPs.jl an MDP is represented by a concrete subtype of the `MDP` abstract type and a set of methods that define each of its components.
+In POMDPs.jl an MDP is represented by a concrete subtype of the [`MDP`](@ref) abstract type and a set of methods that define each of its components.
 S and A are defined by implementing methods of the `states` and `actions` functions for the `MDP` subtype, though for some solvers, the state space does not need to be explicitly defined.
 T and R are defined by implementing methods of the `transition` and `reward` functions. 
 
