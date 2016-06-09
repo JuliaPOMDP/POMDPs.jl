@@ -44,15 +44,24 @@ In code, a belief updater is represented by a concrete subtype of the `Updater` 
 
 Although the agent may use a specialized belief structure to make decisions, the information initially given to the agent about the state of the problem is usually most conveniently represented as a state distribution, thus the `initialize_belief` function is provided to convert a state distribution to a specialized belief structure that an updater can work with.
 
-In some cases, the belief structure is closely related to the solution technique, so it will be implemented by the programmer who writes the solver.
+In many cases, the belief structure is closely related to the solution technique, so it will be implemented by the programmer who writes the solver.
 In other cases, the agent can use a variety of belief structures to make decisions, so a domain-specific updater implemented by the programmer that wrote the problem description may be appropriate.
 Finally, some advanced generic belief updaters such as particle filters may be implemented by a third party.
+The convenience function `updater` can be used to get a suitable default updater for a policy, however many policies can work with other updaters.
 
 ## Solvers and Policies
 
-Sequential decision making under uncertainty involves both online and offline calculations. In the broad sense, the term "solver" refers to both the online and ...
+Sequential decision making under uncertainty involves both online and offline calculations.
+In the broad sense, the term "solver" as used in the node in the figure above refers to the package of software that performs the calculations at both of these times.
+However, the code is broken up into two pieces, the solver that performs calculations offline and the policy that performs calculations online.
 
-A policy is a mapping from every belief that an agent might take to an action. A policy is represented in code by a concrete subtype of the `Policy` abstract type ...
+In the abstract sense, a policy is a mapping from every belief that an agent might take to an action.
+A policy is represented in code by a concrete subtype of the `Policy` abstract type.
+The programmer defines a method of the `action` function to describe what computations need to be done online.
+For an online solver such as POMCP, all of the decision computation occurs within `action`, while for an offline solver like SARSOP, there is very little computation within `action`.
+
+The offline portion of the computation is carried out by the solver, which is represented by a concrete subtype of the `Solver` abstract type. Computations occur within the `solve` function.
+For an offline solver like SARSOP, nearly all of the decision computation occurs within this function, but for some online solvers such as POMCP, `solve` merely embeds the problem in the policy.
 
 
 [1] *Decision Making Under Uncertainty: Theory and Application* by Mykel J. Kochenderfer, MIT Press, 2015
