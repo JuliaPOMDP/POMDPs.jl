@@ -2,11 +2,17 @@
 
 This section outlines the three main concepts in POMDPs.jl, namely, problem, solver, and experiment. 
 Each concept has a set of abstract types associated with it that define the components of that concept, and a set of
-functions that define the behavior of that concept. 
+functions that define the behavior of that concept. An outline of the architecutre is shown below.
 
-![concepts](https://github.com/JuliaPOMDP/POMDPs.jl/blob/master/docs/src/figures/concepts.pdf "Concepts")
+![concepts](figures/concepts.png)
 
-## 
+The MDP and POMDP types are part of the problem concept. The Solver, Policy, and Updater types are part of the solver
+concept.
+The Simulator type is part of the experiment concept. 
+
+## POMDPs and MDPs
+
+## Solvers and Policies
 
 ## Belief and Updater
 
@@ -26,6 +32,7 @@ policy.
 A belief has an ```Updater``` type associated with it. The ```Updater``` implements an ```update``` function which
 updates the policy belief given an action and an observation. A function call to the update function may look like
 ```update(updater, action, observation)```.
+
 
 
 
