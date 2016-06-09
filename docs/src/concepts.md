@@ -26,7 +26,8 @@ In POMDPs.jl, a POMDP is represented by a concrete subtype of the [`POMDP`](@ref
 
 POMDPs.jl also contains functions for defining optional problem behavior such as a discount factor or a set of terminal states.
 
-It is important to note that, in some cases, it is difficult to explicitly represent the transition and observation distributions for a problem but easy to generate a sampled next state or observation. In these cases it may be significantly easier to use the [`GenerativeModels.jl`](https://github.com/JuliaPOMDP/GenerativeModels.jl) interface extension *instead of* implementing methods of [`transition`](@ref) and [`observation`.](@ref)
+It is important to note that, in some cases, it is difficult to explicitly represent the transition and observation distributions for a problem but easy to generate a sampled next state or observation. In these cases it may be significantly easier to use the [`GenerativeModels.jl`](https://github.com/JuliaPOMDP/GenerativeModels.jl) interface extension *instead of* implementing methods of [`transition`](@ref) and [`observation`](@ref)
+
 
 
 
@@ -60,7 +61,7 @@ However, the code is broken up into two pieces, the solver that performs calcula
 In the abstract sense, a policy is a mapping from every belief that an agent might take to an action.
 A policy is represented in code by a concrete subtype of the [`Policy`](@ref) abstract type.
 The programmer defines a method of the [`action`](@ref) function to describe what computations need to be done online.
-For an online solver such as POMCP, all of the decision computation occurs within [`action`,](@ref) while for an offline solver like SARSOP, there is very little computation within [`action`.](@ref)
+For an online solver such as POMCP, all of the decision computation occurs within [`action`](@ref) while for an offline solver like SARSOP, there is very little computation within [`action`](@ref)
 
 The offline portion of the computation is carried out by the solver, which is represented by a concrete subtype of the [`Solver`](@ref) abstract type. Computations occur within the [`solve`](@ref) function.
 For an offline solver like SARSOP, nearly all of the decision computation occurs within this function, but for some online solvers such as POMCP, [`solve`](@ref) merely embeds the problem in the policy.
@@ -72,4 +73,5 @@ A simulator defines a way to run a single simulation. It is represented by a con
 [1] *Decision Making Under Uncertainty: Theory and Application* by Mykel J. Kochenderfer, MIT Press, 2015
 
 [2] Bai, H., Hsu, D., & Lee, W. S. (2014). Integrated perception and planning in the continuous space: A POMDP approach. The International Journal of Robotics Research, 33(9), 1288-1302
+
 
