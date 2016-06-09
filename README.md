@@ -2,15 +2,15 @@
 
 [![Build Status](https://travis-ci.org/JuliaPOMDP/POMDPs.jl.svg?branch=master)](https://travis-ci.org/JuliaPOMDP/POMDPs.jl)
 
-This package provides a basic interface for working with Markov decision processes (MDPs) and partially observable Markov decision processes (POMDPs).
+This package provides a core interface for working with Markov decision processes (MDPs) and partially observable Markov decision processes (POMDPs).
 
-The goal is to provide a common programming vocabulary for researchers and students to use primarily for three tasks:
+Our goal is to provide a common programming vocabulary for:
 
 1. Expressing problems using the POMDP format. 
 2. Writing solver software.
 3. Running simulations efficiently.
 
-For problems and solvers that only use a generative model (rather than explicit transition and observation distributions), see also [GenerativeModels.jl](https://github.com/JuliaPOMDP/GenerativeModels.jl).
+For problems and solvers that only use a generative model (rather than explicit transition and observation distributions), see [GenerativeModels.jl](https://github.com/JuliaPOMDP/GenerativeModels.jl).
 
 ## Installation
 To install POMDPs.jl, run the following from the Julia REPL: 
@@ -18,14 +18,14 @@ To install POMDPs.jl, run the following from the Julia REPL:
 Pkg.add("POMDPs")
 ```
 
-To install a supported JuliaPOMDP package run the following command:
+To install a specific supported JuliaPOMDP package run:
 ```julia
 using POMDPs
 # the following command installs the SARSOP solver, you can add any supported solver this way
 POMDPs.add("SARSOP") 
 ```
 
-To install all the solvers, support tools and dependencies that are part of JuliaPOMDP run:
+To install all solvers, support tools, and dependencies that are part of JuliaPOMDP, run:
 ```julia
 using POMDPs
 POMDPs.add_all() # this may take a few minutes
@@ -33,7 +33,7 @@ POMDPs.add_all() # this may take a few minutes
 
 ## Supported Packages
 
-There are number of packages that rely on the POMDPs.jl interface including MDP and POMDP solvers, support tools, and extensions to the POMDPs.jl interface. 
+Many packages use the POMDPs.jl interface, including MDP and POMDP solvers, support tools, and extensions to the POMDPs.jl interface. 
 
 #### MDP solvers:
 
