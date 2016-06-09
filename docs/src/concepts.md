@@ -21,12 +21,13 @@ S and A are defined by implementing methods of the `states` and `actions` functi
 T and R are defined by implementing methods of the `transition` and `reward` functions. 
 
 A POMDP is a problem definition where the state is only partially observable by the decision making agent.
-Mathematically, a POMDP is a tuple (S,A,T,R,O,Z) where S, A, T, and R have the same meaning as in the MDP case, O is the set of observations that the decision-making agent might receive and Z is a function defining the probability of receiving each observation at a transition.
-In POMDPs.jl, a POMDP is represented by a concrete subtype of the `POMDP` abstract type, `O` may be defined by the `observations` function (though an explicit definition is often not required), and `Z` is defined by implementing a method of `observation` for the POMDP type.
+Mathematically, a POMDP is a tuple (S,A,T,R,O,Z) where S, A, T, and R have the same meaning as in the MDP case, Z is the set of observations that the decision-making agent might receive and O is a function defining the probability of receiving each observation at a transition.
+In POMDPs.jl, a POMDP is represented by a concrete subtype of the `POMDP` abstract type, `Z` may be defined by the `observations` function (though an explicit definition is often not required), and `O` is defined by implementing a method of `observation` for the POMDP type.
 
 POMDPs.jl also contains functions for defining optional problem behavior such as a discount factor or a set of terminal states.
 
 It is important to note that, in some cases, it is difficult to explicitly represent the transition and observation distributions for a problem but easy to generate a sampled next state or observation. In these cases it may be significantly easier to use the `GenerativeModels.jl` interface extension *instead of* implementing methods of `transition` and `observation`.
+
 
 ## Beliefs and Updaters
 
@@ -58,4 +59,5 @@ A policy is a mapping from every belief that an agent might take to an action. A
 [1] *Decision Making Under Uncertainty: Theory and Application* by Mykel J. Kochenderfer, MIT Press, 2015
 
 [2] Bai, H., Hsu, D., & Lee, W. S. (2014). Integrated perception and planning in the continuous space: A POMDP approach. The International Journal of Robotics Research, 33(9), 1288-1302
+
 
