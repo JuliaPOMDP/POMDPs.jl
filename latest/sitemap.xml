@@ -27,6 +27,14 @@
 
     
     <url>
+     <loc>None/concepts/</loc>
+     <lastmod>2016-06-09</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+    
+
+    
+    <url>
      <loc>None/def_pomdp/</loc>
      <lastmod>2016-06-09</lastmod>
      <changefreq>daily</changefreq>
@@ -36,14 +44,6 @@
     
     <url>
      <loc>None/def_solver/</loc>
-     <lastmod>2016-06-09</lastmod>
-     <changefreq>daily</changefreq>
-    </url>
-    
-
-    
-    <url>
-     <loc>None/concepts/</loc>
      <lastmod>2016-06-09</lastmod>
      <changefreq>daily</changefreq>
     </url>
