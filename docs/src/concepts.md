@@ -16,17 +16,18 @@ The Simulator type is associated with the experiment.
 An MDP is a definition of a problem where the state of the problem is fully observable.
 Mathematically, an MDP is a tuple (S,A,T,R), where S is the state space, A is the action space, T is a function that defines the probability of transitioning to each state given the state and action at the previous time, and R is a reward function mapping every possible transition (s,a,s') to a real reward value.
 For more information see a textbook such as [1].
-In POMDPs.jl an MDP is represented by a concrete subtype of the `MDP` abstract type and a set of methods that define each of its components.
-S and A are defined by implementing methods of the `states` and `actions` functions for the `MDP` subtype, though for some solvers, the state space does not need to be explicitly defined.
-T and R are defined by implementing methods of the `transition` and `reward` functions. 
+In POMDPs.jl an MDP is represented by a concrete subtype of the [`MDP`](@ref) abstract type and a set of methods that define each of its components.
+S and A are defined by implementing methods of the [`states`](@ref) and [`actions`](@ref) functions for the [`MDP`](@ref) subtype, though for some solvers, the state space does not need to be explicitly defined.
+T and R are defined by implementing methods of the [`transition`](@ref) and [`reward`](@ref) functions. 
 
 A POMDP is a problem definition where the state is only partially observable by the decision making agent.
 Mathematically, a POMDP is a tuple (S,A,T,R,O,Z) where S, A, T, and R have the same meaning as in the MDP case, Z is the set of observations that the decision-making agent might receive and O is a function defining the probability of receiving each observation at a transition.
-In POMDPs.jl, a POMDP is represented by a concrete subtype of the `POMDP` abstract type, `Z` may be defined by the `observations` function (though an explicit definition is often not required), and `O` is defined by implementing a method of `observation` for the POMDP type.
+In POMDPs.jl, a POMDP is represented by a concrete subtype of the [`POMDP`](@ref) abstract type, `Z` may be defined by the [`observations`](@ref) function (though an explicit definition is often not required), and `O` is defined by implementing a method of [`observation`](@ref) for the POMDP type.
 
 POMDPs.jl also contains functions for defining optional problem behavior such as a discount factor or a set of terminal states.
 
-It is important to note that, in some cases, it is difficult to explicitly represent the transition and observation distributions for a problem but easy to generate a sampled next state or observation. In these cases it may be significantly easier to use the `GenerativeModels.jl` interface extension *instead of* implementing methods of `transition` and `observation`.
+It is important to note that, in some cases, it is difficult to explicitly represent the transition and observation distributions for a problem but easy to generate a sampled next state or observation. In these cases it may be significantly easier to use the [`GenerativeModels.jl`](https://github.com/JuliaPOMDP/GenerativeModels.jl) interface extension *instead of* implementing methods of [`transition`](@ref) and [`observation`.](@ref)
+
 
 
 ## Beliefs and Updaters
@@ -41,23 +42,34 @@ In order to accommodate a wide variety of decision-making approaches, in POMDPs.
 In code, the belief can be represented by any built-in or user defined type.
 
 When an action is taken and a new observation is received, the belief is updated by the belief updater.
-In code, a belief updater is represented by a concrete subtype of the `Updater` abstract type, and the `update` function defines how the belief is updated when a new observation is received.
+In code, a belief updater is represented by a concrete subtype of the [`Updater`](@ref) abstract type, and the [`update`](@ref) function defines how the belief is updated when a new observation is received.
 
-Although the agent may use a specialized belief structure to make decisions, the information initially given to the agent about the state of the problem is usually most conveniently represented as a state distribution, thus the `initialize_belief` function is provided to convert a state distribution to a specialized belief structure that an updater can work with.
+Although the agent may use a specialized belief structure to make decisions, the information initially given to the agent about the state of the problem is usually most conveniently represented as a state distribution, thus the [`initialize_belief`](@ref) function is provided to convert a state distribution to a specialized belief structure that an updater can work with.
 
-In some cases, the belief structure is closely related to the solution technique, so it will be implemented by the programmer who writes the solver.
+In many cases, the belief structure is closely related to the solution technique, so it will be implemented by the programmer who writes the solver.
 In other cases, the agent can use a variety of belief structures to make decisions, so a domain-specific updater implemented by the programmer that wrote the problem description may be appropriate.
 Finally, some advanced generic belief updaters such as particle filters may be implemented by a third party.
+The convenience function [`updater`](@ref) can be used to get a suitable default updater for a policy, however many policies can work with other updaters.
 
 ## Solvers and Policies
 
-Sequential decision making under uncertainty involves both online and offline calculations. In the broad sense, the term "solver" refers to both the online and ...
+Sequential decision making under uncertainty involves both online and offline calculations.
+In the broad sense, the term "solver" as used in the node in the figure above refers to the package of software that performs the calculations at both of these times.
+However, the code is broken up into two pieces, the solver that performs calculations offline and the policy that performs calculations online.
 
-A policy is a mapping from every belief that an agent might take to an action. A policy is represented in code by a concrete subtype of the `Policy` abstract type ...
+In the abstract sense, a policy is a mapping from every belief that an agent might take to an action.
+A policy is represented in code by a concrete subtype of the [`Policy`](@ref) abstract type.
+The programmer defines a method of the [`action`](@ref) function to describe what computations need to be done online.
+For an online solver such as POMCP, all of the decision computation occurs within [`action`,](@ref) while for an offline solver like SARSOP, there is very little computation within [`action`.](@ref)
 
+The offline portion of the computation is carried out by the solver, which is represented by a concrete subtype of the [`Solver`](@ref) abstract type. Computations occur within the [`solve`](@ref) function.
+For an offline solver like SARSOP, nearly all of the decision computation occurs within this function, but for some online solvers such as POMCP, [`solve`](@ref) merely embeds the problem in the policy.
+
+## Simulators
+
+A simulator defines a way to run a single simulation. It is represented by a concrete subtype of the [`Simulator`](@ref) abstract type and the simulation is implemented in a method of the [`simulate`](@ref) function. [`simulate`](@ref) should return the discounted sum of the stagewise rewards, and the simulator may or may not keep track of the state trajectory or other statistics or display the simulation as it is carried out.
 
 [1] *Decision Making Under Uncertainty: Theory and Application* by Mykel J. Kochenderfer, MIT Press, 2015
 
 [2] Bai, H., Hsu, D., & Lee, W. S. (2014). Integrated perception and planning in the continuous space: A POMDP approach. The International Journal of Robotics Research, 33(9), 1288-1302
-
 
