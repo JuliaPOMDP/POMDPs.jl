@@ -15,7 +15,7 @@ The Simulator type is associated with the experiment.
 
 An MDP is a definition of a problem where the state of the problem is fully observable.
 Mathematically, an MDP is a tuple (S,A,T,R), where S is the state space, A is the action space, T is a function that defines the probability of transitioning to each state given the state and action at the previous time, and R is a reward function mapping every possible transition (s,a,s') to a real reward value.
-For more information see a textbook such as *Decision Making Under Uncertainty: Theory and Application* by Mykel J. Kochenderfer, MIT Press, 2015.
+For more information see a textbook such as [1].
 In POMDPs.jl an MDP is represented by a concrete subtype of the `MDP` abstract type and a set of methods that define each of its components.
 S and A are defined by implementing methods of the `states` and `actions` functions for the `MDP` subtype, though for some solvers, the state space does not need to be explicitly defined.
 T and R are defined by implementing methods of the `transition` and `reward` functions. 
@@ -26,31 +26,32 @@ In POMDPs.jl, a POMDP is represented by a concrete subtype of the `POMDP` abstra
 
 POMDPs.jl also contains functions for defining optional problem behavior such as a discount factor or a set of terminal states.
 
+It is important to note that, in some cases, it is difficult to explicitly represent the transition and observation distributions for a problem but easy to generate a sampled next state or observation. In these cases it may be significantly easier to use the `GenerativeModels.jl` interface extension *instead of* implementing methods of `transition` and `observation`.
+
 ## Beliefs and Updaters
 
-The last important component of a POMDP is the initial distribution over the state of the agent. In POMDPs.jl we make a strong distinction
-between this distribution and a belief. In most literature these two concepts are considered the same. However, in
-most general terms, a belief is something that is mapped to an action using a POMDP policy. If the policy is represented
-as something other than alpha-vectors (a policy graph, tree, or a reccurent neural netowrk to give a few examples), it
-doesn't make sense to think of a belief as a probability distribution over the state space. Thus, in POMDPs.jl we
-abstract the concept of a belief beyond a probability distribution (of course it can be a probability distriubtion if it
-makes sense). 
+In a POMDP domain, the decision-making agent does not have complete information about the state of the problem, so the agent can only make choices based on its "belief" about the state.
+In the POMDP literature, the term "belief" is typically defined to mean a probability distribution over all possible states of the system.
+However, in practice, the agent often makes decisions based on an incomplete or lossy record of past observations that has a structure much different from a probability distribution.
+For example, if the agent is represented by a finite-state controller as is the case for Monte-Carlo Value Iteration [2], the belief is the controller state, which is a node in a graph.
+Another example is an agent represented by a recurrent neural network.
+In this case, the agent's belief is the state of the network.
+In order to accommodate a wide variety of decision-making approaches, in POMDPs.jl, we use the term "belief" to denote the set of information that the agent makes a decision on, which could be an exact state distribution, an action-observation history, a set of weighted particles, or the examples mentioned before.
 
-In order to reconcile this difference, each policy has a function called ```initialize_belief``` which takes in an
-initial state distirubtion (this is a probability distribution over the state space of a POMDP) and a policy, and converts the
-distribution into what we call a belief in POMDPs.jl - a representation of a POMDP that is mapped to an action using the
-policy. 
+When an action is taken and a new observation is received, the belief is updated by the belief updater.
+In code, a belief updater is represented by a concrete subtype of the `Updater` abstract type, and the `update` function defines how the belief is updated when a new observation is received.
 
-A belief has an ```Updater``` type associated with it. The ```Updater``` implements an ```update``` function which
-updates the policy belief given an action and an observation. A function call to the update function may look like
-```update(updater, action, observation)```.
+Although the agent may use a specialized belief structure to make decisions, the information initially given to the agent about the state of the problem is usually most conveniently represented as a state distribution, thus the `initialize_belief` function is provided to convert a state distribution to a specialized belief structure that an updater can work with.
 
-
-
-
+In some cases, the belief structure is closely related to the solution technique, so it will be implemented by the programmer who writes the solver.
+In other cases, the agent can use a variety of belief structures to make decisions, so a domain-specific updater implemented by the programmer that wrote the problem description may be appropriate.
+Finally, some advanced generic belief updaters such as particle filters may be implemented by a third party.
 
 ## Solvers and Policies
 
 A policy is a mapping from every belief that an agent might take to an action.
 
+
+[1] *Decision Making Under Uncertainty: Theory and Application* by Mykel J. Kochenderfer, MIT Press, 2015
+[2] Bai, H., Hsu, D., & Lee, W. S. (2014). Integrated perception and planning in the continuous space: A POMDP approach. The International Journal of Robotics Research, 33(9), 1288-1302
 
