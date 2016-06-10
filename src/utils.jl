@@ -53,3 +53,15 @@ function available()
         println(p)
     end
 end
+
+"""
+    POMDPs.print_requirements(flist::Vector{Function})
+Takes in a vector of functions, and prints the associated methods.
+Includes the method signature.
+"""
+function print_requirements(flist::Vector{Function})
+    for f in flist
+        mt = methods(f)
+        println(mt.defs)
+    end
+end
