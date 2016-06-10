@@ -60,11 +60,22 @@ Takes in a vector of function names, and returns the associated POMDPs.jl method
 """
 function get_methods(flist::Vector{Function})
     ms = Method[]
+    # loop though functions
     for f in flist
         t = nothing
-        # last element is POMDPs.jl method
+        # find the method from POMDPs.jl
+        #found = false
         for m in methods(f)
             t = m
+            # too messy
+            #=
+            found ? (break) : (nothing)
+            inputs = m.sig
+            # method should have an export type form POMDPs.jl as input
+            for t in EXPORTED_TYPES
+                in(t, inputs.parameters) ? (push!(ms, m); found=true) : (nothing)
+            end
+            =#
         end
         push!(ms, t)
     end

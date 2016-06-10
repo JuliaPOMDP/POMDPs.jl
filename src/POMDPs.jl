@@ -77,8 +77,6 @@ export
     #add not explicitly imported
 
 include("errors.jl")
-include("constants.jl")
-include("utils.jl")
 include("pomdp.jl")
 include("distribution.jl")
 include("belief.jl")
@@ -86,5 +84,7 @@ include("space.jl")
 include("solver.jl")
 include("policy.jl")
 include("simulator.jl")
+include("constants.jl")
+include("utils.jl")
 
 end
