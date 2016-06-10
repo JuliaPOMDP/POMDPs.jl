@@ -55,13 +55,18 @@ function available()
 end
 
 """
-    POMDPs.print_requirements(flist::Vector{Function})
-Takes in a vector of functions, and prints the associated methods.
-Includes the method signature.
+    POMDPs.get_methods(flist::Vector{Function})
+Takes in a vector of function names, and returns the associated POMDPs.jl methods
 """
-function print_requirements(flist::Vector{Function})
+function get_methods(flist::Vector{Function})
+    ms = Method[]
     for f in flist
-        mt = methods(f)
-        println(mt.defs)
+        t = nothing
+        # last element is POMDPs.jl method
+        for m in methods(f)
+            t = m
+        end
+        push!(ms, t)
     end
+    ms
 end
