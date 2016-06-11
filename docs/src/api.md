@@ -5,9 +5,9 @@ function in the module by typing `?` in the Julia REPL followed by the name of
 type or function. For example:
 
 ```julia
-julia>using POMDPs
-julia>?
-help?>reward
+julia> using POMDPs
+julia> ?
+help?> reward
 search: reward
 
   reward{S,A,O}(pomdp::POMDP{S,A,O}, state::S, action::A, statep::S)

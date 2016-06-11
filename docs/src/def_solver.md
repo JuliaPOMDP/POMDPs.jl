@@ -2,20 +2,20 @@
 
 In this section, we will walk through an implementation of the
 [QMDP](http://www-anw.cs.umass.edu/~barto/courses/cs687/Cassandra-etal-POMDP.pdf) algorithm. QMDP is the fully
-observable approximation of a POMDP policy, and relies on the Q-values to determine actions. 
+observable approximation of a POMDP policy, and relies on the Q-values to determine actions.
 
 ## Background
 
 Let's say we are working with a POMDP defined by the tuple $(\mathcal{S}, \mathcal{A}, \mathcal{Z}, T, R, O, \gamma)$,
-where $\mathcal{S}$, $\mathcal{A}$, $\mathcal{Z}$ are the of discrete state, action, and observation spaces
-respectively. The QMDP algorithm assumes that the POMDP its solving is discrete. In our model $T : \mathcal{S} \times
+where $\mathcal{S}$, $\mathcal{A}$, $\mathcal{Z}$ are the discrete state, action, and observation spaces
+respectively. The QMDP algorithm assumes it is given a discrete POMDP. In our model $T : \mathcal{S} \times
 \mathcal{A} \times \mathcal{S} \rightarrow [0, 1]$ is the transition function, $R: \mathcal{S} \times \mathcal{A}
 \rightarrow \mathbb{R}$ is the reward function, and $O: \mathcal{Z} \times \mathcal{A} \times \mathcal{S} \rightarrow
 [0,1]$ is the observation function. In a POMDP, our goal is to compute a policy $\pi$ that maps beliefs to actions $\pi: b \rightarrow a$. For
 QMDP, a belief can be represented by a discrete probability distribution over the state space (although there may be
-other ways to define a belief in general and POMDPs.jl allows this flexibility). 
+other ways to define a belief in general and POMDPs.jl allows this flexibility).
 
-Before thinking about how we can compute a policy, lets first think of how we can write the optimal value function for a
+Before thinking about how we can compute a policy, let us first think of how we can write the optimal value function for a
 POMDP. Recall that in an MDP, the optimal value function simply represents the maximum expected utility from a given state. The idea is similar in a POMDP, but now we can think of the optimal value function with respect to a belief, and not just a single state. Since our belief is a probability distribution over the states, we can write the value function as follows:
 
 $U^{*}(b) = \max_{a} \sum_{s} b(s)R(s,a)$
@@ -43,22 +43,22 @@ initialize the alpha vectors $\alpha_{a}^{0} = 0$ for all $s$, and then iterate
 
 $\alpha_{a}^{k+1}(s) = R(s,a) + \gamma \sum_{s'} T(s'|s,a) \max_{a'} \alpha_{a'}^{k}(s')$
 
-After enough iterations, the alpha vectors converge to the QMDP approximation. 
+After enough iterations, the alpha vectors converge to the QMDP approximation.
 
 Remember that QMDP is just an approximation method, and does not guarantee that the alpha vectors you obtain actually
 represent your POMDP value function. Specifically, QMDP has trouble in problems with information gathering actions
 (because we completely ignored the observation function when computing our policy). However, QMDP works very well in problems where a particular choice of action has
-little impact on the reduction in state uncertainty. 
+little impact on the reduction in state uncertainty.
 
 
 ## Requirements for a Solver
 
-Before getting into the implementation details, let's first go through what a POMDP solver must be able to do and support. We need three custom types that inherit from abstract types in POMDPs.jl. These type are Solver, Policy, and Updater. It is usaully useful to have a custom type that represents the belief used by your policy as well. 
+Before getting into the implementation details, let's first go through what a POMDP solver must be able to do and support. We need three custom types that inherit from abstract types in POMDPs.jl. These type are Solver, Policy, and Updater. It is usaully useful to have a custom type that represents the belief used by your policy as well.
 
 The requirements are as follows:
 
 ```julia
-# types 
+# types
 QMDPSolver
 QMDPPolicy
 DiscreteUpdater # already implemented for us in POMDPToolbox
@@ -73,12 +73,12 @@ update{A,O}(bu::DiscreteUpdater, belief_old::DiscreteBelief, action::A, obs::O) 
 action(policy::QMDPPolicy, b::DiscreteBelief) # returns a QMDP action
 ```
 
-You can find the implementations of these types and mehtods below.
+You can find the implementations of these types and methods below.
 
 
 ## Defining the Solver and Policy Types
 
-Let's first define the Solver type. The QMDP solver type should contain all the information needed to compute a policy (other than the problem itself). This information can be though of as the hyperparameters of the solver. In QMDP, we only need two hyper-parameters. We may want to set the maximum number of iterations that the algorithm runs for, and a tolerance value (also known as the Bellman residual). Both of these quantities define terminating criteria for the algorithm. The algorithm stops either when the maximum number of iterations has been reached or when the infinity norm of the diference in utility values between two iterations goes below the tolerance value. The type definition has the form: 
+Let's first define the Solver type. The QMDP solver type should contain all the information needed to compute a policy (other than the problem itself). This information can be though of as the hyperparameters of the solver. In QMDP, we only need two hyper-parameters. We may want to set the maximum number of iterations that the algorithm runs for, and a tolerance value (also known as the Bellman residual). Both of these quantities define terminating criteria for the algorithm. The algorithm stops either when the maximum number of iterations has been reached or when the infinity norm of the diference in utility values between two iterations goes below the tolerance value. The type definition has the form:
 
 ```julia
 using POMDPs # first load the POMDPs module
@@ -90,7 +90,7 @@ end
 QMDPSolver(;max_iterations::Int64=100, tolerance::Float64=1e-3) = QMDPSolver(max_iterations, tolerance)
 ```
 
-Note that the QMDPSolver inherits from the abstract Solver type that's part of POMDPs.jl. 
+Note that the QMDPSolver inherits from the abstract Solver type that's part of POMDPs.jl.
 
 Now, let's define a policy type. In general, the policy should contain all the information needed to map a belief to an action. As mentioned earlier, we need alpha vectors to be part of our policy. We can represent the alpha vectors using a matrix of size $\mathcal{S} \times \mathcal{A}$. Recall that in POMDPs.jl, the actions can be represented in a number of ways (Int64, concrete types, etc), so we need a way to map these actions to integers so we can index into our alpha matrix. The type looks like:
 
@@ -114,14 +114,14 @@ function QMDPPolicy(pomdp::POMDP)
 end
 # initalization function (required by POMDPs.jl)
 POMDPs.create_policy(solver::QMDPSolver, pomdp::POMDP) = QMDPPolicy(pomdp)
-``` 
+```
 
-Now that we have our solver and policy types, we can write the solve function to compute the policy. 
+Now that we have our solver and policy types, we can write the solve function to compute the policy.
 
 
 ## Writing the Solve Function
 
-The solve function takes in a solver, a pomdp, and an optional policy argument. Let's compute those alpha vectors!
+The solve function takes in a solver, a POMDP, and an optional policy argument. Let's compute those alpha vectors!
 
 ```julia
 function POMDPs.solve(solver::QMDPSolver, pomdp::POMDP, policy::QMDPPolicy=create_policy(solver, pomdp))
@@ -135,7 +135,7 @@ function POMDPs.solve(solver::QMDPSolver, pomdp::POMDP, policy::QMDPPolicy=creat
     alphas = policy.alphas
 
     # pre-allocate the transtion distirbution and the interpolants
-    # we use the POMDPs.jl function for initializing a transition distribution    
+    # we use the POMDPs.jl function for initializing a transition distribution
     dist = create_transition_distribution(pomdp)
 
     # initalize space
@@ -148,7 +148,7 @@ function POMDPs.solve(solver::QMDPSolver, pomdp::POMDP, policy::QMDPPolicy=creat
         # state loop
         # the iterator function returns an iterable object (array, iterator, etc) over a discrete space
         for (istate, s) in enumerate(iterator(sspace))
-            old_alpha = maximum(alphas[istate,:]) # for residual 
+            old_alpha = maximum(alphas[istate,:]) # for residual
             max_alpha = -Inf
             # action loop
             # alpha(s) = R(s,a) + discount_factor * sum(T(s'|s,a)max(alpha(s'))
@@ -163,7 +163,7 @@ function POMDPs.solve(solver::QMDPSolver, pomdp::POMDP, policy::QMDPPolicy=creat
                     # returns the reward from s-a-sp triple
                     r = reward(pomdp, s, a, sp)
     
-                    # state_index returns an integer 
+                    # state_index returns an integer
                     sidx = state_index(pomdp, sp)
                     q_new += p * (r + discount_factor * maximum(alphas[sidx,:]))
                 end
@@ -175,8 +175,8 @@ function POMDPs.solve(solver::QMDPSolver, pomdp::POMDP, policy::QMDPPolicy=creat
             diff = abs(max_alpha - old_alpha)
             diff > residual ? (residual = diff) : nothing
         end # state
-        # check if below Bellman residual      
-        residual < tolerance ? break : nothing 
+        # check if below Bellman residual
+        residual < tolerance ? break : nothing
     end # main
     # return the policy
     policy
@@ -196,7 +196,7 @@ pdf(dist, sp) # returns the probability of sp being in dist
 state_index(pomdp, sp) # returns the integer index of sp (for discrete state spaces)
 ```
 
-Now that we have a solve function, let's see users can interface with our policy.
+Now that we have a solve function, let's let users interface with our policy.
 
 ## Creating an Updater
 
@@ -207,7 +207,7 @@ Lucky for us, the JuliaPOMDP organization contains tools that we can use out of 
 using POMDPToolbox # remeber to load the package that implements discrete beliefs for us
 POMDPs.create_belief(bu::DiscreteUpdater) = DiscreteBelief(n_states(bu.du.pomdp)) # initializes a QMDP belief
 POMDPs.updater(p::QMDPPolicy) = DiscreteUpdater(p.pomdp) # initialize the QMDP updater
-``` 
+```
 
 Now we need a function that turns the initial distribution over state of the POMDP to our discrete belief.
 
@@ -221,9 +221,9 @@ function POMDPs.initialize_belief(bu::DiscreteUpdater, initial_state_dist::Abstr
 end
 ```
 
-The function above assumes that the `initial_state_dist` is a distribution that implements a pdf function. 
+The function above assumes that the `initial_state_dist` is a distribution that implements a pdf function.
 
-Lastly, let's define the action function which maps the belief to an action using the QMDP policy. 
+Lastly, let's define the action function which maps the belief to an action using the QMDP policy.
 
 ```julia
 function POMDPs.action(policy::QMDPPolicy, b::QMDPBelief)
@@ -234,7 +234,7 @@ function POMDPs.action(policy::QMDPPolicy, b::QMDPBelief)
     @assert length(b.b) == ns "Length of belief and alpha-vector size mismatch"
     # see which action gives the highest util value
     for ai = 1:na
-        util = dot(alphas[:,ai], b.b)    
+        util = dot(alphas[:,ai], b.b)
         if util > vhi
             vhi = util
             ihi = ai
