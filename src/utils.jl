@@ -31,6 +31,34 @@ function add_all()
 end
 
 """
+    update()
+Updates all the installed packages
+"""
+function update()
+    for p in SUPPORTED_PACKAGES
+        # see of package is intalled
+        if isdir(Pkg.dir(p))
+            Pkg.checkout(p)
+        end
+    end
+end
+
+"""
+    build()
+Builds all the existing packages
+"""
+function build()
+    for p in SUPPORTED_PACKAGES
+        # see of package is intalled
+        if isdir(Pkg.dir(p))
+            Pkg.build(p)
+        end
+    end
+end
+
+
+
+"""
     test_all()
 Tests all the JuliaPOMDP packages installed on your current machine.
 """
