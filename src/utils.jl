@@ -53,3 +53,31 @@ function available()
         println(p)
     end
 end
+
+"""
+    POMDPs.get_methods(flist::Vector{Function})
+Takes in a vector of function names, and returns the associated POMDPs.jl methods
+"""
+function get_methods(flist::Vector{Function})
+    ms = Method[]
+    # loop though functions
+    for f in flist
+        t = nothing
+        # find the method from POMDPs.jl
+        #found = false
+        for m in methods(f)
+            t = m
+            # too messy
+            #=
+            found ? (break) : (nothing)
+            inputs = m.sig
+            # method should have an export type form POMDPs.jl as input
+            for t in EXPORTED_TYPES
+                in(t, inputs.parameters) ? (push!(ms, m); found=true) : (nothing)
+            end
+            =#
+        end
+        push!(ms, t)
+    end
+    ms
+end

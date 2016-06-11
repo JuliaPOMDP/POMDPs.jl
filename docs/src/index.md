@@ -9,6 +9,7 @@ observable counterparts.*
 - Tools that make it easy to define problems and simulate solutions
 - Simple integration of custom solvers into the existing interface
 
+
 ## Availible Packages
 
 The POMDPs.jl package contains the interface used for expressing and solving Markov decision processes (MDPs) and partially
@@ -44,3 +45,5 @@ JuliaPOMDP are as follows:
 
 ```@contents
 ```
+
+

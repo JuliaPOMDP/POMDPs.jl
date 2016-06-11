@@ -23,3 +23,13 @@ const SUPPORTED_PACKAGES = Set{AbstractString}(
                            "POMDPToolbox",
                            "POMDPXFiles",
                            "POMDPFiles"])
+
+const EXPORTED_TYPES = [MDP, 
+                        POMDP, 
+                        AbstractDistribution, 
+                        AbstractSpace,
+                        Policy, 
+                        Simulator, 
+                        Solver, 
+                        Updater,
+                        Union{MDP, POMDP}]
