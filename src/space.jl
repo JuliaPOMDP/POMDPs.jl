@@ -31,9 +31,6 @@ Returns an iterable type (array or custom iterator) corresponding to space `s`.
 """
 @pomdp_func iterator{T}(s::AbstractSpace{T})
 
-@pomdp_func lowerbound{T}(s::AbstractSpace{T}, i::Int)
-@pomdp_func upperbound{T}(s::AbstractSpace{T}, i::Int)
-
 """
     states(problem::POMDP)
     states(problem::MDP)

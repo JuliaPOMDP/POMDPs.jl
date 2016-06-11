@@ -44,8 +44,3 @@ Returns an iterable type (array or custom iterator) corresponding to distributio
 # TODO (max): does this have a purpose now that we have iterator?
 @pomdp_func domain{T}(d::AbstractDistribution{T})
 
-# TODO (max): need an explicit treamtent of discrete distributions?
-abstract DiscreteDistribution{T} <: AbstractDistribution{T}
-@pomdp_func Base.length{T}(d::DiscreteDistribution{T})
-@pomdp_func weight{T}(d::DiscreteDistribution{T}, i::Int)
-@pomdp_func index{T}(problem::Union{POMDP,MDP}, d::DiscreteDistribution{T}, i::Int)
