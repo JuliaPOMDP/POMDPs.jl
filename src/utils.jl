@@ -46,7 +46,7 @@ end
 
 """
     available()
-Prints all the availiable packages in JuliaPOMDP
+Prints all the available packages in JuliaPOMDP
 """
 function available()
     for p in SUPPORTED_PACKAGES
