@@ -1,3 +1,5 @@
+__precompile__()
+
 """
 Provides a basic interface for defining and solving MDPs/POMDPs
 """
