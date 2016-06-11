@@ -1,13 +1,13 @@
 #################################################################
 ######################## BELIEF #################################
 #################################################################
-# For tools supportng belief updates see POMDPToolbox.jl
+# For tools supporting belief updates see POMDPToolbox.jl
 
 
 """
 Abstract type for an object that defines how the belief should be updated
 
-    B: belief type that parametarizes the updater
+    B: belief type that parametrizes the updater
 
 A belief is a general construct that represents the knowledge an agent has
 about the state of the system. This can be a probability distribution, an
@@ -39,7 +39,7 @@ Creates a belief object of the type used by `updater` (preallocates memory)
 
 """
     update{B,A,O}(updater::Updater, belief_old::B, action::A, obs::O,
-    belief_new::B=create_belief(updater))
+                  belief_new::B=create_belief(updater))
 
 Returns a new instance of an updated belief given `belief_old` and the latest action and observation.
 """

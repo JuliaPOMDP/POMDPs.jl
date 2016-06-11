@@ -6,7 +6,7 @@
 """
 Base type for state, action and observation spaces.
     
-    T: type that parametarizes the space (state, action, or observation)
+    T: type that parametrizes the space (state, action, or observation)
 """
 abstract AbstractSpace{T}
 
@@ -62,14 +62,14 @@ Returns the entire action space of a POMDP.
     actions{S,A,O}(problem::POMDP{S,A,O}, state::S, aspace::AbstractSpace{A})
     actions{S,A}(problem::MDP{S,A}, state::S, aspace::AbstractSpace{A})
 
-Modifies aspace to the action space accessible from the given state and returns it.
+Modifies `aspace` to the action space accessible from the given state and returns it.
 """
 @pomdp_func actions{S,A}(problem::Union{MDP{S,A},POMDP{S,A}}, state::S, acts::AbstractSpace{A}=actions(problem))
 
 """
     actions{S,A,O,B}(problem::POMDP{S,A,O}, belief::B, aspace::AbstractSpace{A})
 
-Modifies aspace to the action space accessible from the states with nonzero belief and returns it.
+Modifies `aspace` to the action space accessible from the states with nonzero belief and returns it.
 """
 @pomdp_func actions{S,A,O,B}(problem::POMDP{S,A,O}, belief::B, acts::AbstractSpace{A}=actions(problem))
 
@@ -83,6 +83,6 @@ Returns the entire observation space.
 """
     observations{S,A,O}(problem::POMDP{S,A,O}, state::S, obs::AbstractSpace{O}=observations(problem))
 
-Modifies ospace to the observation space accessible from the given state and returns it.
+Modifies `obs` to the observation space accessible from the given state and returns it.
 """
 @pomdp_func observations{S,A,O}(problem::POMDP{S,A,O}, state::S, obs::AbstractSpace{O}=observations(problem))
