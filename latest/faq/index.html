@@ -172,7 +172,7 @@
 <h2 id="why-am-i-getting-a-no-implementation-for-error">Why am I getting a "No implementation for ..." error?</h2>
 <p>You will typically see this error when you haven't implemented a function that a solver is trying to call. For example, if you are using the QMDP solver, and have not implemented <code>num_states</code> for your POMDP, you will see the no implementation error. To fix the error, you need to create a <code>num_states</code> function that takes in your POMDP. To see the required functions for a given solver you can run:</p>
 <pre><code class="julia">using QMDP
-QMDP.required()
+QMDP.required_methods()
 </code></pre>
 
 <p><a id='How-do-I-save-my-policies?-1'></a></p>
