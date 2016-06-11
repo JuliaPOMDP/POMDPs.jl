@@ -285,7 +285,7 @@ A: action type
 <p><a id='POMDPs.AbstractSpace' href='#POMDPs.AbstractSpace'>#</a>
 <strong><code>POMDPs.AbstractSpace</code></strong> &mdash; <em>Type</em>.</p>
 <p>Base type for state, action and observation spaces.</p>
-<pre><code>T: type that parametarizes the space (state, action, or observation)
+<pre><code>T: type that parametrizes the space (state, action, or observation)
 </code></pre>
 
 <p><a id='POMDPs.AbstractDistribution' href='#POMDPs.AbstractDistribution'>#</a>
@@ -306,7 +306,7 @@ A: action type
 <p><a id='POMDPs.Updater' href='#POMDPs.Updater'>#</a>
 <strong><code>POMDPs.Updater</code></strong> &mdash; <em>Type</em>.</p>
 <p>Abstract type for an object that defines how the belief should be updated</p>
-<pre><code>B: belief type that parametarizes the updater
+<pre><code>B: belief type that parametrizes the updater
 </code></pre>
 
 <p>A belief is a general construct that represents the knowledge an agent has about the state of the system. This can be a probability distribution, an action observation history or a more general representation. </p>
@@ -330,7 +330,7 @@ states(problem::MDP)
 actions{S,A}(problem::MDP{S,A}, state::S, aspace::AbstractSpace{A})
 </code></pre>
 
-<p>Modifies aspace to the action space accessible from the given state and returns it.</p>
+<p>Modifies <code>aspace</code> to the action space accessible from the given state and returns it.</p>
 <pre><code>actions(problem::POMDP)
 actions(problem::MDP)
 </code></pre>
@@ -339,13 +339,13 @@ actions(problem::MDP)
 <pre><code>actions{S,A,O,B}(problem::POMDP{S,A,O}, belief::B, aspace::AbstractSpace{A})
 </code></pre>
 
-<p>Modifies aspace to the action space accessible from the states with nonzero belief and returns it.</p>
+<p>Modifies <code>aspace</code> to the action space accessible from the states with nonzero belief and returns it.</p>
 <p><a id='POMDPs.observations' href='#POMDPs.observations'>#</a>
 <strong><code>POMDPs.observations</code></strong> &mdash; <em>Function</em>.</p>
 <pre><code>observations{S,A,O}(problem::POMDP{S,A,O}, state::S, obs::AbstractSpace{O}=observations(problem))
 </code></pre>
 
-<p>Modifies ospace to the observation space accessible from the given state and returns it.</p>
+<p>Modifies <code>obs</code> to the observation space accessible from the given state and returns it.</p>
 <pre><code>observations(problem::POMDP)
 </code></pre>
 
@@ -518,7 +518,7 @@ create_observation_distribution(problem::MDP)
 <p><a id='POMDPs.update' href='#POMDPs.update'>#</a>
 <strong><code>POMDPs.update</code></strong> &mdash; <em>Function</em>.</p>
 <pre><code>update{B,A,O}(updater::Updater, belief_old::B, action::A, obs::O,
-belief_new::B=create_belief(updater))
+              belief_new::B=create_belief(updater))
 </code></pre>
 
 <p>Returns a new instance of an updated belief given <code>belief_old</code> and the latest action and observation.</p>
@@ -570,18 +570,18 @@ create_policy(solver::Solver, problem::MDP)
 <pre><code>action{B}(p::Policy, x::B, action)
 </code></pre>
 
-<p>Fills and returns action based on the current state or belief, given the policy. B is a generalized information state - can be a state in an MDP, a distribution in POMDP, or any other representation needed to make a decision using the given policy. </p>
+<p>Fills and returns action based on the current state or belief, given the policy. <code>B</code> is a generalized information state - can be a state in an MDP, a distribution in POMDP, or any other representation needed to make a decision using the given policy. </p>
 <pre><code>action{B}(policy::Policy, x::B)
 </code></pre>
 
 <p>Returns an action for the current state or belief, given the policy</p>
-<p>If an MDP is being simulated, x will be a state; if a POMDP is being simulated, x will be a belief</p>
+<p>If an MDP is being simulated, <code>x</code> will be a state; if a POMDP is being simulated, <code>x</code> will be a belief</p>
 <p><a id='POMDPs.value' href='#POMDPs.value'>#</a>
 <strong><code>POMDPs.value</code></strong> &mdash; <em>Function</em>.</p>
 <pre><code>value{B}(p::Policy, x::B)
 </code></pre>
 
-<p>Returns the utility value from policy p given the state</p>
+<p>Returns the utility value from policy <code>p</code> given the state</p>
 <p><a id='Simulator-1'></a></p>
 <h2 id="simulator">Simulator</h2>
 <p><a id='POMDPs.Simulator' href='#POMDPs.Simulator'>#</a>
@@ -626,7 +626,7 @@ julia&gt; POMDPs.add(&quot;MCTS&quot;)
 <pre><code>available()
 </code></pre>
 
-<p>Prints all the availiable packages in JuliaPOMDP</p>
+<p>Prints all the available packages in JuliaPOMDP</p>
 <p><a id='POMDPs.@pomdp_func' href='#POMDPs.@pomdp_func'>#</a>
 <strong><code>POMDPs.@pomdp_func</code></strong> &mdash; <em>Macro</em>.</p>
 <p>Provide a default function implementation that throws an error when called.</p>
