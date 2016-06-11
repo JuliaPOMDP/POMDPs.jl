@@ -9,8 +9,9 @@ required functions for a given solver you can run:
 
 ```julia
 using QMDP
-QMDP.required()
+QMDP.required_methods()
 ```
+
 
 ## How do I save my policies?
 
@@ -58,6 +59,7 @@ This has a number of advantages. The first is that if a user only wants to use a
 JuliaPOMDP organization, they do not have to install all the other solvers and their dependencies.
 The second advantage is that people who are not directly part of the JuliaPOMDP organization can write their own solvers
 without going into the source code of other solvers. This makes the framework easier to adopt and to extend.
+
 
 
 
