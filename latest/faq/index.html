@@ -114,7 +114,7 @@
             
                 <li class="toctree-l3"><a href="#frequently-asked-questions-faq">Frequently Asked Questions (FAQ)</a></li>
                 
-                    <li><a class="toctree-l4" href="#why-am-i-getting-a-no-implemnetation-for-error">Why am I getting a "No implemnetation for ..." error?</a></li>
+                    <li><a class="toctree-l4" href="#why-am-i-getting-a-no-implementation-for-error">Why am I getting a "No implementation for ..." error?</a></li>
                 
                     <li><a class="toctree-l4" href="#how-do-i-save-my-policies">How do I save my policies?</a></li>
                 
@@ -168,18 +168,18 @@
               
                 <p><a id='Frequently-Asked-Questions-(FAQ)-1'></a></p>
 <h1 id="frequently-asked-questions-faq">Frequently Asked Questions (FAQ)</h1>
-<p><a id='Why-am-I-getting-a-"No-implemnetation-for-..."-error?-1'></a></p>
-<h2 id="why-am-i-getting-a-no-implemnetation-for-error">Why am I getting a "No implemnetation for ..." error?</h2>
-<p>You will typically see this error when you haven't implemented a function that a solver is trying to call.  For example, if you are using the QMDP solver, and have not implemented <code>num_states</code> for your POMDP, you will see the no implementation error. To fix the error, you need to create a <code>num_states</code> function that takes in your POMDP. To see the required functions for a given solver you can run:</p>
+<p><a id='Why-am-I-getting-a-"No-implementation-for-..."-error?-1'></a></p>
+<h2 id="why-am-i-getting-a-no-implementation-for-error">Why am I getting a "No implementation for ..." error?</h2>
+<p>You will typically see this error when you haven't implemented a function that a solver is trying to call. For example, if you are using the QMDP solver, and have not implemented <code>num_states</code> for your POMDP, you will see the no implementation error. To fix the error, you need to create a <code>num_states</code> function that takes in your POMDP. To see the required functions for a given solver you can run:</p>
 <pre><code class="julia">using QMDP
 QMDP.required()
 </code></pre>
 
 <p><a id='How-do-I-save-my-policies?-1'></a></p>
 <h2 id="how-do-i-save-my-policies">How do I save my policies?</h2>
-<p>We recommend using <a href="https://github.com/JuliaIO/JLD.jl">JLD</a> to save the whole policy object. This is the simplest, and fairly efficient way to save Julia objects. JLD uses HDF5 format underneath. If you've already computed a policy, you can simply run:</p>
+<p>We recommend using <a href="https://github.com/JuliaIO/JLD.jl">JLD</a> to save the whole policy object. This is a simple and fairly efficient way to save Julia objects. JLD uses the HDF5 format underneath. To save a computed policy, run:</p>
 <pre><code class="julia">using JLD
-save(&quot;my_policy.jld&quot;, &quot;policy&quot;, policy) 
+save(&quot;my_policy.jld&quot;, &quot;policy&quot;, policy)
 </code></pre>
 
 <p><a id='Why-isn't-the-solver-working?-1'></a></p>
@@ -194,11 +194,10 @@ trans_prob_consistancy_check(pomdp) # check the transition probabilities
 <p>If these throw an error, you may need to fix your <code>transition</code> or <code>observation</code> functions. </p>
 <p><a id='Why-do-I-need-to-put-type-assertions-pomdp::POMDP-into-the-function-signature?-1'></a></p>
 <h2 id="why-do-i-need-to-put-type-assertions-pomdppomdp-into-the-function-signature">Why do I need to put type assertions pomdp::POMDP into the function signature?</h2>
-<p>Specifying the type in your function signature allows Julia to call the appropriate function when your custom type is passed into it.  For example if a POMDPs.jl solver calls <code>states</code> on the POMDP that you passed into it, the correct <code>states</code> function will only get dispatched if you specified that the <code>states</code> function you wrote works with your POMDP type. Because Julia supports multiple-dispatch, these type assertion are a way for doing object-oriented programming in Julia. </p>
+<p>Specifying the type in your function signature allows Julia to call the appropriate function when your custom type is passed into it. For example if a POMDPs.jl solver calls <code>states</code> on the POMDP that you passed into it, the correct <code>states</code> function will only get dispatched if you specified that the <code>states</code> function you wrote works with your POMDP type. Because Julia supports multiple-dispatch, these type assertion are a way for doing object-oriented programming in Julia.</p>
 <p><a id='Why-are-all-the-solvers-in-seperate-modules?-1'></a></p>
 <h2 id="why-are-all-the-solvers-in-seperate-modules">Why are all the solvers in seperate modules?</h2>
-<p>We did not put all the solvers and support tools into POMDPs.jl, because we wanted POMDPs.jl to be a lighweight interface package.  This has a number of advantages. The first is that if a user only wants to use a few solvers from the</p>
-<p>JuliaPOMDP organization, they do not have to install all the other sovlers and their dependencies.  The second advantage is that people who are not directly part of the JuliaPOMDP organization can write their own solvers without going into the source code of other solvers. This makes the framework easier to adopt and to extend. </p>
+<p>We did not put all the solvers and support tools into POMDPs.jl, because we wanted POMDPs.jl to be a lightweight interface package. This has a number of advantages. The first is that if a user only wants to use a few solvers from the JuliaPOMDP organization, they do not have to install all the other solvers and their dependencies. The second advantage is that people who are not directly part of the JuliaPOMDP organization can write their own solvers without going into the source code of other solvers. This makes the framework easier to adopt and to extend.</p>
               
             </div>
           </div>
