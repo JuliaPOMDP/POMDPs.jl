@@ -99,6 +99,6 @@ Many packages use the POMDPs.jl interface, including MDP and POMDP solvers, supp
 
 |  **`Package`**   |  **`Build`** |
 |-------------------|----------------------|
-| [GenerativeModels](https://github.com/JuliaPOMDP/GenerativeModels.jl) |  | 
-| [POMDPBounds](https://github.com/JuliaPOMDP/POMDPBounds.jl) |  | 
+| [GenerativeModels](https://github.com/JuliaPOMDP/GenerativeModels.jl) | [![Build Status](https://travis-ci.org/JuliaPOMDP/GenerativeModels.jl.svg?branch=master)](https://travis-ci.org/JuliaPOMDP/GenerativeModels.jl) | 
+| [POMDPBounds](https://github.com/JuliaPOMDP/POMDPBounds.jl) | [![Build Status](https://travis-ci.org/JuliaPOMDP/POMDPBounds.jl.svg?branch=master)](https://travis-ci.org/JuliaPOMDP/POMDPBounds.jl) | 
 
