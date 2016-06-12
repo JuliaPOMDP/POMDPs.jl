@@ -76,15 +76,8 @@ Modifies distribution to the observation distribution for the a-s' tuple (action
 
 Returns the observation distribution for the s-a-s' tuple (state, action, and next state)
 """
-@pomdp_func observation{S,A,O}(problem::POMDP{S,A,O}, state::S, action::A, statep::S, distribution::AbstractDistribution{O}) # removed =create_observation_distribution(problem) to resolve ambiguity - problems should still implement this with an optional 5th argument
-
-"""
-    reward{S,A,O}(problem::POMDP{S,A,O}, state::S, action::A, statep::S)
-    reward{S,A}(problem::MDP{S,A}, state::S, action::A, statep::S)
-
-Returns the immediate reward for the s-a-s' triple
-"""
-@pomdp_func reward{S,A}(problem::Union{POMDP{S,A},MDP{S,A}}, state::S, action::A, statep::S)
+observation{S,A,O}(problem::POMDP{S,A,O}, s::S, a::A, sp::S, dist::AbstractDistribution{O}) = observation(problem, a,
+sp, dist) # removed =create_observation_distribution(problem) to resolve ambiguity - problems should still implement this with an optional 5th argument
 
 """
     reward{S,A,O}(problem::POMDP{S,A,O}, state::S, action::A)
@@ -93,6 +86,14 @@ Returns the immediate reward for the s-a-s' triple
 Returns the immediate reward for the s-a pair
 """
 @pomdp_func reward{S,A}(problem::Union{POMDP{S,A},MDP{S,A}}, state::S, action::A)
+
+"""
+    reward{S,A,O}(problem::POMDP{S,A,O}, state::S, action::A, statep::S)
+    reward{S,A}(problem::MDP{S,A}, state::S, action::A, statep::S)
+
+Returns the immediate reward for the s-a-s' triple
+"""
+reward{S,A}(problem::Union{POMDP{S,A},MDP{S,A}}, s::S, a::A, sp::S) = reward(problem, s, a)
 
 """
     create_state(problem::POMDP)
