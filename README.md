@@ -45,7 +45,8 @@ policy = solve(solver, pomdp)
 #evaluate the policy
 belief_updater = updater(policy) # the default QMPD belief updater (discrete Bayesian filter)
 init_dist = initial_state_distribution(pomdp) # from POMDPModels
-stats = simulate(HistoryRecorder(max_steps=100), pomdp, policy, belief_updater, init_dist) # run 100 step simulation
+# evaluate the policy
+r = simulate(HistoryRecorder(max_steps=100), pomdp, policy, belief_updater, init_dist) # run 100 step simulation
 ```
 The code above solves the Tiger POMDP using the QMDP algorithm, and evaluates its performance. 
 
