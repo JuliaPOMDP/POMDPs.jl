@@ -45,7 +45,7 @@ Returns the complete state space of a POMDP.
     
 Returns a subset of the state space reachable from `state`. 
 """
-@pomdp_func states{S,A}(problem::Union{POMDP{S,A},MDP{S,A}}, state::S, sts::AbstractSpace{S}=states(problem))
+states{S,A}(problem::Union{POMDP{S,A},MDP{S,A}}, s::S, sts::AbstractSpace{S}=states(problem)) = sts
 
 """
     actions(problem::POMDP)
@@ -61,7 +61,7 @@ Returns the entire action space of a POMDP.
 
 Modifies `aspace` to the action space accessible from the given state and returns it.
 """
-@pomdp_func actions{S,A}(problem::Union{MDP{S,A},POMDP{S,A}}, state::S, acts::AbstractSpace{A}=actions(problem))
+actions{S,A}(problem::Union{MDP{S,A},POMDP{S,A}}, state::S, acts::AbstractSpace{A}=actions(problem)) = acts
 
 """
     actions{S,A,O,B}(problem::POMDP{S,A,O}, belief::B, aspace::AbstractSpace{A})
@@ -82,4 +82,4 @@ Returns the entire observation space.
 
 Modifies `obs` to the observation space accessible from the given state and returns it.
 """
-@pomdp_func observations{S,A,O}(problem::POMDP{S,A,O}, state::S, obs::AbstractSpace{O}=observations(problem))
+observations{S,A,O}(problem::POMDP{S,A,O}, state::S, obs::AbstractSpace{O}=observations(problem)) = obs
