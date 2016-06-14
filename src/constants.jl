@@ -19,6 +19,7 @@ const SUPPORTED_PACKAGES = Set{AbstractString}(
                            "DESPOT",
                            "POMDPSolve",
                            "GenerativeModels",
+                           "POMDPBounds",
                            "POMDPModels",
                            "POMDPToolbox",
                            "POMDPXFiles",
