@@ -153,3 +153,9 @@ Returns the integer index of action `a`. Used for discrete models only.
 Returns the integer index of observation `o`. Used for discrete models only.
 """
 @pomdp_func obs_index{S,A,O}(problem::POMDP{S,A,O}, o::O)
+
+"""
+    vec{SO}(problem::Union{MDP{SO},POMDP{SO}}, so::S)
+Convert a state or observaton to vectorized form of floats.
+"""
+@pomdp_func Base.vec{SO}(problem::Union{MDP{SO},POMDP{SO}}, so::SO)
