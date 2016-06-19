@@ -76,7 +76,6 @@ Modifies distribution to the observation distribution for the a-s' tuple (action
 
 Returns the observation distribution for the s-a-s' tuple (state, action, and next state)
 """
-#observation{S,A,O}(problem::POMDP{S,A,O}, s::S, a::A, sp::S, dist::AbstractDistribution{O}=create_observation_distribution(problem)) = observation(problem, a,
 observation{S,A,O}(problem::POMDP{S,A,O}, s::S, a::A, sp::S, dist::AbstractDistribution{O}) = observation(problem, a,
 sp, dist) 
 
