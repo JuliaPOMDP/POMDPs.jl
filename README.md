@@ -1,6 +1,7 @@
 # POMDPs
 
 [![Build Status](https://travis-ci.org/JuliaPOMDP/POMDPs.jl.svg?branch=master)](https://travis-ci.org/JuliaPOMDP/POMDPs.jl)
+[![Docs](https://img.shields.io/badge/docs-stable-blue.svg)](https://JuliaPOMDP.github.io/POMDPs.jl/stable)
 
 This package provides a core interface for working with Markov decision processes (MDPs) and partially observable Markov decision processes (POMDPs).
 
@@ -63,6 +64,7 @@ of using SARSOP and QMDP to solve the tiger problem
 ## Documentation
 
 Detailed documentation can be found [here](http://juliapomdp.github.io/POMDPs.jl/latest/).
+[![Docs](https://img.shields.io/badge/docs-stable-blue.svg)](https://JuliaPOMDP.github.io/POMDPs.jl/stable)
 
 
 ## Supported Packages
