@@ -314,11 +314,6 @@ A: action type
 <h2 id="model-functions">Model Functions</h2>
 <p><a id='POMDPs.states' href='#POMDPs.states'>#</a>
 <strong><code>POMDPs.states</code></strong> &mdash; <em>Function</em>.</p>
-<pre><code>states(problem::POMDP)
-states(problem::MDP)
-</code></pre>
-
-<p>Returns the complete state space of a POMDP. </p>
 <pre><code>states{S,A,O}(problem::POMDP{S,A,O}, state::S)
 states{S,A}(problem::MDP{S,A}, state::S)
 </code></pre>
@@ -342,10 +337,6 @@ actions{S,A}(problem::MDP{S,A}, state::S, aspace::AbstractSpace{A})
 <p>Modifies <code>aspace</code> to the action space accessible from the given state and returns it.</p>
 <p><a id='POMDPs.observations' href='#POMDPs.observations'>#</a>
 <strong><code>POMDPs.observations</code></strong> &mdash; <em>Function</em>.</p>
-<pre><code>observations(problem::POMDP)
-</code></pre>
-
-<p>Returns the entire observation space.</p>
 <pre><code>observations{S,A,O}(problem::POMDP{S,A,O}, state::S, obs::AbstractSpace{O}=observations(problem))
 </code></pre>
 
@@ -517,10 +508,6 @@ create_observation_distribution(problem::MDP)
 <h2 id="belief-functions">Belief Functions</h2>
 <p><a id='POMDPs.update' href='#POMDPs.update'>#</a>
 <strong><code>POMDPs.update</code></strong> &mdash; <em>Function</em>.</p>
-<pre><code>update()
-</code></pre>
-
-<p>Updates all the installed packages</p>
 <pre><code>update{B,A,O}(updater::Updater, belief_old::B, action::A, obs::O,
               belief_new::B=create_belief(updater))
 </code></pre>
@@ -593,10 +580,6 @@ create_policy(solver::Solver, problem::MDP)
 <p>Base type for an object defining how a simulation should be carried out</p>
 <p><a id='POMDPs.simulate' href='#POMDPs.simulate'>#</a>
 <strong><code>POMDPs.simulate</code></strong> &mdash; <em>Function</em>.</p>
-<pre><code>simulate{S,A,O,B}(simulator::Simulator, problem::POMDP{S,A,O}, policy::Policy{B}, updater::Updater{B}, initial_belief::Union{B,AbstractDistribution{S}})
-</code></pre>
-
-<p>Run a simulation using the specified policy and returns the accumulated reward</p>
 <pre><code>simulate{S,A}(simulator::Simulator, problem::MDP{S,A}, policy::Policy, initial_state::S)
 </code></pre>
 
