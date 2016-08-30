@@ -24,8 +24,9 @@ end
     add_all()
 Downloads and installs all the packages supported by JuliaPOMDP
 """
-function add_all()
-    for p in SUPPORTED_PACKAGES
+function add_all(native_only=false)
+    native_only ? pkg_set = NATIVE_PACKAGES : pkg_set = SUPPORTED_PACKAGES 
+    for p in pkg_set
         add(p, false)
     end
 end
@@ -36,7 +37,7 @@ Updates all the installed packages
 """
 function update()
     for p in SUPPORTED_PACKAGES
-        # see of package is intalled
+        # check if package is intalled
         if isdir(Pkg.dir(p))
             Pkg.checkout(p)
         end
@@ -92,18 +93,8 @@ function get_methods(flist::Vector{Function})
     for f in flist
         t = nothing
         # find the method from POMDPs.jl
-        #found = false
         for m in methods(f)
             t = m
-            # too messy
-            #=
-            found ? (break) : (nothing)
-            inputs = m.sig
-            # method should have an export type form POMDPs.jl as input
-            for t in EXPORTED_TYPES
-                in(t, inputs.parameters) ? (push!(ms, m); found=true) : (nothing)
-            end
-            =#
         end
         push!(ms, t)
     end
