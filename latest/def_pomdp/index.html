@@ -173,7 +173,6 @@
 <p>We define the Tiger POMDP type:</p>
 <pre><code class="julia">using POMDPs
 type TigerPOMDP &lt;: POMDP{Bool, Int64, Bool}
-
     discount_factor::Float64
 end
 TigerPOMDP() = TigerPOMDP(0.95) # default contructor
@@ -266,10 +265,8 @@ function observation(pomdp::TigerPOMDP, s::Bool, a::Int64, d::TigerDistribution=
     end
     d
 end
-# convenience function
-function observation(pomdp::TigerPOMDP, s::Bool, a::Int64, sp::Bool, d::TigerDistribution=create_observation_distribution(pomdp))
-    return observation(pomdp, s, a, d)
-end
+observation(pomdp::TigerPOMDP, s::Bool, a::Int64, sp::Bool, d::TigerDistribution=create_observation_distribution(pomdp)) =
+    observation(pomdp, s, a, d) # convenience function
 
 function reward(pomdp::TigerPOMDP, s::Bool, a::Int64)
     # rewarded for escaping, penalized for listening and getting caught
@@ -284,11 +281,10 @@ function reward(pomdp::TigerPOMDP, s::Bool, a::Int64)
     end
     r
 end
-# convenience function
-reward(pomdp::TigerPOMDP, s::Bool, a::Int64, sp::Bool) = reward(pomdp, s, a)
+reward(pomdp::TigerPOMDP, s::Bool, a::Int64, sp::Bool) = reward(pomdp, s, a) # convenience function
 </code></pre>
 
-<p>The last thing we need for the Tiger POMDP is and initial distribution over the state space. In POMDPs.jl we make a strong distinction between this distribution and a belief. In most literature these two concepts are considered the same. However, in more general terms, a belief is something that is mapped to an action using a POMDP policy. If the policy is represented as something other than alpha-vectors (a policy graph, tree, or a recurrent neural network to give a few examples), it may not make sense to think of a belief as a probability distribution over the state space. Thus, in POMDPs.jl we abstract the concept of a belief beyond a probability distribution, allowing users to use what makes the most sense.</p>
+<p>The last thing we need for the Tiger POMDP is an initial distribution over the state space. In POMDPs.jl we make a strong distinction between this distribution and a belief. In most literature these two concepts are considered the same. However, in more general terms, a belief is something that is mapped to an action using a POMDP policy. If the policy is represented as something other than alpha-vectors (a policy graph, tree, or a recurrent neural network to give a few examples), it may not make sense to think of a belief as a probability distribution over the state space. Thus, in POMDPs.jl we abstract the concept of a belief beyond a probability distribution, allowing users to use what makes the most sense.</p>
 <p>In order to reconcile this difference, each policy has a function called <code>initialize_belief</code> which takes in an initial state distirubtion and a policy, and converts the distribution into what we call a belief in POMDPs.jl. As the problem writer we must provide <code>initial_state_distribution</code>:</p>
 <pre><code class="julia">initial_state_distribution(pomdp::TigerPOMDP) = TigerDistribution(0.5)
 </code></pre>
