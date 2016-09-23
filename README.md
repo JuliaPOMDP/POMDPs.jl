@@ -32,6 +32,12 @@ using POMDPs
 POMDPs.add_all() # this may take a few minutes
 ```
 
+To only install native solvers, without any non-Julia dependecies, run:
+```julia
+using POMDPs
+POMDPs.add_all(native_only=true)
+```
+
 ## Quick Start
 
 Start the Julia REPL and run the following:
