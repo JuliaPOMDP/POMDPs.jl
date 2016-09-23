@@ -28,9 +28,11 @@ macro pomdp_func(signature)
         elseif i != length(args)
             error_string *= ", "
         else
-            error_string *= "."
+            error_string *= ".\n\n"
         end
     end
+
+    error_string = string(error_string, "This is often due to incorrect importing; consider using `importall POMDPs`.")
 
     # if you are modifying this and want to debug, it might be helpful to print
     # println(error_string)

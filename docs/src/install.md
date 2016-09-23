@@ -27,3 +27,7 @@ if you want to install all of the supported JuliaPOMDP packages you can run the 
 POMDPs.add_all() # installs all the JuliaPOMDP packages (may take a few minutes)
 ```
 
+If you want to avoid any non-Julia dependencies, run:
+```julia
+POMDPs.add_all(native_only=true)
+```

@@ -10,7 +10,7 @@ observable counterparts.*
 - Simple integration of custom solvers into the existing interface
 
 
-## Availible Packages
+## Available Packages
 
 The POMDPs.jl package contains the interface used for expressing and solving Markov decision processes (MDPs) and partially
 observable Markov decision processes (POMDPs) in the Julia programming language. The
