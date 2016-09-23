@@ -261,7 +261,7 @@ function observation(pomdp::TigerPOMDP, s::Bool, a::Int64, d::TigerDistribution=
     if a == LISTEN
         d.p_true = s == TIGER_ON_LEFT ? 0.85 : 0.15
     else
-        d.p = 0.5 # reset the observation - we did not listen
+        d.p_true = 0.5 # reset the observation - we did not listen
     end
     d
 end
