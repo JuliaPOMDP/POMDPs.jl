@@ -20,7 +20,6 @@ We define the Tiger POMDP type:
 ```julia
 using POMDPs
 type TigerPOMDP <: POMDP{Bool, Int64, Bool}
-
     discount_factor::Float64
 end
 TigerPOMDP() = TigerPOMDP(0.95) # default contructor
@@ -128,10 +127,8 @@ function observation(pomdp::TigerPOMDP, s::Bool, a::Int64, d::TigerDistribution=
     end
     d
 end
-# convenience function
-function observation(pomdp::TigerPOMDP, s::Bool, a::Int64, sp::Bool, d::TigerDistribution=create_observation_distribution(pomdp))
-    return observation(pomdp, s, a, d)
-end
+observation(pomdp::TigerPOMDP, s::Bool, a::Int64, sp::Bool, d::TigerDistribution=create_observation_distribution(pomdp)) =
+    observation(pomdp, s, a, d) # convenience function
 
 function reward(pomdp::TigerPOMDP, s::Bool, a::Int64)
     # rewarded for escaping, penalized for listening and getting caught
@@ -146,11 +143,10 @@ function reward(pomdp::TigerPOMDP, s::Bool, a::Int64)
     end
     r
 end
-# convenience function
-reward(pomdp::TigerPOMDP, s::Bool, a::Int64, sp::Bool) = reward(pomdp, s, a)
+reward(pomdp::TigerPOMDP, s::Bool, a::Int64, sp::Bool) = reward(pomdp, s, a) # convenience function
 ```
 
-The last thing we need for the Tiger POMDP is and initial distribution over the state space.
+The last thing we need for the Tiger POMDP is an initial distribution over the state space.
 In POMDPs.jl we make a strong distinction between this distribution and a belief.
 In most literature these two concepts are considered the same. However, in more general terms, a belief is something that is mapped to an action using a POMDP policy.
 If the policy is represented as something other than alpha-vectors (a policy graph, tree, or a recurrent neural network to give a few examples), it
