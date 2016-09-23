@@ -175,6 +175,10 @@ POMDPs.add(&quot;SARSOP&quot;) # installs the SARSOP solver
 <p>Due to the modular nature of the framework, you can choose to only install select solvers/support tools. However, if you want to install all of the supported JuliaPOMDP packages you can run the following code:</p>
 <pre><code class="julia">POMDPs.add_all() # installs all the JuliaPOMDP packages (may take a few minutes)
 </code></pre>
+
+<p>If you want to avoid any non-Julia dependencies, run:</p>
+<pre><code class="julia">POMDPs.add_all(native_only=true)
+</code></pre>
               
             </div>
           </div>
