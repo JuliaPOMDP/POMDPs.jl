@@ -4,83 +4,127 @@ The expressive nature of POMDPs.jl gives problem writers the flexiblity to write
 section we will take a look at two ways to write a discrete problem, and a way of writing a continuous problem.
 
 ## Functional Form POMDP
-The first, and most straighforward way to define a POMDP problem is to implement the required model functions.
-For example, all POMDPs will need ```transition```, ```reward```, and ```observation``` functions. In this example we
-start with the simple Tiger POMDP problem. We want to use the SARSOP solver to compute a policy. To use a solver from
-JuliaPOMDP, a problem writer must define a set of functions required by the solver. To see what functions are required
-by SARSOP, check out its documentation [here](#href).
+Custom POMDP problems are defined by implementing the functions specified by the POMDPs api.
+These functions, such as ```transition```, ```reward```, and ```observation```, capture the problem formulation and allow the problem to be used by the POMDPs solvers and simulators.
 
-We first define the Tiger POMDP type:
+In this example we show how to implement the famous Tiger Problem.
+Suppose that once implemented, we want to solve Tiger problems using the SARSOP solver.
+To see what functions SARSOP needs us to implement, check out its documentation [here](#href).
+
+In this implementation of the problem we will assume that the agent get a reward of -1 for listening at the door,
+a reward of -100 for encountering the tiger, and a reward of 10 for escaping. The probability of hearing the tiger
+when listing at the tiger's door is 85%, and the discount factor is a parameter in the TigerPOMDP object.
+
+We define the Tiger POMDP type:
 
 ```julia
-using POMDPs # load the interface
-type TigerPOMDP <: POMDP{Bool, Int64, Bool} # parametarized inheritance POMDP{state, action, observation}
-    r_listen::Float64 # reward for listening (negative)
-    r_findtiger::Float64 # reward for finding the tiger (negative)
-    r_escapetiger::Float64 # reward for escaping
-    p_listen_correctly::Float64 # probbility that we hear the tiger correctly
-    discount_factor::Float64 # discount factor
+using POMDPs
+type TigerPOMDP <: POMDP{Bool, Int64, Bool}
+
+    discount_factor::Float64
 end
-TigerPOMDP() = TigerPOMDP(-1.0, -100.0, 10.0, 0.85, 0.95) # default contructor
+TigerPOMDP() = TigerPOMDP(0.95) # default contructor
+discount(pomdp::TigerPOMDP) = pomdp.discount_factor
 ```
 
-Notice that the ```TigerPOMDP``` inherits from the abstract ```POMDP``` type provided by POMDPs.jl. The abstract ```POMDP``` is parametarized by a ```Bool```, ```Int64```, ```Bool``` combination with the syntax ```TigerPOMDP <: POMDP{Bool, Int64, Bool}```. The parametarization defines how we choose to represent the state, actions, and observations in our problem. In the ```TigerPOMDP``` we use a boolean to represent our states and observations (because there are two of each) and an integer to represent our actions (because there are 3).
+Notice that the ```TigerPOMDP``` inherits from the abstract ```POMDP``` type provided by POMDPs.jl.
+Our type is defined ```TigerPOMDP <: POMDP{Bool, Int64, Bool}```, indicating that our states are ```Bools```, actions are ```Int64```, and observations are ```Bool```.
+In our problem there are only two states (whether the tiger is behind the left or right door), three actions (go left, go right, and listen), and two observations (hear the tiger behind the left or right door). We thus use booleans for the states and observations, and integers for the actions.
+Note that states, actions, and observations can use arrays, strings, complex data structures, or even custom types.
 
-One can represent states, actions, and/or observations with custom states as well.  Suppose we made a type ```AwesomeTigerState``` to represent our states. That type could contain integers, floats, arrays, or other complex data structures, depending on what is most convenient. We would then parametrize the Tiger POMDP in the following way: ```type TigerPOMDP <: POMDP{AwesomeTigerState, Int64, Bool}```.
+We will now implement the state, action, and observation spaces.
+There is a special ```AbstractSpace``` type in POMDPs.jl which all spaces inherit from.
+We define the state, action, and observation spaces below as well as functions for intializing them and sampling from them.
 
-Now, let us consider another important component of POMDPs, probability distributions. In the POMDPs.jl interface, we think in terms of distribution types. We want to be able to sample from these distriubtions and compute their probability masses or densities. In the Tiger POMDP, our distributions are over binary variables (boolean state or observation), so we can implement a simple version of a Bernoulli distribution.
+```julia
+# STATE SPACE
+const TIGER_ON_LEFT = true
+const TIGER_ON_RIGHT = false
+
+type TigerStateSpace <: AbstractSpace end
+states(::TigerPOMDP) = TigerStateSpace()
+iterator(space::TigerStateSpace) = [TIGER_ON_LEFT, TIGER_ON_RIGHT]
+n_states(::TigerPOMDP) = 2
+dimensions(::TigerStateSpace) = 1
+rand(rng::AbstractRNG, space::TigerStateSpace, s::Bool) = rand([TIGER_ON_LEFT, TIGER_ON_RIGHT]) # sample random state
+create_state(::TigerPOMDP) = TIGER_ON_LEFT
+state_index(::TigerPOMDP, s::Bool) = s + 1
+
+# ACTION SPACE
+const OPEN_LEFT = 0
+const OPEN_RIGHT = 1
+const LISTEN = 2
+
+type TigerActionSpace <: AbstractSpace end
+actions(::TigerPOMDP) = TigerActionSpace()
+iterator(space::TigerActionSpace) = [OPEN_LEFT,OPEN_RIGHT,LISTEN]
+n_actions(::TigerPOMDP) = 3
+dimensions(::TigerActionSpace) = 1
+rand(rng::AbstractRNG, space::TigerActionSpace, a::Int64) = rand(rng, [OPEN_LEFT,OPEN_RIGHT,LISTEN]) # sample random action
+create_action(::TigerPOMDP) = OPEN_LEFT
+
+# OBSERVATION SPACE
+const OBSERVE_LEFT = true
+const OBSERVE_RIGHT = false
+
+type TigerObservationSpace <: AbstractSpace end
+observations(::TigerPOMDP) = TigerObservationSpace()
+iterator(space::TigerObservationSpace) = [OBSERVE_LEFT, OBSERVE_RIGHT]
+n_observations(::TigerPOMDP) = 2
+dimensions(::TigerObservationSpace) = 1
+rand(rng::AbstractRNG, space::TigerObservationSpace, s::Bool) = rand([TIGER_ON_LEFT, TIGER_ON_RIGHT]) # sample random observation
+create_observation(::TigerPOMDP) = OBSERVE_LEFT
+```
+
+Before we can implement the core ```transition```, ```reward```, and ```observation``` functions we need to define how distributions over states and observations work for the Tiger POMDP.
+We need to sample from these distributions and compute their likelihoods.
+Are states and observations are binary, so we can use Bernoulli distributions:
 
 ```julia
 type TigerDistribution <: AbstractDistribution # inherits from a POMDPs.jl abstract type
-    p::Float64 # probability of 1
-    it::Vector{Bool} # pre-allocate the domain of the distriubtion
+    p_true::Float64
 end
-TigerDistribution() = TigerDistribution(0.5, [true, false]) # default constructo
+TigerDistribution() = TigerDistribution(0.5) # default constructor
+iterator(d::TigerDistribution) = [true, false]
 
-iterator(d::TigerDistribution) = d.it # convenience function used by discrete solvers (iterator over the discrete distriubtion)
-```
-
-We implement the ```pdf``` and ```rand``` function that returns the probability mass and samples from the distribution:
-
-```julia
-# returns the probability mass
-function pdf(d::TigerDistribution, so::Bool)
-    so ? (return d.p) : (return 1.0-d.p)
+# returns the probability mass for discrete distributions
+function pdf(d::TigerDistribution, v::Bool)
+    if v
+        return d.p_true
+    else
+        return 1 - d.p_true
+    end
 end
 
-# samples the dsitribution
-rand(rng::AbstractRNG, d::TigerDistribution, s::Bool) = rand(rng) <= d.p
-```
+# sample from the distribution
+rand(rng::AbstractRNG, d::TigerDistribution, s::Bool) = rand(rng) ≤ d.p_true
 
-We also want some convenience functions for initializing the distriubtions:
-
-```julia
+# convenient initialization functions
 create_transition_distribution(::TigerPOMDP) = TigerDistribution()
 create_observation_distribution(::TigerPOMDP) = TigerDistribution()
 ```
 
-We define our transition, observation, and reward functions:
+We can now define our transition, observation, and reward functions.
+Transition and observation return the distribution over the next state and observation, and reward returns the scalar reward.
 
 ```julia
 function transition(pomdp::TigerPOMDP, s::Bool, a::Int64, d::TigerDistribution=create_transition_distribution(pomdp))
-    # Resets the problem after opening door; does nothing after listening
-    if a == 1 || a == 2
-        d.p = 0.5
-    elseif s
-        d.p = 1.0
+    if a == OPEN_LEFT || a == OPEN_RIGHT
+        d.p_true = 0.5 # reset the tiger's location, which is what SARSOP wants
+    elseif s == TIGER_ON_LEFT
+        d.p_true = 1.0 # tiger is on left
     else
-        d.p = 0.0
+        d.p_true = 0.0  # tiger is on right
     end
     d
 end
 
 function observation(pomdp::TigerPOMDP, s::Bool, a::Int64, d::TigerDistribution=create_observation_distribution(pomdp))
-    # correct observation wiht prob pc
-    pc = pomdp.p_listen_correctly
-    if a == 0
-        s ? (d.p = pc) : (d.p = 1.0-pc)
+    # obtain correct observation 85% of the time
+    if a == LISTEN
+        d.p_true = s == TIGER_ON_LEFT ? 0.85 : 0.15
     else
-        d.p = 0.5
+        d.p = 0.5 # reset the observation - we did not listen
     end
     d
 end
@@ -92,97 +136,37 @@ end
 function reward(pomdp::TigerPOMDP, s::Bool, a::Int64)
     # rewarded for escaping, penalized for listening and getting caught
     r = 0.0
-    a == 0 ? (r+=pomdp.r_listen) : (nothing)
-    if a == 1
-        s ? (r += pomdp.r_findtiger) : (r += pomdp.r_escapetiger)
+    if a == LISTEN
+        r -= 1.0 # action penalty
+    elseif (a == OPEN_LEFT && s == TIGER_ON_LEFT) ||
+           (a == OPEN_RIGHT && s == TIGER_ON_RIGHT)
+        r -= 100.0 # eaten by tiger
+    else
+        r += 10.0 # opened the correct door
     end
-    if a == 2
-        s ? (r += pomdp.r_escapetiger) : (r += pomdp.r_findtiger)
-    end
-    return r
+    r
 end
 # convenience function
 reward(pomdp::TigerPOMDP, s::Bool, a::Int64, sp::Bool) = reward(pomdp, s, a)
 ```
 
-The last important component of a POMDP are the spaces. There is a special ```AbstractSpace``` type in POMDPs.jl which all spaces inherit from. We define the state, action, and observation spaces below as well as functions for intializing them and sampling from them.
-
-```julia
-# STATE SPACE
-type TigerStateSpace <: AbstractSpace
-    states::Vector{Bool} # states are boolean
-end
-# initialize the state space
-states(::TigerPOMDP) = TigerStateSpace([true, false])
-# for iterating over discrete spaces
-iterator(space::TigerStateSpace) = space.states
-dimensions(::TigerStateSpace) = 1
-# sample from the state sapce
-rand(rng::AbstractRNG, space::TigerStateSpace, s::Bool) = rand(rng) > 0.5 ? (return true) : (return false)
-
-# ACTION SPACE
-type TigerActionSpace <: AbstractSpace
-    actions::Vector{Int64} # three possible actions
-end
-# initialize the action space
-actions(::TigerPOMDP) = TigerActionSpace([0,1,2])
-# iterate of the action space
-iterator(space::TigerActionSpace) = space.actions
-dimensions(::TigerActionSpace) = 1
-# sample from the aciton space
-rand(rng::AbstractRNG, space::TigerActionSpace, a::Int64) = rand(rng, 0:2)
-
-# OBSERVATION SPACE
-type TigerObservationSpace <: AbstractSpace
-    obs::Vector{Bool}
-end
-# initialize
-observations(::TigerPOMDP) = TigerObservationSpace([true, false])
-# iterate over obs space
-iterator(space::TigerObservationSpace) = space.obs
-dimensions(::TigerObservationSpace) = 1
-# sample from the obs sapce
-rand(rng::AbstractRNG, space::TigerObservationSpace, s::Bool) = rand(rng) > 0.5 ? (return true) : (return false)
-```
-
-The last important component of a POMDP is the initial distribution over the state space. In POMDPs.jl we make a strong distinction
-between this distribution and a belief. In most literature these two concepts are considered the same. However, in
-more general terms, a belief is something that is mapped to an action using a POMDP policy. If the policy is represented
-as something other than alpha-vectors (a policy graph, tree, or a reccurent neural network to give a few examples), it
-may not make sense to think of a belief as a probability distribution over the state space. Thus, in POMDPs.jl we
-abstract the concept of a belief beyond a probability distribution, allowing users to use what makes the most sense.
+The last thing we need for the Tiger POMDP is and initial distribution over the state space.
+In POMDPs.jl we make a strong distinction between this distribution and a belief.
+In most literature these two concepts are considered the same. However, in more general terms, a belief is something that is mapped to an action using a POMDP policy.
+If the policy is represented as something other than alpha-vectors (a policy graph, tree, or a recurrent neural network to give a few examples), it
+may not make sense to think of a belief as a probability distribution over the state space.
+Thus, in POMDPs.jl we abstract the concept of a belief beyond a probability distribution, allowing users to use what makes the most sense.
 
 In order to reconcile this difference, each policy has a function called ```initialize_belief``` which takes in an
-initial state distirubtion (this is a probability distribution over the state space) and a policy, and converts the
-distribution into what we call a belief in POMDPs.jl - a representation of a POMDP that is mapped to an action using the
-policy.
-
-Let us define the initial state distribution function for our POMDP.
+initial state distirubtion and a policy, and converts the
+distribution into what we call a belief in POMDPs.jl. As the problem writer we must provide ```initial_state_distribution```:
 
 ```julia
-initial_state_distribution(pomdp::TigerPOMDP) = TigerDistribution(0.5, [true, false])
+initial_state_distribution(pomdp::TigerPOMDP) = TigerDistribution(0.5)
 ```
 
-Now that we've defined all the main components, we need to wrap up our model by creating some convenience functions below.
-
-```julia
-# initialization functions
-create_state(::TigerPOMDP) = zero(Bool)
-create_observation(::TigerPOMDP) = zero(Bool)
-create_action(::TigerPOMDP) = zero(Int64)
-
-# for discrete problems
-n_states(::TigerPOMDP) = 2
-n_actions(::TigerPOMDP) = 3
-n_observations(::TigerPOMDP) = 2
-
-# for indexing discrete states
-state_index(::TigerPOMDP, s::Bool) = Int64(s) + 1
-
-discount(pomdp::TigerPOMDP) = pomdp.discount_factor
-```
-
-Now that we've defined all these functions, we can use one of the JuliaPOMDP solvers to compute and evaluate a policy.
+We have fully defined the Tiger POMDP.
+We can use now use JuliaPOMDP solvers to compute and evaluate a policy:
 
 ```julia
 using QMDP, POMDPToolbox
@@ -196,12 +180,13 @@ hist = HistoryRecorder(max_steps=100) # from POMDPToolbox
 r = simulate(hist, pomdp, policy, belief_updater, init_dist) # run 100 step simulation
 ```
 
-Please note that you do not need to define all the functions for most solvers. If you want to use an individual solver, you usually need only a subset of what is above.
+Please note that you do not need to define all the functions for most solvers.
+If you want to use a specific solver, you usually only need a subset of what is above.
 
 ## POMDPs in Tabular Form
 
-Another way to define discrete POMDP problems is by writing them in tabular form. Specifically, if you can write the
-transition probabilities, observation probabilities, and rewards in matrix form, you can use the ```DiscreteMDP``` or
+The ```DiscretePOMDP``` problem representation allows you to specify discrete POMDP problems in tabular form.
+If you can write the transition probabilities, observation probabilities, and rewards in matrix form, you can use the ```DiscreteMDP``` or
 ```DiscretePOMDP``` types from ```POMDPModels``` which automatically implements all required functionality.
 Let us do this with the Tiger POMDP:
 
@@ -231,7 +216,7 @@ solver = SARSOPSolver()
 policy = solve(solver, pomdp)
 ```
 
-It is often easiest to define smaller problems in the tabular form. However, for larger problems it can be
+It is often easiest to define smaller problems in tabular form. However, for larger problems it can be
 tedious and the functional form may be preffered. You can usually use any supported POMDP solver to sovle these types of problems (the performance of the policy may vary however - SARSOP will usually outperform QMDP).
 
 ## Continous POMDP
