@@ -24,12 +24,36 @@ end
     add_all()
 Downloads and installs all the packages supported by JuliaPOMDP
 """
-function add_all(native_only=false)
+function add_all(;native_only=false)
     native_only ? pkg_set = NATIVE_PACKAGES : pkg_set = SUPPORTED_PACKAGES 
     for p in pkg_set
         add(p, false)
     end
 end
+
+
+
+"""
+    remove(solver_name::AbstractString)
+
+Remove a JuliaPOMDP package.
+"""
+function remove(solver_name::AbstractString)
+    @assert solver_name in SUPPORTED_PACKAGES string("The JuliaPOMDP package: ", solver_name, " is not supported")
+    Pkg.rm(solver_name)
+end
+
+
+"""
+    remove_all()
+Removes all the installed packages supported by JuliaPOMDP
+"""
+function remove_all()
+    for p in SUPPORTED_PACKAGES
+        Pkg.rm(p)
+    end
+end
+
 
 """
     update()
@@ -100,3 +124,6 @@ function get_methods(flist::Vector{Function})
     end
     ms
 end
+
+
+
