@@ -478,7 +478,7 @@ create_action(problem::MDP)
 <pre><code>iterator{T}(d::AbstractDistribution{T})
 </code></pre>
 
-<p>Returns an iterable type (array or custom iterator) corresponding to distribution <code>d</code>. </p>
+<p>Returns an iterable type (array or custom iterator) that iterates over possible values of <code>d</code>. Values with zero belief may be skipped.</p>
 <pre><code>iterator{T}(s::AbstractSpace{T})
 </code></pre>
 
