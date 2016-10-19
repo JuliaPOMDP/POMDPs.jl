@@ -2,7 +2,7 @@ language: julia
 os:
   - linux
 julia:
-  - release
+  - 0.5
 notifications:
   email: false
 before_script:
