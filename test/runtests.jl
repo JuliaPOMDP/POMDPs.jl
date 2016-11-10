@@ -1,8 +1,8 @@
 using Base.Test
 
 using POMDPs
-type A <: POMDP{Bool,Bool,Bool} end
-@test_throws ErrorException discount(A())
+type A <: POMDP{Int,Bool,Bool} end
+@test_throws ErrorException n_states(A())
 
 @test POMDPs.strip_arg(:a) == :a
 @test POMDPs.strip_arg(parse("a::Int")) == :a
