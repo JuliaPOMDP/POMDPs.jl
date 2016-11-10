@@ -118,17 +118,17 @@ function transition(pomdp::TigerPOMDP, s::Bool, a::Int64, d::TigerDistribution=c
     d
 end
 
-function observation(pomdp::TigerPOMDP, s::Bool, a::Int64, d::TigerDistribution=create_observation_distribution(pomdp))
+function observation(pomdp::TigerPOMDP, a::Int64, sp::Bool, d::TigerDistribution=create_observation_distribution(pomdp))
     # obtain correct observation 85% of the time
     if a == LISTEN
-        d.p_true = s == TIGER_ON_LEFT ? 0.85 : 0.15
+        d.p_true = sp == TIGER_ON_LEFT ? 0.85 : 0.15
     else
         d.p_true = 0.5 # reset the observation - we did not listen
     end
     d
 end
 observation(pomdp::TigerPOMDP, s::Bool, a::Int64, sp::Bool, d::TigerDistribution=create_observation_distribution(pomdp)) =
-    observation(pomdp, s, a, d) # convenience function
+    observation(pomdp, a, sp, d) # convenience function
 
 function reward(pomdp::TigerPOMDP, s::Bool, a::Int64)
     # rewarded for escaping, penalized for listening and getting caught

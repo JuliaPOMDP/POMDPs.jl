@@ -52,7 +52,7 @@ Returns the number of actions in `problem`. Used for discrete models only.
 
 Return the discount factor for the problem.
 """
-@pomdp_func discount(problem::Union{POMDP,MDP})
+@pomdp_func discount(problem::Union{POMDP,MDP}) = 1.0
 
 """
     transition{S,A,O}(problem::POMDP{S,A,O}, state::S, action::A,

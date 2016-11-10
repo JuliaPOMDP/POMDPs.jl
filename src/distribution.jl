@@ -8,7 +8,7 @@
     create_transition_distribution(problem::POMDP)
     create_transition_distribution(problem::MDP)
 
-Returns a transition distribution (for memory preallocation).
+Return a transition distribution (for memory preallocation).
 """
 @pomdp_func create_transition_distribution(problem::Union{POMDP,MDP})
 
@@ -16,7 +16,7 @@ Returns a transition distribution (for memory preallocation).
     create_observation_distribution(problem::POMDP)
     create_observation_distribution(problem::MDP)
 
-Returns an observation distribution (for memory preallocation).
+Return an observation distribution (for memory preallocation).
 """
 @pomdp_func create_observation_distribution(problem::Union{POMDP,MDP})
 
@@ -37,6 +37,6 @@ Value of probability distribution `d` function at sample `x`.
 """
     iterator{T}(d::AbstractDistribution{T})
 
-Returns an iterable type (array or custom iterator) that iterates over possible values of `d`. Values with zero belief may be skipped.
+Return an iterable type (array or custom iterator) that iterates over possible values of `d`. Values with zero belief may be skipped.
 """
 @pomdp_func iterator{T}(d::AbstractDistribution{T})
