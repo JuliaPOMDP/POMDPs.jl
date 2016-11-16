@@ -16,35 +16,33 @@ macro pomdp_func(signature)
     args = [strip_arg(expr) for expr in signature.args[2:end]]
 
     # get the name of the function
-    fname = signature.args[1]
+    fname = strip_curly(signature.args[1])
 
-    error_string = "POMDPs.jl: No implementation of $fname for "
+    error_format = "POMDPs.jl: No implementation of $fname for "
 
     # add each of the arguments to error string
     for (i,a) in enumerate(args)
-        error_string *= "$a::\$(typeof($a))"
+        error_format *= "$a::%s"
         if i == length(args)-1
-            error_string *= ", and "
+            error_format *= ", and "
         elseif i != length(args)
-            error_string *= ", "
+            error_format *= ", "
         else
-            error_string *= ".\n\n"
+            error_format *= ".\n"
         end
     end
 
-    error_string = string(error_string, "This is often due to incorrect importing; consider using `importall POMDPs`.")
+    error_format = string(error_format, "NOTE: This is often due to incorrect importing; consider using `importall POMDPs`.\n\n")
 
     # if you are modifying this and want to debug, it might be helpful to print
     # println(error_string)
     
-    body = Expr(:call, :warn, :($error_string))
-    # body = Expr(:call, :warn, error_string)
+    argtypes = [:(typeof($a)) for a in args]
 
-    # args_tup = (args...)
-    # body = quote
-    #     warn($error_string)
-    #     throw(MethodError($fname, $args_tup))
-    # end
+    body = quote
+        warn(@sprintf($error_format, $(argtypes...)))
+        throw(MethodError($fname, ($(args...),))) # this is abuse of this Error and may break in the future
+    end
 
     return Expr(:function, esc(signature), esc(body))
 end
@@ -67,3 +65,14 @@ function strip_arg(arg_expr::Expr)
     end
 end
 
+"""
+Strip parameters from a function name
+"""
+strip_curly(fname::Symbol) = fname # if it is a symbol, we can just leave it untouched
+function strip_curly(fname::Expr)
+    if fname.head == :curly
+        return fname.args[1]
+    else
+        error("strip_curly encountered something unexpected. fname was $(fname)")
+    end
+end
