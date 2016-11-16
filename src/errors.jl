@@ -36,8 +36,15 @@ macro pomdp_func(signature)
 
     # if you are modifying this and want to debug, it might be helpful to print
     # println(error_string)
+    
+    body = Expr(:call, :warn, :($error_string))
+    # body = Expr(:call, :warn, error_string)
 
-    body = Expr(:call, :error, parse("\"$error_string\""))
+    # args_tup = (args...)
+    # body = quote
+    #     warn($error_string)
+    #     throw(MethodError($fname, $args_tup))
+    # end
 
     return Expr(:function, esc(signature), esc(body))
 end
