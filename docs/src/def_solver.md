@@ -76,9 +76,10 @@ action(policy::QMDPPolicy, b::DiscreteBelief) # returns a QMDP action
 You can find the implementations of these types and methods below.
 
 
+
 ## Defining the Solver and Policy Types
 
-Let's first define the Solver type. The QMDP solver type should contain all the information needed to compute a policy (other than the problem itself). This information can be though of as the hyperparameters of the solver. In QMDP, we only need two hyper-parameters. We may want to set the maximum number of iterations that the algorithm runs for, and a tolerance value (also known as the Bellman residual). Both of these quantities define terminating criteria for the algorithm. The algorithm stops either when the maximum number of iterations has been reached or when the infinity norm of the diference in utility values between two iterations goes below the tolerance value. The type definition has the form:
+Let's first define the Solver type. The QMDP solver type should contain all the information needed to compute a policy (other than the problem itself). This information can be though of as the hyperparameters of the solver. In QMDP, we only need two hyper-parameters. We may want to set the maximum number of iterations that the algorithm runs for, and a tolerance value (also known as the Bellman residual). Both of these quantities define terminating criteria for the algorithm. The algorithm stops either when the maximum number of iterations has been reached or when the infinity norm of the difference in utility values between two iterations goes below the tolerance value. The type definition has the form:
 
 ```julia
 using POMDPs # first load the POMDPs module
@@ -117,6 +118,7 @@ POMDPs.create_policy(solver::QMDPSolver, pomdp::POMDP) = QMDPPolicy(pomdp)
 ```
 
 Now that we have our solver and policy types, we can write the solve function to compute the policy.
+
 
 
 ## Writing the Solve Function
@@ -183,7 +185,7 @@ function POMDPs.solve(solver::QMDPSolver, pomdp::POMDP, policy::QMDPPolicy=creat
 end
 ```
 
-At each iteration, the algorithm iterates over the state space and computes an alpha vector for each action. There is a check at the end to see if the Bellman residual has been statisfied. The solve function assumes the following POMDPs.jl functions are implemented by the user of QMDP:
+At each iteration, the algorithm iterates over the state space and computes an alpha vector for each action. There is a check at the end to see if the Bellman residual has been satisfied. The solve function assumes the following POMDPs.jl functions are implemented by the user of QMDP:
 
 ```julia
 create_transition_distribution(pomdp) # initializes a transition distribution that we can sample and call pdf on
@@ -198,10 +200,11 @@ state_index(pomdp, sp) # returns the integer index of sp (for discrete state spa
 
 Now that we have a solve function, let's let users interface with our policy.
 
+
 ## Creating an Updater
 
-Let's now talk about how we deal with beliefs. Since QMDP is a discrete POMDP solver, we can assume that the user will represent their belief as a probaiblity distribution over states. That means that we can also use a discrete belief to work with our policy!
-Lucky for us, the JuliaPOMDP organization contains tools that we can use out of the box for working with discrete beliefs. The POMDPToolbox package conatins a DiscreteBelief type that does exactly what we need. Let's define the helper functions the deal with beliefs and updaters:
+Let's now talk about how we deal with beliefs. Since QMDP is a discrete POMDP solver, we can assume that the user will represent their belief as a probablity distribution over states. That means that we can also use a discrete belief to work with our policy!
+Lucky for us, the JuliaPOMDP organization contains tools that we can use out of the box for working with discrete beliefs. The POMDPToolbox package contains a DiscreteBelief type that does exactly what we need. Let's define the helper functions the deal with beliefs and updaters:
 
 ```julia
 using POMDPToolbox # remeber to load the package that implements discrete beliefs for us
@@ -248,6 +251,7 @@ end
 These are all the functions that you'll need to have a working POMDPs.jl solver. Let's now use existing benchmark models to evaluate it.
 
 
+
 ## Evaluating the Solver
 
 We'll use the POMDPModels package from JuliaPOMDP to initialize a Tiger POMDP problem and solve it with QMDP.
@@ -274,6 +278,7 @@ r = simulate(sim_hist, pomdp, policy, b_up, b)
 ```
 
 That's all you need to define a solver and evaluate its performance!
+
 
 
 

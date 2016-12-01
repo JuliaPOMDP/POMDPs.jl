@@ -1,6 +1,6 @@
 # Defining a POMDP
 
-The expressive nature of POMDPs.jl gives problem writers the flexiblity to write their problem in many forms. In this
+The expressive nature of POMDPs.jl gives problem writers the flexibility to write their problem in many forms. In this
 section we will take a look at two ways to write a discrete problem, and a way of writing a continuous problem.
 
 ## Functional Form POMDP
@@ -33,7 +33,7 @@ Note that states, actions, and observations can use arrays, strings, complex dat
 
 We will now implement the state, action, and observation spaces.
 There is a special ```AbstractSpace``` type in POMDPs.jl which all spaces inherit from.
-We define the state, action, and observation spaces below as well as functions for intializing them and sampling from them.
+We define the state, action, and observation spaces below as well as functions for initializing them and sampling from them.
 
 ```julia
 # STATE SPACE
@@ -154,7 +154,7 @@ may not make sense to think of a belief as a probability distribution over the s
 Thus, in POMDPs.jl we abstract the concept of a belief beyond a probability distribution, allowing users to use what makes the most sense.
 
 In order to reconcile this difference, each policy has a function called ```initialize_belief``` which takes in an
-initial state distirubtion and a policy, and converts the
+initial state distriubtion and a policy, and converts the
 distribution into what we call a belief in POMDPs.jl. As the problem writer we must provide ```initial_state_distribution```:
 
 ```julia
@@ -213,7 +213,7 @@ policy = solve(solver, pomdp)
 ```
 
 It is often easiest to define smaller problems in tabular form. However, for larger problems it can be
-tedious and the functional form may be preffered. You can usually use any supported POMDP solver to sovle these types of problems (the performance of the policy may vary however - SARSOP will usually outperform QMDP).
+tedious and the functional form may be preferred. You can usually use any supported POMDP solver to solve these types of problems (the performance of the policy may vary however - SARSOP will usually outperform QMDP).
 
 ## Continous POMDP
 
@@ -221,6 +221,7 @@ Within the POMDPs.jl interface, we can also define problems with continuous spac
 There are a few solvers that can handle these types of problems, namely, MCVI and POMCP (with some tuning).
 
 LIGHT-DARK PROBLEM HERE. WHAT SHOULD WE SAY ABOUT BOUNDS?
+
 
 
 

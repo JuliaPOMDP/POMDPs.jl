@@ -5,9 +5,10 @@ observable counterparts.*
 ## Package Features
 
 - General interface that can handle problems with discrete and continuous state/action/observation spaces
-- A number of popular state-of-the-art solvers availiable to use out of the box
+- A number of popular state-of-the-art solvers available to use out of the box
 - Tools that make it easy to define problems and simulate solutions
 - Simple integration of custom solvers into the existing interface
+
 
 
 ## Available Packages
@@ -41,9 +42,11 @@ JuliaPOMDP are as follows:
 - [GenerativeModels](https://github.com/JuliaPOMDP/GenerativeModels.jl)
 - [POMDPBounds](https://github.com/JuliaPOMDP/POMDPBounds.jl)
 
+
 ## Manual Outline
 
 ```@contents
 ```
+
 
 

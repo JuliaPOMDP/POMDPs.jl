@@ -1,6 +1,6 @@
 # Installation
 
-If you have a running Julia distriubtion (Julia 0.4 or greater), you have everything you need to install POMDPs.jl. To install the package, simply
+If you have a running Julia distribution (Julia 0.4 or greater), you have everything you need to install POMDPs.jl. To install the package, simply
 run the following from the Julia REPL:
 ```julia
 Pkg.add("POMDPs") # installs the POMDPs.jl package
@@ -15,9 +15,9 @@ POMDPs.add("SARSOP") # installs the SARSOP solver
 The code above will download and install all dependencies automatically. All JuliaPOMDP packages have been tested on
 Linux and OS X, and most have been tested on Windows.
 
-To get a list of all the availible packages run:
+To get a list of all the available packages run:
 ```julia
-POMDPs.available() # prints a list of all the availible packages that can be installed with POMDPs.add
+POMDPs.available() # prints a list of all the available packages that can be installed with POMDPs.add
 ```
 
 Due to the modular nature of the framework, you can choose to only install select solvers/support tools. However,
@@ -31,3 +31,4 @@ If you want to avoid any non-Julia dependencies, run:
 ```julia
 POMDPs.add_all(native_only=true)
 ```
+
