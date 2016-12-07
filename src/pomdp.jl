@@ -27,24 +27,24 @@ abstract AbstractDistribution{T}
     n_states(problem::POMDP)
     n_states(problem::MDP)
 
-Returns the number of states in `problem`. Used for discrete models only.
+Return the number of states in `problem`. Used for discrete models only.
 """
-@pomdp_func n_states(problem::Union{POMDP,MDP})
+function n_states end
 
 """
     n_actions(problem::POMDP)
     n_actions(problem::MDP)
 
-Returns the number of actions in `problem`. Used for discrete models only.
+Return the number of actions in `problem`. Used for discrete models only.
 """
-@pomdp_func n_actions(problem::Union{POMDP,MDP})
+function n_actions end
 
 """
     n_observations(problem::POMDP)
 
-Returns the number of actions in `problem`. Used for discrete models only.
+Return the number of actions in `problem`. Used for discrete models only.
 """
-@pomdp_func n_observations(problem::POMDP)
+function n_observations end
 
 """
     discount(problem::POMDP)
@@ -52,110 +52,87 @@ Returns the number of actions in `problem`. Used for discrete models only.
 
 Return the discount factor for the problem.
 """
-@pomdp_func discount(problem::Union{POMDP,MDP}) = 1.0
+function discount end
 
 """
-    transition{S,A,O}(problem::POMDP{S,A,O}, state::S, action::A,
-distribution::AbstractDistribution{S}=create_transition_distribution(problem))
-    transition{S,A}(problem::MDP{S,A}, state::S, action::A,
-distribution::AbstractDistribution{S}=create_transition_distribution(problem))
+    transition{S,A,O}(problem::POMDP{S,A,O}, state::S, action::A)
+    transition{S,A}(problem::MDP{S,A}, state::S, action::A)
 
-Returns the transition distribution from the current state-action pair
+Return the transition distribution from the current state-action pair
 """
-@pomdp_func transition{S,A}(problem::Union{POMDP{S,A},MDP{S,A}}, state::S, action::A, distribution::AbstractDistribution{S}=create_transition_distribution(problem))
+function transition end
 
 """
-    observation{S,A,O}(problem::POMDP{S,A,O}, action::A, statep::S, distribution::AbstractDistribution{O}=create_observation_distribution(problem))
+    observation{S,A,O}(problem::POMDP{S,A,O}, action::A, statep::S)
 
-Modifies distribution to the observation distribution for the a-s' tuple (action and next state) and returns it
+Return the observation distribution for the a-s' tuple (action and next state) and returns it
 """
-@pomdp_func observation{S,A,O}(problem::POMDP{S,A,O}, action::A, statep::S, distribution::AbstractDistribution{O}=create_observation_distribution(problem))
+function observation end
 
 """
-    observation{S,A,O}(problem::POMDP{S,A,O}, state::S, action::A, statep::S, distribution::AbstractDistribution{O}=create_observation_distribution(problem))
+    observation{S,A,O}(problem::POMDP{S,A,O}, state::S, action::A, statep::S)
 
-Returns the observation distribution for the s-a-s' tuple (state, action, and next state)
+Return the observation distribution for the s-a-s' tuple (state, action, and next state)
 """
-observation{S,A,O}(problem::POMDP{S,A,O}, s::S, a::A, sp::S, dist::AbstractDistribution{O}) = observation(problem, a,
-sp, dist) 
+observation{S,A,O}(problem::POMDP{S,A,O}, s::S, a::A, sp::S) = observation(problem, a, sp) 
 
 """
     reward{S,A,O}(problem::POMDP{S,A,O}, state::S, action::A)
     reward{S,A}(problem::MDP{S,A}, state::S, action::A)
 
-Returns the immediate reward for the s-a pair
+Return the immediate reward for the s-a pair
 """
-@pomdp_func reward{S,A}(problem::Union{POMDP{S,A},MDP{S,A}}, state::S, action::A)
+function reward end
 
 """
     reward{S,A,O}(problem::POMDP{S,A,O}, state::S, action::A, statep::S)
     reward{S,A}(problem::MDP{S,A}, state::S, action::A, statep::S)
 
-Returns the immediate reward for the s-a-s' triple
+Return the immediate reward for the s-a-s' triple
 """
 reward{S,A}(problem::Union{POMDP{S,A},MDP{S,A}}, s::S, a::A, sp::S) = reward(problem, s, a)
 
 """
-    create_state(problem::POMDP)
-    create_state(problem::MDP)
-
-Create a state object (for preallocation purposes).
-"""
-@pomdp_func create_state(problem::Union{POMDP,MDP})
-
-# default implementation for numeric types
-create_state{S<:Number,A}(problem::Union{POMDP{S,A},MDP{S,A}}) = zero(S)
-
-"""
-    create_observation(problem::POMDP)
-
-Create an observation object (for preallocation purposes).
-"""
-@pomdp_func create_observation(problem::POMDP)
-
-# default implementation for numeric types
-create_observation{S,A,O<:Number}(problem::POMDP{S,A,O}) = zero(O)
-
-"""
     isterminal_obs{S,A,O}(problem::POMDP{S,A,O}, observation::O)
 
-Checks if an observation is terminal.
+Check if an observation is terminal.
 """
-@pomdp_func isterminal_obs{S,A,O}(problem::POMDP{S,A,O}, observation::O) = false
+isterminal_obs{S,A,O}(problem::POMDP{S,A,O}, observation::O) = false
 
 """
     isterminal{S,A,O}(problem::POMDP{S,A,O}, state::S)
     isterminal{S,A}(problem::MDP{S,A}, state::S)
 
-Checks if state s is terminal
+Check if state s is terminal
 """
-@pomdp_func isterminal{S,A}(problem::Union{POMDP{S,A},MDP{S,A}}, state::S) = false
+isterminal{S,A}(problem::Union{POMDP{S,A},MDP{S,A}}, state::S) = false
 
 """
     state_index{S,A,O}(problem::POMDP{S,A,O}, s::S)
     state_index{S,A}(problem::MDP{S,A}, s::S)
 
-Returns the integer index of state `s`. Used for discrete models only.
+Return the integer index of state `s`. Used for discrete models only.
 """
-@pomdp_func state_index{S,A}(problem::Union{POMDP{S,A},MDP{S,A}}, s::S)
+function state_index end
 
 """
     action_index{S,A,O}(problem::POMDP{S,A,O}, a::A)
     action_index{S,A}(problem::MDP{S,A}, a::A)
 
-Returns the integer index of action `a`. Used for discrete models only.
+Return the integer index of action `a`. Used for discrete models only.
 """
-@pomdp_func action_index{S,A}(problem::Union{POMDP{S,A},MDP{S,A}}, a::A)
+function action_index end
 
 """
     obs_index{S,A,O}(problem::POMDP{S,A,O}, o::O)
 
-Returns the integer index of observation `o`. Used for discrete models only.
+Return the integer index of observation `o`. Used for discrete models only.
 """
-@pomdp_func obs_index{S,A,O}(problem::POMDP{S,A,O}, o::O)
+function obs_index end
 
 """
     vec{SO}(problem::Union{MDP{SO},POMDP{SO}}, so::S)
+
 Convert a state or observaton to vectorized form of floats.
 """
-@pomdp_func Base.vec{SO}(problem::Union{MDP{SO},POMDP{SO}}, so::SO)
+Base.vec

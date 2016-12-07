@@ -48,12 +48,6 @@ export
     upperbound,
     getindex,
     iterator,
-    create_state,
-    create_action,
-    create_observation,
-    create_transition_distribution,
-    create_observation_distribution,
-    create_belief,
     initial_state_distribution,
 
     # Solver types

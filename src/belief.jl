@@ -21,37 +21,19 @@ abstract Updater{B}
 
 Returns an initial belief for the pomdp.
 """
-@pomdp_func initial_state_distribution(pomdp::POMDP)
+function initial_state_distribution end
 
 """
-    create_belief(pomdp::POMDP)
-
-Creates a belief either to be used by updater or pomdp
-"""
-@pomdp_func create_belief(pomdp::POMDP)
-
-"""
-    create_belief(updater::Updater)
-
-Creates a belief object of the type used by `updater` (preallocates memory)
-"""
-@pomdp_func create_belief(updater::Updater)
-
-"""
-    update{B,A,O}(updater::Updater, belief_old::B, action::A, obs::O,
-                  belief_new::B=create_belief(updater))
+    update{B,A,O}(updater::Updater, belief_old::B, action::A, obs::O)
 
 Returns a new instance of an updated belief given `belief_old` and the latest action and observation.
 """
-@pomdp_func update{B,A,O}(updater::Updater, belief_old::B, action::A, obs::O, belief_new::B=create_belief(updater))
+function update end
 
 """
     initialize_belief{B}(updater::Updater{B}, 
-                         state_distribution::AbstractDistribution,
-                         new_belief::B=create_belief(updater))
-    initialize_belief{B}(updater::Updater{B},
-                         belief::Any,
-                         new_belief::B=create_belief(updater))
+                         state_distribution::AbstractDistribution)
+    initialize_belief{B}(updater::Updater{B}, belief::Any)
 
 Returns a belief that can be updated using `updater` that has similar
 distribution to `state_distribution` or `belief`.
@@ -60,7 +42,7 @@ The conversion may be lossy. This function is also idempotent, i.e. there is a
 default implementation that passes the belief through when it is already the
 correct type: `initialize_belief{B}(updater::Updater{B}, belief::B) = belief`
 """
-@pomdp_func initialize_belief(updater::Updater, initial_state_dist::Any, new_belief=create_belief(updater))
+function initialize_belief end
 
 # default implementation if the input is the same type as the output
-initialize_belief{B}(updater::Updater{B}, belief::B, new_belief::B=create_belief(updater)) = belief
+initialize_belief{B}(updater::Updater{B}, belief::B, new_belief::B) = belief
