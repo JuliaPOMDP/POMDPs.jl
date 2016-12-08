@@ -1,29 +1,31 @@
-typealias TupleType Type
+### Requirements Tools for Solver Writers ###
+# TODO allow for function names
 
-type RequirementsList
+typealias TupleType Type # should be Tuple{T1,T2,...}
+
+type RequirementSet
     requirer::String
-    list::Vector{Tuple{Function, TupleType}}
+    set::Set{Tuple{Function, TupleType}}
 end
-RequirementsList(requirer::String) = RequirementsList(requirer, Array(Tuple{Function, TupleType}, 0))
+RequirementSet(requirer::String) = RequirementSet(requirer, Set{Tuple{Function, TupleType}}())
 
-function Base.push!(r::RequirementsList, func::Function, argtypes::TupleType)
-    push!(r.list, (func, argtypes))
-end
+Base.push!(r::RequirementSet, func::Function, argtypes::TupleType) = push!(r, (func, argtypes))
+Base.push!(r::RequirementSet, t::Tuple{Function, TupleType}) = push!(r.set, t)
 
 """
     @try_with_reqs begin
         # some expressions
     end reqs
 
-Run some expressions. If these expressions throw a method error, the `RequirementsList` `reqs` will be printed and the error will be rethrown.
+Run some expressions. If these expressions throw a method error, the `RequirementSet` `reqs` will be printed and the error will be rethrown.
 """
-macro try_with_reqs(expression, list)
+macro try_with_reqs(expression, set)
     block = quote
         try
             $expression
         catch exception
             if isa(exception, MethodError)
-                check_requirements($list, output = true)
+                check_requirements($set, output = true)
                 print_with_color(:red, "Note: There may be additional requirements that can be determined when the following error is fixed.\n")
                 println()
                 rethrow(exception)
@@ -35,17 +37,15 @@ macro try_with_reqs(expression, list)
     return esc(block)
 end
 
-typealias CheckedList Vector{Tuple{Bool, Function, TupleType}}
-
 """
-    check_requirements(r::RequirementsList; output::Union{Bool,Symbol}=:ifmissing)
+    check_requirements(r::RequirementSet; output::Union{Bool,Symbol}=:ifmissing)
 
 Check whether the methods in `r` have implementations with `method_exists()` and print out a formatted list showing which are missing (output can be supressed with `output=false`). Return true if all methods have implementations.
 """
-function check_requirements(r::RequirementsList; output::Union{Bool,Symbol}=:ifmissing)
+function check_requirements(r::RequirementSet; output::Union{Bool,Symbol}=:ifmissing)
     checked = CheckedList()
     missing = false
-    for fp in r.list
+    for fp in r.set
         exists = method_exists(first(fp), last(fp))
         if !exists
             missing = true
@@ -59,7 +59,7 @@ function check_requirements(r::RequirementsList; output::Union{Bool,Symbol}=:ifm
     end
     if shouldprint
         println()
-        print("WARNING: ")
+        print("INFO: ")
         print_with_color(:blue, r.requirer)
         println(" requires the methods below. Methods with a [✔] were implemented correctly; methods with a [X] are missing.")
         println()
@@ -68,6 +68,51 @@ function check_requirements(r::RequirementsList; output::Union{Bool,Symbol}=:ifm
     end
     return !missing
 end
+
+### Convenience Macros ###
+
+"""
+    @req f( ::T1, ::T2)
+    
+The expression above is transformed to `(f, Tuple{T1,T2})`.
+"""
+macro req(ex)
+    return esc(convert_req(ex))
+end
+
+"""
+    @push_req! r f( ::T1, ::T2)
+
+Push requirement f( ::T1, ::T2) into RequirementSet `r`.
+"""
+macro push_req!(r, req)
+    return esc(quote push!($r, $(convert_req(req))) end)
+end
+
+"""
+    @push_reqs! r begin
+        f1( ::T1, ::T2)
+        f2( ::T2, ::T4)
+    end
+
+Push all of the requirements in a block into RequirementSet `r`.
+"""
+macro push_reqs!(r, blk)
+    @assert blk.head == :block
+    for (i,a) in enumerate(blk.args)
+        if a.head == :line
+            continue
+        else
+            blk.args[i] = quote push!($r, $(convert_req(a))) end
+        end
+    end
+    return esc(blk)
+end
+
+
+### Helpers (not intended for public use) ###
+
+typealias CheckedList Vector{Tuple{Bool, Function, TupleType}}
 
 function print_checked_list(cl::CheckedList)
     for item in cl
@@ -91,6 +136,39 @@ function format_method(f::Function, argtypes::TupleType)
         end
     end
     str = string(str, ")")
+end
+
+"""
+Return a `(f, Tuple{T1,T2})` expression given a `f( ::T1, ::T2)` expression.
+"""
+function convert_req(ex::Expr)
+    malformed = false
+    if ex.head == :call
+        func = ex.args[1]
+        argtypes = Union{Symbol, Expr}[]
+        for a in ex.args[2:end]
+            if a.head == :(::)
+                if length(a.args) == 1
+                    push!(argtypes, a.args[1])
+                elseif length(a.args) == 2
+                    push!(argtypes, a.args[2])
+                else
+                    malformed = true
+                    break
+                end
+            else
+                malformed = true
+                break
+            end
+        end
+    else 
+        malformed = true
+    end
+    if malformed # throw error at parse time so solver writers will have to deal with this
+        error("Malformed requirement expression: $ex")
+    else
+        return quote ($func, Tuple{$(argtypes...)}) end
+    end
 end
 
 #=

@@ -73,9 +73,13 @@ export
     #add not explicitly imported
 
     # Requirements checking
-    RequirementsList,
+    RequirementSet,
     check_requirements,
-    @try_with_reqs
+    @try_with_reqs,
+    @req,
+    @push_req!,
+    @push_reqs!
+
 
 include("pomdp.jl")
 include("distribution.jl")
