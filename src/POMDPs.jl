@@ -67,12 +67,16 @@ export
 
     # Simulation
     Simulator,
-    simulate
+    simulate,
 
     # Utilities
     #add not explicitly imported
 
-include("errors.jl")
+    # Requirements checking
+    RequirementsList,
+    check_requirements,
+    @try_with_reqs
+
 include("pomdp.jl")
 include("distribution.jl")
 include("belief.jl")
@@ -82,5 +86,6 @@ include("policy.jl")
 include("simulator.jl")
 include("constants.jl")
 include("utils.jl")
+include("requirements.jl")
 
 end

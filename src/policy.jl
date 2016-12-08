@@ -12,23 +12,13 @@ Base type for a policy (a map from every possible belief, or more abstract polic
 abstract Policy{B}
 
 """
-    action{B}(p::Policy, x::B)
+    action{B}(policy::Policy, x::B)
 
 Fills and returns action based on the current state or belief, given the policy.
 `B` is a generalized information state - can be a state in an MDP, a distribution in POMDP,
 or any other representation needed to make a decision using the given policy. 
 """
 function action end
-
-"""
-    action{B}(policy::Policy, x::B)
-
-Returns an action for the current state or belief, given the policy
-
-If an MDP is being simulated, `x` will be a state; if a POMDP is being simulated, `x` will be a belief
-"""
-function action end
-
 
 """
     updater(policy::Policy)

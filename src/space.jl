@@ -29,7 +29,7 @@ Base.rand
 
 Returns an iterable type (array or custom iterator) corresponding to space `s`. 
 """
-function iterator end
+iterator
 
 """
     states(problem::POMDP)

@@ -5,38 +5,22 @@
 #################################################################
 
 """
-    create_transition_distribution(problem::POMDP)
-    create_transition_distribution(problem::MDP)
+    rand{T}(rng::AbstractRNG, d::AbstractDistribution{T})
 
-Return a transition distribution (for memory preallocation).
+Return a random element from distribution `d`. The sample can be a state, action or observation.
 """
-@pomdp_func create_transition_distribution(problem::Union{POMDP,MDP})
-
-"""
-    create_observation_distribution(problem::POMDP)
-    create_observation_distribution(problem::MDP)
-
-Return an observation distribution (for memory preallocation).
-"""
-@pomdp_func create_observation_distribution(problem::Union{POMDP,MDP})
-
-"""
-    rand{T}(rng::AbstractRNG, d::AbstractDistribution{T}, sample::T)
-
-Fill `sample` with a random element from distribution `d`. The sample can be a state, action or observation.
-"""
-@pomdp_func rand{T}(rng::AbstractRNG, d::AbstractDistribution{T}, sample::T)
+Base.rand
 
 """
     pdf{T}(d::AbstractDistribution{T}, x::T)
 
 Value of probability distribution `d` function at sample `x`.
 """
-@pomdp_func pdf{T}(d::AbstractDistribution{T}, x::T)
+function pdf end # maybe eventually this should be Distributions.pdf
 
 """
     iterator{T}(d::AbstractDistribution{T})
 
 Return an iterable type (array or custom iterator) that iterates over possible values of `d`. Values with zero belief may be skipped.
 """
-@pomdp_func iterator{T}(d::AbstractDistribution{T})
+function iterator end
