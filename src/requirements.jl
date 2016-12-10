@@ -14,7 +14,7 @@ Base.push!(r::RequirementSet, t::Tuple{Function, TupleType}) = push!(r.set, t)
 
 
 """
-    @POMDP_requirements "CoolSolver" begin
+    reqs = @POMDP_requirements "CoolSolver" begin
         PType = typeof(p)
         @req states(::PType)
         @req actions(::PType)
@@ -25,12 +25,13 @@ Base.push!(r::RequirementSet, t::Tuple{Function, TupleType}) = push!(r.set, t)
         @req rand(::AbstractRNG, ::typeof(t_dist))
     end
 
-Check to see if all of the methods specified by @req are available.
-
-Return true if all are satisfied, else return false and print a helpful list
+Create a RequirementSet object.
 """
 macro POMDP_requirements(name, block)
+    return pomdp_requirements(name, block)
+end
 
+function pomdp_requirements(name::Union{Expr,String}, block::Expr)
     req_found = handle_reqs!(block, :reqs)
     if !req_found
         block = esc(block)
@@ -38,7 +39,7 @@ macro POMDP_requirements(name, block)
     end
 
     newblock = quote
-        reqs = RequirementSet($name)
+        reqs = RequirementSet($(esc(name)))
         try
             $block
         catch exception
@@ -56,8 +57,28 @@ macro POMDP_requirements(name, block)
     return newblock
 end
 
+"""
+    @check_requirements "CoolSolver" begin
+        PType = typeof(p)
+        @req states(::PType)
+        @req actions(::PType)
+        @req transition(::PType, ::S, ::A)
+        s = first(states(p))
+        a = first(actions(p))
+        t_dist = transition(p, s, a)
+        @req rand(::AbstractRNG, ::typeof(t_dist))
+    end
 
-# XXX Fix Docs
+Check requirements in a block return true if all are met, false otherwise.
+"""
+macro check_requirements(name, block)
+    newblock = quote
+        reqs = $(pomdp_requirements(name, block))
+        check_requirements(reqs)
+    end
+end
+
+
 """
     @req f( ::T1, ::T2)
     
@@ -67,10 +88,8 @@ Only works within @POMDP_requirements block. Cannot be expanded (will throw an e
 """
 macro req(ex)
     error("@req was used outside a @POMDP_requirements block or was expanded within one.")
-    # println("expanding @req")
-    # return Expr(:pomdps_req, esc(convert_req(ex)))
-    # return Expr(:call, :__pomdps_req__, esc(convert_req(ex)))
 end
+
 
 """
     @convert_req
@@ -191,18 +210,6 @@ function handle_reqs!(node::Expr, reqs_name::Symbol)
         node.head = :call
         node.args = [:push!, reqs_name, esc(req_node)]
         return true
-    #=
-    if node.head == :pomdps_req
-        println("found pomdps_req")
-        node.head = :call
-        node.args = [:push!, reqs_name, node.args[1]]
-        return true
-    if node.head == :call && node.args[1] == :__pomdps_req__
-        println("found pomdps_req")
-        node.head = :call
-        node.args = [:push!, reqs_name, node.args[2]]
-        return true
-    =#
     else
         found = falses(length(node.args))
         for (i, arg) in enumerate(node.args)

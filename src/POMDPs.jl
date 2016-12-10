@@ -76,6 +76,8 @@ export
     RequirementSet,
     check_requirements,
     @POMDP_requirements,
+    @check_requirements,
+    @convert_req,
     @req
 
 

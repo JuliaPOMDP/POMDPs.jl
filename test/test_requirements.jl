@@ -9,12 +9,7 @@ module MyModule
 
     function POMDPs.solve{S,A,O}(s::CoolSolver, p::POMDP{S,A,O})
 
-        @POMDP_requirements "CoolSolver" begin
-            @req states(::typeof(p))
-        end
-
-        #=
-        @POMDP_requirements "CoolSolver" begin
+        @check_requirements "CoolSolver" begin
             PType = typeof(p)
             @req states(::PType)
             @req actions(::PType)
@@ -24,8 +19,6 @@ module MyModule
             t_dist = transition(p, s, a)
             @req rand(::AbstractRNG, ::typeof(t_dist))
         end
-        =#
-
     end
 end
 
@@ -41,7 +34,7 @@ POMDPs.discount(::SimplePOMDP) = 0.9
     1+1
 end
 
-# @test_throws MethodError solve(CoolSolver(), SimplePOMDP())
+@test_throws MethodError solve(CoolSolver(), SimplePOMDP())
 
 POMDPs.states(::SimplePOMDP) = [1.4, 3.2, 5.8]
 immutable SimpleDistribution
