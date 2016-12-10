@@ -9,34 +9,23 @@ module MyModule
 
     function POMDPs.solve{S,A,O}(s::CoolSolver, p::POMDP{S,A,O})
 
-        PTYPE = typeof(p)
-
-        # register requirements
-        reqs = RequirementSet("CoolSolver")
-        @push_reqs! reqs begin
-            discount( ::PTYPE)
-            states( ::PTYPE)
-            actions( ::PTYPE)
-            transition( ::PTYPE, ::S, ::A)
+        @POMDP_requirements "CoolSolver" begin
+            @req states(::typeof(p))
         end
 
-        # you can use expressions like typeof(p) directly (redundant with above)
-        @push_reqs! reqs begin
-            actions( ::typeof(p))
-        end
-
-        # alternative way to push requirements (redundant with above)
-        push!(reqs, @req actions(::typeof(p)) )
-
-        @try_with_reqs begin
+        #=
+        @POMDP_requirements "CoolSolver" begin
+            PType = typeof(p)
+            @req states(::PType)
+            @req actions(::PType)
+            @req transition(::PType, ::S, ::A)
             s = first(states(p))
             a = first(actions(p))
             t_dist = transition(p, s, a)
-            @push_req! reqs rand( ::AbstractRNG, ::typeof(t_dist) )
-        end reqs
+            @req rand(::AbstractRNG, ::typeof(t_dist))
+        end
+        =#
 
-        # check requirements and output list if any are missing
-        return check_requirements(reqs, output=:ifmissing)
     end
 end
 
@@ -46,11 +35,13 @@ using POMDPToolbox
 
 type SimplePOMDP <: POMDP{Float64, Bool, Int} end
 
-@test @req(discount(::SimplePOMDP)) == (discount, Tuple{SimplePOMDP})
-
 POMDPs.discount(::SimplePOMDP) = 0.9
 
-@test_throws MethodError solve(CoolSolver(), SimplePOMDP())
+@POMDP_requirements "Warn none" begin
+    1+1
+end
+
+# @test_throws MethodError solve(CoolSolver(), SimplePOMDP())
 
 POMDPs.states(::SimplePOMDP) = [1.4, 3.2, 5.8]
 immutable SimpleDistribution

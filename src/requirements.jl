@@ -12,30 +12,75 @@ RequirementSet(requirer::String) = RequirementSet(requirer, Set{Tuple{Function, 
 Base.push!(r::RequirementSet, func::Function, argtypes::TupleType) = push!(r, (func, argtypes))
 Base.push!(r::RequirementSet, t::Tuple{Function, TupleType}) = push!(r.set, t)
 
-"""
-    @try_with_reqs begin
-        # some expressions
-    end reqs
 
-Run some expressions. If these expressions throw a method error, the `RequirementSet` `reqs` will be printed and the error will be rethrown.
 """
-macro try_with_reqs(expression, set)
-    block = quote
+    @POMDP_requirements "CoolSolver" begin
+        PType = typeof(p)
+        @req states(::PType)
+        @req actions(::PType)
+        @req transition(::PType, ::S, ::A)
+        s = first(states(p))
+        a = first(actions(p))
+        t_dist = transition(p, s, a)
+        @req rand(::AbstractRNG, ::typeof(t_dist))
+    end
+
+Check to see if all of the methods specified by @req are available.
+
+Return true if all are satisfied, else return false and print a helpful list
+"""
+macro POMDP_requirements(name, block)
+
+    req_found = handle_reqs!(block, :reqs)
+    if !req_found
+        block = esc(block)
+        warn("No @req found in @POMDP_requirements block.")
+    end
+
+    newblock = quote
+        reqs = RequirementSet($name)
         try
-            $expression
+            $block
         catch exception
             if isa(exception, MethodError)
-                check_requirements($set, output = true)
-                print_with_color(:red, "Note: There may be additional requirements that can be determined when the following error is fixed.\n")
+                checked = check_requirements(reqs, output = true)
+                print_with_color(:red, "Note: There may be additional requirements that can be determined when the following error is fixed:\n")
                 println()
                 rethrow(exception)
             else
                 rethrow(exception)
             end
         end
+        reqs
     end
-    return esc(block)
+    return newblock
 end
+
+
+# XXX Fix Docs
+"""
+    @req f( ::T1, ::T2)
+    
+Marks the expression as a requirement.
+
+Only works within @POMDP_requirements block. Cannot be expanded (will throw an error).
+"""
+macro req(ex)
+    error("@req was used outside a @POMDP_requirements block or was expanded within one.")
+    # println("expanding @req")
+    # return Expr(:pomdps_req, esc(convert_req(ex)))
+    # return Expr(:call, :__pomdps_req__, esc(convert_req(ex)))
+end
+
+"""
+    @convert_req
+
+Convert a `f( ::T1, ::T2)` expression to a `(f, Tuple{T1,T2})` for pushing to a `RequirementSet`.
+"""
+macro convert_req(ex)
+    return esc(convert_req(ex))
+end
+
 
 """
     check_requirements(r::RequirementSet; output::Union{Bool,Symbol}=:ifmissing)
@@ -67,46 +112,6 @@ function check_requirements(r::RequirementSet; output::Union{Bool,Symbol}=:ifmis
         println()
     end
     return !missing
-end
-
-### Convenience Macros ###
-
-"""
-    @req f( ::T1, ::T2)
-    
-The expression above is transformed to `(f, Tuple{T1,T2})`.
-"""
-macro req(ex)
-    return esc(convert_req(ex))
-end
-
-"""
-    @push_req! r f( ::T1, ::T2)
-
-Push requirement f( ::T1, ::T2) into RequirementSet `r`.
-"""
-macro push_req!(r, req)
-    return esc(quote push!($r, $(convert_req(req))) end)
-end
-
-"""
-    @push_reqs! r begin
-        f1( ::T1, ::T2)
-        f2( ::T2, ::T4)
-    end
-
-Push all of the requirements in a block into RequirementSet `r`.
-"""
-macro push_reqs!(r, blk)
-    @assert blk.head == :block
-    for (i,a) in enumerate(blk.args)
-        if a.head == :line
-            continue
-        else
-            blk.args[i] = quote push!($r, $(convert_req(a))) end
-        end
-    end
-    return esc(blk)
 end
 
 
@@ -165,14 +170,56 @@ function convert_req(ex::Expr)
         malformed = true
     end
     if malformed # throw error at parse time so solver writers will have to deal with this
-        error("Malformed requirement expression: $ex")
+        error("Malformed @req expression: $ex")
     else
         return quote ($func, Tuple{$(argtypes...)}) end
     end
 end
 
-#=
-function get_requirements(s::Union{Solver, Simulator}, p::Union{POMDP,MDP})
+# this is where the freaking magic happens.
+"""
+    handle_reqs!(block, reqs_name::Symbol)
 
+Replace any @req calls with `push!(\$reqs_name, <requirement>)`
+
+Returns true if there was a requirement in there and so should not be escaped.
+"""
+function handle_reqs!(node::Expr, reqs_name::Symbol)
+    
+    if node.head == :macrocall && node.args[1] == Symbol("@req")
+        req_node = convert_req(node.args[2])
+        node.head = :call
+        node.args = [:push!, reqs_name, esc(req_node)]
+        return true
+    #=
+    if node.head == :pomdps_req
+        println("found pomdps_req")
+        node.head = :call
+        node.args = [:push!, reqs_name, node.args[1]]
+        return true
+    if node.head == :call && node.args[1] == :__pomdps_req__
+        println("found pomdps_req")
+        node.head = :call
+        node.args = [:push!, reqs_name, node.args[2]]
+        return true
+    =#
+    else
+        found = falses(length(node.args))
+        for (i, arg) in enumerate(node.args)
+            found[i] = handle_reqs!(arg, reqs_name)
+        end
+        if any(found)
+            for i in 1:length(node.args)
+                if !found[i]
+                    node.args[i] = esc(node.args[i])
+                end
+            end
+        end
+        return any(found)
+    end
 end
-=#
+
+function handle_reqs!(node::Any, reqs_name::Symbol)
+    # for anything that's not an Expr
+    return false
+end

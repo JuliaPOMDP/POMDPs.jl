@@ -75,10 +75,8 @@ export
     # Requirements checking
     RequirementSet,
     check_requirements,
-    @try_with_reqs,
-    @req,
-    @push_req!,
-    @push_reqs!
+    @POMDP_requirements,
+    @req
 
 
 include("pomdp.jl")
