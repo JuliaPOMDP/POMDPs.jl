@@ -30,10 +30,13 @@ type SimplePOMDP <: POMDP{Float64, Bool, Int} end
 
 POMDPs.discount(::SimplePOMDP) = 0.9
 
+reqs = nothing # to check the hygeine of the macro
 @POMDP_requirements "Warn none" begin
     1+1
 end
+@test reqs == nothing
 
+# solve(CoolSolver(), SimplePOMDP())
 @test_throws MethodError solve(CoolSolver(), SimplePOMDP())
 
 POMDPs.states(::SimplePOMDP) = [1.4, 3.2, 5.8]

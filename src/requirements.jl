@@ -57,6 +57,7 @@ function pomdp_requirements(name::Union{Expr,String}, block::Expr)
     return newblock
 end
 
+
 """
     @check_requirements "CoolSolver" begin
         PType = typeof(p)
@@ -80,23 +81,13 @@ end
 
 
 """
-    @req f( ::T1, ::T2)
-    
-Marks the expression as a requirement.
-
-Only works within @POMDP_requirements block. Cannot be expanded (will throw an error).
-"""
-macro req(ex)
-    error("@req was used outside a @POMDP_requirements block or was expanded within one.")
-end
-
-
-"""
-    @convert_req
+    @req
 
 Convert a `f( ::T1, ::T2)` expression to a `(f, Tuple{T1,T2})` for pushing to a `RequirementSet`.
+
+If in a `@POMDP_requirements` block or `@check_requirements` block, marks the requirement for including in the set of requirements.
 """
-macro convert_req(ex)
+macro req(ex)
     return esc(convert_req(ex))
 end
 
@@ -206,9 +197,9 @@ Returns true if there was a requirement in there and so should not be escaped.
 function handle_reqs!(node::Expr, reqs_name::Symbol)
     
     if node.head == :macrocall && node.args[1] == Symbol("@req")
-        req_node = convert_req(node.args[2])
+        macro_node = copy(node)
         node.head = :call
-        node.args = [:push!, reqs_name, esc(req_node)]
+        node.args = [:push!, reqs_name, esc(macroexpand(macro_node))]
         return true
     else
         found = falses(length(node.args))

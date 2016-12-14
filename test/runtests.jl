@@ -6,3 +6,4 @@ type A <: POMDP{Int,Bool,Bool} end
 @test_throws MethodError state_index(A(), 1)
 
 include("test_requirements.jl")
+include("test_inferrence.jl")

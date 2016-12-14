@@ -71,13 +71,15 @@ export
 
     # Utilities
     #add not explicitly imported
+    state_type,
+    action_type,
+    obs_type,
 
     # Requirements checking
     RequirementSet,
     check_requirements,
     @POMDP_requirements,
     @check_requirements,
-    @convert_req,
     @req
 
 
@@ -88,6 +90,7 @@ include("space.jl")
 include("solver.jl")
 include("policy.jl")
 include("simulator.jl")
+include("type_inferrence.jl")
 include("constants.jl")
 include("utils.jl")
 include("requirements.jl")

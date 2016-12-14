@@ -16,8 +16,12 @@ function add(solver_name::AbstractString, v::Bool=true)
     try
         Pkg.clone(full_url)
         Pkg.build(solver_name)
-    catch
-        v ? (println("Package already installed")) : (nothing)
+    catch ex
+        if isa(ex, Base.Pkg.PkgError) && ex.msg == "$solver_name already exists"
+            v ? (println("Package already installed")) : (nothing)
+        else
+            rethrow(ex)
+        end
     end
 end
 
