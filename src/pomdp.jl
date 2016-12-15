@@ -52,7 +52,7 @@ function n_observations end
 
 Return the discount factor for the problem.
 """
-function discount end
+discount(::Union{MDP,POMDP}) = 1.0
 
 """
     transition{S,A,O}(problem::POMDP{S,A,O}, state::S, action::A)
