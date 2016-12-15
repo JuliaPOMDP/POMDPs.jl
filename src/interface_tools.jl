@@ -1,7 +1,27 @@
-### Requirements Tools for Solver Writers ###
-# TODO allow for function names
+### tools for checking if there is an implementation ###
 
 typealias TupleType Type # should be Tuple{T1,T2,...}
+
+"""
+    implemented(function, Tuple{Arg1Type, Arg2Type})
+
+Check whether there is an implementation available that will return a suitable value.
+"""
+implemented(f::Function, TT::TupleType) = method_exists(f, TT)
+
+"""
+    @implemented function(::Arg1Type, ::Arg2Type)
+
+Check whether there is an implementation available that will return a suitable value.
+"""
+macro implemented(ex)
+    tplex = esc(convert_req(ex))
+    return quote
+        implemented($tplex...)
+    end
+end
+
+### Requirements Tools for Solver Writers ###
 
 type RequirementSet
     requirer::String
@@ -95,13 +115,13 @@ end
 """
     check_requirements(r::RequirementSet; output::Union{Bool,Symbol}=:ifmissing)
 
-Check whether the methods in `r` have implementations with `method_exists()` and print out a formatted list showing which are missing (output can be supressed with `output=false`). Return true if all methods have implementations.
+Check whether the methods in `r` have implementations with `implemented()` and print out a formatted list showing which are missing (output can be supressed with `output=false`). Return true if all methods have implementations.
 """
 function check_requirements(r::RequirementSet; output::Union{Bool,Symbol}=:ifmissing)
     checked = CheckedList()
     missing = false
     for fp in r.set
-        exists = method_exists(first(fp), last(fp))
+        exists = implemented(first(fp), last(fp))
         if !exists
             missing = true
         end
@@ -180,7 +200,7 @@ function convert_req(ex::Expr)
         malformed = true
     end
     if malformed # throw error at parse time so solver writers will have to deal with this
-        error("Malformed @req expression: $ex")
+        error("Malformed method expression: $ex")
     else
         return quote ($func, Tuple{$(argtypes...)}) end
     end
