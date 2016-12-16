@@ -17,13 +17,6 @@ Abstract base type for a fully observable Markov decision process.
 abstract MDP{S,A}
 
 """
-Abstract type for a probability distribution.
-
-    T: type over which distribution is over (state, action, or observation)
-"""
-abstract AbstractDistribution{T}
-
-"""
     n_states(problem::POMDP)
     n_states(problem::MDP)
 

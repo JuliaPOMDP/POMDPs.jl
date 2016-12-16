@@ -1,35 +1,13 @@
-#################################################################
-# This file defines an abstract type to represent spaces and abstract functions to specify the spaces
-# AbstractSpace: the abstract super type for the state, action and observation spaces
-#################################################################
+######################
+# interface for spaces
+######################
 
 """
-Base type for state, action and observation spaces.
-    
-    T: type that parametrizes the space (state, action, or observation)
-"""
-abstract AbstractSpace{T}
-
-"""
-    dimensions{T}(s::AbstractSpace{T})
+    dimensions(s::Any)
 
 Returns the number of dimensions in space `s`.
 """
 function dimensions end
-
-"""
-    rand{T}(rng::AbstractRNG, d::AbstractSpace{T})
-
-Returns a random `sample` from space `s`.
-"""
-Base.rand
-
-"""
-    iterator{T}(s::AbstractSpace{T})
-
-Returns an iterable type (array or custom iterator) corresponding to space `s`. 
-"""
-iterator
 
 """
     states(problem::POMDP)

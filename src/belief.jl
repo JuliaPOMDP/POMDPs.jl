@@ -32,7 +32,7 @@ function update end
 
 """
     initialize_belief{B}(updater::Updater{B}, 
-                         state_distribution::AbstractDistribution)
+                         state_distribution::Any)
     initialize_belief{B}(updater::Updater{B}, belief::Any)
 
 Returns a belief that can be updated using `updater` that has similar

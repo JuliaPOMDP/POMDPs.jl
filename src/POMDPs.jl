@@ -28,11 +28,6 @@ export
     isterminal,
     isterminal_obs,
     
-    # Spaces, Distributions and accessor functions
-    AbstractDistribution,
-    DiscreteDistribution,
-    AbstractSpace, 
-    
     # Discrete Functions
     length,
     state_index,
