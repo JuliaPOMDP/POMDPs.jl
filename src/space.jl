@@ -45,7 +45,8 @@ function states end
     
 Returns a subset of the state space reachable from `state`. 
 """
-states{S,A}(problem::Union{POMDP{S,A},MDP{S,A}}, s::S, sts::AbstractSpace{S}=states(problem)) = sts
+states{S,A}(problem::Union{POMDP{S,A},MDP{S,A}}, s::S) = states(problem)
+@impl_dep {P<:Union{POMDP,MDP},S} states(::P,::S) states(::P)
 
 """
     actions(problem::POMDP)
@@ -59,27 +60,29 @@ function actions end
     actions{S,A,O}(problem::POMDP{S,A,O}, state::S)
     actions{S,A}(problem::MDP{S,A}, state::S)
 
-Modifies `aspace` to the action space accessible from the given state and returns it.
+Return the action space accessible from the given state.
 """
-actions{S,A}(problem::Union{MDP{S,A},POMDP{S,A}}, state::S) = acts
+actions{S,A}(problem::Union{MDP{S,A},POMDP{S,A}}, state::S) = actions(problem)
+@impl_dep {P<:Union{POMDP,MDP},S} actions(::P,::S) actions(::P)
 
 """
-    actions{S,A,O,B}(problem::POMDP{S,A,O}, belief::B, aspace::AbstractSpace{A})
+    actions{S,A,O,B}(problem::POMDP{S,A,O}, belief::B)
 
-Modifies `aspace` to the action space accessible from the states with nonzero belief and returns it.
+Return the action space accessible from the states with nonzero belief.
 """
-actions{S,A,O,B}(problem::POMDP{S,A,O}, belief::B) = acts
+actions{S,A,O,B}(problem::POMDP{S,A,O}, belief::B) = actions(problem)
 
 """
     observations(problem::POMDP)
 
-Returns the entire observation space.
+Return the entire observation space.
 """
 function observations end
 
 """
-    observations{S,A,O}(problem::POMDP{S,A,O}, state::S, obs::AbstractSpace{O}=observations(problem))
+    observations{S,A,O}(problem::POMDP{S,A,O}, state::S)
 
-Modifies `obs` to the observation space accessible from the given state and returns it.
+Return the observation space accessible from the given state and returns it.
 """
-observations{S,A,O}(problem::POMDP{S,A,O}, state::S) = obs
+observations{S,A,O}(problem::POMDP{S,A,O}, state::S) = observations(problem)
+@impl_dep {P<:POMDP,S} observations(::P,::S) observations(::P)

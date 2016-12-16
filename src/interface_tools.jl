@@ -21,6 +21,7 @@ macro implemented(ex)
     end
 end
 
+
 ### Requirements Tools for Solver Writers ###
 
 type RequirementSet
@@ -241,3 +242,33 @@ function handle_reqs!(node::Any, reqs_name::Symbol)
     # for anything that's not an Expr
     return false
 end
+
+
+"""
+    @impl_dep {P<:POMDP,S,A} reward(::P,::S,::A,::S) reward(::P,::S,::A)
+
+Declare an implementation dependency and automatically implement `implemented`.
+
+In the example above, `@implemented reward(::P,::S,::A,::S)` will return true if the user has implemented `reward(::P,::S,::A,::S)` OR `reward(::P,::S,::A)`
+
+THIS IS ONLY INTENDED FOR USE INSIDE POMDPs AND MAY NOT FUNCTION CORRECTLY ELSEWHERE
+"""
+macro impl_dep(curly, signature, dependency)
+    # this is kinda hacky and fragile with the cell1d - email Zach if it breaks 
+    @assert curly.head == :cell1d
+    implemented_curly = :(implemented{$(curly.args...)})
+    tplex = convert_req(signature)
+    deptplex = convert_req(dependency)
+    impled = quote
+        function $implemented_curly(f::typeof(first($tplex)), TT::Type{last($tplex)})
+            m = which(f,TT)
+            if m.module == POMDPs && !implemented($deptplex...)
+                return false
+            else # a more specific implementation exists
+                return true
+            end
+        end
+    end
+    return esc(impled)
+end
+

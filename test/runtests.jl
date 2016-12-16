@@ -12,5 +12,11 @@ POMDPs.reward(::A,::Int,::Bool) = -1.0
 @test @implemented reward(::A,::Int,::Bool,::Int)
 @test @implemented reward(::A,::Int,::Bool)
 
+@test !@implemented observation(::A,::Int,::Bool,::Int)
+@test !@implemented observation(::A,::Bool,::Int)
+POMDPs.observation(::A,::Bool,::Int) = [true, false]
+@test @implemented observation(::A,::Int,::Bool,::Int)
+@test @implemented observation(::A,::Bool,::Int)
+
 include("test_requirements.jl")
 include("test_inferrence.jl")

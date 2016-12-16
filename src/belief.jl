@@ -45,4 +45,4 @@ correct type: `initialize_belief{B}(updater::Updater{B}, belief::B) = belief`
 function initialize_belief end
 
 # default implementation if the input is the same type as the output
-initialize_belief{B}(updater::Updater{B}, belief::B, new_belief::B) = belief
+initialize_belief{B}(updater::Updater{B}, belief::B) = belief
