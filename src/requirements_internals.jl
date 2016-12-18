@@ -3,28 +3,34 @@ typealias Req Tuple{Function, TupleType}
 
 abstract AbstractRequirementSet
 
-type UnspecifiedRequirementSet <: AbstractRequirementSet
+type Unspecified <: AbstractRequirementSet
     requirer
     parent::Nullable{Any}
 end
 
+Unspecified(requirer) = Unspecified(requirer, Nullable{Any}())
+
 type RequirementSet <: AbstractRequirementSet
     requirer
-    set::Set{Req}
+    reqs::Vector{Req} # not actually a set - to preserve intuitive ordering
     deps::Vector{AbstractRequirementSet}
     parent::Nullable{Any}
 end
 
 function RequirementSet(requirer, parent=nothing)
     return RequirementSet(requirer,
-                          Set{Tuple{Function, TupleType}}(),
+                          Vector{Tuple{Function, TupleType}}(),
                           AbstractRequirementSet[],
                           parent)
 end
 
 Base.push!(r::RequirementSet, func::Function, argtypes::TupleType) = push!(r, (func, argtypes))
-Base.push!(r::RequirementSet, t::Tuple{Function, TupleType}) = push!(r.set, t)
+Base.push!(r::RequirementSet, t::Tuple{Function, TupleType}) = push!(r.reqs, t)
 
+function push_dep!(r::RequirementSet, dep::AbstractRequirementSet)
+    dep.parent = Nullable{Any}(r.requirer)
+    push!(r.deps, dep)
+end
 
 function pomdp_requirements(name::Union{Expr,String}, block::Expr)
     req_found = handle_reqs!(block, :reqs)
@@ -54,39 +60,6 @@ end
 
 typealias CheckedList Vector{Tuple{Bool, Function, TupleType}}
 
-function print_heading(requirer)
-        print("INFO: ")
-        if isa(requirer, Req)
-            print_with_color(:blue, format_method(requirer...))
-        else
-            print_with_color(:blue, string(requirer))
-        end
-        println(" requires the methods below. Methods with a [✔] were implemented correctly; methods with a [X] are missing.")
-end
-
-function print_checked_list(cl::CheckedList)
-    for item in cl
-        if first(item)
-            print_with_color(:green, "[✔] $(format_method(item[2], item[3]))")
-            println()
-        else
-            print_with_color(:red, "[X] $(format_method(item[2], item[3]))")
-            println()
-        end
-    end
-end
-
-function format_method(f::Function, argtypes::TupleType)
-    str = "$f("
-    len = length(argtypes.parameters)
-    for (i, t) in enumerate(argtypes.parameters)
-        str = string(str, " ::$t")
-        if i < len
-            str = string(str, ",")
-        end
-    end
-    str = string(str, ")")
-end
 
 """
 Return a `(f, Tuple{T1,T2})` expression given a `f( ::T1, ::T2)` expression.
@@ -121,6 +94,52 @@ function convert_req(ex::Expr)
               """)
     else
         return quote ($func, Tuple{$(argtypes...)}) end
+    end
+end
+
+function recursively_check(io::IO, r::RequirementSet, analyzed::Set, reported::Set{Req})
+    if r.requirer in analyzed
+        return true
+    end
+
+    push!(analyzed, r.requirer)
+
+    checked = CheckedList()
+    missing = false
+    for fp in r.reqs
+        if !(fp in reported)
+            push!(reported, fp)
+            exists = implemented(first(fp), last(fp))
+            if !exists
+                missing = true
+            end
+            push!(checked, (exists, first(fp), last(fp)))
+        end
+    end
+
+    show_requirer(io, r)
+    if isempty(checked)
+        println(io, "  [No additional requirements]")
+    else
+        show_checked_list(io, checked)
+    end
+
+    for dep in r.deps
+        depmissing = !recursively_check(io, dep, analyzed, reported)
+        missing = missing || depmissing
+    end
+
+    return !missing
+end
+
+function recursively_check(io::IO, r::Unspecified, analyzed::Set, reported::Set{Req})
+    if r.requirer in analyzed
+        return true
+    else
+        push!(analyzed, r.requirer)
+        show_requirer(io::IO, r)
+        println(io, "  [No requirements specified]")
+        return true
     end
 end
 
@@ -200,6 +219,11 @@ function handle_reqs!(node::Expr, reqs_name::Symbol)
         macro_node = copy(node)
         node.head = :call
         node.args = [:push!, reqs_name, esc(macroexpand(macro_node))]
+        return true
+    elseif node.head == :macrocall && node.args[1] == Symbol("@subreq")
+        macro_node = copy(node)
+        node.head = :call
+        node.args = [:push_dep!, reqs_name, esc(macroexpand(macro_node))]
         return true
     else
         found = falses(length(node.args))

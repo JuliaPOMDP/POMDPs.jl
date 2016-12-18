@@ -80,11 +80,13 @@ export
     @get_requirements,
     @show_requirements,
     @warn_requirements,
-    @req
+    @req,
+    @subreq
 
 
 
 include("requirements_internals.jl")
+include("requirements_printing.jl")
 include("requirements_interface.jl")
 include("pomdp.jl")
 include("distribution.jl")

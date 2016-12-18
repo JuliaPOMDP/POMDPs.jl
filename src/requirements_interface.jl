@@ -23,7 +23,7 @@ end
 
 Return a RequirementSet for the function f and arguments args.
 """
-get_requirements(f::Function, args::Tuple) = UnspecifiedRequirementSet()
+get_requirements(f::Function, args::Tuple) = Unspecified((f, typeof(args)))
 
 
 """
@@ -83,30 +83,6 @@ macro POMDP_requirements(name, block)
 end
 
 
-# Get rid of this?
-#=
-"""
-    @check_requirements "CoolSolver" begin
-        PType = typeof(p)
-        @req states(::PType)
-        @req actions(::PType)
-        @req transition(::PType, ::S, ::A)
-        s = first(states(p))
-        a = first(actions(p))
-        t_dist = transition(p, s, a)
-        @req rand(::AbstractRNG, ::typeof(t_dist))
-    end
-
-Check requirements in a block return true if all are met, false otherwise.
-"""
-macro check_requirements(name, block)
-    newblock = quote
-        reqs = $(pomdp_requirements(name, block))
-        check_requirements(reqs)
-    end
-end
-=#
-
 """
     @warn_requirements solve(solver, problem)
 
@@ -118,6 +94,7 @@ macro warn_requirements(call::Expr)
         check_requirements(reqs, output=:ifmissing)
     end
 end
+
 
 """
     @show_requirements solve(solver, problem)
@@ -133,16 +110,26 @@ end
 
 
 """
-    @req
+    @req f( ::T1, ::T2)
 
 Convert a `f( ::T1, ::T2)` expression to a `(f, Tuple{T1,T2})` for pushing to a `RequirementSet`.
 
-If in a `@POMDP_requirements` block or `@check_requirements` block, marks the requirement for including in the set of requirements.
+If in a `@POMDP_requirements` or `@POMDP_require` block, marks the requirement for including in the set of requirements.
 """
 macro req(ex)
     return esc(convert_req(ex))
 end
 
+"""
+    @subreq f(arg1, arg2)
+
+In a `@POMDP_requirements` or `@POMDP_require` block, include the requirements for `f(arg1, arg2) as a child argument set.
+"""
+macro subreq(ex)
+    return quote
+        get_requirements($(esc(convert_call(ex)))...)
+    end
+end
 
 """
     check_requirements(r::RequirementSet; output::Union{Bool,Symbol}=:ifmissing)
@@ -150,15 +137,14 @@ end
 Check whether the methods in `r` have implementations with `implemented()` and print out a formatted list showing which are missing (output can be supressed with `output=false`). Return true if all methods have implementations.
 """
 function check_requirements(r::RequirementSet; output::Union{Bool,Symbol}=:ifmissing)
-    checked = CheckedList()
-    missing = false
-    for fp in r.set
-        exists = implemented(first(fp), last(fp))
-        if !exists
-            missing = true
-        end
-        push!(checked, (exists, first(fp), last(fp)))
-    end
+    buf = IOBuffer()
+    reported = Set{Req}()
+    analyzed = Set()
+
+    show_heading(buf, r.requirer)
+    println(buf)
+
+    missing = !recursively_check(buf, r, analyzed, reported)
 
     if output == :ifmissing
         shouldprint = missing
@@ -167,9 +153,7 @@ function check_requirements(r::RequirementSet; output::Union{Bool,Symbol}=:ifmis
     end
     if shouldprint
         println()
-        print_heading(r.requirer)
-        println()
-        print_checked_list(checked)
+        print(takebuf_string(buf))
         println()
     end
     return !missing
