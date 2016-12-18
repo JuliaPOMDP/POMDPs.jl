@@ -1,5 +1,8 @@
 using Base.Test
 
+tcall = parse("f(arg1::T1, arg2::T2)")
+@test POMDPs.unpack_typedcall(tcall) == (:f, [:arg1, :arg2], [:T1, :T2])
+
 module MyModule
     using POMDPs
     
@@ -7,18 +10,26 @@ module MyModule
 
     type CoolSolver <: Solver end
 
-    function POMDPs.solve{S,A,O}(s::CoolSolver, p::POMDP{S,A,O})
+    p = nothing
 
-        @check_requirements "CoolSolver" begin
-            PType = typeof(p)
-            @req states(::PType)
-            @req actions(::PType)
-            @req transition(::PType, ::S, ::A)
-            s = first(states(p))
-            a = first(actions(p))
-            t_dist = transition(p, s, a)
-            @req rand(::AbstractRNG, ::typeof(t_dist))
-        end
+    @POMDP_require solve(s::CoolSolver, p::POMDP) begin
+        PType = typeof(p)
+        S = state_type(PType)
+        A = action_type(PType)
+        @req states(::PType)
+        @req actions(::PType)
+        @req transition(::PType, ::S, ::A)
+        s = first(states(p))
+        a = first(actions(p))
+        t_dist = transition(p, s, a)
+        @req rand(::AbstractRNG, ::typeof(t_dist))
+    end
+
+    function POMDPs.solve{S,A,O}(s::CoolSolver, problem::POMDP{S,A,O})
+        @warn_requirements solve(s, problem)
+        reqs = @get_requirements solve(s,problem)
+        @assert p==nothing
+        return check_requirements(reqs, output=false)
     end
 end
 
@@ -49,5 +60,7 @@ POMDPs.transition(p::SimplePOMDP, s::Float64, ::Bool) = SimpleDistribution(state
 @test solve(CoolSolver(), SimplePOMDP()) == false
 
 Base.rand(rng::AbstractRNG, d::SimpleDistribution) = sample(rng, d.ss, WeightVec(d.b))
+
+println("There should be no warnings or requirements output below this point!\n")
 
 @test solve(CoolSolver(), SimplePOMDP())

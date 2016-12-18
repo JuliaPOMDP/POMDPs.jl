@@ -75,13 +75,17 @@ export
     # Requirements checking
     RequirementSet,
     check_requirements,
+    @POMDP_require,
     @POMDP_requirements,
-    @check_requirements,
+    @get_requirements,
+    @show_requirements,
+    @warn_requirements,
     @req
 
 
 
-include("interface_tools.jl")
+include("requirements_internals.jl")
+include("requirements_interface.jl")
 include("pomdp.jl")
 include("distribution.jl")
 include("belief.jl")

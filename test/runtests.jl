@@ -18,5 +18,5 @@ POMDPs.observation(::A,::Bool,::Int) = [true, false]
 @test @implemented observation(::A,::Int,::Bool,::Int)
 @test @implemented observation(::A,::Bool,::Int)
 
-include("test_requirements.jl")
 include("test_inferrence.jl")
+include("test_requirements.jl")
