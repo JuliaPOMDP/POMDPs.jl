@@ -56,6 +56,10 @@ println("There should be a warning about no @reqs here:")
     1+1
 end
 @test reqs == nothing
+@test_throws ErrorException eval(macroexpand(quote @POMDP_requirements "Malformed" begin
+        @req iterator(typeof(as))
+    end
+end))
 
 # solve(CoolSolver(), SimplePOMDP())
 @test_throws MethodError solve(CoolSolver(), SimplePOMDP())

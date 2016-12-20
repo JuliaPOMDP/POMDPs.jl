@@ -103,7 +103,7 @@ Print a a list of requirements.
 """
 macro show_requirements(call::Expr)
     quote
-        reqs = get_requirements($(convert_call(call))...)
+        reqs = get_requirements($(esc(convert_call(call)))...)
         check_requirements(reqs, output=true)
     end
 end
@@ -144,10 +144,10 @@ function check_requirements(r::RequirementSet; output::Union{Bool,Symbol}=:ifmis
     show_heading(buf, r.requirer)
     println(buf)
 
-    missing = !recursively_check(buf, r, analyzed, reported)
+    allthere, first_exception = recursively_check(buf, r, analyzed, reported)
 
     if output == :ifmissing
-        shouldprint = missing
+        shouldprint = !allthere
     else
         shouldprint = output
     end
@@ -156,7 +156,15 @@ function check_requirements(r::RequirementSet; output::Union{Bool,Symbol}=:ifmis
         print(takebuf_string(buf))
         println()
     end
-    return !missing
+
+    if !isnull(first_exception)
+        print("Throwing the first exception (from processing ")
+        print_with_color(:blue, handle_method(get(first_exception).requirer))
+        println(" requirements):\n")
+        rethrow(get(get(first_exception).exception))
+    end
+
+    return allthere
 end
 
 

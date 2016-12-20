@@ -15,13 +15,15 @@ type RequirementSet <: AbstractRequirementSet
     reqs::Vector{Req} # not actually a set - to preserve intuitive ordering
     deps::Vector{AbstractRequirementSet}
     parent::Nullable{Any}
+    exception::Nullable{Any} # Exception that kept this from being created correctly (too scared to make this Nullable{Exception}, but that's what it should be
 end
 
 function RequirementSet(requirer, parent=nothing)
     return RequirementSet(requirer,
                           Vector{Tuple{Function, TupleType}}(),
                           AbstractRequirementSet[],
-                          parent)
+                          parent,
+                          Nullable{Any}())
 end
 
 Base.push!(r::RequirementSet, func::Function, argtypes::TupleType) = push!(r, (func, argtypes))
@@ -32,6 +34,9 @@ function push_dep!(r::RequirementSet, dep::AbstractRequirementSet)
     push!(r.deps, dep)
 end
 
+"""
+Return an expression that creates a RequirementSet using the code in the block. The resulting code will *always* return a RequirementSet, but it may be incomplete if the exception field is not null.
+"""
 function pomdp_requirements(name::Union{Expr,String}, block::Expr)
     req_found = handle_reqs!(block, :reqs)
     if !req_found
@@ -44,7 +49,10 @@ function pomdp_requirements(name::Union{Expr,String}, block::Expr)
         try
             $block
         catch exception
+            reqs.exception = exception
+            #=
             if isa(exception, MethodError)
+                reqs.complete = false
                 checked = check_requirements(reqs, output = true)
                 print_with_color(:red, "Note: There may be additional requirements that can be determined after these requirements are met.\n")
                 println()
@@ -52,6 +60,7 @@ function pomdp_requirements(name::Union{Expr,String}, block::Expr)
             else
                 rethrow(exception)
             end
+            =#
         end
         reqs
     end
@@ -88,16 +97,19 @@ function convert_req(ex::Expr)
         malformed = true
     end
     if malformed # throw error at parse time so solver writers will have to deal with this
-        error("""
+        throw(ErrorException("""
               Malformed requirement expression: $ex
-              Requirements should be expressed in the form function_name(::Type1, ::Type2)
-              """)
+              Requirements should be expressed in the form `function_name(::Type1, ::Type2)`
+              """))
     else
         return quote ($func, Tuple{$(argtypes...)}) end
     end
 end
 
-function recursively_check(io::IO, r::RequirementSet, analyzed::Set, reported::Set{Req})
+function recursively_check(io::IO,
+                           r::RequirementSet,
+                           analyzed::Set,
+                           reported::Set{Req})
     if r.requirer in analyzed
         return true
     end
@@ -105,13 +117,13 @@ function recursively_check(io::IO, r::RequirementSet, analyzed::Set, reported::S
     push!(analyzed, r.requirer)
 
     checked = CheckedList()
-    missing = false
+    allthere = true
     for fp in r.reqs
         if !(fp in reported)
             push!(reported, fp)
             exists = implemented(first(fp), last(fp))
             if !exists
-                missing = true
+                allthere = false
             end
             push!(checked, (exists, first(fp), last(fp)))
         end
@@ -124,22 +136,33 @@ function recursively_check(io::IO, r::RequirementSet, analyzed::Set, reported::S
         show_checked_list(io, checked)
     end
 
-    for dep in r.deps
-        depmissing = !recursively_check(io, dep, analyzed, reported)
-        missing = missing || depmissing
+    if isnull(r.exception) # no exception
+        first_exception = Nullable{RequirementSet}()
+    else
+        allthere = false
+        show_incomplete(io, r)
+        first_exception = Nullable{RequirementSet}(r)
     end
 
-    return !missing
+    for dep in r.deps
+        depcomplete, depexception = recursively_check(io, dep, analyzed, reported)
+        allthere = allthere && depcomplete
+        if isnull(first_exception) && !isnull(depexception)
+            first_exception = Nullable{RequirementSet}(dep)
+        end
+    end
+
+    return allthere, first_exception
 end
 
 function recursively_check(io::IO, r::Unspecified, analyzed::Set, reported::Set{Req})
     if r.requirer in analyzed
-        return true
+        return true, Nullable{RequirementSet}()
     else
         push!(analyzed, r.requirer)
         show_requirer(io::IO, r)
         println(io, "  [No requirements specified]")
-        return true
+        return true, Nullable{RequirementSet}()
     end
 end
 
@@ -168,7 +191,7 @@ function unpack_typedcall(typedcall::Expr)
     if malformed
         error("""
               Malformed typed funciton call expression: $typedcall
-              Expected the form function_name(arg1::Type1, arg2::Type2).
+              Expected the form `function_name(arg1::Type1, arg2::Type2)`.
               """)
     end
 
@@ -197,7 +220,7 @@ function convert_call(call::Expr)
     if malformed # throw error at parse time so solver writers will have to deal with this
         error("""
               Malformed call expression: $call
-              Expected the form funcion_name(arg1, arg2)
+              Expected the form `funcion_name(arg1, arg2)`
               """)
     else
         return quote ($func, ($(args...),)) end
@@ -218,12 +241,20 @@ function handle_reqs!(node::Expr, reqs_name::Symbol)
     if node.head == :macrocall && node.args[1] == Symbol("@req")
         macro_node = copy(node)
         node.head = :call
-        node.args = [:push!, reqs_name, esc(macroexpand(macro_node))]
+        expanded = macroexpand(macro_node)
+        if isa(expanded, Expr) && expanded.head == :error
+            rethrow(expanded.args[1])
+        end
+        node.args = [:push!, reqs_name, esc(expanded)]
         return true
     elseif node.head == :macrocall && node.args[1] == Symbol("@subreq")
         macro_node = copy(node)
         node.head = :call
-        node.args = [:push_dep!, reqs_name, esc(macroexpand(macro_node))]
+        expanded = macroexpand(macro_node)
+        if isa(expanded, Expr) && expanded.head == :error
+            rethrow(expanded.args[1])
+        end
+        node.args = [:push_dep!, reqs_name, esc(macroexpand(expanded))]
         return true
     else
         found = falses(length(node.args))
@@ -245,4 +276,3 @@ function handle_reqs!(node::Any, reqs_name::Symbol)
     # for anything that's not an Expr
     return false
 end
-
