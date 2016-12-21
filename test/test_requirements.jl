@@ -3,6 +3,12 @@ using Base.Test
 tcall = parse("f(arg1::T1, arg2::T2)")
 @test POMDPs.unpack_typedcall(tcall) == (:f, [:arg1, :arg2], [:T1, :T2])
 
+# tests case where types aren't specified
+@POMDP_require tan(s) begin
+    @req sin(::typeof(s))
+    @req cos(::typeof(s))
+end
+
 module MyModule
     using POMDPs
     

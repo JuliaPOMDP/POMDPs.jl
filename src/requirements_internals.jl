@@ -79,7 +79,7 @@ function convert_req(ex::Expr)
         func = ex.args[1]
         argtypes = Union{Symbol, Expr}[]
         for a in ex.args[2:end]
-            if a.head == :(::)
+            if isa(a, Expr) && a.head == :(::)
                 if length(a.args) == 1
                     push!(argtypes, a.args[1])
                 elseif length(a.args) == 2
@@ -183,6 +183,9 @@ function unpack_typedcall(typedcall::Expr)
         if isa(expr,Expr) && expr.head == :(::)
             push!(args, expr.args[1])
             push!(types, expr.args[2])
+        elseif isa(expr,Symbol)
+            push!(args, expr)
+            push!(types, :Any)
         else
             malformed = true
         end

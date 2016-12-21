@@ -54,11 +54,12 @@ macro POMDP_require(typedcall, block)
     fname, args, types = unpack_typedcall(typedcall)
     tconstr = Expr[:($(Symbol(:T,i))<:$(esc(C))) for (i,C) in enumerate(types)] # oh snap
     ts = Symbol[Symbol(:T,i) for i in 1:length(types)]
+    req_spec = :(($fname, Tuple{$(types...)}))
     fimpl = quote 
         function get_requirements{$(tconstr...)}(f::typeof($(esc(fname))), # dang
                                                  args::Tuple{$(ts...)})
             ($([esc(a) for a in args]...),) = args # whoah
-            return $(pomdp_requirements(convert_req(typedcall), block))
+            return $(pomdp_requirements(req_spec, block))
         end
     end
     return fimpl
