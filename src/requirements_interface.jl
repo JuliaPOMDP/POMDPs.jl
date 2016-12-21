@@ -92,7 +92,9 @@ Print a warning if there are unmet requirements.
 macro warn_requirements(call::Expr)
     quote
         reqs = get_requirements($(esc(convert_call(call)))...)
-        check_requirements(reqs, output=:ifmissing)
+        if !check_requirements(reqs)
+            show_requirements(reqs)
+        end
     end
 end
 
@@ -105,7 +107,7 @@ Print a a list of requirements.
 macro show_requirements(call::Expr)
     quote
         reqs = get_requirements($(esc(convert_call(call)))...)
-        check_requirements(reqs, output=true)
+        show_requirements(reqs)
     end
 end
 
@@ -133,11 +135,21 @@ macro subreq(ex)
 end
 
 """
-    check_requirements(r::RequirementSet; output::Union{Bool,Symbol}=:ifmissing)
+    check_requirements(r::RequirementSet)
 
-Check whether the methods in `r` have implementations with `implemented()` and print out a formatted list showing which are missing (output can be supressed with `output=false`). Return true if all methods have implementations.
+Check whether the methods in `r` have implementations with `implemented()`. Return true if all methods have implementations.
 """
-function check_requirements(r::RequirementSet; output::Union{Bool,Symbol}=:ifmissing)
+function check_requirements(r::RequirementSet)
+    analyzed = Set()
+    return recursively_check(r, analyzed)
+end
+
+"""
+    show_requirements(r::RequirementSet)
+
+Check whether the methods in `r` have implementations with `implemented()` and print out a formatted list showing which are missing. Return true if all methods have implementations.
+"""
+function show_requirements(r::RequirementSet)
     buf = IOBuffer()
     reported = Set{Req}()
     analyzed = Set()
@@ -145,18 +157,12 @@ function check_requirements(r::RequirementSet; output::Union{Bool,Symbol}=:ifmis
     show_heading(buf, r.requirer)
     println(buf)
 
-    allthere, first_exception = recursively_check(buf, r, analyzed, reported)
+    allthere, first_exception = recursively_show(buf, r, analyzed, reported)
 
-    if output == :ifmissing
-        shouldprint = !allthere
-    else
-        shouldprint = output
-    end
-    if shouldprint
-        println()
-        print(takebuf_string(buf))
-        println()
-    end
+    # all printing to the screen happens here at once
+    println()
+    print(takebuf_string(buf))
+    println()
 
     if !isnull(first_exception)
         print("Throwing the first exception (from processing ")

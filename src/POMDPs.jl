@@ -75,6 +75,7 @@ export
     # Requirements checking
     RequirementSet,
     check_requirements,
+    show_requirements,
     @POMDP_require,
     @POMDP_requirements,
     @get_requirements,
@@ -82,7 +83,6 @@ export
     @warn_requirements,
     @req,
     @subreq
-
 
 
 include("requirements_internals.jl")

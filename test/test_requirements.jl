@@ -36,7 +36,7 @@ module MyModule
         @warn_requirements solve(s, problem)
         reqs = @get_requirements solve(s,problem)
         @assert p==nothing
-        return check_requirements(reqs, output=false)
+        return check_requirements(reqs)
     end
 
     util1(x) = abs(x)

@@ -106,7 +106,7 @@ function convert_req(ex::Expr)
     end
 end
 
-function recursively_check(io::IO,
+function recursively_show(io::IO,
                            r::RequirementSet,
                            analyzed::Set,
                            reported::Set{Req})
@@ -143,19 +143,19 @@ function recursively_check(io::IO,
         show_incomplete(io, r)
         first_exception = Nullable{RequirementSet}(r)
     end
-
+    
     for dep in r.deps
-        depcomplete, depexception = recursively_check(io, dep, analyzed, reported)
+        depcomplete, depexception = recursively_show(io, dep, analyzed, reported)
         allthere = allthere && depcomplete
         if isnull(first_exception) && !isnull(depexception)
-            first_exception = Nullable{RequirementSet}(dep)
+            first_exception = Nullable{RequirementSet}(get(depexception))
         end
     end
 
     return allthere, first_exception
 end
 
-function recursively_check(io::IO, r::Unspecified, analyzed::Set, reported::Set{Req})
+function recursively_show(io::IO, r::Unspecified, analyzed::Set, reported::Set{Req})
     if r.requirer in analyzed
         return true, Nullable{RequirementSet}()
     else
@@ -164,6 +164,38 @@ function recursively_check(io::IO, r::Unspecified, analyzed::Set, reported::Set{
         println(io, "  [No requirements specified]")
         return true, Nullable{RequirementSet}()
     end
+end
+
+
+function recursively_check(r::RequirementSet, analyzed::Set)
+    if r.requirer in analyzed
+        return true
+    end
+
+    push!(analyzed, r.requirer)
+
+    allthere = isnull(r.exception)
+    if allthere
+        for fp in r.reqs
+            if !implemented(first(fp), last(fp))
+                allthere = false
+                break
+            end
+        end
+    end
+
+    if allthere
+        for dep in r.deps
+            allthere = allthere && recursively_check(dep, analyzed)
+        end
+    end
+
+    return allthere
+end
+
+function recursively_check(r::Unspecified, analyzed::Set)
+    push!(analyzed, r.requirer)
+    return true
 end
 
 """

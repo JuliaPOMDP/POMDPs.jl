@@ -5,11 +5,12 @@ function show_heading(io::IO, requirer)
 end
 
 function show_requirer(io::IO, r::AbstractRequirementSet)
+    print(io, "For ")
     print_with_color(:blue, io, "$(handle_method(r.requirer))")
     if isnull(r.parent)
         println(io, ":")
     else
-        println(io, " (required by $(handle_method(get(r.parent)))):")
+        println(io, " (in $(handle_method(get(r.parent)))):")
     end
 end
 
