@@ -14,7 +14,7 @@ Check whether there is an implementation available that will return a suitable v
 macro implemented(ex)
     tplex = esc(convert_req(ex))
     return quote
-        implemented($tplex...)
+        implemented($(esc(tplex))...)
     end
 end
 
@@ -102,7 +102,7 @@ end
 """
     @show_requirements solve(solver, problem)
 
-Print a a list of requirements.
+Print a a list of requirements for a function call.
 """
 macro show_requirements(call::Expr)
     quote
@@ -111,6 +111,35 @@ macro show_requirements(call::Expr)
     end
 end
 
+"""
+    @requirements_info ASolver() [YourPOMDP()]
+
+Print information about the requirements for a solver. 
+"""
+macro requirements_info(exprs...)
+    quote
+        requirements_info($([esc(ex) for ex in exprs]...))
+    end
+end
+
+"""
+    requirements_info(s::Solver, p::Union{POMDP,MDP}, ...)
+
+Print information about the requirement for solver s.
+"""
+function requirements_info(s::Union{Solver,Simulator})
+    stype = typeof(s)
+    try
+        stype = stype.name.name
+    end
+    println("""Please supply a POMDP as a second argument to requirements_info.
+            e.g. `@requirements_info $(stype)() YourPOMDP()`
+            """)
+end
+function requirements_info(s::Union{Solver,Simulator}, p::Union{POMDP,MDP}, args...)
+    reqs = get_requirements(solve, (s, p))
+    show_requirements(reqs)
+end
 
 """
     @req f( ::T1, ::T2)
@@ -135,21 +164,21 @@ macro subreq(ex)
 end
 
 """
-    check_requirements(r::RequirementSet)
+    check_requirements(r::AbstractRequirementSet)
 
 Check whether the methods in `r` have implementations with `implemented()`. Return true if all methods have implementations.
 """
-function check_requirements(r::RequirementSet)
+function check_requirements(r::AbstractRequirementSet)
     analyzed = Set()
     return recursively_check(r, analyzed)
 end
 
 """
-    show_requirements(r::RequirementSet)
+    show_requirements(r::AbstractRequirementSet)
 
 Check whether the methods in `r` have implementations with `implemented()` and print out a formatted list showing which are missing. Return true if all methods have implementations.
 """
-function show_requirements(r::RequirementSet)
+function show_requirements(r::AbstractRequirementSet)
     buf = IOBuffer()
     reported = Set{Req}()
     analyzed = Set()
@@ -173,33 +202,3 @@ function show_requirements(r::RequirementSet)
 
     return allthere
 end
-
-
-"""
-    @impl_dep {P<:POMDP,S,A} reward(::P,::S,::A,::S) reward(::P,::S,::A)
-
-Declare an implementation dependency and automatically implement `implemented`.
-
-In the example above, `@implemented reward(::P,::S,::A,::S)` will return true if the user has implemented `reward(::P,::S,::A,::S)` OR `reward(::P,::S,::A)`
-
-THIS IS ONLY INTENDED FOR USE INSIDE POMDPs AND MAY NOT FUNCTION CORRECTLY ELSEWHERE
-"""
-macro impl_dep(curly, signature, dependency)
-    # this is kinda hacky and fragile with the cell1d - email Zach if it breaks 
-    @assert curly.head == :cell1d
-    implemented_curly = :(implemented{$(curly.args...)})
-    tplex = convert_req(signature)
-    deptplex = convert_req(dependency)
-    impled = quote
-        function $implemented_curly(f::typeof(first($tplex)), TT::Type{last($tplex)})
-            m = which(f,TT)
-            if m.module == POMDPs && !implemented($deptplex...)
-                return false
-            else # a more specific implementation exists
-                return true
-            end
-        end
-    end
-    return esc(impled)
-end
-

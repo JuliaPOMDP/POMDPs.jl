@@ -65,7 +65,6 @@ export
     simulate,
 
     # Utilities
-    #add not explicitly imported
     implemented,
     @implemented,
     state_type,
@@ -76,8 +75,10 @@ export
     RequirementSet,
     check_requirements,
     show_requirements,
+    requirements_info,
     @POMDP_require,
     @POMDP_requirements,
+    @requirements_info,
     @get_requirements,
     @show_requirements,
     @warn_requirements,
@@ -87,14 +88,14 @@ export
 
 include("requirements_internals.jl")
 include("requirements_printing.jl")
-include("requirements_interface.jl")
 include("pomdp.jl")
+include("solver.jl")
+include("simulator.jl")
+include("requirements_interface.jl")
 include("distribution.jl")
 include("belief.jl")
 include("space.jl")
-include("solver.jl")
 include("policy.jl")
-include("simulator.jl")
 include("type_inferrence.jl")
 include("constants.jl")
 include("utils.jl")

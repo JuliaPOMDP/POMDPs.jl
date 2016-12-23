@@ -69,5 +69,3 @@ function format_method(f::Function, argtypes::TupleType; module_names=false)
     end
     str = string(str, ")")
 end
-
-
