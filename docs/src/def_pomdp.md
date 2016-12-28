@@ -16,8 +16,8 @@ when listing at the tiger's door is 85%, and the discount factor is a parameter 
 
 We define the Tiger POMDP type:
 
-```jldoctest
-using POMDPs
+```julia
+importall POMDPs
 type TigerPOMDP <: POMDP{Bool, Int64, Bool}
     discount_factor::Float64
 end
@@ -33,15 +33,15 @@ Note that states, actions, and observations can use arrays, strings, complex dat
 Suppose that once implemented, we want to solve Tiger problems using the QMDP solver.
 To see what functions SARSOP needs us to implement, use the [`@requirements_info`](@ref) macro (see [Interface Requirements for Problems](@ref)).
 
-```jldoctest
+```julia
 POMDPs.add("QMDP")
 using QMDP
-@requirements_info SARSOPSolver() TigerPOMDP() 
+@requirements_info QMDPSolver() TigerPOMDP() 
 ```
 
 We will begin by implementing the state, action, and observation spaces and functions for initializing them and sampling from them.
 
-```jldoctest
+```julia
 # STATE SPACE
 const TIGER_ON_LEFT = true
 const TIGER_ON_RIGHT = false
@@ -52,7 +52,6 @@ iterator(space::TigerStateSpace) = [TIGER_ON_LEFT, TIGER_ON_RIGHT]
 n_states(::TigerPOMDP) = 2
 dimensions(::TigerStateSpace) = 1
 rand(rng::AbstractRNG, space::TigerStateSpace) = rand([TIGER_ON_LEFT, TIGER_ON_RIGHT]) # sample random state
-state_index(::TigerPOMDP, s::Bool) = s + 1
 
 # ACTION SPACE
 const OPEN_LEFT = 0
@@ -65,6 +64,7 @@ iterator(space::TigerActionSpace) = [OPEN_LEFT,OPEN_RIGHT,LISTEN]
 n_actions(::TigerPOMDP) = 3
 dimensions(::TigerActionSpace) = 1
 rand(rng::AbstractRNG, space::TigerActionSpace) = rand(rng, [OPEN_LEFT,OPEN_RIGHT,LISTEN]) # sample random action
+action_index(::TigerPOMDP, a::Int64) = a+1
 
 # OBSERVATION SPACE
 const OBSERVE_LEFT = true
@@ -82,7 +82,7 @@ Before we can implement the core `transition`, `reward`, and `observation` funct
 We need to sample from these distributions and compute their likelihoods.
 Are states and observations are binary, so we can use Bernoulli distributions:
 
-```jldoctest
+```julia
 type TigerDistribution
     p_true::Float64
 end
@@ -105,7 +105,7 @@ rand(rng::AbstractRNG, d::TigerDistribution) = rand(rng) ≤ d.p_true
 We can now define our transition, observation, and reward functions.
 Transition and observation return the distribution over the next state and observation, and reward returns the scalar reward.
 
-```jldoctest
+```julia
 function transition(pomdp::TigerPOMDP, s::Bool, a::Int64)
     d = TigerDistribution()
     if a == OPEN_LEFT || a == OPEN_RIGHT
@@ -157,14 +157,14 @@ In order to reconcile this difference, each policy has a function called [`initi
 initial state distriubtion and a policy, and converts the
 distribution into what we call a belief in POMDPs.jl. As the problem writer we must provide [`initial_state_distribution`](@ref):
 
-```jldoctest
+```julia
 initial_state_distribution(pomdp::TigerPOMDP) = TigerDistribution(0.5)
 ```
 
 We have fully defined the Tiger POMDP.
 We can use now use JuliaPOMDP solvers to compute and evaluate a policy:
 
-```jldoctest
+```julia
 using QMDP, POMDPToolbox
 
 pomdp = TigerPOMDP()
@@ -173,7 +173,7 @@ policy = solve(solver, pomdp)
 
 init_dist = initial_state_distribution(pomdp)
 hist = HistoryRecorder(max_steps=100) # from POMDPToolbox
-r = simulate(hist, pomdp, policy, belief_updater, init_dist) # run 100 step simulation
+r = simulate(hist, pomdp, policy) # run 100 step simulation
 ```
 
 Please note that you do not need to define all the functions for most solvers.
@@ -186,7 +186,7 @@ If you can write the transition probabilities, observation probabilities, and re
 `DiscretePOMDP` types from `POMDPModels` which automatically implements all required functionality.
 Let us do this with the Tiger POMDP:
 
-```jldoctest
+```julia
 using POMDPModels
 
 # write out the matrix forms
@@ -208,7 +208,7 @@ discount = 0.95
 pomdp = DiscretePOMDP(T, R, O, discount)
 
 # solve the POMDP the same way
-solver = SARSOPSolver()
+solver = QMDPSolver()
 policy = solve(solver, pomdp)
 ```
 
