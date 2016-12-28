@@ -13,6 +13,8 @@ Our goal is to provide a common programming vocabulary for:
 
 For problems and solvers that only use a generative model (rather than explicit transition and observation distributions), see [GenerativeModels.jl](https://github.com/JuliaPOMDP/GenerativeModels.jl).
 
+For help, please post to the Google group at [https://groups.google.com/forum/#!forum/pomdps-users](https://groups.google.com/forum/#!forum/pomdps-users)
+
 ## Installation
 To install POMDPs.jl, run the following from the Julia REPL: 
 ```julia
@@ -118,3 +120,19 @@ Many packages use the POMDPs.jl interface, including MDP and POMDP solvers, supp
 |  **`Package`**   | 
 |-------------------|
 | [DESPOT](https://github.com/JuliaPOMDP/DESPOT.jl/blob/master/test/perflog.md) | 
+
+## Help
+
+<iframe id="forum_embed"
+  src="javascript:void(0)"
+  scrolling="no"
+  frameborder="0"
+  width="900"
+  height="700">
+</iframe>
+<script type="text/javascript">
+  document.getElementById('forum_embed').src =
+     'https://groups.google.com/forum/embed/?place=forum/pomdps-users'
+     + '&showsearch=true&showpopout=true&showtabs=false'
+     + '&parenturl=' + encodeURIComponent(window.location.href);
+</script> 
