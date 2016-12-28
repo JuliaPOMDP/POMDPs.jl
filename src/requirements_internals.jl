@@ -38,10 +38,11 @@ end
 Return an expression that creates a RequirementSet using the code in the block. The resulting code will *always* return a RequirementSet, but it may be incomplete if the exception field is not null.
 """
 function pomdp_requirements(name::Union{Expr,String}, block::Expr)
+    block = deepcopy(block)
     req_found = handle_reqs!(block, :reqs)
     if !req_found
         block = esc(block)
-        warn("No @req found in @POMDP_requirements block.")
+        warn("No @req or @subreq found in @POMDP_requirements block.")
     end
 
     newblock = quote
@@ -50,17 +51,6 @@ function pomdp_requirements(name::Union{Expr,String}, block::Expr)
             $block
         catch exception
             reqs.exception = exception
-            #=
-            if isa(exception, MethodError)
-                reqs.complete = false
-                checked = check_requirements(reqs, output = true)
-                print_with_color(:red, "Note: There may be additional requirements that can be determined after these requirements are met.\n")
-                println()
-                rethrow(exception)
-            else
-                rethrow(exception)
-            end
-            =#
         end
         reqs
     end
