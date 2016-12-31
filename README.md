@@ -7,7 +7,7 @@ This package provides a core interface for working with Markov decision processe
 
 Our goal is to provide a common programming vocabulary for:
 
-1. Expressing problems using the POMDP format. 
+1. Expressing problems as POMDPs. 
 2. Writing solver software.
 3. Running simulations efficiently.
 

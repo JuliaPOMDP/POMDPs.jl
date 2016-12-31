@@ -75,6 +75,7 @@ export
     RequirementSet,
     check_requirements,
     show_requirements,
+    get_requirements,
     requirements_info,
     @POMDP_require,
     @POMDP_requirements,

@@ -1,4 +1,4 @@
-# Specifying Requirements
+# [Specifying Requirements](@id specifying_requirements)
 
 ## Purpose
 
@@ -8,13 +8,13 @@ When a researcher or student wants to use a solver in the POMDPs ecosystem, the 
 
 The most important functions in the requirements interface are [`get_requirements`](@ref), [`check_requirements`](@ref), and [`show_requirements`](@ref).
 
-`get_requirements(f::Function, args::Tuple{...})` should be implemented by a solver or simulator writer for all important functions that use the POMDPs.jl interface. In practice, this function will rarely by implemented directly because the [`@POMDP_require`](@ref pomdp_require_sec) macro automatically creates it. The function should return a `RequirementSet` object containing all of the methods POMDPs.jl functions that need to be implemented for the function to work with the specified arguments.
+`get_requirements(f::Function, args::Tuple{...})` should be implemented by a solver or simulator writer for all important functions that use the POMDPs.jl interface. In practice, this function will rarely by implemented directly because the [@POMDP_require](@ref pomdp_require_section) macro automatically creates it. The function should return a `RequirementSet` object containing all of the methods POMDPs.jl functions that need to be implemented for the function to work with the specified arguments.
 
-[`check_requirements`](@ref) returns true if [all of the requirements in a `RequirementSet` are met](@ref Determining whether a function is implemented), and [`show_requirements`] prints out a list of the requirements in a `RequirementSet` and indicates which ones have been met.
+[`check_requirements`](@ref) returns true if [all of the requirements in a `RequirementSet` are met](@ref implemented_section), and [`show_requirements`] prints out a list of the requirements in a `RequirementSet` and indicates which ones have been met.
 
-## [`@POMDP_require`](@id pomdp_require_section)
+## ['@POMDP_require'](@id pomdp_require_section)
 
-The [`@POMDP_require`](@ref) macro is the main point of interaction with the requirements system for solver writers. It uses a special syntax to automatically implement `get_requirements`. This is best shown by example. Consider this `@POMDP_require` block from the [DiscreteValueIteration package](https://github.com/JuliaPOMDP/DiscreteValueIteration.jl):
+The [`@POMDP_require`](@ref) macro is the main point of interaction with the requirements system for solver writers. It uses a special syntax to automatically implement [`get_requirements`](@ref). This is best shown by example. Consider this `@POMDP_require` block from the [DiscreteValueIteration package](https://github.com/JuliaPOMDP/DiscreteValueIteration.jl):
 
 ```julia
 @POMDP_require solve(solver::ValueIterationSolver, mdp::Union{MDP,POMDP}) begin
@@ -93,7 +93,7 @@ end
 
 `@warn_requirements` does perform a runtime check of requirements every time it is called, so it should not be used in code that may be used in fast, high-performance loops.
 
-## Determining whether a function is implemented
+## [Determining whether a function is implemented](@id implemented_section)
 
 When checking requirements in `check_requirements`, or printing in `show_requirements`, the [`implemented`](@ref) function is used to determine whether an implementation for a function is available. For example `implemented(discount, Tuple{NewPOMDP})` should return true if the writer of the `NewPOMDP` problem has implemented discount for their problem. In most cases, the default implementation,
 ```julia

@@ -118,6 +118,8 @@ function available()
     end
 end
 
+# This does not appear to work
+#=
 """
     POMDPs.get_methods(flist::Vector{Function})
 
@@ -136,3 +138,4 @@ function get_methods(flist::Vector{Function})
     end
     ms
 end
+=#
