@@ -12,7 +12,6 @@ using QMDP
 QMDP.required_methods()
 ```
 
-
 ## How do I save my policies?
 
 We recommend using [JLD](https://github.com/JuliaIO/JLD.jl) to save the whole policy object. This is a simple and
@@ -22,7 +21,6 @@ fairly efficient way to save Julia objects. JLD uses the HDF5 format underneath.
 using JLD
 save("my_policy.jld", "policy", policy)
 ```
-
 ## Why isn't the solver working?
 
 There could be a number of things that are going wrong. Remeber, POMDPs can be failry hard to work with, but don't
@@ -59,8 +57,3 @@ This has a number of advantages. The first is that if a user only wants to use a
 JuliaPOMDP organization, they do not have to install all the other solvers and their dependencies.
 The second advantage is that people who are not directly part of the JuliaPOMDP organization can write their own solvers
 without going into the source code of other solvers. This makes the framework easier to adopt and to extend.
-
-
-
-
-
