@@ -115,7 +115,7 @@
                 
                     <li><a class="toctree-l4" href="#internal-interface">Internal interface</a></li>
                 
-                    <li><a class="toctree-l4" href="#pomdp_require">'@POMDP_require'</a></li>
+                    <li><a class="toctree-l4" href="#pomdp_require">@POMDP_require</a></li>
                 
                     <li><a class="toctree-l4" href="#requirements_info">requirements_info</a></li>
                 
@@ -189,7 +189,7 @@
 <p><code>get_requirements(f::Function, args::Tuple{...})</code> should be implemented by a solver or simulator writer for all important functions that use the POMDPs.jl interface. In practice, this function will rarely by implemented directly because the <a href="./#pomdp_require_section-1">@POMDP_require</a> macro automatically creates it. The function should return a <code>RequirementSet</code> object containing all of the methods POMDPs.jl functions that need to be implemented for the function to work with the specified arguments.</p>
 <p><a href="../api/#POMDPs.check_requirements"><code>check_requirements</code></a> returns true if <a href="./#implemented_section-1">all of the requirements in a <code>RequirementSet</code> are met</a>, and [<code>show_requirements</code>] prints out a list of the requirements in a <code>RequirementSet</code> and indicates which ones have been met.</p>
 <p><a id='pomdp_require_section-1'></a></p>
-<h2 id="pomdp_require">'@POMDP_require'</h2>
+<h2 id="pomdp_require">@POMDP_require</h2>
 <p>The <a href="../api/#POMDPs.@POMDP_require"><code>@POMDP_require</code></a> macro is the main point of interaction with the requirements system for solver writers. It uses a special syntax to automatically implement <a href="../api/#POMDPs.get_requirements"><code>get_requirements</code></a>. This is best shown by example. Consider this <code>@POMDP_require</code> block from the <a href="https://github.com/JuliaPOMDP/DiscreteValueIteration.jl">DiscreteValueIteration package</a>:</p>
 <pre><code class="julia">@POMDP_require solve(solver::ValueIterationSolver, mdp::Union{MDP,POMDP}) begin
     P = typeof(mdp)
