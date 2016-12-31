@@ -4,13 +4,13 @@ Due to the large variety of problems that can be expressed as MDPs and POMDPs an
 
 Solvers can communicate these requirements through the `@requirements_info` and `@show_requirements` macros. `@requirements_info` should give an overview of the requirements for a solver, which is supplied as the first argument, the macro can usually be more informative if a problem is specified as the second arg. For example, if you are implementing a new problem `NewMDP` and want to use the `DiscreteValueIteration` solver, you might run the following:
 
+![requirements_info for a new problem](figures/requirements_info_new.png)
 
-
-Note that a few of the requirements could not be shown because
+Note that a few of the requirements could not be shown because [`actions`](@ref) is not implemented for the new problem.
 
 If you would like to see a list of all of the requirements for a solver, try running `@requirements_info` with a fully implemented model from `POMDPModels`, for example,
 
-
+![requirements_info for a fully-implemented problem](figures/requirements_info_gw.png)
 
 `@show_requirements` is a lower-level tool that can be used to show the requirements for a specific function call, for example
 ```julia
