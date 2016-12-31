@@ -12,7 +12,6 @@ using QMDP
 QMDP.required_methods()
 ```
 
-
 ## How do I save my policies?
 
 We recommend using [JLD](https://github.com/JuliaIO/JLD.jl) to save the whole policy object. This is a simple and
@@ -22,7 +21,6 @@ fairly efficient way to save Julia objects. JLD uses the HDF5 format underneath.
 using JLD
 save("my_policy.jld", "policy", policy)
 ```
-
 ## Why isn't the solver working?
 
 There could be a number of things that are going wrong. Remeber, POMDPs can be failry hard to work with, but don't
@@ -35,8 +33,8 @@ If you have a POMDP called pomdp, you can run the checks by doing the following:
 ```julia
 using POMDPToolbox
 probability_check(pomdp) # checks that both observation and transition functions give probs that sum to unity
-obs_prob_consistancy_check(pomdp) # checks the observation probabilities
-trans_prob_consistancy_check(pomdp) # check the transition probabilities
+obs_prob_consistency_check(pomdp) # checks the observation probabilities
+trans_prob_consistency_check(pomdp) # check the transition probabilities
 ```
 
 If these throw an error, you may need to fix your `transition` or `observation` functions. 
@@ -59,8 +57,3 @@ This has a number of advantages. The first is that if a user only wants to use a
 JuliaPOMDP organization, they do not have to install all the other solvers and their dependencies.
 The second advantage is that people who are not directly part of the JuliaPOMDP organization can write their own solvers
 without going into the source code of other solvers. This makes the framework easier to adopt and to extend.
-
-
-
-
-

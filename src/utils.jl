@@ -1,7 +1,8 @@
 """
     add(solver_name::AbstractString, v::Bool=true)
 
-Downloads and installs a registered solver with name `solver_name`. 
+Downloads and installs a registered solver with name `solver_name`. This is a light wrapper around `Pkg.clone()`, and it does nothing special or different other than looking up the URL.
+
 `v` is a verbose flag, when set to true, function will notify the user if solver is already installed.
 This function is not exported, and must be called:
 ```julia
@@ -15,13 +16,18 @@ function add(solver_name::AbstractString, v::Bool=true)
     try
         Pkg.clone(full_url)
         Pkg.build(solver_name)
-    catch
-        v ? (println("Package already installed")) : (nothing)
+    catch ex
+        if isa(ex, Base.Pkg.PkgError) && ex.msg == "$solver_name already exists"
+            v ? (println("Package already installed")) : (nothing)
+        else
+            rethrow(ex)
+        end
     end
 end
 
 """
     add_all()
+
 Downloads and installs all the packages supported by JuliaPOMDP
 """
 function add_all(;native_only=false)
@@ -46,6 +52,7 @@ end
 
 """
     remove_all()
+
 Removes all the installed packages supported by JuliaPOMDP
 """
 function remove_all()
@@ -57,6 +64,7 @@ end
 
 """
     update()
+
 Updates all the installed packages
 """
 function update()
@@ -70,6 +78,7 @@ end
 
 """
     build()
+
 Builds all the existing packages
 """
 function build()
@@ -85,6 +94,7 @@ end
 
 """
     test_all()
+
 Tests all the JuliaPOMDP packages installed on your current machine.
 """
 function test_all(v::Bool=false)
@@ -99,6 +109,7 @@ end
 
 """
     available()
+
 Prints all the available packages in JuliaPOMDP
 """
 function available()
@@ -107,8 +118,11 @@ function available()
     end
 end
 
+# This does not appear to work
+#=
 """
     POMDPs.get_methods(flist::Vector{Function})
+
 Takes in a vector of function names, and returns the associated POMDPs.jl methods
 """
 function get_methods(flist::Vector{Function})
@@ -124,6 +138,4 @@ function get_methods(flist::Vector{Function})
     end
     ms
 end
-
-
-
+=#

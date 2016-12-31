@@ -1,7 +1,7 @@
 site_name:        POMDPs.jl
 repo_url:         https://github.com/JuliaPOMDP/POMDPs.jl 
 site_description: API for solving partially observable Markov decision processes in Julia.
-site_author:      Maxim Egorov
+site_authors:     Maxim Egorov, Zachary Sunberg
 
 theme: readthedocs
 
@@ -26,7 +26,9 @@ pages:
 - Getting Started: get_started.md
 - Concepts and Architecture: concepts.md
 - Defining a POMDP: def_pomdp.md
+- Requirements: requirements.md
+- Spaces and Distributions: interfaces.md
 - Defining a Solver: def_solver.md
+- Specifying Requirements: specifying_requirements.md
 - API: api.md
 - Frequently Asked Questions: faq.md
-
