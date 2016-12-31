@@ -6,21 +6,15 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <meta name="author" content="Maxim Egorov">
   
-  <title>Defining a POMDP - POMDPs.jl</title>
-  
-
   <link rel="shortcut icon" href="../img/favicon.ico">
-
-  
+  <title>Defining a POMDP - POMDPs.jl</title>
   <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
 
   <link rel="stylesheet" href="../css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../css/theme_extra.css" type="text/css" />
   <link rel="stylesheet" href="../css/highlight.css">
   <link href="../assets/Documenter.css" rel="stylesheet">
-
   
   <script>
     // Current page data
@@ -31,11 +25,7 @@
   
   <script src="../js/jquery-2.1.1.min.js"></script>
   <script src="../js/modernizr-2.8.3.min.js"></script>
-  <script type="text/javascript" src="../js/highlight.pack.js"></script>
-  <script src="../js/theme.js"></script> 
-  <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"></script>
-  <script src="../assets/mathjaxhelper.js"></script>
-
+  <script type="text/javascript" src="../js/highlight.pack.js"></script> 
   
 </head>
 
@@ -55,7 +45,7 @@
       </div>
 
       <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-        <ul class="current">
+	<ul class="current">
           
             <li>
     <li class="toctree-l1 ">
@@ -97,8 +87,6 @@
                 
                     <li><a class="toctree-l4" href="#pomdps-in-tabular-form">POMDPs in Tabular Form</a></li>
                 
-                    <li><a class="toctree-l4" href="#continous-pomdp">Continous POMDP</a></li>
-                
             
             </ul>
         
@@ -107,7 +95,28 @@
           
             <li>
     <li class="toctree-l1 ">
+        <a class="" href="../requirements/">Requirements</a>
+        
+    </li>
+<li>
+          
+            <li>
+    <li class="toctree-l1 ">
+        <a class="" href="../interfaces/">Spaces and Distributions</a>
+        
+    </li>
+<li>
+          
+            <li>
+    <li class="toctree-l1 ">
         <a class="" href="../def_solver/">Defining a Solver</a>
+        
+    </li>
+<li>
+          
+            <li>
+    <li class="toctree-l1 ">
+        <a class="" href="../specifying_requirements/">Specifying Requirements</a>
         
     </li>
 <li>
@@ -151,9 +160,8 @@
     <li>Defining a POMDP</li>
     <li class="wy-breadcrumbs-aside">
       
-        
-          <a href="https://github.com/JuliaPOMDP/POMDPs.jl" class="icon icon-github"> Edit on GitHub</a>
-        
+        <a href="https://github.com/JuliaPOMDP/POMDPs.jl/edit/master/docs/def_pomdp.md"
+          class="icon icon-github"> Edit on GitHub</a>
       
     </li>
   </ul>
@@ -164,14 +172,14 @@
               
                 <p><a id='Defining-a-POMDP-1'></a></p>
 <h1 id="defining-a-pomdp">Defining a POMDP</h1>
-<p>The expressive nature of POMDPs.jl gives problem writers the flexiblity to write their problem in many forms. In this section we will take a look at two ways to write a discrete problem, and a way of writing a continuous problem.</p>
+<p>The expressive nature of POMDPs.jl gives problem writers the flexibility to write their problem in many forms. In this section we will take a look at two ways to write a discrete problem, an example of a continuous problem is the <a href="https://github.com/JuliaPOMDP/POMDPModels.jl/blob/master/src/LightDark.jl">Light-Dark problem found in the POMDPModels package</a>.</p>
 <p><a id='Functional-Form-POMDP-1'></a></p>
 <h2 id="functional-form-pomdp">Functional Form POMDP</h2>
-<p>Custom POMDP problems are defined by implementing the functions specified by the POMDPs api. These functions, such as <code>transition</code>, <code>reward</code>, and <code>observation</code>, capture the problem formulation and allow the problem to be used by the POMDPs solvers and simulators.</p>
-<p>In this example we show how to implement the famous Tiger Problem. Suppose that once implemented, we want to solve Tiger problems using the SARSOP solver. To see what functions SARSOP needs us to implement, check out its documentation <a href="#href">here</a>.</p>
+<p>Custom POMDP problems are defined by implementing the functions specified by the POMDPs api. These functions, such as <a href="../api/#POMDPs.transition"><code>transition</code></a>, <a href="../api/#POMDPs.reward"><code>reward</code></a>, and <a href="../api/#POMDPs.observation"><code>observation</code></a>, capture the problem formulation and allow the problem to be used by the POMDPs solvers and simulators.</p>
+<p>In this example we show how to implement the famous Tiger Problem.</p>
 <p>In this implementation of the problem we will assume that the agent get a reward of -1 for listening at the door, a reward of -100 for encountering the tiger, and a reward of 10 for escaping. The probability of hearing the tiger when listing at the tiger's door is 85%, and the discount factor is a parameter in the TigerPOMDP object.</p>
 <p>We define the Tiger POMDP type:</p>
-<pre><code class="julia">using POMDPs
+<pre><code class="julia">importall POMDPs
 type TigerPOMDP &lt;: POMDP{Bool, Int64, Bool}
     discount_factor::Float64
 end
@@ -180,48 +188,51 @@ discount(pomdp::TigerPOMDP) = pomdp.discount_factor
 </code></pre>
 
 <p>Notice that the <code>TigerPOMDP</code> inherits from the abstract <code>POMDP</code> type provided by POMDPs.jl. Our type is defined <code>TigerPOMDP &lt;: POMDP{Bool, Int64, Bool}</code>, indicating that our states are <code>Bools</code>, actions are <code>Int64</code>, and observations are <code>Bool</code>. In our problem there are only two states (whether the tiger is behind the left or right door), three actions (go left, go right, and listen), and two observations (hear the tiger behind the left or right door). We thus use booleans for the states and observations, and integers for the actions. Note that states, actions, and observations can use arrays, strings, complex data structures, or even custom types.</p>
-<p>We will now implement the state, action, and observation spaces. There is a special <code>AbstractSpace</code> type in POMDPs.jl which all spaces inherit from. We define the state, action, and observation spaces below as well as functions for intializing them and sampling from them.</p>
+<p>Suppose that once implemented, we want to solve Tiger problems using the QMDP solver. To see what functions SARSOP needs us to implement, use the <a href="../api/#POMDPs.@requirements_info"><code>@requirements_info</code></a> macro (see <a href="../requirements/#Interface-Requirements-for-Problems-1">Interface Requirements for Problems</a>).</p>
+<pre><code class="julia">POMDPs.add(&quot;QMDP&quot;)
+using QMDP
+@requirements_info QMDPSolver() TigerPOMDP() 
+</code></pre>
+
+<p>We will begin by implementing the state, action, and observation spaces and functions for initializing them and sampling from them.</p>
 <pre><code class="julia"># STATE SPACE
 const TIGER_ON_LEFT = true
 const TIGER_ON_RIGHT = false
 
-type TigerStateSpace &lt;: AbstractSpace end
+type TigerStateSpace end
 states(::TigerPOMDP) = TigerStateSpace()
 iterator(space::TigerStateSpace) = [TIGER_ON_LEFT, TIGER_ON_RIGHT]
 n_states(::TigerPOMDP) = 2
 dimensions(::TigerStateSpace) = 1
-rand(rng::AbstractRNG, space::TigerStateSpace, s::Bool) = rand([TIGER_ON_LEFT, TIGER_ON_RIGHT]) # sample random state
-create_state(::TigerPOMDP) = TIGER_ON_LEFT
-state_index(::TigerPOMDP, s::Bool) = s + 1
+rand(rng::AbstractRNG, space::TigerStateSpace) = rand([TIGER_ON_LEFT, TIGER_ON_RIGHT]) # sample random state
 
 # ACTION SPACE
 const OPEN_LEFT = 0
 const OPEN_RIGHT = 1
 const LISTEN = 2
 
-type TigerActionSpace &lt;: AbstractSpace end
+type TigerActionSpace end
 actions(::TigerPOMDP) = TigerActionSpace()
 iterator(space::TigerActionSpace) = [OPEN_LEFT,OPEN_RIGHT,LISTEN]
 n_actions(::TigerPOMDP) = 3
 dimensions(::TigerActionSpace) = 1
-rand(rng::AbstractRNG, space::TigerActionSpace, a::Int64) = rand(rng, [OPEN_LEFT,OPEN_RIGHT,LISTEN]) # sample random action
-create_action(::TigerPOMDP) = OPEN_LEFT
+rand(rng::AbstractRNG, space::TigerActionSpace) = rand(rng, [OPEN_LEFT,OPEN_RIGHT,LISTEN]) # sample random action
+action_index(::TigerPOMDP, a::Int64) = a+1
 
 # OBSERVATION SPACE
 const OBSERVE_LEFT = true
 const OBSERVE_RIGHT = false
 
-type TigerObservationSpace &lt;: AbstractSpace end
+type TigerObservationSpace end
 observations(::TigerPOMDP) = TigerObservationSpace()
 iterator(space::TigerObservationSpace) = [OBSERVE_LEFT, OBSERVE_RIGHT]
 n_observations(::TigerPOMDP) = 2
 dimensions(::TigerObservationSpace) = 1
-rand(rng::AbstractRNG, space::TigerObservationSpace, s::Bool) = rand([TIGER_ON_LEFT, TIGER_ON_RIGHT]) # sample random observation
-create_observation(::TigerPOMDP) = OBSERVE_LEFT
+rand(rng::AbstractRNG, space::TigerObservationSpace) = rand([TIGER_ON_LEFT, TIGER_ON_RIGHT]) # sample random observation
 </code></pre>
 
 <p>Before we can implement the core <code>transition</code>, <code>reward</code>, and <code>observation</code> functions we need to define how distributions over states and observations work for the Tiger POMDP. We need to sample from these distributions and compute their likelihoods. Are states and observations are binary, so we can use Bernoulli distributions:</p>
-<pre><code class="julia">type TigerDistribution &lt;: AbstractDistribution # inherits from a POMDPs.jl abstract type
+<pre><code class="julia">type TigerDistribution
     p_true::Float64
 end
 TigerDistribution() = TigerDistribution(0.5) # default constructor
@@ -237,17 +248,14 @@ function pdf(d::TigerDistribution, v::Bool)
 end
 
 # sample from the distribution
-rand(rng::AbstractRNG, d::TigerDistribution, s::Bool) = rand(rng) ≤ d.p_true
-
-# convenient initialization functions
-create_transition_distribution(::TigerPOMDP) = TigerDistribution()
-create_observation_distribution(::TigerPOMDP) = TigerDistribution()
+rand(rng::AbstractRNG, d::TigerDistribution) = rand(rng) ≤ d.p_true
 </code></pre>
 
 <p>We can now define our transition, observation, and reward functions. Transition and observation return the distribution over the next state and observation, and reward returns the scalar reward.</p>
-<pre><code class="julia">function transition(pomdp::TigerPOMDP, s::Bool, a::Int64, d::TigerDistribution=create_transition_distribution(pomdp))
+<pre><code class="julia">function transition(pomdp::TigerPOMDP, s::Bool, a::Int64)
+    d = TigerDistribution()
     if a == OPEN_LEFT || a == OPEN_RIGHT
-        d.p_true = 0.5 # reset the tiger's location, which is what SARSOP wants
+        d.p_true = 0.5 # reset the tiger's location, which is what QMDP wants
     elseif s == TIGER_ON_LEFT
         d.p_true = 1.0 # tiger is on left
     else
@@ -256,17 +264,17 @@ create_observation_distribution(::TigerPOMDP) = TigerDistribution()
     d
 end
 
-function observation(pomdp::TigerPOMDP, s::Bool, a::Int64, d::TigerDistribution=create_observation_distribution(pomdp))
+function observation(pomdp::TigerPOMDP, a::Int64, sp::Bool)
+    d = TigerDistribution()
     # obtain correct observation 85% of the time
     if a == LISTEN
-        d.p_true = s == TIGER_ON_LEFT ? 0.85 : 0.15
+        d.p_true = sp == TIGER_ON_LEFT ? 0.85 : 0.15
     else
         d.p_true = 0.5 # reset the observation - we did not listen
     end
     d
 end
-observation(pomdp::TigerPOMDP, s::Bool, a::Int64, sp::Bool, d::TigerDistribution=create_observation_distribution(pomdp)) =
-    observation(pomdp, s, a, d) # convenience function
+observation(pomdp::TigerPOMDP, s::Bool, a::Int64, sp::Bool) = observation(pomdp, a, sp) # convenience function
 
 function reward(pomdp::TigerPOMDP, s::Bool, a::Int64)
     # rewarded for escaping, penalized for listening and getting caught
@@ -285,7 +293,7 @@ reward(pomdp::TigerPOMDP, s::Bool, a::Int64, sp::Bool) = reward(pomdp, s, a) # c
 </code></pre>
 
 <p>The last thing we need for the Tiger POMDP is an initial distribution over the state space. In POMDPs.jl we make a strong distinction between this distribution and a belief. In most literature these two concepts are considered the same. However, in more general terms, a belief is something that is mapped to an action using a POMDP policy. If the policy is represented as something other than alpha-vectors (a policy graph, tree, or a recurrent neural network to give a few examples), it may not make sense to think of a belief as a probability distribution over the state space. Thus, in POMDPs.jl we abstract the concept of a belief beyond a probability distribution, allowing users to use what makes the most sense.</p>
-<p>In order to reconcile this difference, each policy has a function called <code>initialize_belief</code> which takes in an initial state distirubtion and a policy, and converts the distribution into what we call a belief in POMDPs.jl. As the problem writer we must provide <code>initial_state_distribution</code>:</p>
+<p>In order to reconcile this difference, each policy has a function called <a href="../api/#POMDPs.initialize_belief"><code>initialize_belief</code></a> which takes in an initial state distriubtion and a policy, and converts the distribution into what we call a belief in POMDPs.jl. As the problem writer we must provide <a href="../api/#POMDPs.initial_state_distribution"><code>initial_state_distribution</code></a>:</p>
 <pre><code class="julia">initial_state_distribution(pomdp::TigerPOMDP) = TigerDistribution(0.5)
 </code></pre>
 
@@ -298,10 +306,10 @@ policy = solve(solver, pomdp)
 
 init_dist = initial_state_distribution(pomdp)
 hist = HistoryRecorder(max_steps=100) # from POMDPToolbox
-r = simulate(hist, pomdp, policy, belief_updater, init_dist) # run 100 step simulation
+r = simulate(hist, pomdp, policy) # run 100 step simulation
 </code></pre>
 
-<p>Please note that you do not need to define all the functions for most solvers. If you want to use a specific solver, you usually only need a subset of what is above.</p>
+<p>Please note that you do not need to define all the functions for most solvers. If you want to use a specific solver, you usually only need a subset of what is above. Notably, when the problem only requires a generative model, you need not define any distributions. See <a href="../requirements/#Interface-Requirements-for-Problems-1">Interface Requirements for Problems</a>.</p>
 <p><a id='POMDPs-in-Tabular-Form-1'></a></p>
 <h2 id="pomdps-in-tabular-form">POMDPs in Tabular Form</h2>
 <p>The <code>DiscretePOMDP</code> problem representation allows you to specify discrete POMDP problems in tabular form. If you can write the transition probabilities, observation probabilities, and rewards in matrix form, you can use the <code>DiscreteMDP</code> or <code>DiscretePOMDP</code> types from <code>POMDPModels</code> which automatically implements all required functionality. Let us do this with the Tiger POMDP:</p>
@@ -326,15 +334,11 @@ discount = 0.95
 pomdp = DiscretePOMDP(T, R, O, discount)
 
 # solve the POMDP the same way
-solver = SARSOPSolver()
+solver = QMDPSolver()
 policy = solve(solver, pomdp)
 </code></pre>
 
-<p>It is often easiest to define smaller problems in tabular form. However, for larger problems it can be tedious and the functional form may be preffered. You can usually use any supported POMDP solver to sovle these types of problems (the performance of the policy may vary however - SARSOP will usually outperform QMDP).</p>
-<p><a id='Continous-POMDP-1'></a></p>
-<h2 id="continous-pomdp">Continous POMDP</h2>
-<p>Within the POMDPs.jl interface, we can also define problems with continuous spaces. There are a few solvers that can handle these types of problems, namely, MCVI and POMCP (with some tuning).</p>
-<p>LIGHT-DARK PROBLEM HERE. WHAT SHOULD WE SAY ABOUT BOUNDS?</p>
+<p>It is often easiest to define smaller problems in tabular form. However, for larger problems it can be tedious and the functional form may be preferred. You can usually use any supported POMDP solver to solve these types of problems (the performance of the policy may vary however - SARSOP will usually outperform QMDP).</p>
               
             </div>
           </div>
@@ -342,7 +346,7 @@ policy = solve(solver, pomdp)
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../def_solver/" class="btn btn-neutral float-right" title="Defining a Solver">Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="../requirements/" class="btn btn-neutral float-right" title="Requirements">Next <span class="icon icon-circle-arrow-right"></span></a>
       
       
         <a href="../concepts/" class="btn btn-neutral" title="Concepts and Architecture"><span class="icon icon-circle-arrow-left"></span> Previous</a>
@@ -364,10 +368,10 @@ policy = solve(solver, pomdp)
       </div>
 
     </section>
-
+    
   </div>
 
-<div class="rst-versions" role="note" style="cursor: pointer">
+  <div class="rst-versions" role="note" style="cursor: pointer">
     <span class="rst-current-version" data-toggle="rst-current-version">
       
           <a href="https://github.com/JuliaPOMDP/POMDPs.jl" class="icon icon-github" style="float: left; color: #fcfcfc"> GitHub</a>
@@ -376,10 +380,13 @@ policy = solve(solver, pomdp)
         <span><a href="../concepts/" style="color: #fcfcfc;">&laquo; Previous</a></span>
       
       
-        <span style="margin-left: 15px"><a href="../def_solver/" style="color: #fcfcfc">Next &raquo;</a></span>
+        <span style="margin-left: 15px"><a href="../requirements/" style="color: #fcfcfc">Next &raquo;</a></span>
       
     </span>
 </div>
+    <script src="../js/theme.js"></script>
+      <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"></script>
+      <script src="../assets/mathjaxhelper.js"></script>
 
 </body>
 </html>

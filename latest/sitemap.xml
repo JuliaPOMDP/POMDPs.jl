@@ -3,64 +3,88 @@
 
     
     <url>
-     <loc>None/</loc>
-     <lastmod>2016-10-07</lastmod>
+     <loc>/</loc>
+     <lastmod>2016-12-31</lastmod>
      <changefreq>daily</changefreq>
     </url>
     
 
     
     <url>
-     <loc>None/install/</loc>
-     <lastmod>2016-10-07</lastmod>
+     <loc>/install/</loc>
+     <lastmod>2016-12-31</lastmod>
      <changefreq>daily</changefreq>
     </url>
     
 
     
     <url>
-     <loc>None/get_started/</loc>
-     <lastmod>2016-10-07</lastmod>
+     <loc>/get_started/</loc>
+     <lastmod>2016-12-31</lastmod>
      <changefreq>daily</changefreq>
     </url>
     
 
     
     <url>
-     <loc>None/concepts/</loc>
-     <lastmod>2016-10-07</lastmod>
+     <loc>/concepts/</loc>
+     <lastmod>2016-12-31</lastmod>
      <changefreq>daily</changefreq>
     </url>
     
 
     
     <url>
-     <loc>None/def_pomdp/</loc>
-     <lastmod>2016-10-07</lastmod>
+     <loc>/def_pomdp/</loc>
+     <lastmod>2016-12-31</lastmod>
      <changefreq>daily</changefreq>
     </url>
     
 
     
     <url>
-     <loc>None/def_solver/</loc>
-     <lastmod>2016-10-07</lastmod>
+     <loc>/requirements/</loc>
+     <lastmod>2016-12-31</lastmod>
      <changefreq>daily</changefreq>
     </url>
     
 
     
     <url>
-     <loc>None/api/</loc>
-     <lastmod>2016-10-07</lastmod>
+     <loc>/interfaces/</loc>
+     <lastmod>2016-12-31</lastmod>
      <changefreq>daily</changefreq>
     </url>
     
 
     
     <url>
-     <loc>None/faq/</loc>
-     <lastmod>2016-10-07</lastmod>
+     <loc>/def_solver/</loc>
+     <lastmod>2016-12-31</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+    
+
+    
+    <url>
+     <loc>/specifying_requirements/</loc>
+     <lastmod>2016-12-31</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+    
+
+    
+    <url>
+     <loc>/api/</loc>
+     <lastmod>2016-12-31</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+    
+
+    
+    <url>
+     <loc>/faq/</loc>
+     <lastmod>2016-12-31</lastmod>
      <changefreq>daily</changefreq>
     </url>
     
