@@ -121,18 +121,4 @@ Many packages use the POMDPs.jl interface, including MDP and POMDP solvers, supp
 |-------------------|
 | [DESPOT](https://github.com/JuliaPOMDP/DESPOT.jl/blob/master/test/perflog.md) | 
 
-## Help
 
-<iframe id="forum_embed"
-  src="javascript:void(0)"
-  scrolling="no"
-  frameborder="0"
-  width="900"
-  height="700">
-</iframe>
-<script type="text/javascript">
-  document.getElementById('forum_embed').src =
-     'https://groups.google.com/forum/embed/?place=forum/pomdps-users'
-     + '&showsearch=true&showpopout=true&showtabs=false'
-     + '&parenturl=' + encodeURIComponent(window.location.href);
-</script> 

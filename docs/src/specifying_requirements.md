@@ -12,7 +12,7 @@ The most important functions in the requirements interface are [`get_requirement
 
 [`check_requirements`](@ref) returns true if [all of the requirements in a `RequirementSet` are met](@ref implemented_section), and [`show_requirements`] prints out a list of the requirements in a `RequirementSet` and indicates which ones have been met.
 
-## ['@POMDP_require'](@id pomdp_require_section)
+## [@POMDP_require](@id pomdp_require_section)
 
 The [`@POMDP_require`](@ref) macro is the main point of interaction with the requirements system for solver writers. It uses a special syntax to automatically implement [`get_requirements`](@ref). This is best shown by example. Consider this `@POMDP_require` block from the [DiscreteValueIteration package](https://github.com/JuliaPOMDP/DiscreteValueIteration.jl):
 
