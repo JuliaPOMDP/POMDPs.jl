@@ -10,7 +10,7 @@ The most important functions in the requirements interface are [`get_requirement
 
 `get_requirements(f::Function, args::Tuple{...})` should be implemented by a solver or simulator writer for all important functions that use the POMDPs.jl interface. In practice, this function will rarely by implemented directly because the [@POMDP_require](@ref pomdp_require_section) macro automatically creates it. The function should return a `RequirementSet` object containing all of the methods POMDPs.jl functions that need to be implemented for the function to work with the specified arguments.
 
-[`check_requirements`](@ref) returns true if [all of the requirements in a `RequirementSet` are met](@ref implemented_section), and [`show_requirements`] prints out a list of the requirements in a `RequirementSet` and indicates which ones have been met.
+[`check_requirements`](@ref) returns true if [all of the requirements in a `RequirementSet` are met](@ref implemented_section), and [`show_requirements`](@ref) prints out a list of the requirements in a `RequirementSet` and indicates which ones have been met.
 
 ## [@POMDP_require](@id pomdp_require_section)
 
