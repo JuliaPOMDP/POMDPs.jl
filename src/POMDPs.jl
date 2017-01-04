@@ -28,11 +28,6 @@ export
     isterminal,
     isterminal_obs,
     
-    # Spaces, Distributions and accessor functions
-    AbstractDistribution,
-    DiscreteDistribution,
-    AbstractSpace, 
-    
     # Discrete Functions
     length,
     state_index,
@@ -48,12 +43,6 @@ export
     upperbound,
     getindex,
     iterator,
-    create_state,
-    create_action,
-    create_observation,
-    create_transition_distribution,
-    create_observation_distribution,
-    create_belief,
     initial_state_distribution,
 
     # Solver types
@@ -73,19 +62,42 @@ export
 
     # Simulation
     Simulator,
-    simulate
+    simulate,
 
     # Utilities
-    #add not explicitly imported
+    implemented,
+    @implemented,
+    state_type,
+    action_type,
+    obs_type,
 
-include("errors.jl")
+    # Requirements checking
+    RequirementSet,
+    check_requirements,
+    show_requirements,
+    get_requirements,
+    requirements_info,
+    @POMDP_require,
+    @POMDP_requirements,
+    @requirements_info,
+    @get_requirements,
+    @show_requirements,
+    @warn_requirements,
+    @req,
+    @subreq
+
+
+include("requirements_internals.jl")
+include("requirements_printing.jl")
 include("pomdp.jl")
+include("solver.jl")
+include("simulator.jl")
+include("requirements_interface.jl")
 include("distribution.jl")
 include("belief.jl")
 include("space.jl")
-include("solver.jl")
 include("policy.jl")
-include("simulator.jl")
+include("type_inferrence.jl")
 include("constants.jl")
 include("utils.jl")
 

@@ -7,11 +7,13 @@ This package provides a core interface for working with Markov decision processe
 
 Our goal is to provide a common programming vocabulary for:
 
-1. Expressing problems using the POMDP format. 
+1. Expressing problems as POMDPs. 
 2. Writing solver software.
 3. Running simulations efficiently.
 
 For problems and solvers that only use a generative model (rather than explicit transition and observation distributions), see [GenerativeModels.jl](https://github.com/JuliaPOMDP/GenerativeModels.jl).
+
+For help, please post to the Google group at [https://groups.google.com/forum/#!forum/pomdps-users](https://groups.google.com/forum/#!forum/pomdps-users). See [NEWS.md](NEWS.md) for information on changes.
 
 ## Installation
 To install POMDPs.jl, run the following from the Julia REPL: 
@@ -112,3 +114,9 @@ Many packages use the POMDPs.jl interface, including MDP and POMDP solvers, supp
 | [GenerativeModels](https://github.com/JuliaPOMDP/GenerativeModels.jl) | [![Build Status](https://travis-ci.org/JuliaPOMDP/GenerativeModels.jl.svg?branch=master)](https://travis-ci.org/JuliaPOMDP/GenerativeModels.jl) | 
 | [POMDPBounds](https://github.com/JuliaPOMDP/POMDPBounds.jl) | [![Build Status](https://travis-ci.org/JuliaPOMDP/POMDPBounds.jl.svg?branch=master)](https://travis-ci.org/JuliaPOMDP/POMDPBounds.jl) | 
 
+
+### Performance Benchmarks:
+
+|  **`Package`**   | 
+|-------------------|
+| [DESPOT](https://github.com/JuliaPOMDP/DESPOT.jl/blob/master/test/perflog.md) | 

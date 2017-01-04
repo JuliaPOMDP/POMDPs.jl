@@ -31,7 +31,6 @@ Pages = ["api.md"]
 ```
 
 
-
 ## Index
 
 ```@index
@@ -39,19 +38,15 @@ Pages = ["api.md"]
 ```
 
 
-
 ## Types
 
 ```@docs
 POMDP
 MDP
-AbstractSpace
-AbstractDistribution
 Solver
 Policy
 Updater
 ```
-
 
 
 ## Model Functions
@@ -72,9 +67,6 @@ n_observations
 state_index
 action_index
 obs_index
-create_state
-create_action
-create_observation
 ```
 
 ## Distribution/Space Functions
@@ -85,22 +77,18 @@ pdf
 dimensions
 iterator
 initial_state_distribution
-create_transition_distribution
-create_observation_distribution
 ```
 
 ## Belief Functions
 
 ```@docs
 update
-create_belief
 initialize_belief
 ```
 
 ## Policy and Solver Functions
 
 ```@docs
-create_policy
 solve
 updater
 action
@@ -114,22 +102,40 @@ Simulator
 simulate
 ```
 
-## Utility Tools
+## Other
+
+The following functions are not part of the API for specifying and solving POMDPs, but are included in the package.
+
+### Type Inference
+
+```@docs
+state_type
+action_type
+obs_type
+```
+
+### Requirements Specification
+```@docs
+check_requirements
+show_requirements
+get_requirements
+requirements_info
+@POMDP_require
+@POMDP_requirements
+@requirements_info
+@get_requirements
+@show_requirements
+@warn_requirements
+@req
+@subreq
+implemented
+```
+
+### Utility Tools
 
 ```@docs
 add
 add_all
 test_all
 available
-@pomdp_func
-strip_arg
 ```
-
-## Constants
-
-```@docs
-REMOTE_URL
-SUPPORTED_PACKAGES
-```
-
-

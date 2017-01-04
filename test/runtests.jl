@@ -1,3 +1,4 @@
+include("build.jl")
 using Base.Test
 
 using POMDPs
@@ -5,12 +6,18 @@ type A <: POMDP{Int,Bool,Bool} end
 @test_throws MethodError n_states(A())
 @test_throws MethodError state_index(A(), 1)
 
-@test POMDPs.strip_arg(:a) == :a
-@test POMDPs.strip_arg(parse("a::Int")) == :a
-kw_expr = Expr(:kw, parse("a::Int"), false, Any)
-@test POMDPs.strip_arg(kw_expr) == :a
-@test POMDPs.strip_curly(parse("f")) == :f
-@test POMDPs.strip_curly(parse("f{S,A}")) == :f
+@test @implemented discount(::A)
+@test !@implemented reward(::A,::Int,::Bool,::Int)
+@test !@implemented reward(::A,::Int,::Bool)
+POMDPs.reward(::A,::Int,::Bool) = -1.0
+@test @implemented reward(::A,::Int,::Bool,::Int)
+@test @implemented reward(::A,::Int,::Bool)
 
-POMDPs.@pomdp_func testfunc(a, b::Int, c::Bool=false)
-@test_throws MethodError testfunc(1,2)
+@test !@implemented observation(::A,::Int,::Bool,::Int)
+@test !@implemented observation(::A,::Bool,::Int)
+POMDPs.observation(::A,::Bool,::Int) = [true, false]
+@test @implemented observation(::A,::Int,::Bool,::Int)
+@test @implemented observation(::A,::Bool,::Int)
+
+include("test_inferrence.jl")
+include("test_requirements.jl")

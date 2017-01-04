@@ -1,42 +1,26 @@
-#################################################################
-# This file defines the abstract distribution type
-# AbstractDistribution: the abstract super type for the transition and observation distributions
-# DiscreteDistribution: discrete distributions support state indexing and length functions
-#################################################################
+#############################
+# Interface for distributions
+#############################
 
 """
-    create_transition_distribution(problem::POMDP)
-    create_transition_distribution(problem::MDP)
+    rand{T}(rng::AbstractRNG, d::Any)
 
-Return a transition distribution (for memory preallocation).
+Return a random element from distribution or space `d`. The sample can be a state, action or observation.
 """
-@pomdp_func create_transition_distribution(problem::Union{POMDP,MDP})
-
-"""
-    create_observation_distribution(problem::POMDP)
-    create_observation_distribution(problem::MDP)
-
-Return an observation distribution (for memory preallocation).
-"""
-@pomdp_func create_observation_distribution(problem::Union{POMDP,MDP})
+Base.rand
 
 """
-    rand{T}(rng::AbstractRNG, d::AbstractDistribution{T}, sample::T)
-
-Fill `sample` with a random element from distribution `d`. The sample can be a state, action or observation.
-"""
-@pomdp_func rand{T}(rng::AbstractRNG, d::AbstractDistribution{T}, sample::T)
-
-"""
-    pdf{T}(d::AbstractDistribution{T}, x::T)
+    pdf(d::Any, x::Any)
 
 Value of probability distribution `d` function at sample `x`.
 """
-@pomdp_func pdf{T}(d::AbstractDistribution{T}, x::T)
+function pdf end # maybe eventually this should be Distributions.pdf
 
 """
-    iterator{T}(d::AbstractDistribution{T})
+    iterator(d::Any)
 
-Return an iterable type (array or custom iterator) that iterates over possible values of `d`. Values with zero belief may be skipped.
+Return an iterable type (array or custom iterator) that iterates over possible values of `d`. Values with zero probability may be skipped.
 """
-@pomdp_func iterator{T}(d::AbstractDistribution{T})
+function iterator end
+
+iterator(a::AbstractArray) = a

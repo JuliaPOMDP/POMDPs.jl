@@ -10,7 +10,7 @@ If you have a validated solver that supports the POMDPs.jl API,
 contact the developers to add your solver to this list. 
 """
 # TODO (max): would it be better to have a dict of form: string => url for solvers?
-const NATIVE_PACKAGES = Set{AbstractString}(
+const NATIVE_PACKAGES = Set{String}(
                         ["DiscreteValueIteration",
                          "MCTS",
                          "QMDP",
@@ -24,7 +24,7 @@ const NATIVE_PACKAGES = Set{AbstractString}(
                          "POMDPXFiles",
                          "POMDPFiles"])
 
-const NON_NATIVE_PACKAGES = Set{AbstractString}(
+const NON_NATIVE_PACKAGES = Set{String}(
                              ["SARSOP",
                              "POMDPSolve"])
 
@@ -32,8 +32,6 @@ const SUPPORTED_PACKAGES = union(NATIVE_PACKAGES, NON_NATIVE_PACKAGES)
 
 const EXPORTED_TYPES = [MDP, 
                         POMDP, 
-                        AbstractDistribution, 
-                        AbstractSpace,
                         Policy, 
                         Simulator, 
                         Solver, 
