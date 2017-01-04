@@ -47,6 +47,3 @@ JuliaPOMDP are as follows:
 
 ```@contents
 ```
-
-
-
