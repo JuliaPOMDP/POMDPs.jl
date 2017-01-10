@@ -5,7 +5,7 @@
 #################################################################
 
 """
-Base type for an object defining how a simulation should be carried out
+Base type for an object defining how simulations should be carried out.
 """
 abstract Simulator
 
@@ -13,6 +13,8 @@ abstract Simulator
     simulate{S,A,O,B}(simulator::Simulator, problem::POMDP{S,A,O}, policy::Policy{B}, updater::Updater{B}, initial_belief::B) 
     simulate{S,A}(simulator::Simulator, problem::MDP{S,A}, policy::Policy, initial_state::S) 
 
-Run a simulation using the specified policy and returns the accumulated reward
+Run a simulation using the specified policy.
+
+The return type is flexible and depends on the simulator. For example implementations, see the POMDPToolbox package.
 """
 function simulate end
