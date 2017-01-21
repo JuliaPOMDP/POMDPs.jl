@@ -8,7 +8,7 @@
   
   
   <link rel="shortcut icon" href="../img/favicon.ico">
-  <title>Requirements - POMDPs.jl</title>
+  <title>Spaces and Distributions - POMDPs.jl</title>
   <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
 
   <link rel="stylesheet" href="../css/theme.css" type="text/css" />
@@ -18,9 +18,9 @@
   
   <script>
     // Current page data
-    var mkdocs_page_name = "Requirements";
-    var mkdocs_page_input_path = "requirements.md";
-    var mkdocs_page_url = "/requirements/";
+    var mkdocs_page_name = "Spaces and Distributions";
+    var mkdocs_page_input_path = "interfaces.md";
+    var mkdocs_page_url = "/interfaces/";
   </script>
   
   <script src="../js/jquery-2.1.1.min.js"></script>
@@ -83,22 +83,26 @@
 <li>
           
             <li>
-    <li class="toctree-l1 current">
-        <a class="current" href="./">Requirements</a>
-        
-            <ul>
-            
-                <li class="toctree-l3"><a href="#interface-requirements-for-problems">Interface Requirements for Problems</a></li>
-                
-            
-            </ul>
+    <li class="toctree-l1 ">
+        <a class="" href="../requirements/">Requirements</a>
         
     </li>
 <li>
           
             <li>
-    <li class="toctree-l1 ">
-        <a class="" href="../interfaces/">Spaces and Distributions</a>
+    <li class="toctree-l1 current">
+        <a class="current" href="./">Spaces and Distributions</a>
+        
+            <ul>
+            
+                <li class="toctree-l3"><a href="#spaces-and-distributions">Spaces and Distributions</a></li>
+                
+                    <li><a class="toctree-l4" href="#spaces">Spaces</a></li>
+                
+                    <li><a class="toctree-l4" href="#distributions">Distributions</a></li>
+                
+            
+            </ul>
         
     </li>
 <li>
@@ -153,10 +157,10 @@
     
       
     
-    <li>Requirements</li>
+    <li>Spaces and Distributions</li>
     <li class="wy-breadcrumbs-aside">
       
-        <a href="https://github.com/JuliaPOMDP/POMDPs.jl/edit/master/docs/requirements.md"
+        <a href="https://github.com/JuliaPOMDP/POMDPs.jl/edit/master/docs/interfaces.md"
           class="icon icon-github"> Edit on GitHub</a>
       
     </li>
@@ -166,28 +170,18 @@
           <div role="main">
             <div class="section">
               
-                <p><a id='Interface-Requirements-for-Problems-1'></a></p>
-<h1 id="interface-requirements-for-problems">Interface Requirements for Problems</h1>
-<p>Due to the large variety of problems that can be expressed as MDPs and POMDPs and the wide variety of solution techniques available, there is considerable variation in which of the POMDPs.jl interface functions must be implemented to use each solver. No solver requires all of the functions in the interface, so it is wise to determine which functions are needed before jumping into implementation.</p>
-<p>Solvers can communicate these requirements through the <code>@requirements_info</code> and <code>@show_requirements</code> macros. <code>@requirements_info</code> should give an overview of the requirements for a solver, which is supplied as the first argument, the macro can usually be more informative if a problem is specified as the second arg. For example, if you are implementing a new problem <code>NewMDP</code> and want to use the <code>DiscreteValueIteration</code> solver, you might run the following:</p>
-<p><img alt="requirements_info for a new problem" src="../figures/requirements_info_new.png" /></p>
-<p>Note that a few of the requirements could not be shown because <a href="../api/#POMDPs.actions"><code>actions</code></a> is not implemented for the new problem.</p>
-<p>If you would like to see a list of all of the requirements for a solver, try running <code>@requirements_info</code> with a fully implemented model from <code>POMDPModels</code>, for example,</p>
-<p><img alt="requirements_info for a fully-implemented problem" src="../figures/requirements_info_gw.png" /></p>
-<p><code>@show_requirements</code> is a lower-level tool that can be used to show the requirements for a specific function call, for example</p>
-<pre><code class="julia">@show_requirements solve(ValueIterationSolver(), NewMDP())
-</code></pre>
-
-<p>or</p>
-<pre><code class="julia">policy = solve(ValueIterationSolver(), GridWorld())
-@show_requirements action(policy, GridWorldState(1,1))
-</code></pre>
-
-<p>In some cases, a solver writer may not have specified the requirements, in which case the requirements query macros will output</p>
-<pre><code>[No requirements specified]
-</code></pre>
-
-<p>In this case, please file an issue on the solver's github page to encourage the solver writer to specify requirements.</p>
+                <p><a id='Spaces-and-Distributions-1'></a></p>
+<h1 id="spaces-and-distributions">Spaces and Distributions</h1>
+<p>Two important components of the definitions of MDPs and POMDPs are <em>spaces</em>, which specify the possible states, actions, and observations in a problem and <em>distributions</em>, which define probability distributions. In order to provide for maximum flexibility spaces and distributions may be of any type (i.e. there are no abstract base types). Solvers and simulators will interact with space and distribution types using the functions defined below.</p>
+<p><a id='Spaces-1'></a></p>
+<h2 id="spaces">Spaces</h2>
+<p>A space object should contain the information needed to define the set of all possible states, actions or observations. The implementation will depend on the attributes of the elements. For example, if the space is continuous, the space object may only contain the limits of the continuous range. In the case of a discrete problem, a vector containing all states is appropriate for representing a state.</p>
+<p>The following functions may be called on a space object:</p>
+<p>rand dimensions iterator</p>
+<p><a id='Distributions-1'></a></p>
+<h2 id="distributions">Distributions</h2>
+<p>A distribution object represents a probability distribution. the following functions may be called on a distribution object</p>
+<p>rand iterator pdf</p>
               
             </div>
           </div>
@@ -195,10 +189,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../interfaces/" class="btn btn-neutral float-right" title="Spaces and Distributions">Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="../def_solver/" class="btn btn-neutral float-right" title="Defining a Solver">Next <span class="icon icon-circle-arrow-right"></span></a>
       
       
-        <a href="../def_pomdp/" class="btn btn-neutral" title="Defining a POMDP"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../requirements/" class="btn btn-neutral" title="Requirements"><span class="icon icon-circle-arrow-left"></span> Previous</a>
       
     </div>
   
@@ -226,10 +220,10 @@
           <a href="https://github.com/JuliaPOMDP/POMDPs.jl" class="icon icon-github" style="float: left; color: #fcfcfc"> GitHub</a>
       
       
-        <span><a href="../def_pomdp/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+        <span><a href="../requirements/" style="color: #fcfcfc;">&laquo; Previous</a></span>
       
       
-        <span style="margin-left: 15px"><a href="../interfaces/" style="color: #fcfcfc">Next &raquo;</a></span>
+        <span style="margin-left: 15px"><a href="../def_solver/" style="color: #fcfcfc">Next &raquo;</a></span>
       
     </span>
 </div>
