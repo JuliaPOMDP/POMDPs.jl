@@ -50,9 +50,9 @@ end
 
 using POMDPs
 using MyModule
-using POMDPToolbox
 
 type SimplePOMDP <: POMDP{Float64, Bool, Int} end
+POMDPs.actions(SimplePOMDP) = [true, false]
 
 POMDPs.discount(::SimplePOMDP) = 0.9
 
