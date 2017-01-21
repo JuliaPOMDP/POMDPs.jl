@@ -1,4 +1,3 @@
-include("build.jl")
 using Base.Test
 
 using POMDPs
