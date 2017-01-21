@@ -192,7 +192,11 @@ function show_requirements(r::AbstractRequirementSet)
     println()
     print(takebuf_string(buf))
     println()
-
+    if !allthere
+        println("Note: Missing methods are often due to incorrect importing. Consider using `importall POMDPs`.")
+        println()
+    end
+    
     if !isnull(first_exception)
         print("Throwing the first exception (from processing ")
         print_with_color(:blue, handle_method(get(first_exception).requirer))
