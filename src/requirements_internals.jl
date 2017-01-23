@@ -319,11 +319,15 @@ macro impl_dep(curly, signature, dependency)
     deptplex = convert_req(dependency)
     impled = quote
         function $implemented_curly(f::typeof(first($tplex)), TT::Type{last($tplex)})
-            m = which(f,TT)
-            if m.module == POMDPs && !implemented($deptplex...)
+            if method_exists(f, TT)
+                m = which(f,TT)
+                if m.module == POMDPs && !implemented($deptplex...)
+                    return false
+                else # a more specific implementation exists
+                    return true
+                end
+            else
                 return false
-            else # a more specific implementation exists
-                return true
             end
         end
     end
