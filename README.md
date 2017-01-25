@@ -16,6 +16,9 @@ For problems and solvers that only use a generative model (rather than explicit 
 
 For help, please post to the Google group at [https://groups.google.com/forum/#!forum/pomdps-users](https://groups.google.com/forum/#!forum/pomdps-users), or on gitter at https://gitter.im/JuliaPOMDP. See [NEWS.md](NEWS.md) for information on changes.
 
+POMDPs.jl and all packages in the JuliaPOMDP project are fully supported on Linux and OS X. Windows support is available for all native Julia packages*. 
+
+
 ## Installation
 To install POMDPs.jl, run the following from the Julia REPL: 
 ```julia
