@@ -54,19 +54,28 @@ Start the Julia REPL and run the following:
 ```julia
 using POMDPs
 using POMDPModels, POMDPToolbox, QMDP
+
 # initialize problem and solver
 pomdp = TigerPOMDP() # from POMDPModels
 solver = QMDPSolver() # from QMDP
+
 # compute a policy
 policy = solve(solver, pomdp)
-#evaluate the policy
 belief_updater = updater(policy) # the default QMPD belief updater (discrete Bayesian filter)
-init_dist = initial_state_distribution(pomdp) # from POMDPModels
-# evaluate the policy
-r = simulate(HistoryRecorder(max_steps=100), pomdp, policy, belief_updater, init_dist) # run 100 step simulation
-```
-The code above solves the Tiger POMDP using the QMDP algorithm, and evaluates its performance. 
 
+# run a short simulation
+hist = simulate(HistoryRecorder(max_steps=10), pomdp, policy, belief_updater)
+
+# look at what happened
+for (s, b, a, r, sp, op) in hist
+    println("state was $s,")
+    println("belief was $b,")
+    println("action $a was taken,")
+    println("and observation $op was received.")
+    println()
+end
+println("total discounted reward was $(discounted_reward(hist)).")
+```
 
 ## Tutorials
 
