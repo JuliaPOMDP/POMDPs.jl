@@ -69,7 +69,7 @@ println("Discounted reward was $(discounted_reward(history)).")
 # initialize a solver and compute a policy
 solver = QMDPSolver() # from QMDP
 policy = solve(solver, pomdp)
-belief_updater = updater(policy) # the default QMPD belief updater (discrete Bayesian filter)
+belief_updater = updater(policy) # the default QMDP belief updater (discrete Bayesian filter)
 
 # run a short simulation with the QMDP policy
 history = simulate(HistoryRecorder(max_steps=10), pomdp, policy, belief_updater)
