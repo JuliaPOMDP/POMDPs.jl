@@ -51,30 +51,37 @@ POMDPs.add_all(native_only=true)
 ## Quick Start
 
 Start the Julia REPL and run the following:
+
 ```julia
 using POMDPs
 using POMDPModels, POMDPToolbox, QMDP
 
-# initialize problem and solver
+# initialize problem (the classic Tiger POMDP)
 pomdp = TigerPOMDP() # from POMDPModels
-solver = QMDPSolver() # from QMDP
 
-# compute a policy
+# run a simulation with an ad-hoc policy that always opens the left door
+history = sim(pomdp, max_steps=10) do obs
+    println("Observation was $obs.")
+    return TIGER_OPEN_LEFT
+end
+println("Discounted reward was $(discounted_reward(history)).")
+
+# initialize a solver and compute a policy
+solver = QMDPSolver() # from QMDP
 policy = solve(solver, pomdp)
 belief_updater = updater(policy) # the default QMPD belief updater (discrete Bayesian filter)
 
-# run a short simulation
-hist = simulate(HistoryRecorder(max_steps=10), pomdp, policy, belief_updater)
+# run a short simulation with the QMDP policy
+history = simulate(HistoryRecorder(max_steps=10), pomdp, policy, belief_updater)
 
 # look at what happened
-for (s, b, a, r, sp, op) in hist
-    println("state was $s,")
+for (s, b, a, r, sp, op) in history
+    println("State was $s,")
     println("belief was $b,")
     println("action $a was taken,")
-    println("and observation $op was received.")
-    println()
+    println("and observation $op was received.\n")
 end
-println("total discounted reward was $(discounted_reward(hist)).")
+println("Discounted reward was $(discounted_reward(history)).")
 ```
 
 ## Tutorials
