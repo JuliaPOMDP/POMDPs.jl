@@ -5,7 +5,7 @@ Provides a basic interface for defining and solving MDPs/POMDPs
 """
 module POMDPs
 
-import Base.rand
+import Base: rand, mean
 
 export 
     # Abstract type
@@ -38,6 +38,8 @@ export
     # Common Functions
     rand,
     pdf,
+    mode,
+    mean,
     dimensions,
     lowerbound,
     upperbound,

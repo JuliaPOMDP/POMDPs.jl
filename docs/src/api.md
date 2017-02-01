@@ -74,6 +74,8 @@ obs_index
 ```@docs
 rand
 pdf
+mode
+mean
 dimensions
 iterator
 initial_state_distribution

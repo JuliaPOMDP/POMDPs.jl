@@ -17,6 +17,20 @@ Value of probability distribution `d` function at sample `x`.
 function pdf end # maybe eventually this should be Distributions.pdf
 
 """
+    mode(d::Any)
+
+Return the most likely value in a distribution d.
+"""
+function mode end
+
+"""
+    mean(d::Any)
+
+Return the mean of a distribution d.
+"""
+Base.mean
+
+"""
     iterator(d::Any)
 
 Return an iterable type (array or custom iterator) that iterates over possible values of `d`. Values with zero probability may be skipped.
