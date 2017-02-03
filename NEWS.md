@@ -10,4 +10,4 @@
 - Switched from using the @pomdp_func macro and throwing errors to declaring empty generic functions for the interface (Github Issue #110)
 - Added requirements infrastructure (Github Issue #117)
 
-**Release notes were not recorded before Version 0.4)**
+**(Release notes were not recorded before Version 0.4)**
