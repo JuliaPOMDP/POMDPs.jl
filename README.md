@@ -50,11 +50,11 @@ POMDPs.add_all(native_only=true)
 
 ## Quick Start
 
-Start the Julia REPL and run the following:
+To run a simple simulation of a POMDP with a (poorly designed) heuristic policy defined using Julia's `do` syntax, run the following code in julia:
 
 ```julia
 using POMDPs
-using POMDPModels, POMDPToolbox, QMDP
+using POMDPModels, POMDPToolbox
 
 # initialize problem (the classic Tiger POMDP)
 pomdp = TigerPOMDP() # from POMDPModels
@@ -65,6 +65,13 @@ history = sim(pomdp, max_steps=10) do obs
     return TIGER_OPEN_LEFT
 end
 println("Discounted reward was $(discounted_reward(history)).")
+```
+
+JuliaPOMDP also has implementations of several solvers. To use the QMDP Solver, run the following code:
+
+```
+using POMDPs, POMDPModels, POMDPToolbox, QMDP
+pomdp = TigerPOMDP()
 
 # initialize a solver and compute a policy
 solver = QMDPSolver() # from QMDP
