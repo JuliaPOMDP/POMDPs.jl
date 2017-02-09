@@ -69,7 +69,7 @@ println("Discounted reward was $(discounted_reward(history)).")
 
 JuliaPOMDP also has implementations of several solvers. To use the QMDP Solver, run the following code:
 
-```
+```julia
 using POMDPs, POMDPModels, POMDPToolbox, QMDP
 pomdp = TigerPOMDP()
 
