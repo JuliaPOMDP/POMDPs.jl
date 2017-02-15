@@ -22,7 +22,8 @@ const NATIVE_PACKAGES = Set{String}(
                          "POMDPModels",
                          "POMDPToolbox",
                          "POMDPXFiles",
-                         "POMDPFiles"])
+                         "POMDPFiles",
+                         "ParticleFilters"])
 
 const NON_NATIVE_PACKAGES = Set{String}(
                              ["SARSOP",
