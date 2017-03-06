@@ -23,7 +23,8 @@ const NATIVE_PACKAGES = Set{String}(
                          "POMDPToolbox",
                          "POMDPXFiles",
                          "POMDPFiles",
-                         "ParticleFilters"])
+                         "ParticleFilters",
+                         "TabularTDLearning"])
 
 const NON_NATIVE_PACKAGES = Set{String}(
                              ["SARSOP",
