@@ -18,7 +18,6 @@ const NATIVE_PACKAGES = Set{String}(
                          "DESPOT",
                          "MCVI",
                          "GenerativeModels",
-                         "POMDPBounds",
                          "POMDPModels",
                          "POMDPToolbox",
                          "POMDPXFiles",

@@ -135,21 +135,19 @@ Many packages use the POMDPs.jl interface, including MDP and POMDP solvers, supp
 |-------------------|----------------------|------------------|
 | [TabularTDLearning](https://github.com/JuliaPOMDP/TabularTDLearning.jl) | [![Build Status](https://travis-ci.org/JuliaPOMDP/TabularTDLearning.jl.svg?branch=master)](https://travis-ci.org/JuliaPOMDP/TabularTDLearning.jl) | [![Coverage Status](https://coveralls.io/repos/JuliaPOMDP/TabularTDLearning.jl/badge.svg?branch=master&service=github)](https://coveralls.io/github/JuliaPOMDP/TabularTDLearning.jl?branch=master) |
 
-#### Support Tools:
+#### Tools:
 
 |  **`Package`**   |  **`Build`** | **`Coverage`** |
 |-------------------|----------------------|------------------|
 | [POMDPToolbox](https://github.com/JuliaPOMDP/POMDPToolbox.jl) | [![Build Status](https://travis-ci.org/JuliaPOMDP/POMDPToolbox.jl.svg?branch=master)](https://travis-ci.org/JuliaPOMDP/POMDPToolbox.jl) | [![Coverage Status](https://coveralls.io/repos/github/JuliaPOMDP/POMDPToolbox.jl/badge.svg?branch=master)](https://coveralls.io/github/JuliaPOMDP/POMDPToolbox.jl?branch=master) |
 | [POMDPModels](https://github.com/JuliaPOMDP/POMDPModels.jl) | [![Build Status](https://travis-ci.org/JuliaPOMDP/POMDPModels.jl.svg?branch=master)](https://travis-ci.org/JuliaPOMDP/POMDPModels.jl) | [![Coverage Status](https://coveralls.io/repos/github/JuliaPOMDP/POMDPModels.jl/badge.svg?branch=master)](https://coveralls.io/github/JuliaPOMDP/POMDPModels.jl?branch=master) |
+| [ParticleFilters](https://github.com/JuliaPOMDP/ParticleFilters.jl) | [![Build Status](https://travis-ci.org/JuliaPOMDP/ParticleFilters.jl.svg?branch=master)](https://travis-ci.org/JuliaPOMDP/ParticleFilters.jl) | [![codecov.io](http://codecov.io/github/JuliaPOMDP/ParticleFilters.jl/coverage.svg?branch=master)](http://codecov.io/github/JuliaPOMDP/ParticleFilters.jl?branch=master) |
  
 #### Interface Extensions:
 
 |  **`Package`**   |  **`Build`** |
 |-------------------|----------------------|
 | [GenerativeModels](https://github.com/JuliaPOMDP/GenerativeModels.jl) | [![Build Status](https://travis-ci.org/JuliaPOMDP/GenerativeModels.jl.svg?branch=master)](https://travis-ci.org/JuliaPOMDP/GenerativeModels.jl) | 
-| [POMDPBounds](https://github.com/JuliaPOMDP/POMDPBounds.jl) | [![Build Status](https://travis-ci.org/JuliaPOMDP/POMDPBounds.jl.svg?branch=master)](https://travis-ci.org/JuliaPOMDP/POMDPBounds.jl) | 
-
-
 
 ### Performance Benchmarks:
 
