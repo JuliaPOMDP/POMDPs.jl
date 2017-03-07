@@ -6,6 +6,7 @@ Provides a basic interface for defining and solving MDPs/POMDPs
 module POMDPs
 
 import Base: rand, mean
+import Distributions: pdf, mode
 
 export 
     # Abstract type
