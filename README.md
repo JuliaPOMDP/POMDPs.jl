@@ -5,14 +5,14 @@
 | [![Build Status](https://travis-ci.org/JuliaPOMDP/POMDPs.jl.svg?branch=master)](https://travis-ci.org/JuliaPOMDP/POMDPs.jl) | [![Build Status](https://travis-ci.org/JuliaPOMDP/POMDPs.jl.svg?branch=master)](https://travis-ci.org/JuliaPOMDP/POMDPs.jl)|
 
 
-[![Docs](https://img.shields.io/badge/docs-stable-blue.svg)](https://JuliaPOMDP.github.io/POMDPs.jl/stable)
+[![Docs](https://img.shields.io/badge/docs-latest-blue.svg)](https://JuliaPOMDP.github.io/POMDPs.jl/latest)
 [![Gitter](https://badges.gitter.im/JuliaPOMDP/Lobby.svg)](https://gitter.im/JuliaPOMDP/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
 This package provides a core interface for working with Markov decision processes (MDPs) and partially observable Markov decision processes (POMDPs).
 
 Our goal is to provide a common programming vocabulary for:
 
-1. Expressing problems as POMDPs. 
+1. Expressing problems as MDPs and POMDPs. 
 2. Writing solver software.
 3. Running simulations efficiently.
 
