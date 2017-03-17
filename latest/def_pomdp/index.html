@@ -46,94 +46,76 @@
 
       <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
 	<ul class="current">
+	  
           
-            <li>
-    <li class="toctree-l1 ">
-        <a class="" href="..">About</a>
-        
-    </li>
-<li>
+            <li class="toctree-l1">
+		
+    <a class="" href="..">About</a>
+	    </li>
           
-            <li>
-    <li class="toctree-l1 ">
-        <a class="" href="../install/">Installation</a>
-        
-    </li>
-<li>
+            <li class="toctree-l1">
+		
+    <a class="" href="../install/">Installation</a>
+	    </li>
           
-            <li>
-    <li class="toctree-l1 ">
-        <a class="" href="../get_started/">Getting Started</a>
-        
-    </li>
-<li>
+            <li class="toctree-l1">
+		
+    <a class="" href="../get_started/">Getting Started</a>
+	    </li>
           
-            <li>
-    <li class="toctree-l1 ">
-        <a class="" href="../concepts/">Concepts and Architecture</a>
-        
-    </li>
-<li>
+            <li class="toctree-l1">
+		
+    <a class="" href="../concepts/">Concepts and Architecture</a>
+	    </li>
           
-            <li>
-    <li class="toctree-l1 current">
-        <a class="current" href="./">Defining a POMDP</a>
-        
-            <ul>
+            <li class="toctree-l1 current">
+		
+    <a class="current" href="./">Defining a POMDP</a>
+    <ul class="subnav">
             
-                <li class="toctree-l3"><a href="#defining-a-pomdp">Defining a POMDP</a></li>
-                
-                    <li><a class="toctree-l4" href="#functional-form-pomdp">Functional Form POMDP</a></li>
-                
-                    <li><a class="toctree-l4" href="#pomdps-in-tabular-form">POMDPs in Tabular Form</a></li>
-                
-            
-            </ul>
+    <li class="toctree-l2"><a href="#defining-a-pomdp">Defining a POMDP</a></li>
+    
+        <ul>
         
-    </li>
-<li>
+            <li><a class="toctree-l3" href="#functional-form-pomdp">Functional Form POMDP</a></li>
+        
+            <li><a class="toctree-l3" href="#pomdps-in-tabular-form">POMDPs in Tabular Form</a></li>
+        
+        </ul>
+    
+
+    </ul>
+	    </li>
           
-            <li>
-    <li class="toctree-l1 ">
-        <a class="" href="../requirements/">Requirements</a>
-        
-    </li>
-<li>
+            <li class="toctree-l1">
+		
+    <a class="" href="../requirements/">Requirements</a>
+	    </li>
           
-            <li>
-    <li class="toctree-l1 ">
-        <a class="" href="../interfaces/">Spaces and Distributions</a>
-        
-    </li>
-<li>
+            <li class="toctree-l1">
+		
+    <a class="" href="../interfaces/">Spaces and Distributions</a>
+	    </li>
           
-            <li>
-    <li class="toctree-l1 ">
-        <a class="" href="../def_solver/">Defining a Solver</a>
-        
-    </li>
-<li>
+            <li class="toctree-l1">
+		
+    <a class="" href="../def_solver/">Defining a Solver</a>
+	    </li>
           
-            <li>
-    <li class="toctree-l1 ">
-        <a class="" href="../specifying_requirements/">Specifying Requirements</a>
-        
-    </li>
-<li>
+            <li class="toctree-l1">
+		
+    <a class="" href="../specifying_requirements/">Specifying Requirements</a>
+	    </li>
           
-            <li>
-    <li class="toctree-l1 ">
-        <a class="" href="../api/">API</a>
-        
-    </li>
-<li>
+            <li class="toctree-l1">
+		
+    <a class="" href="../api/">API</a>
+	    </li>
           
-            <li>
-    <li class="toctree-l1 ">
-        <a class="" href="../faq/">Frequently Asked Questions</a>
-        
-    </li>
-<li>
+            <li class="toctree-l1">
+		
+    <a class="" href="../faq/">Frequently Asked Questions</a>
+	    </li>
           
         </ul>
       </div>
@@ -199,36 +181,24 @@ using QMDP
 const TIGER_ON_LEFT = true
 const TIGER_ON_RIGHT = false
 
-type TigerStateSpace end
-states(::TigerPOMDP) = TigerStateSpace()
-iterator(space::TigerStateSpace) = [TIGER_ON_LEFT, TIGER_ON_RIGHT]
-n_states(::TigerPOMDP) = 2
-dimensions(::TigerStateSpace) = 1
-rand(rng::AbstractRNG, space::TigerStateSpace) = rand([TIGER_ON_LEFT, TIGER_ON_RIGHT]) # sample random state
+states(pomdp::TigerPOMDP) = [TIGER_ON_LEFT, TIGER_ON_RIGHT]
+n_states(pomdp::TigerPOMDP) = 2
 
 # ACTION SPACE
 const OPEN_LEFT = 0
 const OPEN_RIGHT = 1
 const LISTEN = 2
 
-type TigerActionSpace end
-actions(::TigerPOMDP) = TigerActionSpace()
-iterator(space::TigerActionSpace) = [OPEN_LEFT,OPEN_RIGHT,LISTEN]
-n_actions(::TigerPOMDP) = 3
-dimensions(::TigerActionSpace) = 1
-rand(rng::AbstractRNG, space::TigerActionSpace) = rand(rng, [OPEN_LEFT,OPEN_RIGHT,LISTEN]) # sample random action
+actions(pomdp::TigerPOMDP) = [OPEN_LEFT,OPEN_RIGHT,LISTEN]
+n_actions(pomdp::TigerPOMDP) = 3
 action_index(::TigerPOMDP, a::Int64) = a+1
 
 # OBSERVATION SPACE
 const OBSERVE_LEFT = true
 const OBSERVE_RIGHT = false
 
-type TigerObservationSpace end
-observations(::TigerPOMDP) = TigerObservationSpace()
-iterator(space::TigerObservationSpace) = [OBSERVE_LEFT, OBSERVE_RIGHT]
+observations(::TigerPOMDP) = [OBSERVE_LEFT, OBSERVE_RIGHT]
 n_observations(::TigerPOMDP) = 2
-dimensions(::TigerObservationSpace) = 1
-rand(rng::AbstractRNG, space::TigerObservationSpace) = rand([TIGER_ON_LEFT, TIGER_ON_RIGHT]) # sample random observation
 </code></pre>
 
 <p>Before we can implement the core <code>transition</code>, <code>reward</code>, and <code>observation</code> functions we need to define how distributions over states and observations work for the Tiger POMDP. We need to sample from these distributions and compute their likelihoods. Are states and observations are binary, so we can use Bernoulli distributions:</p>
@@ -374,7 +344,7 @@ policy = solve(solver, pomdp)
   <div class="rst-versions" role="note" style="cursor: pointer">
     <span class="rst-current-version" data-toggle="rst-current-version">
       
-          <a href="https://github.com/JuliaPOMDP/POMDPs.jl" class="icon icon-github" style="float: left; color: #fcfcfc"> GitHub</a>
+          <a href="https://github.com/JuliaPOMDP/POMDPs.jl" class="fa fa-github" style="float: left; color: #fcfcfc"> GitHub</a>
       
       
         <span><a href="../concepts/" style="color: #fcfcfc;">&laquo; Previous</a></span>

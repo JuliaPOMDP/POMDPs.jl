@@ -46,94 +46,76 @@
 
       <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
 	<ul class="current">
+	  
           
-            <li>
-    <li class="toctree-l1 ">
-        <a class="" href="..">About</a>
-        
-    </li>
-<li>
+            <li class="toctree-l1">
+		
+    <a class="" href="..">About</a>
+	    </li>
           
-            <li>
-    <li class="toctree-l1 ">
-        <a class="" href="../install/">Installation</a>
-        
-    </li>
-<li>
+            <li class="toctree-l1">
+		
+    <a class="" href="../install/">Installation</a>
+	    </li>
           
-            <li>
-    <li class="toctree-l1 ">
-        <a class="" href="../get_started/">Getting Started</a>
-        
-    </li>
-<li>
+            <li class="toctree-l1">
+		
+    <a class="" href="../get_started/">Getting Started</a>
+	    </li>
           
-            <li>
-    <li class="toctree-l1 ">
-        <a class="" href="../concepts/">Concepts and Architecture</a>
-        
-    </li>
-<li>
+            <li class="toctree-l1">
+		
+    <a class="" href="../concepts/">Concepts and Architecture</a>
+	    </li>
           
-            <li>
-    <li class="toctree-l1 ">
-        <a class="" href="../def_pomdp/">Defining a POMDP</a>
-        
-    </li>
-<li>
+            <li class="toctree-l1">
+		
+    <a class="" href="../def_pomdp/">Defining a POMDP</a>
+	    </li>
           
-            <li>
-    <li class="toctree-l1 ">
-        <a class="" href="../requirements/">Requirements</a>
-        
-    </li>
-<li>
+            <li class="toctree-l1">
+		
+    <a class="" href="../requirements/">Requirements</a>
+	    </li>
           
-            <li>
-    <li class="toctree-l1 current">
-        <a class="current" href="./">Spaces and Distributions</a>
-        
-            <ul>
+            <li class="toctree-l1 current">
+		
+    <a class="current" href="./">Spaces and Distributions</a>
+    <ul class="subnav">
             
-                <li class="toctree-l3"><a href="#spaces-and-distributions">Spaces and Distributions</a></li>
-                
-                    <li><a class="toctree-l4" href="#spaces">Spaces</a></li>
-                
-                    <li><a class="toctree-l4" href="#distributions">Distributions</a></li>
-                
-            
-            </ul>
+    <li class="toctree-l2"><a href="#spaces-and-distributions">Spaces and Distributions</a></li>
+    
+        <ul>
         
-    </li>
-<li>
+            <li><a class="toctree-l3" href="#spaces">Spaces</a></li>
+        
+            <li><a class="toctree-l3" href="#distributions">Distributions</a></li>
+        
+        </ul>
+    
+
+    </ul>
+	    </li>
           
-            <li>
-    <li class="toctree-l1 ">
-        <a class="" href="../def_solver/">Defining a Solver</a>
-        
-    </li>
-<li>
+            <li class="toctree-l1">
+		
+    <a class="" href="../def_solver/">Defining a Solver</a>
+	    </li>
           
-            <li>
-    <li class="toctree-l1 ">
-        <a class="" href="../specifying_requirements/">Specifying Requirements</a>
-        
-    </li>
-<li>
+            <li class="toctree-l1">
+		
+    <a class="" href="../specifying_requirements/">Specifying Requirements</a>
+	    </li>
           
-            <li>
-    <li class="toctree-l1 ">
-        <a class="" href="../api/">API</a>
-        
-    </li>
-<li>
+            <li class="toctree-l1">
+		
+    <a class="" href="../api/">API</a>
+	    </li>
           
-            <li>
-    <li class="toctree-l1 ">
-        <a class="" href="../faq/">Frequently Asked Questions</a>
-        
-    </li>
-<li>
+            <li class="toctree-l1">
+		
+    <a class="" href="../faq/">Frequently Asked Questions</a>
+	    </li>
           
         </ul>
       </div>
@@ -177,11 +159,11 @@
 <h2 id="spaces">Spaces</h2>
 <p>A space object should contain the information needed to define the set of all possible states, actions or observations. The implementation will depend on the attributes of the elements. For example, if the space is continuous, the space object may only contain the limits of the continuous range. In the case of a discrete problem, a vector containing all states is appropriate for representing a state.</p>
 <p>The following functions may be called on a space object:</p>
-<p>rand dimensions iterator</p>
+<p><a href="../api/#Base.Random.rand"><code>rand</code></a> <a href="../api/#POMDPs.dimensions"><code>dimensions</code></a> <a href="../api/#POMDPs.iterator"><code>iterator</code></a></p>
 <p><a id='Distributions-1'></a></p>
 <h2 id="distributions">Distributions</h2>
 <p>A distribution object represents a probability distribution. the following functions may be called on a distribution object</p>
-<p>rand iterator pdf</p>
+<p><a href="../api/#Base.Random.rand"><code>rand</code></a> <a href="../api/#POMDPs.iterator"><code>iterator</code></a> <a href="../api/#Distributions.pdf"><code>pdf</code></a> <a href="../api/#StatsBase.mode"><code>mode</code></a> <a href="../api/#Base.mean"><code>mean</code></a></p>
               
             </div>
           </div>
@@ -217,7 +199,7 @@
   <div class="rst-versions" role="note" style="cursor: pointer">
     <span class="rst-current-version" data-toggle="rst-current-version">
       
-          <a href="https://github.com/JuliaPOMDP/POMDPs.jl" class="icon icon-github" style="float: left; color: #fcfcfc"> GitHub</a>
+          <a href="https://github.com/JuliaPOMDP/POMDPs.jl" class="fa fa-github" style="float: left; color: #fcfcfc"> GitHub</a>
       
       
         <span><a href="../requirements/" style="color: #fcfcfc;">&laquo; Previous</a></span>
