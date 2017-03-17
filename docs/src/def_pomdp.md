@@ -46,36 +46,24 @@ We will begin by implementing the state, action, and observation spaces and func
 const TIGER_ON_LEFT = true
 const TIGER_ON_RIGHT = false
 
-type TigerStateSpace end
-states(::TigerPOMDP) = TigerStateSpace()
-iterator(space::TigerStateSpace) = [TIGER_ON_LEFT, TIGER_ON_RIGHT]
-n_states(::TigerPOMDP) = 2
-dimensions(::TigerStateSpace) = 1
-rand(rng::AbstractRNG, space::TigerStateSpace) = rand([TIGER_ON_LEFT, TIGER_ON_RIGHT]) # sample random state
+states(pomdp::TigerPOMDP) = [TIGER_ON_LEFT, TIGER_ON_RIGHT]
+n_states(pomdp::TigerPOMDP) = 2
 
 # ACTION SPACE
 const OPEN_LEFT = 0
 const OPEN_RIGHT = 1
 const LISTEN = 2
 
-type TigerActionSpace end
-actions(::TigerPOMDP) = TigerActionSpace()
-iterator(space::TigerActionSpace) = [OPEN_LEFT,OPEN_RIGHT,LISTEN]
-n_actions(::TigerPOMDP) = 3
-dimensions(::TigerActionSpace) = 1
-rand(rng::AbstractRNG, space::TigerActionSpace) = rand(rng, [OPEN_LEFT,OPEN_RIGHT,LISTEN]) # sample random action
+actions(pomdp::TigerPOMDP) = [OPEN_LEFT,OPEN_RIGHT,LISTEN]
+n_actions(pomdp::TigerPOMDP) = 3
 action_index(::TigerPOMDP, a::Int64) = a+1
 
 # OBSERVATION SPACE
 const OBSERVE_LEFT = true
 const OBSERVE_RIGHT = false
 
-type TigerObservationSpace end
-observations(::TigerPOMDP) = TigerObservationSpace()
-iterator(space::TigerObservationSpace) = [OBSERVE_LEFT, OBSERVE_RIGHT]
+observations(::TigerPOMDP) = [OBSERVE_LEFT, OBSERVE_RIGHT]
 n_observations(::TigerPOMDP) = 2
-dimensions(::TigerObservationSpace) = 1
-rand(rng::AbstractRNG, space::TigerObservationSpace) = rand([TIGER_ON_LEFT, TIGER_ON_RIGHT]) # sample random observation
 ```
 
 Before we can implement the core `transition`, `reward`, and `observation` functions we need to define how distributions over states and observations work for the Tiger POMDP.
