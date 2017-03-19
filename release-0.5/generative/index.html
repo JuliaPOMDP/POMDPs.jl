@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  
+  <link rel="shortcut icon" href="../img/favicon.ico">
+  <title>Generative Model Definition - POMDPs.jl</title>
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  <link rel="stylesheet" href="../css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../css/theme_extra.css" type="text/css" />
+  <link rel="stylesheet" href="../css/highlight.css">
+  <link href="../assets/Documenter.css" rel="stylesheet">
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "Generative Model Definition";
+    var mkdocs_page_input_path = "generative.md";
+    var mkdocs_page_url = "/generative/";
+  </script>
+  
+  <script src="../js/jquery-2.1.1.min.js"></script>
+  <script src="../js/modernizr-2.8.3.min.js"></script>
+  <script type="text/javascript" src="../js/highlight.pack.js"></script> 
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+      <div class="wy-side-nav-search">
+        <a href=".." class="icon icon-home"> POMDPs.jl</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+	<ul class="current">
+	  
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="..">About</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../install/">Installation</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../get_started/">Getting Started</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../concepts/">Concepts and Architecture</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../def_pomdp/">Defining a POMDP</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../explicit/">Explicit Model Definition</a>
+	    </li>
+          
+            <li class="toctree-l1 current">
+		
+    <a class="current" href="./">Generative Model Definition</a>
+    <ul class="subnav">
+            
+    <li class="toctree-l2"><a href="#generative-pomdp-interface">Generative POMDP Interface</a></li>
+    
+        <ul>
+        
+            <li><a class="toctree-l3" href="#description">Description</a></li>
+        
+            <li><a class="toctree-l3" href="#example">Example</a></li>
+        
+            <li><a class="toctree-l3" href="#which-functions-should-i-implement-for-my-problem-use-in-my-solver">Which function(s) should I implement for my problem / use in my solver?</a></li>
+        
+        </ul>
+    
+
+    </ul>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../requirements/">Requirements</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../interfaces/">Spaces and Distributions</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../def_solver/">Defining a Solver</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../specifying_requirements/">Specifying Requirements</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../api/">API</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../faq/">Frequently Asked Questions</a>
+	    </li>
+          
+        </ul>
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="..">POMDPs.jl</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="..">Docs</a> &raquo;</li>
+    
+      
+    
+    <li>Generative Model Definition</li>
+    <li class="wy-breadcrumbs-aside">
+      
+        <a href="https://github.com/JuliaPOMDP/POMDPs.jl/edit/master/docs/generative.md"
+          class="icon icon-github"> Edit on GitHub</a>
+      
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <p><a id='generative_doc-1'></a></p>
+<h1 id="generative-pomdp-interface">Generative POMDP Interface</h1>
+<p><a id='Description-1'></a></p>
+<h2 id="description">Description</h2>
+<p>The <em>generative</em> interface contains a small collection of functions that makes implementing and solving problems with generative models easier. These functions return states and observations instead of distributions as in the <a href="../explicit/#explicit_doc-1">Explicit interface</a>.</p>
+<p>The functions are:</p>
+<pre><code class="julia">generate_s(pomdp, s, a, rng) -&gt; sp
+generate_o(pomdp, s, a, sp, rng) -&gt; o
+generate_sr(pomdp, s, a, rng) -&gt; (s, r)
+generate_so(pomdp, s, a, rng) -&gt; (s, o)
+generate_or(pomdp, s, a, sp, rng) -&gt; (o, r)
+generate_sor(pomdp, s, a, rng) -&gt; (s, o, r)
+initial_state(pomdp, rng) -&gt; s
+</code></pre>
+
+<p>Each <code>generate_</code> function is a single step simulator that returns a new state, observation, reward, or a combination given the current state and action (and <code>sp</code> in some cases). <a href="http://docs.julialang.org/en/release-0.5/stdlib/numbers/#random-numbers"><code>rng</code> is a random number generator such as <code>Base.GLOBAL_RNG</code> or another <code>MersenneTwister</code> that is passed as an argument and should be used to generate all random numbers within the function to ensure that all simulations are exactly repeatable.</a></p>
+<p>The functions that do not deal with observations may be defined for <code>MDP</code>s as well as <code>POMDP</code>s.</p>
+<p>A problem writer will generally only have to implement one or two of these functions for all solvers to work (see below).</p>
+<p><a id='Example-1'></a></p>
+<h2 id="example">Example</h2>
+<p>The following example shows an implementation of the Crying Baby problem [1]. A definition of this problem using the explicit interface is given in the <a href="https://github.com/JuliaPOMDP/POMDPModels.jl">POMDPModels package</a>.</p>
+<pre><code class="julia">importall POMDPs
+
+# state: true=hungry, action: true=feed, obs: true=crying
+
+type BabyPOMDP &lt;: POMDP{Bool, Bool, Bool}
+    r_feed::Float64
+    r_hungry::Float64
+    p_become_hungry::Float64
+    p_cry_when_hungry::Float64
+    p_cry_when_not_hungry::Float64
+    discount::Float64
+end
+BabyPOMDP() = BabyPOMDP(-5., -10., 0.1, 0.8, 0.1, 0.9)
+
+discount(p::BabyPOMDP) = p.discount
+
+function generate_s(p::BabyPOMDP, s::Bool, a::Bool, rng::AbstractRNG)
+    if s # hungry
+        return true
+    else # not hungry
+        return rand(rng) &lt; p.p_become_hungry ? true : false
+    end
+end
+
+function generate_o(p::BabyPOMDP, s::Bool, a::Bool, sp::Bool, rng::AbstractRNG)
+    if sp # hungry
+        return rand(rng) &lt; p.p_cry_when_hungry ? true : false
+    else # not hungry
+        return rand(rng) &lt; p.p_cry_when_not_hungry ? true : false
+    end
+end
+
+# r_hungry
+reward(p::BabyPOMDP, s::Bool, a::Bool) = (s ? p.r_hungry : 0.0) + (a ? p.r_feed : 0.0)
+
+initial_state_distribution(p::BabyPOMDP) = [false] # note rand(rng, [false]) = false, so this is encoding that the baby always starts out full
+</code></pre>
+
+<p>This can be solved with the POMCP solver.</p>
+<pre><code class="julia">using POMCP
+using POMDPToolbox
+
+pomdp = BabyPOMDP()
+solver = POMCPSolver()
+planner = solve(solver, pomdp)
+
+hist = simulate(HistoryRecorder(max_steps=10), pomdp, planner);
+println(&quot;reward: $(discounted_reward(hist))&quot;)
+</code></pre>
+
+<p><a id='Which-function(s)-should-I-implement-for-my-problem-/-use-in-my-solver?-1'></a></p>
+<h2 id="which-functions-should-i-implement-for-my-problem-use-in-my-solver">Which function(s) should I implement for my problem / use in my solver?</h2>
+<p><a id='Problem-Writers-1'></a></p>
+<h3 id="problem-writers">Problem Writers</h3>
+<p>Generally, a problem implementer need only implement the simplest one or two of these functions, and the rest are automatically synthesized at runtime.</p>
+<p>If there is a convenient way for the problem to generate a combination of states, observations, and rewards simultaneously (for example, if there is a simulator written in another programming language that generates these from the same function, or if it is computationally convenient to generate <code>sp</code> and <code>o</code> simultaneously), then the problem writer may wish to directly implement one of the combination <code>generate_</code> functions, e.g. <code>generate_sor()</code> directly.</p>
+<p>Use the following logic to determine which functions to implement:</p>
+<ul>
+<li>If you are implementing the problem from scratch in Julia, implement <code>generate_s</code> and <code>generate_o</code>.</li>
+<li>Otherwise, if your external simulator returns <em>x</em>, where <em>x</em> is one of <em>sr</em>, <em>so</em>, <em>or</em>, or <em>sor</em>, implement <code>generate_x</code>. (you may also have to implement <code>generate_s</code> separately for use in particle filters).</li>
+</ul>
+<p>Note: if an explicit definition is already implemented, you <strong>do not</strong> need to implement any functions from the generative interface - POMDPs.jl will automatically generate implementations of them for you at runtime (see generative_impl.jl).</p>
+<p><a id='Solver-and-Simulator-Writers-1'></a></p>
+<h3 id="solver-and-simulator-writers">Solver and Simulator Writers</h3>
+<p>Solver writers should use the single function that generates everything that they need and nothing they don't. For example, if the solver needs access to the state, observation, and reward at every timestep, they should use <code>generate_sor()</code> rather than <code>generate_s()</code> and <code>generate_or()</code>, and if the solver needs access to the state and reward, they should use <code>generate_sr()</code> rather than <code>generate_sor()</code>. This will ensure the widest interoperability between solvers and problems.</p>
+<p>In other words, if you need access to <em>x</em> where <em>x</em> is <em>s</em>, <em>o</em>, <em>sr</em>, <em>so</em>, <em>or</em>, or <em>sor</em> at a certain point in your code, use <code>generate_x</code>.</p>
+<p>[1] <em>Decision Making Under Uncertainty: Theory and Application</em> by Mykel J. Kochenderfer, MIT Press, 2015</p>
+              
+            </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../requirements/" class="btn btn-neutral float-right" title="Requirements">Next <span class="icon icon-circle-arrow-right"></span></a>
+      
+      
+        <a href="../explicit/" class="btn btn-neutral" title="Explicit Model Definition"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="http://www.mkdocs.org">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+	  
+        </div>
+      </div>
+
+    </section>
+    
+  </div>
+
+  <div class="rst-versions" role="note" style="cursor: pointer">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+          <a href="https://github.com/JuliaPOMDP/POMDPs.jl" class="fa fa-github" style="float: left; color: #fcfcfc"> GitHub</a>
+      
+      
+        <span><a href="../explicit/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+      
+      
+        <span style="margin-left: 15px"><a href="../requirements/" style="color: #fcfcfc">Next &raquo;</a></span>
+      
+    </span>
+</div>
+    <script src="../js/theme.js"></script>
+      <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"></script>
+      <script src="../assets/mathjaxhelper.js"></script>
+
+</body>
+</html>
