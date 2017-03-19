@@ -29,7 +29,7 @@ In our problem there are only two states (whether the tiger is behind the left o
 Note that states, actions, and observations can use arrays, strings, complex data structures, or even custom types.
 
 Suppose that once implemented, we want to solve Tiger problems using the QMDP solver.
-To see what functions QMDP needs us to implement, use the [`@requirements_info`](@ref) macro (see [Interface Requirements for Problems](@ref)).
+To see what functions QMDP needs us to implement, use the [`@requirements_info`](@ref) macro (see [Interface Requirements for Problems](@ref requirements)).
 
 ```julia
 POMDPs.add("QMDP")
