@@ -14,7 +14,7 @@ Accordingly, the POMDPs.jl model API is grouped into three sections:
 2. The [*generative*](@ref generative_api) interface containing *functions that return states and observations*
 3. [*Common*](@ref common_api) functions used in both.
 
-## What do I need to implement
+## What do I need to implement?
 
 Generally, a problem will be defined by implementing *either*
 - An explicit definition consisting of the three functions in (1) and some functions from (3), or
