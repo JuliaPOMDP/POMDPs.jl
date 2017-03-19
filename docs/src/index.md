@@ -37,10 +37,7 @@ JuliaPOMDP are as follows:
 - [POMDPToolbox](https://github.com/JuliaPOMDP/POMDPToolbox.jl)
 - [POMDPModels](https://github.com/JuliaPOMDP/POMDPModels.jl)
 
-### Interface Extensions:
 
-- [GenerativeModels](https://github.com/JuliaPOMDP/GenerativeModels.jl)
-- [POMDPBounds](https://github.com/JuliaPOMDP/POMDPBounds.jl)
 
 
 ## Manual Outline
