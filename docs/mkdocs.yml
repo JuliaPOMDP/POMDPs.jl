@@ -26,6 +26,8 @@ pages:
 - Getting Started: get_started.md
 - Concepts and Architecture: concepts.md
 - Defining a POMDP: def_pomdp.md
+- Explicit Model Definition: explicit.md
+- Generative Model Definition: generative.md
 - Requirements: requirements.md
 - Spaces and Distributions: interfaces.md
 - Defining a Solver: def_solver.md

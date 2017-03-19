@@ -1,5 +1,9 @@
 # Release Notes and Changes
 
+## Version 0.5 Changes (March, 2017)
+
+Merged in GenerativeModels
+
 ## Version 0.4.1 Changes (January 20, 2017)
 
 - Removed POMDPToolbox from testing (Github Issue #130)

@@ -48,16 +48,39 @@ Policy
 Updater
 ```
 
-
 ## Model Functions
+
+### [Explicit](@id explicit_api)
+
+These functions return *distributions*.
+
+```@docs
+transition
+observation
+initial_state_distribution
+```
+
+### [Generative](@id generative_api)
+
+These functions should return *states*, *observations*, and *rewards*.
+
+```@docs
+generate_s
+generate_o
+generate_sr
+generate_so
+generate_or
+generate_sor
+initial_state
+```
+
+### [Common](@id common_api)
 
 ```@docs
 states
 actions
 observations
 reward
-transition
-observation
 isterminal
 isterminal_obs
 discount
@@ -78,7 +101,6 @@ mode
 mean
 dimensions
 iterator
-initial_state_distribution
 ```
 
 ## Belief Functions

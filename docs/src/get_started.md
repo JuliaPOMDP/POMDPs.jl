@@ -19,8 +19,9 @@ policy = solve(solver, pomdp)
 #evaluate the policy
 belief_updater = updater(policy) # the default QMPD belief updater (discrete Bayesian filter)
 init_dist = initial_state_distribution(pomdp) # from POMDPModels
-hist = HistoryRecorder(max_steps=100) # from POMDPToolbox
-r = simulate(hist, pomdp, policy, belief_updater, init_dist) # run 100 step simulation
+hr = HistoryRecorder(max_steps=100) # from POMDPToolbox
+hist = simulate(hr, pomdp, policy, belief_updater, init_dist) # run 100 step simulation
+println("reward: $(discounted_reward(hist))")
 ```
 
 The first part of the code loads the desired packages and initializes the problem and the solver. Next, we compute a

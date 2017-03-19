@@ -31,8 +31,7 @@ textbook such as \[1\]. In POMDPs.jl an MDP is represented by a concrete
 subtype of the [`MDP`](@ref) abstract type and a set of methods that
 define each of its components. S and A are defined by implementing
 [`states`](@ref) and [`actions`](@ref) for your specific [`MDP`](@ref)
-subtype. T and R are defined by implementing [`transition`](@ref) and
-[`reward`](@ref).
+subtype. R is by implementing [`reward`](@ref), and T is defined by implementing [`transition`](@ref) if the [*explicit*](@ref defining_pomdps) interface is used or [`generate_s`](@ref) if the [*generative*](@ref defining_pomdps) interface is used.
 
 A POMDP is a more general sequential decision making problem in which
 the agent is not sure what state they are in. The state is only
@@ -43,18 +42,12 @@ of receiving each observation at a transition. In POMDPs.jl, a POMDP is
 represented by a concrete subtype of the [`POMDP`](@ref) abstract type,
 `Z` may be defined by the [`observations`](@ref) function (though an
 explicit definition is often not required), and `O` is defined by
-implementing[`observation`](@ref) for your specific POMDP type.
+implementing [`observation`](@ref) if the [*explicit*](@ref defining_pomdps) interface is used or [`generate_o`](@ref) if the [*generative*](@ref defining_pomdps) interface is used.
 
 POMDPs.jl also contains functions for defining optional problem behavior
 such as a discount factor or a set of terminal states.
 
-It is important to note that, in some cases, it is difficult to
-explicitly represent the transition and observation distributions for a
-problem but it is easy to generate a next state or observation through
-sampling. In these cases it may be significantly easier to use the
-[`GenerativeModels.jl`](https://github.com/JuliaPOMDP/GenerativeModels.jl)
-interface extension *instead of* implementing methods of
-[`transition`](@ref) and [`observation`](@ref)
+More information can be found in the [Defining POMDPs](@ref defining_pomdps) section.
 
 Beliefs and Updaters
 --------------------

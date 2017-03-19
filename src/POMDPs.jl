@@ -28,6 +28,15 @@ export
     reward,
     isterminal,
     isterminal_obs,
+
+    # Generative model functions
+    generate_s,
+    generate_o,
+    generate_sr,
+    generate_so,
+    generate_or,
+    generate_sor,
+    initial_state,
     
     # Discrete Functions
     length,
@@ -100,6 +109,8 @@ include("distribution.jl")
 include("belief.jl")
 include("space.jl")
 include("policy.jl")
+include("generative.jl")
+include("generative_impl.jl")
 include("type_inferrence.jl")
 include("constants.jl")
 include("utils.jl")

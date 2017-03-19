@@ -1,4 +1,4 @@
-# Interface Requirements for Problems
+# [Interface Requirements for Problems](@id requirements)
 
 Due to the large variety of problems that can be expressed as MDPs and POMDPs and the wide variety of solution techniques available, there is considerable variation in which of the POMDPs.jl interface functions must be implemented to use each solver. No solver requires all of the functions in the interface, so it is wise to determine which functions are needed before jumping into implementation.
 

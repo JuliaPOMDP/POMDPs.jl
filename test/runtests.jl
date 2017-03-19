@@ -20,3 +20,4 @@ POMDPs.observation(::A,::Bool,::Int) = [true, false]
 
 include("test_inferrence.jl")
 include("test_requirements.jl")
+include("test_generative.jl")
