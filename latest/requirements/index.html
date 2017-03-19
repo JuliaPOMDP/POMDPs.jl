@@ -73,6 +73,16 @@
     <a class="" href="../def_pomdp/">Defining a POMDP</a>
 	    </li>
           
+            <li class="toctree-l1">
+		
+    <a class="" href="../explicit/">Explicit Model Definition</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../generative/">Generative Model Definition</a>
+	    </li>
+          
             <li class="toctree-l1 current">
 		
     <a class="current" href="./">Requirements</a>
@@ -144,7 +154,7 @@
           <div role="main">
             <div class="section">
               
-                <p><a id='Interface-Requirements-for-Problems-1'></a></p>
+                <p><a id='requirements-1'></a></p>
 <h1 id="interface-requirements-for-problems">Interface Requirements for Problems</h1>
 <p>Due to the large variety of problems that can be expressed as MDPs and POMDPs and the wide variety of solution techniques available, there is considerable variation in which of the POMDPs.jl interface functions must be implemented to use each solver. No solver requires all of the functions in the interface, so it is wise to determine which functions are needed before jumping into implementation.</p>
 <p>Solvers can communicate these requirements through the <code>@requirements_info</code> and <code>@show_requirements</code> macros. <code>@requirements_info</code> should give an overview of the requirements for a solver, which is supplied as the first argument, the macro can usually be more informative if a problem is specified as the second arg. For example, if you are implementing a new problem <code>NewMDP</code> and want to use the <code>DiscreteValueIteration</code> solver, you might run the following:</p>
@@ -176,7 +186,7 @@
         <a href="../interfaces/" class="btn btn-neutral float-right" title="Spaces and Distributions">Next <span class="icon icon-circle-arrow-right"></span></a>
       
       
-        <a href="../def_pomdp/" class="btn btn-neutral" title="Defining a POMDP"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../generative/" class="btn btn-neutral" title="Generative Model Definition"><span class="icon icon-circle-arrow-left"></span> Previous</a>
       
     </div>
   
@@ -204,7 +214,7 @@
           <a href="https://github.com/JuliaPOMDP/POMDPs.jl" class="fa fa-github" style="float: left; color: #fcfcfc"> GitHub</a>
       
       
-        <span><a href="../def_pomdp/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+        <span><a href="../generative/" style="color: #fcfcfc;">&laquo; Previous</a></span>
       
       
         <span style="margin-left: 15px"><a href="../interfaces/" style="color: #fcfcfc">Next &raquo;</a></span>
