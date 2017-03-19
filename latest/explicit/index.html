@@ -180,7 +180,7 @@ discount(pomdp::TigerPOMDP) = pomdp.discount_factor
 </code></pre>
 
 <p>Notice that the <code>TigerPOMDP</code> inherits from the abstract <code>POMDP</code> type provided by POMDPs.jl. Our type is defined <code>TigerPOMDP &lt;: POMDP{Bool, Int64, Bool}</code>, indicating that our states are <code>Bools</code>, actions are <code>Int64</code>, and observations are <code>Bool</code>. In our problem there are only two states (whether the tiger is behind the left or right door), three actions (go left, go right, and listen), and two observations (hear the tiger behind the left or right door). We thus use booleans for the states and observations, and integers for the actions. Note that states, actions, and observations can use arrays, strings, complex data structures, or even custom types.</p>
-<p>Suppose that once implemented, we want to solve Tiger problems using the QMDP solver. To see what functions QMDP needs us to implement, use the <a href="../api/#POMDPs.@requirements_info"><code>@requirements_info</code></a> macro (see <a href="../@ref">Interface Requirements for Problems</a>).</p>
+<p>Suppose that once implemented, we want to solve Tiger problems using the QMDP solver. To see what functions QMDP needs us to implement, use the <a href="../api/#POMDPs.@requirements_info"><code>@requirements_info</code></a> macro (see <a href="../requirements/#requirements-1">Interface Requirements for Problems</a>).</p>
 <pre><code class="julia">POMDPs.add(&quot;QMDP&quot;)
 using QMDP
 @requirements_info QMDPSolver() TigerPOMDP() 
