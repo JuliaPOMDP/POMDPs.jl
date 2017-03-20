@@ -16,7 +16,7 @@ Our goal is to provide a common programming vocabulary for:
 2. Writing solver software.
 3. Running simulations efficiently.
 
-There are [multiple interfaces for expressing and interacting with (PO)MDPs](http://juliapomdp.github.io/POMDPs.jl/latest/def_pomdp): When the **[explicit](http://juliapomdp.github.io/POMDPs.jl/latest/explicit)** interface is used, the transition and observation probabilities are explicitly defined using api [functions](http://juliapomdp.github.io/POMDPs.jl/latest/explicit/#functional-form-explicit-pomdp) or [tables](http://juliapomdp.github.io/POMDPs.jl/latest/explicit/#tabular-form-explicit-pomdp); when the **[generative](http://juliapomdp.github.io/POMDPs.jl/latest/generative)** interface is used, only a single step generator (e.g. (s', o, r) = G(s,a)) needs to be defined (note that if an explicit model is defined, a generative model is also automatically defined).
+There are [multiple interfaces for expressing and interacting with (PO)MDPs](http://juliapomdp.github.io/POMDPs.jl/latest/def_pomdp): When the *[explicit](http://juliapomdp.github.io/POMDPs.jl/latest/explicit)* interface is used, the transition and observation probabilities are explicitly defined using api [functions](http://juliapomdp.github.io/POMDPs.jl/latest/explicit/#functional-form-explicit-pomdp) or [tables](http://juliapomdp.github.io/POMDPs.jl/latest/explicit/#tabular-form-explicit-pomdp); when the *[generative](http://juliapomdp.github.io/POMDPs.jl/latest/generative)* interface is used, only a single step generator (e.g. (s', o, r) = G(s,a)) needs to be defined.
 
 For help, please post to the Google group at [https://groups.google.com/forum/#!forum/pomdps-users](https://groups.google.com/forum/#!forum/pomdps-users), or on gitter at https://gitter.im/JuliaPOMDP. See [NEWS.md](NEWS.md) for information on changes.
 
@@ -49,7 +49,7 @@ POMDPs.add_all(native_only=true)
 
 ## Quick Start
 
-To run a simple simulation of a POMDP with a (poorly designed) heuristic policy defined using Julia's `do` syntax, run the following code in julia:
+To run a simple simulation of the classsic [Tiger POMDP](https://www.cs.rutgers.edu/~mlittman/papers/aij98-pomdp.pdf) with a (poorly designed) heuristic policy defined using Julia's `do` syntax, run the following code in julia:
 
 ```julia
 using POMDPs
