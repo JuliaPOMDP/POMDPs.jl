@@ -177,7 +177,7 @@
         }, 
         {
             "location": "/interfaces/", 
-            "text": "Spaces and Distributions\n\n\nTwo important components of the definitions of MDPs and POMDPs are \nspaces\n, which specify the possible states, actions, and observations in a problem and \ndistributions\n, which define probability distributions. In order to provide for maximum flexibility spaces and distributions may be of any type (i.e. there are no abstract base types). Solvers and simulators will interact with space and distribution types using the functions defined below.\n\n\n\n\nSpaces\n\n\nA space object should contain the information needed to define the set of all possible states, actions or observations. The implementation will depend on the attributes of the elements. For example, if the space is continuous, the space object may only contain the limits of the continuous range. In the case of a discrete problem, a vector containing all states is appropriate for representing a state.\n\n\nThe following functions may be called on a space object:\n\n\nrand\n \ndimensions\n \niterator\n\n\n\n\nDistributions\n\n\nA distribution object represents a probability distribution. the following functions may be called on a distribution object\n\n\nrand\n \niterator\n \npdf\n \nmode\n \nmean", 
+            "text": "Spaces and Distributions\n\n\nTwo important components of the definitions of MDPs and POMDPs are \nspaces\n, which specify the possible states, actions, and observations in a problem and \ndistributions\n, which define probability distributions. In order to provide for maximum flexibility spaces and distributions may be of any type (i.e. there are no abstract base types). Solvers and simulators will interact with space and distribution types using the functions defined below.\n\n\n\n\nSpaces\n\n\nA space object should contain the information needed to define the set of all possible states, actions or observations. The implementation will depend on the attributes of the elements. For example, if the space is continuous, the space object may only contain the limits of the continuous range. In the case of a discrete problem, a vector containing all states is appropriate for representing a state.\n\n\nThe following functions may be called on a space object:\n\n\n\n\nrand\n\n\ndimensions\n\n\niterator\n\n\n\n\n\n\nDistributions\n\n\nA distribution object represents a probability distribution. The following functions may be called on a distribution object\n\n\n\n\nrand\n\n\niterator\n\n\npdf\n\n\nmode\n\n\nmean", 
             "title": "Spaces and Distributions"
         }, 
         {
@@ -187,12 +187,12 @@
         }, 
         {
             "location": "/interfaces/#spaces", 
-            "text": "A space object should contain the information needed to define the set of all possible states, actions or observations. The implementation will depend on the attributes of the elements. For example, if the space is continuous, the space object may only contain the limits of the continuous range. In the case of a discrete problem, a vector containing all states is appropriate for representing a state.  The following functions may be called on a space object:  rand   dimensions   iterator", 
+            "text": "A space object should contain the information needed to define the set of all possible states, actions or observations. The implementation will depend on the attributes of the elements. For example, if the space is continuous, the space object may only contain the limits of the continuous range. In the case of a discrete problem, a vector containing all states is appropriate for representing a state.  The following functions may be called on a space object:   rand  dimensions  iterator", 
             "title": "Spaces"
         }, 
         {
             "location": "/interfaces/#distributions", 
-            "text": "A distribution object represents a probability distribution. the following functions may be called on a distribution object  rand   iterator   pdf   mode   mean", 
+            "text": "A distribution object represents a probability distribution. The following functions may be called on a distribution object   rand  iterator  pdf  mode  mean", 
             "title": "Distributions"
         }, 
         {
