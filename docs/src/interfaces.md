@@ -8,16 +8,16 @@ A space object should contain the information needed to define the set of all po
 
 The following functions may be called on a space object:
 
-[`rand`](@ref)
-[`dimensions`](@ref)
-[`iterator`](@ref)
+- [`rand`](@ref)
+- [`dimensions`](@ref)
+- [`iterator`](@ref)
 
 ## Distributions
 
-A distribution object represents a probability distribution. the following functions may be called on a distribution object
+A distribution object represents a probability distribution. The following functions may be called on a distribution object
 
-[`rand`](@ref)
-[`iterator`](@ref)
-[`pdf`](@ref)
-[`mode`](@ref)
-[`mean`](@ref)
+- [`rand`](@ref)
+- [`iterator`](@ref)
+- [`pdf`](@ref)
+- [`mode`](@ref)
+- [`mean`](@ref)
