@@ -104,8 +104,9 @@ function implemented(f::typeof(generate_sor), TT::Type)
     #     return false
     # end
     m = which(f, TT)
-    reqs_met = implemented(generate_so, TT) && implemented(reward, Tuple{TT.parameters[1:end-1]..., TT.parameters[2]})
-    if m.module == POMDPs && !reqs_met
+    so_reqs_met = implemented(generate_so, TT) && implemented(reward, Tuple{TT.parameters[1:end-1]..., TT.parameters[2]})
+    sr_reqs_met = implemented(generate_sr, TT) && implemented(generate_o, Tuple{TT.parameters[1:end-1]..., TT.parameters[2], TT.parameters[end]})
+    if m.module == POMDPs && !so_reqs_met && !sr_reqs_met
         return false
     else # a more specific implementation exists
         return true
@@ -113,10 +114,16 @@ function implemented(f::typeof(generate_sor), TT::Type)
 end
 
 @generated function generate_sor{S, A}(p::POMDP{S,A}, s::S, a::A, rng::AbstractRNG)
-    if implemented(generate_so, Tuple{p, s, a, rng})
+    if implemented(generate_so, Tuple{p, s, a, rng}) && implemented(reward, Tuple{p, s, a, s})
         return quote
             sp, o = generate_so(p, s, a, rng)
             return sp, o, reward(p, s, a, sp)
+        end
+    elseif implemented(generate_sr, Tuple{p, s, a, rng}) && implemented(generate_o, Tuple{p, s, a, sp, rng})
+        return quote
+            sp, r = generate_sr(p, s, a, rng)
+            o = generate_o(p, s, a, sp, rng)
+            return sp, o, r
         end
     else
         failed_synth_warning(generate_sor)

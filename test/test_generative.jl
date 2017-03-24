@@ -1,5 +1,5 @@
 import POMDPs: transition, reward, initial_state_distribution
-import POMDPs: generate_o
+import POMDPs: generate_sr, generate_o
 
 println("Warning expected:")
 @test_throws MethodError initial_state(A(), Base.GLOBAL_RNG)
@@ -26,3 +26,9 @@ generate_o(b::B, s::Int, a::Bool, sp::Int, rng::AbstractRNG) = sp
 
 initial_state_distribution(b::B) = Int[1,2,3]
 @test initial_state(B(), Base.GLOBAL_RNG) in initial_state_distribution(B())
+
+
+type C <: POMDP{Void, Void, Void} end
+generate_sr(c::C, s::Void, a::Void, rng::AbstractRNG) = nothing, 0.0
+generate_o(c::C, s::Void, a::Void, sp::Void, rng::AbstractRNG) = nothing
+@test @implemented generate_sor(::C, ::Void, ::Void, ::MersenneTwister)
