@@ -119,7 +119,7 @@ end
             sp, o = generate_so(p, s, a, rng)
             return sp, o, reward(p, s, a, sp)
         end
-    elseif implemented(generate_sr, Tuple{p, s, a, rng}) && implemented(generate_o, Tuple{p, s, a, sp, rng})
+    elseif implemented(generate_sr, Tuple{p, s, a, rng}) && implemented(generate_o, Tuple{p, s, a, s, rng})
         return quote
             sp, r = generate_sr(p, s, a, rng)
             o = generate_o(p, s, a, sp, rng)

@@ -32,3 +32,4 @@ type C <: POMDP{Void, Void, Void} end
 generate_sr(c::C, s::Void, a::Void, rng::AbstractRNG) = nothing, 0.0
 generate_o(c::C, s::Void, a::Void, sp::Void, rng::AbstractRNG) = nothing
 @test @implemented generate_sor(::C, ::Void, ::Void, ::MersenneTwister)
+@test generate_sor(C(), nothing, nothing, Base.GLOBAL_RNG) == (nothing, nothing, 0.0)
