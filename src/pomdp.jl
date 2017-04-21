@@ -126,8 +126,8 @@ Return the integer index of observation `o`. Used for discrete models only.
 function obs_index end
 
 """
-    convert{S}(vec::Array{Float64}, s::S, problem::POMDP)
-    convert{S}(s::S, vec::Array{Float64}, problem::POMDP)
+    convert{S}(::Type{Array{Float64}}, s::S, problem::POMDP)
+    convert{S}(::Type{S}, vec::Array{Float64}, problem::POMDP)
 
 Convert a state or observaton to vectorized form of floats or convert
 an array of floats back to a problem specific state or observation.
