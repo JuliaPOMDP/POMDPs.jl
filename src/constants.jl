@@ -24,7 +24,12 @@ const NATIVE_PACKAGES = Set{String}(
                          "POMDPFiles",
                          "ParticleFilters",
                          "TabularTDLearning",
-                         "POMDPReinforce"])
+                         "POMDPReinforce",
+                         "POMCPOW"
+                        ])
+
+# Packages registered on METADATA
+const REGISTERED_PACKAGES = Set{String}(["ParticleFilters"])
 
 const NON_NATIVE_PACKAGES = Set{String}(
                              ["SARSOP",

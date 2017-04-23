@@ -13,14 +13,18 @@ julia> POMDPs.add("MCTS")
 function add(solver_name::AbstractString, v::Bool=true)
     @assert solver_name in SUPPORTED_PACKAGES string("The JuliaPOMDP package: ", solver_name, " is not supported")
     full_url = string(REMOTE_URL, solver_name, ".jl")
-    try
-        Pkg.clone(full_url)
-        Pkg.build(solver_name)
-    catch ex
-        if isa(ex, Base.Pkg.PkgError) && ex.msg == "$solver_name already exists"
-            v ? (println("Package already installed")) : (nothing)
-        else
-            rethrow(ex)
+    if solver_name in REGISTERED_PACKAGES
+        Pkg.add(solver_name)
+    else
+        try
+            Pkg.clone(full_url)
+            Pkg.build(solver_name)
+        catch ex
+            if isa(ex, Base.Pkg.PkgError) && ex.msg == "$solver_name already exists"
+                v ? (println("Package already installed")) : (nothing)
+            else
+                rethrow(ex)
+            end
         end
     end
 end
