@@ -12,7 +12,7 @@ Base.rand
 """
     pdf(d::Any, x::Any)
 
-Value of probability distribution `d` function at sample `x`.
+Evaluate the probability density of distribution `d` at sample `x`.
 """
 function pdf end # maybe eventually this should be Distributions.pdf
 
@@ -33,7 +33,7 @@ Base.mean
 """
     iterator(d::Any)
 
-Return an iterable type (array or custom iterator) that iterates over possible values of `d`. Values with zero probability may be skipped.
+Return an iterable type (array or custom iterator) that iterates over possible values of distribution or space `d`. Values with zero probability may be skipped.
 """
 function iterator end
 

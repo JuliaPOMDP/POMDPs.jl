@@ -56,11 +56,20 @@ Return the transition distribution from the current state-action pair
 function transition end
 
 """
-    observation{S,A,O}(problem::POMDP{S,A,O}, action::A, statep::S)
+    observation{S,A,O}(problem::POMDP{S,A,O}, statep::S)
 
-Return the observation distribution for the a-s' tuple (action and next state) and returns it
+Return the observation distribution for a state (this method can only be
+implemented when the observation does not depend on the action)
 """
 function observation end
+
+"""
+    observation{S,A,O}(problem::POMDP{S,A,O}, action::A, statep::S)
+
+Return the observation distribution for the a-s' tuple (action and next state)
+"""
+observation{S,A,O}(problem::POMDP{S,A,O}, a::A, sp::S) = observation(problem, sp)
+@impl_dep {P<:POMDP,S,A} observation(::P,::A,::S) observation(::P,::S)
 
 """
     observation{S,A,O}(problem::POMDP{S,A,O}, state::S, action::A, statep::S)
