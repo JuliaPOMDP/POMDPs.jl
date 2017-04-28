@@ -256,7 +256,7 @@ end
 <pre><code class="julia">implemented(f::Function, TT::TupleType) = method_exists(f, TT)
 </code></pre>
 
-<p>will automatically handle this, but there may be cases in which you want to override the behavior of <code>implemented</code>, for example, if the function can be synthesized from other functions. Examples of this can be found in the <a href="https://github.com/JuliaPOMDP/GenerativeModels.jl/blob/master/src/defaults.jl">default implementations of the GenerativeModels.jl funcitons</a>.</p>
+<p>will automatically handle this, but there may be cases in which you want to override the behavior of <code>implemented</code>, for example, if the function can be synthesized from other functions. Examples of this can be found in the <a href="https://github.com/JuliaPOMDP/POMDPs.jl/blob/master/src/generative_impl.jl.jl">default implementations of the generative interface funcitons</a>.</p>
               
             </div>
           </div>
