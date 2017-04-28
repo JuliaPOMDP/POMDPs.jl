@@ -29,7 +29,9 @@ const NATIVE_PACKAGES = Set{String}(
                         ])
 
 # Packages registered on METADATA
-const REGISTERED_PACKAGES = Set{String}(["ParticleFilters"])
+const REGISTERED_PACKAGES = Set{String}(["ParticleFilters",
+                                         "POMDPToolbox",
+                                         "POMDPModels"])
 
 const NON_NATIVE_PACKAGES = Set{String}(
                              ["SARSOP",

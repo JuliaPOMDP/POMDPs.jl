@@ -99,4 +99,4 @@ When checking requirements in `check_requirements`, or printing in `show_require
 ```julia
 implemented(f::Function, TT::TupleType) = method_exists(f, TT)
 ```
-will automatically handle this, but there may be cases in which you want to override the behavior of `implemented`, for example, if the function can be synthesized from other functions. Examples of this can be found in the [default implementations of the GenerativeModels.jl funcitons](https://github.com/JuliaPOMDP/GenerativeModels.jl/blob/master/src/defaults.jl).
+will automatically handle this, but there may be cases in which you want to override the behavior of `implemented`, for example, if the function can be synthesized from other functions. Examples of this can be found in the [default implementations of the generative interface funcitons](https://github.com/JuliaPOMDP/POMDPs.jl/blob/master/src/generative_impl.jl.jl).
