@@ -151,3 +151,19 @@ Many packages use the POMDPs.jl interface, including MDP and POMDP solvers, supp
 
 *_These packages require non-Julia dependencies_
 
+## Citing POMDPs
+
+If POMDPs is useful in your research and you would like to acknowledge it, please cite this [paper](http://www.jmlr.org/papers/v18/16-300.html):
+
+```
+@article{egorov2017pomdps,
+  author  = {Maxim Egorov and Zachary N. Sunberg and Edward Balaban and Tim A. Wheeler and Jayesh K. Gupta and Mykel J. Kochenderfer},
+  title   = {{POMDP}s.jl: A Framework for Sequential Decision Making under Uncertainty},
+  journal = {Journal of Machine Learning Research},
+  year    = {2017},
+  volume  = {18},
+  number  = {26},
+  pages   = {1-5},
+  url     = {http://jmlr.org/papers/v18/16-300.html}
+}
+```
