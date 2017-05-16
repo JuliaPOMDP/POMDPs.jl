@@ -35,7 +35,7 @@ function n_actions end
 """
     n_observations(problem::POMDP)
 
-Return the number of actions in `problem`. Used for discrete models only.
+Return the number of observations in `problem`. Used for discrete models only.
 """
 function n_observations end
 
