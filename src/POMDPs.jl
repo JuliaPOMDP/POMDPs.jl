@@ -55,6 +55,7 @@ export
     upperbound,
     getindex,
     iterator,
+    sampletype,
     initial_state_distribution,
 
     # Solver types

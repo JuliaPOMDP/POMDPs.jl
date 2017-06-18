@@ -101,6 +101,7 @@ mode
 mean
 dimensions
 iterator
+sampletype
 ```
 
 ## Belief Functions

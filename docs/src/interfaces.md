@@ -11,6 +11,7 @@ The following functions may be called on a space object:
 - [`rand`](@ref)
 - [`dimensions`](@ref)
 - [`iterator`](@ref)
+- [`sampletype`](@ref)
 
 ## Distributions
 
@@ -18,6 +19,7 @@ A distribution object represents a probability distribution. The following funct
 
 - [`rand`](@ref)
 - [`iterator`](@ref)
+- [`sampletype`](@ref)
 - [`pdf`](@ref)
 - [`mode`](@ref)
 - [`mean`](@ref)

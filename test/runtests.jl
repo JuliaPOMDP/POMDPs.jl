@@ -18,6 +18,11 @@ POMDPs.observation(::A,::Bool,::Int) = [true, false]
 @test @implemented observation(::A,::Int,::Bool,::Int)
 @test @implemented observation(::A,::Bool,::Int)
 
+type D end
+POMDPs.sampletype(::Type{D}) = Int
+@test @implemented sampletype(::D)
+@test sampletype(D()) == Int
+
 include("test_inferrence.jl")
 include("test_requirements.jl")
 include("test_generative.jl")

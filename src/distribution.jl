@@ -38,3 +38,18 @@ Return an iterable type (array or custom iterator) that iterates over possible v
 function iterator end
 
 iterator(a::AbstractArray) = a
+
+"""
+    sampletype(T::Type)
+    sampletype(d::Any) = sampletype(typeof(d))
+
+Return the type of objects that are sampled from a distribution or space `d` when `rand(rng, d)` is called.
+
+Only the `sampletype(::Type)` method should be implemented for a type, but it can be called on objects.
+"""
+function sampletype end
+
+sampletype(d::Any) = sampletype(typeof(d))
+
+implemented{T<:Type}(sampletype, TT::Tuple{T}) = method_exists(f, TT)
+implemented{T}(sampletype, ::Tuple{T}) = implemented(sampletype, Tuple{Type{T}})
