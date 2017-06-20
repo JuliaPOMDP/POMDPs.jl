@@ -8,7 +8,7 @@
 [![Docs](https://img.shields.io/badge/docs-latest-blue.svg)](https://JuliaPOMDP.github.io/POMDPs.jl/latest)
 [![Gitter](https://badges.gitter.im/JuliaPOMDP/Lobby.svg)](https://gitter.im/JuliaPOMDP/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
-This package provides a core interface for working with Markov decision processes (MDPs) and partially observable Markov decision processes (POMDPs).
+This package provides a core interface for working with Markov decision processes (MDPs) and partially observable Markov decision processes (POMDPs). For examples, please see the [Gallery](https://github.com/JuliaPOMDP/POMDPGallery.jl).
 
 Our goal is to provide a common programming vocabulary for:
 
@@ -49,24 +49,7 @@ POMDPs.add_all(native_only=true)
 
 ## Quick Start
 
-To run a simple simulation of the classsic [Tiger POMDP](https://www.cs.rutgers.edu/~mlittman/papers/aij98-pomdp.pdf) with a (poorly designed) heuristic policy defined using Julia's `do` syntax, run the following code in julia:
-
-```julia
-using POMDPs
-using POMDPModels, POMDPToolbox
-
-# initialize problem (the classic Tiger POMDP)
-pomdp = TigerPOMDP() # from POMDPModels
-
-# run a simulation with an ad-hoc policy that always opens the left door
-history = sim(pomdp, max_steps=10) do obs
-    println("Observation was $obs.")
-    return TIGER_OPEN_LEFT
-end
-println("Discounted reward was $(discounted_reward(history)).")
-```
-
-JuliaPOMDP also has implementations of several solvers. To use the QMDP Solver, run the following code:
+To run a simple simulation of the classic [Tiger POMDP](https://www.cs.rutgers.edu/~mlittman/papers/aij98-pomdp.pdf) using a policy created by the QMDP solver.
 
 ```julia
 using POMDPs, POMDPModels, POMDPToolbox, QMDP
@@ -81,14 +64,16 @@ belief_updater = updater(policy) # the default QMDP belief updater (discrete Bay
 history = simulate(HistoryRecorder(max_steps=10), pomdp, policy, belief_updater)
 
 # look at what happened
-for (s, b, a, r, sp, op) in history
+for (s, b, a, o) in eachstep(history, "sbao")
     println("State was $s,")
     println("belief was $b,")
     println("action $a was taken,")
-    println("and observation $op was received.\n")
+    println("and observation $o was received.\n")
 end
 println("Discounted reward was $(discounted_reward(history)).")
 ```
+
+For more examples with visualization see [POMDPGallery.jl](https://github.com/JuliaPOMDP/POMDPGallery.jl).
 
 ## Tutorials
 
