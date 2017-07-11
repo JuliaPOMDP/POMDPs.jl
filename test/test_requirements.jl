@@ -71,7 +71,7 @@ end))
 @test_throws MethodError solve(CoolSolver(), SimplePOMDP())
 
 POMDPs.states(::SimplePOMDP) = [1.4, 3.2, 5.8]
-immutable SimpleDistribution
+struct SimpleDistribution
     ss::Vector{Float64}
     b::Vector{Float64}
 end

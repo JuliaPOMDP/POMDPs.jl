@@ -6,7 +6,7 @@ println("Warning expected:")
 println("Warning expected:")
 @test_throws MethodError generate_s(A(), 1, true, Base.GLOBAL_RNG)
 
-type B <: POMDP{Int, Bool, Bool} end
+mutable struct B <: POMDP{Int, Bool, Bool} end
 
 transition(b::B, s::Int, a::Bool) = Int[s+a]
 @test implemented(generate_s, Tuple{B, Int, Bool, MersenneTwister})
@@ -28,7 +28,7 @@ initial_state_distribution(b::B) = Int[1,2,3]
 @test initial_state(B(), Base.GLOBAL_RNG) in initial_state_distribution(B())
 
 
-type C <: POMDP{Void, Void, Void} end
+mutable struct C <: POMDP{Void, Void, Void} end
 generate_sr(c::C, s::Void, a::Void, rng::AbstractRNG) = nothing, 0.0
 generate_o(c::C, s::Void, a::Void, sp::Void, rng::AbstractRNG) = nothing
 @test @implemented generate_sor(::C, ::Void, ::Void, ::MersenneTwister)

@@ -1,16 +1,16 @@
-typealias TupleType Type # should be Tuple{T1,T2,...}
-typealias Req Tuple{Function, TupleType}
+const TupleType = Type # should be Tuple{T1,T2,...}
+const Req = Tuple{Function, TupleType}
 
-abstract AbstractRequirementSet
+abstract type AbstractRequirementSet end
 
-type Unspecified <: AbstractRequirementSet
+mutable struct Unspecified <: AbstractRequirementSet
     requirer
     parent::Nullable{Any}
 end
 
 Unspecified(requirer) = Unspecified(requirer, Nullable{Any}())
 
-type RequirementSet <: AbstractRequirementSet
+mutable struct RequirementSet <: AbstractRequirementSet
     requirer
     reqs::Vector{Req} # not actually a set - to preserve intuitive ordering
     deps::Vector{AbstractRequirementSet}
@@ -57,7 +57,7 @@ function pomdp_requirements(name::Union{Expr,String}, block::Expr)
     return newblock
 end
 
-typealias CheckedList Vector{Tuple{Bool, Function, TupleType}}
+const CheckedList = Vector{Tuple{Bool, Function, TupleType}}
 
 
 """
@@ -83,7 +83,7 @@ function convert_req(ex::Expr)
                 break
             end
         end
-    else 
+    else
         malformed = true
     end
     if malformed # throw error at parse time so solver writers will have to deal with this
@@ -133,7 +133,7 @@ function recursively_show(io::IO,
         show_incomplete(io, r)
         first_exception = Nullable{RequirementSet}(r)
     end
-    
+
     for dep in r.deps
         depcomplete, depexception = recursively_show(io, dep, analyzed, reported)
         allthere = allthere && depcomplete
@@ -239,7 +239,7 @@ function convert_call(call::Expr)
                 push!(args, a)
             end
         end
-    else 
+    else
         malformed = true
     end
     if malformed # throw error at parse time so solver writers will have to deal with this
@@ -262,7 +262,7 @@ Replace any @req calls with `push!(\$reqs_name, <requirement>)`
 Returns true if there was a requirement in there and so should not be escaped.
 """
 function handle_reqs!(node::Expr, reqs_name::Symbol)
-    
+
     if node.head == :macrocall && node.args[1] == Symbol("@req")
         macro_node = copy(node)
         node.head = :call
@@ -312,7 +312,7 @@ In the example above, `@implemented reward(::P,::S,::A,::S)` will return true if
 THIS IS ONLY INTENDED FOR USE INSIDE POMDPs AND MAY NOT FUNCTION CORRECTLY ELSEWHERE
 """
 macro impl_dep(curly, signature, dependency)
-    # this is kinda hacky and fragile with the cell1d - email Zach if it breaks 
+    # this is kinda hacky and fragile with the cell1d - email Zach if it breaks
     @assert curly.head == :cell1d
     implemented_curly = :(implemented{$(curly.args...)})
     tplex = convert_req(signature)

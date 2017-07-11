@@ -6,7 +6,7 @@ Abstract base type for a partially observable Markov decision process.
     A: action type
     O: observation type
 """
-abstract POMDP{S,A,O}
+abstract type POMDP{S,A,O} end
 
 """
 Abstract base type for a fully observable Markov decision process.
@@ -14,7 +14,7 @@ Abstract base type for a fully observable Markov decision process.
     S: state type
     A: action type
 """
-abstract MDP{S,A}
+abstract type MDP{S,A} end
 
 """
     n_states(problem::POMDP)
@@ -76,7 +76,7 @@ observation{S,A,O}(problem::POMDP{S,A,O}, a::A, sp::S) = observation(problem, sp
 
 Return the observation distribution for the s-a-s' tuple (state, action, and next state)
 """
-observation{S,A,O}(problem::POMDP{S,A,O}, s::S, a::A, sp::S) = observation(problem, a, sp) 
+observation{S,A,O}(problem::POMDP{S,A,O}, s::S, a::A, sp::S) = observation(problem, a, sp)
 @impl_dep {P<:POMDP,S,A} observation(::P,::S,::A,::S) observation(::P,::A,::S)
 
 """

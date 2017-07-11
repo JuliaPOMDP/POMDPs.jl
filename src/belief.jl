@@ -11,9 +11,9 @@ Abstract type for an object that defines how the belief should be updated
 
 A belief is a general construct that represents the knowledge an agent has
 about the state of the system. This can be a probability distribution, an
-action observation history or a more general representation. 
+action observation history or a more general representation.
 """
-abstract Updater{B}
+abstract type Updater{B} end
 
 # TODO(max): should this be moved to pomdp.jl?
 """
@@ -31,7 +31,7 @@ Returns a new instance of an updated belief given `belief_old` and the latest ac
 function update end
 
 """
-    initialize_belief{B}(updater::Updater{B}, 
+    initialize_belief{B}(updater::Updater{B},
                          state_distribution::Any)
     initialize_belief{B}(updater::Updater{B}, belief::Any)
 

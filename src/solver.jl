@@ -2,11 +2,11 @@
 """
 Base type for an MDP/POMDP solver
 """
-abstract Solver
+abstract type Solver end
 
 """
     solve(solver::Solver, problem::POMDP)
 
-Solves the POMDP using method associated with solver, and returns a policy. 
+Solves the POMDP using method associated with solver, and returns a policy.
 """
 function solve end
