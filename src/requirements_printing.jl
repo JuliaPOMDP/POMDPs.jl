@@ -52,6 +52,8 @@ function format_method(f::Function, argtypes::TupleType; module_names=false)
                         str = string(str, tt.name.name, i<length(t.types)?',':'}')
                     end
                     push!(mless_typenames, str)
+                elseif isa(t, UnionAll)
+                    push!(mless_typenames, string(t))
                 else
                     push!(mless_typenames, t.name.name)
                 end

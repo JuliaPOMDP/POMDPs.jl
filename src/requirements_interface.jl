@@ -190,7 +190,7 @@ function show_requirements(r::AbstractRequirementSet)
 
     # all printing to the screen happens here at once
     println()
-    print(takebuf_string(buf))
+    print(String(take!(buf)))
     println()
     if !allthere
         println("Note: Missing methods are often due to incorrect importing. Consider using `importall POMDPs`.")
