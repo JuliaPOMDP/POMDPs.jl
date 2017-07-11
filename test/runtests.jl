@@ -1,7 +1,7 @@
 using Base.Test
 
 using POMDPs
-type A <: POMDP{Int,Bool,Bool} end
+mutable struct A <: POMDP{Int,Bool,Bool} end
 @test_throws MethodError n_states(A())
 @test_throws MethodError state_index(A(), 1)
 
@@ -18,7 +18,7 @@ POMDPs.observation(::A,::Bool,::Int) = [true, false]
 @test @implemented observation(::A,::Int,::Bool,::Int)
 @test @implemented observation(::A,::Bool,::Int)
 
-type D end
+mutable struct D end
 POMDPs.sampletype(::Type{D}) = Int
 @test @implemented sampletype(::D)
 @test sampletype(D()) == Int
