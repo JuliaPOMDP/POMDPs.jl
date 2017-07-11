@@ -6,10 +6,8 @@
 
 """
 Base type for a policy (a map from every possible belief, or more abstract policy state, to an optimal or suboptimal action)
-
-    B: a belief (or policy state) that represents the knowledge an agent has about the state of the system
 """
-abstract type Policy{B} end
+abstract type Policy end
 
 """
     action{B}(policy::Policy, x::B)
