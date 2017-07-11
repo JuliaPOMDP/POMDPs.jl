@@ -114,7 +114,7 @@ end
 """
     @requirements_info ASolver() [YourPOMDP()]
 
-Print information about the requirements for a solver. 
+Print information about the requirements for a solver.
 """
 macro requirements_info(exprs...)
     quote
@@ -155,7 +155,7 @@ end
 """
     @subreq f(arg1, arg2)
 
-In a `@POMDP_requirements` or `@POMDP_require` block, include the requirements for `f(arg1, arg2) as a child argument set.
+In a `@POMDP_requirements` or `@POMDP_require` block, include the requirements for `f(arg1, arg2)` as a child argument set.
 """
 macro subreq(ex)
     return quote
@@ -196,7 +196,7 @@ function show_requirements(r::AbstractRequirementSet)
         println("Note: Missing methods are often due to incorrect importing. Consider using `importall POMDPs`.")
         println()
     end
-    
+
     if !isnull(first_exception)
         print("Throwing the first exception (from processing ")
         print_with_color(:blue, handle_method(get(first_exception).requirer))
