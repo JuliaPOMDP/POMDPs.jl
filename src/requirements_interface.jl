@@ -55,8 +55,8 @@ macro POMDP_require(typedcall, block)
     tconstr = Expr[:($(Symbol(:T,i))<:$(esc(C))) for (i,C) in enumerate(types)] # oh snap
     ts = Symbol[Symbol(:T,i) for i in 1:length(types)]
     req_spec = :(($fname, Tuple{$(types...)}))
-    fimpl = quote 
-        function get_requirements{$(tconstr...)}(f::typeof($(esc(fname))), # dang
+    fimpl = quote
+        function POMDPs.get_requirements{$(tconstr...)}(f::typeof($(esc(fname))), # dang
                                                  args::Tuple{$(ts...)})
             ($([esc(a) for a in args]...),) = args # whoah
             return $(pomdp_requirements(req_spec, block))
@@ -114,7 +114,7 @@ end
 """
     @requirements_info ASolver() [YourPOMDP()]
 
-Print information about the requirements for a solver. 
+Print information about the requirements for a solver.
 """
 macro requirements_info(exprs...)
     quote
@@ -155,7 +155,7 @@ end
 """
     @subreq f(arg1, arg2)
 
-In a `@POMDP_requirements` or `@POMDP_require` block, include the requirements for `f(arg1, arg2) as a child argument set.
+In a `@POMDP_requirements` or `@POMDP_require` block, include the requirements for `f(arg1, arg2)` as a child argument set.
 """
 macro subreq(ex)
     return quote
@@ -190,13 +190,13 @@ function show_requirements(r::AbstractRequirementSet)
 
     # all printing to the screen happens here at once
     println()
-    print(takebuf_string(buf))
+    print(String(take!(buf)))
     println()
     if !allthere
         println("Note: Missing methods are often due to incorrect importing. Consider using `importall POMDPs`.")
         println()
     end
-    
+
     if !isnull(first_exception)
         print("Throwing the first exception (from processing ")
         print_with_color(:blue, handle_method(get(first_exception).requirer))

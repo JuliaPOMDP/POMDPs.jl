@@ -2,9 +2,9 @@ using Base.Test
 
 using POMDPs
 
-type X <: POMDP{Float64,Bool,Int} end
-abstract Z <: POMDP{Float64,Bool,Int}
-type Y <: Z end
+mutable struct X <: POMDP{Float64,Bool,Int} end
+abstract type Z <: POMDP{Float64,Bool,Int} end
+mutable struct Y <: Z end
 
 @test_throws ErrorException state_type(Int)
 @test_throws ErrorException action_type(Int)

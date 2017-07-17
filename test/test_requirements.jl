@@ -11,10 +11,10 @@ end
 
 module MyModule
     using POMDPs
-    
+
     export CoolSolver, solve
 
-    type CoolSolver <: Solver end
+    mutable struct CoolSolver <: Solver end
 
     p = nothing # to test hygeine
     @POMDP_require solve(s::CoolSolver, p::POMDP) begin
@@ -41,7 +41,7 @@ module MyModule
 
     util1(x) = abs(x)
 
-    util2(p::POMDP) = observations(p) 
+    util2(p::POMDP) = observations(p)
     @POMDP_require util2(p::POMDP) begin
         P = typeof(p)
         @req observations(::P)
@@ -51,7 +51,7 @@ end
 using POMDPs
 using MyModule
 
-type SimplePOMDP <: POMDP{Float64, Bool, Int} end
+mutable struct SimplePOMDP <: POMDP{Float64, Bool, Int} end
 POMDPs.actions(SimplePOMDP) = [true, false]
 
 POMDPs.discount(::SimplePOMDP) = 0.9
@@ -71,7 +71,7 @@ end))
 @test_throws MethodError solve(CoolSolver(), SimplePOMDP())
 
 POMDPs.states(::SimplePOMDP) = [1.4, 3.2, 5.8]
-immutable SimpleDistribution
+struct SimpleDistribution
     ss::Vector{Float64}
     b::Vector{Float64}
 end

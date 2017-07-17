@@ -44,14 +44,22 @@ function format_method(f::Function, argtypes::TupleType; module_names=false)
     if !module_names
         # begin
             fname = typeof(f).name.mt.name
-            mless_typenames = [] 
+            mless_typenames = []
             for t in argtypes.parameters
+                # if isa(t, Union)
+                #     str = "Union{"
+                #     for (i, tt) in enumerate(t.types)
+                #         str = string(str, tt.name.name, i<length(t.types)?',':'}')
+                #     end
+                #     push!(mless_typenames, str)
                 if isa(t, Union)
                     str = "Union{"
-                    for (i, tt) in enumerate(t.types)
-                        str = string(str, tt.name.name, i<length(t.types)?',':'}')
+                    for (i, tt) in enumerate(fieldnames(t))
+                        str = string(str, getfield(t, tt), i<length(fieldnames(t))?',':'}')
                     end
                     push!(mless_typenames, str)
+                elseif isa(t, UnionAll)
+                    push!(mless_typenames, string(t))
                 else
                     push!(mless_typenames, t.name.name)
                 end
