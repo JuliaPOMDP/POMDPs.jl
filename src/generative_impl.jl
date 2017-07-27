@@ -3,9 +3,9 @@
 # Yes, this could be cleaned up with a macro to get rid of all the repetition, but figuring out how the macro would work exactly took more thought
 
 function implemented(f::typeof(generate_s), TT::Type)
-    # if !method_exists(f, TT)
-    #     return false
-    # end
+    if !method_exists(f, TT)
+        return false
+    end
     m = which(f, TT)
     if m.module == POMDPs && !implemented(transition, Tuple{TT.parameters[1:end-1]...})
         return false
@@ -14,7 +14,7 @@ function implemented(f::typeof(generate_s), TT::Type)
     end
 end
 
-@generated function generate_s{S, A}(p::Union{MDP{S,A},POMDP{S,A}}, s::S, a::A, rng::AbstractRNG)
+@generated function generate_s(p::Union{MDP,POMDP}, s, a, rng::AbstractRNG)
     if implemented(transition, Tuple{p, s, a})
         return quote
             td = transition(p, s, a)
@@ -28,9 +28,9 @@ end
 
 
 function implemented(f::typeof(generate_sr), TT::Type)
-    # if !method_exists(f, TT)
-    #     return false
-    # end
+    if !method_exists(f, TT)
+        return false
+    end
     m = which(f, TT)
     reqs_met = implemented(generate_s, TT) && implemented(reward, Tuple{TT.parameters[1:end-1]..., TT.parameters[2]})
     if m.module == POMDPs && !reqs_met
@@ -40,7 +40,7 @@ function implemented(f::typeof(generate_sr), TT::Type)
     end
 end
 
-@generated function generate_sr{S, A}(p::Union{POMDP{S,A},MDP{S,A}}, s::S, a::A, rng::AbstractRNG)
+@generated function generate_sr(p::Union{POMDP,MDP}, s, a, rng::AbstractRNG)
     if implemented(generate_s, Tuple{p, s, a, rng})
         return quote
             sp = generate_s(p, s, a, rng)
@@ -52,7 +52,10 @@ end
     end
 end
 
-function implemented{P<:POMDP,S,A,RT<:AbstractRNG}(f::typeof(generate_o), TT::Type{Tuple{P,S,A,S,RT}})
+function implemented(f::typeof(generate_o), TT::Type)
+    if !method_exists(f, TT)
+        return false
+    end
     m = which(f, TT)
     if m.module == POMDPs && !implemented(observation, Tuple{TT.parameters[1:end-1]...})
         return false
@@ -61,7 +64,7 @@ function implemented{P<:POMDP,S,A,RT<:AbstractRNG}(f::typeof(generate_o), TT::Ty
     end
 end
 
-@generated function generate_o{S, A}(p::POMDP{S,A}, s::S, a::A, sp::S, rng::AbstractRNG)
+@generated function generate_o(p::POMDP, s, a, sp, rng::AbstractRNG)
     if implemented(observation, Tuple{p, s, a, sp})
         return quote
             od = observation(p, s, a, sp)
@@ -74,9 +77,9 @@ end
 end
 
 function implemented(f::typeof(generate_so), TT::Type)
-    # if !method_exists(f, TT)
-    #     return false
-    # end
+    if !method_exists(f, TT)
+        return false
+    end
     m = which(f, TT)
     reqs_met = implemented(generate_s, TT) && implemented(generate_o, Tuple{TT.parameters[1:end-1]..., TT.parameters[2], TT.parameters[end]})
     if m.module == POMDPs && !reqs_met
@@ -86,7 +89,7 @@ function implemented(f::typeof(generate_so), TT::Type)
     end
 end
 
-@generated function generate_so{S, A}(p::POMDP{S,A}, s::S, a::A, rng::AbstractRNG)
+@generated function generate_so(p::POMDP, s, a, rng::AbstractRNG)
     if implemented(generate_s, Tuple{p, s, a, rng}) && implemented(generate_o, Tuple{p, s, a, s, rng})
         return quote
             sp = generate_s(p, s, a, rng)
@@ -100,9 +103,9 @@ end
 
 
 function implemented(f::typeof(generate_sor), TT::Type)
-    # if !method_exists(f, TT)
-    #     return false
-    # end
+    if !method_exists(f, TT)
+        return false
+    end
     m = which(f, TT)
     so_reqs_met = implemented(generate_so, TT) && implemented(reward, Tuple{TT.parameters[1:end-1]..., TT.parameters[2]})
     sr_reqs_met = implemented(generate_sr, TT) && implemented(generate_o, Tuple{TT.parameters[1:end-1]..., TT.parameters[2], TT.parameters[end]})
@@ -113,7 +116,7 @@ function implemented(f::typeof(generate_sor), TT::Type)
     end
 end
 
-@generated function generate_sor{S, A}(p::POMDP{S,A}, s::S, a::A, rng::AbstractRNG)
+@generated function generate_sor(p::POMDP, s, a, rng::AbstractRNG)
     if implemented(generate_so, Tuple{p, s, a, rng}) && implemented(reward, Tuple{p, s, a, s})
         return quote
             sp, o = generate_so(p, s, a, rng)
@@ -134,9 +137,9 @@ end
 
 
 function implemented(f::typeof(generate_or), TT::Type)
-    # if !method_exists(f, TT)
-    #     return false
-    # end
+    if !method_exists(f, TT)
+        return false
+    end
     m = which(f, TT)
     reqs_met = implemented(generate_o, TT) && implemented(reward, Tuple{TT.parameters[1:end-1]..., TT.parameters[2]})
     if m.module == POMDPs && !reqs_met
@@ -146,7 +149,7 @@ function implemented(f::typeof(generate_or), TT::Type)
     end
 end
 
-@generated function generate_or{S, A}(p::POMDP{S,A}, s::S, a::A, sp::S, rng::AbstractRNG)
+@generated function generate_or(p::POMDP, s, a, sp, rng::AbstractRNG)
     if implemented(generate_o, Tuple{p, s, a, sp, rng})
         return quote
             o = generate_o(p, s, a, sp, rng)
@@ -160,9 +163,9 @@ end
 
 
 function implemented(f::typeof(initial_state), TT::Type)
-    # if !method_exists(f, TT)
-    #     return false
-    # end
+    if !method_exists(f, TT)
+        return false
+    end
     m = which(f, TT)
     if m.module == POMDPs && !implemented(initial_state_distribution, Tuple{TT.parameters[1]})
         return false
