@@ -68,7 +68,7 @@ function observation end
 
 Return the observation distribution for the a-s' tuple (action and next state)
 """
-observation{S,A,O}(problem::POMDP{S,A,O}, a::A, sp::S) = observation(problem, sp)
+observation(problem::POMDP, a, sp) = observation(problem, sp)
 @impl_dep {P<:POMDP,S,A} observation(::P,::A,::S) observation(::P,::S)
 
 """
@@ -76,7 +76,7 @@ observation{S,A,O}(problem::POMDP{S,A,O}, a::A, sp::S) = observation(problem, sp
 
 Return the observation distribution for the s-a-s' tuple (state, action, and next state)
 """
-observation{S,A,O}(problem::POMDP{S,A,O}, s::S, a::A, sp::S) = observation(problem, a, sp)
+observation(problem::POMDP, s, a, sp) = observation(problem, a, sp)
 @impl_dep {P<:POMDP,S,A} observation(::P,::S,::A,::S) observation(::P,::A,::S)
 
 """
@@ -93,7 +93,7 @@ function reward end
 
 Return the immediate reward for the s-a-s' triple
 """
-reward{S,A}(problem::Union{POMDP{S,A},MDP{S,A}}, s::S, a::A, sp::S) = reward(problem, s, a)
+reward(problem::Union{POMDP,MDP}, s, a, sp) = reward(problem, s, a)
 @impl_dep {P<:Union{POMDP,MDP},S,A} reward(::P,::S,::A,::S) reward(::P,::S,::A)
 
 """
@@ -109,7 +109,7 @@ isterminal_obs{S,A,O}(problem::POMDP{S,A,O}, observation::O) = false
 
 Check if state s is terminal
 """
-isterminal{S,A}(problem::Union{POMDP{S,A},MDP{S,A}}, state::S) = false
+isterminal(problem::Union{POMDP,MDP}, state) = false
 
 """
     state_index{S,A,O}(problem::POMDP{S,A,O}, s::S)
