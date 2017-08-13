@@ -142,3 +142,9 @@ Convert a state or observaton to vectorized form of floats or convert
 an array of floats back to a problem specific state or observation.
 """
 Base.convert
+
+Base.convert(V::Type{A}, s, problem::Union{MDP,POMDP}) where A<:Array{Float64} = convert(V, s)
+Base.convert(S::Type, v::Array{Float64}, problem::Union{MDP, POMDP}) = convert(S, v)
+
+Base.convert(V::Type{A}, s::Number, problem::Union{MDP,POMDP}) where A<:Array{Float64} = V(s)
+Base.convert(S::Type{N}, v::Array{Float64}, problem::Union{MDP, POMDP}) where N<:Number = convert(N, first(v))
