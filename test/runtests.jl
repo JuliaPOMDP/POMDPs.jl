@@ -26,3 +26,12 @@ POMDPs.sampletype(::Type{D}) = Int
 include("test_inferrence.jl")
 include("test_requirements.jl")
 include("test_generative.jl")
+
+let
+    struct CI <: POMDP{Int,Int,Int} end
+    struct CV <: POMDP{Vector{Float64},Int,Int} end
+    @test convert(Vector{Float32}, 1, CI()) == Float32[1.0]
+    @test convert(state_type(CI), Float32[1.0], CI()) == 1
+    @test convert(state_type(CV), Float32[2.0,3.0], CV()) == [2.0, 3.0]
+    @test convert(Vector{Float32}, [2.0, 3.0], CV()) == Float32[2.0, 3.0]
+end

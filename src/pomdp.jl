@@ -135,16 +135,15 @@ Return the integer index of observation `o`. Used for discrete models only.
 function obs_index end
 
 """
-    convert{S}(::Type{Array{Float64}}, s::S, problem::POMDP)
-    convert{S}(::Type{S}, vec::Array{Float64}, problem::POMDP)
+    convert{S}(::Type{V}, s::S, problem::Union{MDP,POMDP}) where V <: AbstractArray
+    convert{S}(::Type{S}, vec::V, problem::Union{MDP,POMDP}) where V <: AbstractArray
 
 Convert a state or observaton to vectorized form of floats or convert
 an array of floats back to a problem specific state or observation.
 """
 Base.convert
 
-Base.convert(V::Type{A}, s, problem::Union{MDP,POMDP}) where A<:Array{Float64} = convert(V, s)
-Base.convert(S::Type, v::Array{Float64}, problem::Union{MDP, POMDP}) = convert(S, v)
+Base.convert(T::Type{A1}, s::A2, problem::Union{MDP, POMDP}) where {A1<:AbstractArray, A2<:AbstractArray} = convert(T, s)
 
-Base.convert(V::Type{A}, s::Number, problem::Union{MDP,POMDP}) where A<:Array{Float64} = V(s)
-Base.convert(S::Type{N}, v::Array{Float64}, problem::Union{MDP, POMDP}) where N<:Number = convert(N, first(v))
+Base.convert(::Type{A}, s::Number, problem::Union{MDP,POMDP}) where A<:AbstractArray{F} where F<:Number = F[s]
+Base.convert(::Type{N}, v::AbstractArray{F}, problem::Union{MDP, POMDP}) where {N<:Number, F<:Number} = convert(N, first(v))
