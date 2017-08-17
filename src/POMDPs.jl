@@ -83,6 +83,9 @@ export
     state_type,
     action_type,
     obs_type,
+    convert_s,
+    convert_a,
+    convert_o,
 
     # Requirements checking
     RequirementSet,
