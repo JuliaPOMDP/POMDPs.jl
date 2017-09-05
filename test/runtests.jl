@@ -23,6 +23,10 @@ POMDPs.sampletype(::Type{D}) = Int
 @test @implemented sampletype(::D)
 @test sampletype(D()) == Int
 
+struct E end
+@test_throws MethodError sampletype(E)
+@test_throws MethodError sampletype(E())
+
 include("test_inferrence.jl")
 include("test_requirements.jl")
 include("test_generative.jl")

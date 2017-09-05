@@ -50,6 +50,7 @@ Only the `sampletype(::Type)` method should be implemented for a type, but it ca
 function sampletype end
 
 sampletype(d::Any) = sampletype(typeof(d))
+sampletype(t::Type) = throw(MethodError(sampletype, (t)))
 
 implemented{T<:Type}(sampletype, TT::Tuple{T}) = method_exists(f, TT)
 implemented{T}(sampletype, ::Tuple{T}) = implemented(sampletype, Tuple{Type{T}})
