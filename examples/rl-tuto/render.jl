@@ -106,6 +106,3 @@ function render_state(s::Int64)
     render_agent(ctx, s)
     c
 end
-
-c = render_state(3)
-write_to_png(c, "test.png")
