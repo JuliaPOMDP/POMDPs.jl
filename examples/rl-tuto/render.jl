@@ -1,19 +1,22 @@
 ### Rendering function for the Mars Exploration Problem
 
-using Cairo, Colors, Parameters, Reel
+using Cairo, Colors
 
 const WALLE_IMG = read_from_png("wall_e.png")
 const PLANT_IMG = read_from_png("plant.png")
 const EVE_IMG = read_from_png("eve.png")
 
 
-@with_kw mutable struct GridDraw
-    x0::Int64 = 50
-    y0::Int64 = 50
-    cell_width::Int64 = 50
-    cell_height::Int64 = 50
-    n_cells::Int64 = 10
-    line_width::Float64 = 1.
+mutable struct GridDraw
+    x0::Int64
+    y0::Int64
+    cell_width::Float64
+    cell_height::Float64
+    n_cells::Int64
+    line_width::Float64
+    function GridDraw(;x0=50, y0=50, cell_width=50., cell_height=50., n_cells=10, line_width=1.)
+        return new(x0, y0, cell_width, cell_height, n_cells, line_width)
+    end
 end
 
 
@@ -97,6 +100,38 @@ function render_agent(ctx::CairoContext, cell::Int64,
     restore(ctx)
 end
 
+function paint_cell(ctx::CairoContext, cell::Int64, color::RGB{Float64},
+                    grid::GridDraw = GridDraw())
+    save(ctx)
+    set_source_rgb(ctx, color.:r, color.:g, color.:b)
+    # bottom left corner of the cell
+    x = grid.x0+ (cell-1)*grid.cell_width
+    y = grid.y0 - grid.cell_height/2
+    rectangle(ctx, x, y, grid.cell_width, grid.cell_height) # background
+    fill(ctx)
+    restore(ctx)
+end
+
+function render_action_value(ctx::CairoContext, action::Symbol, value::Float64, cell::Int64,
+                       grid::GridDraw = GridDraw())
+    save(ctx)
+    select_font_face(ctx, "Sans", Cairo.FONT_SLANT_NORMAL,
+                 Cairo.FONT_WEIGHT_NORMAL)
+    font_size = 20.
+    set_font_size(ctx, font_size)
+    move_to(ctx, grid.x0 +(cell - 0.5)*grid.cell_width - 10, grid.y0)
+    if action == :left
+        str = @sprintf("← ")
+    elseif action == :right
+        str = @sprintf("→ ")
+    end
+    show_text(ctx, str)
+    move_to(ctx, grid.x0 +(cell - 0.5)*grid.cell_width - 25, grid.y0 + font_size)
+    val_str = @sprintf("%2.2f", value)
+    show_text(ctx, val_str)
+    restore(ctx)
+end
+
 function render_state(s::Int64)
     ctx, c = set_context_and_surface()
     bg_col = RGB(1., 1., 1.)
@@ -104,5 +139,43 @@ function render_state(s::Int64)
     render_grid(ctx)
     render_rewards(ctx)
     render_agent(ctx, s)
+    c
+end
+
+
+function colorval(policy::ValuePolicy, val, cmap)
+    N = length(cmap)
+    max_val = max(policy.mdp.r_left, policy.mdp.r_right)
+    val_res = max_val/N
+    val_ind = Int(floor(val/val_res)) + 1
+    return cmap[val_ind]
+end
+
+function render_cell(cell::Int64)
+    ctx, c = set_context_and_surface()
+    bg_col = RGB(1., 1., 1.)
+    render_background(ctx, bg_col)
+    paint_cell(ctx, cell, RGB(1.,0.,0.))
+    render_grid(ctx)
+    render_action_value(ctx, :left, 1., cell)
+    c
+end
+
+
+
+function render_policy(policy::ValuePolicy)
+    ctx, c = set_context_and_surface()
+    bg_col = RGB(1., 1., 1.)
+    render_background(ctx, bg_col)
+
+    cmap = colormap("Greens", 1000)
+    for (i, s) in enumerate(ordered_states(policy.mdp))
+        val = maximum(policy.value_table[i, :])
+        a = action(policy, s)
+        color = colorval(policy, val, cmap)
+        paint_cell(ctx, s, color)
+        render_action_value(ctx, a, val, s)
+    end
+    render_grid(ctx)
     c
 end
