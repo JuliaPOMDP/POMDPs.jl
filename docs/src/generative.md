@@ -67,7 +67,7 @@ initial_state_distribution(p::BabyPOMDP) = [false] # note rand(rng, [false]) = f
 This can be solved with the POMCP solver.
 
 ```julia
-using POMCP
+using BasicPOMCP
 using POMDPToolbox
 
 pomdp = BabyPOMDP()
