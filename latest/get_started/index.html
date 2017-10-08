@@ -157,12 +157,12 @@
                 <p><a id='Getting-Started-1'></a></p>
 <h1 id="getting-started">Getting Started</h1>
 <p>Before writing our own POMDP problems or solvers, let's try out some of the available solvers and problem models available in JuliaPOMDP.</p>
-<p>Here is a short piece of code that solves the Tiger POMDP using SARSOP, and evaluates the results. Note that you must have the SARSOP, POMDPModels, and POMDPToolbox modules installed.</p>
-<pre><code class="julia">using SARSOP, POMDPModels, POMDPToolbox
+<p>Here is a short piece of code that solves the Tiger POMDP using QMDP, and evaluates the results. Note that you must have the QMDP, POMDPModels, and POMDPToolbox modules installed.</p>
+<pre><code class="julia">using QMDP, POMDPModels, POMDPToolbox
 
 # initialize problem and solver
 pomdp = TigerPOMDP() # from POMDPModels
-solver = SARSOPSolver() # from SARSOP
+solver = QMDPSolver() # from QMDP
 
 # compute a policy
 policy = solve(solver, pomdp)
@@ -176,7 +176,7 @@ println(&quot;reward: $(discounted_reward(hist))&quot;)
 </code></pre>
 
 <p>The first part of the code loads the desired packages and initializes the problem and the solver. Next, we compute a POMDP policy. Lastly, we evaluate the results.</p>
-<p>There are a few things to mention here. First, the TigerPOMDP type implements all the functions required by SARSOPSolver to compute a policy. Second, each policy has a default updater (essentially a filter used to update the belief of the POMDP). To learn more about Updaters check out the <a href="http://juliapomdp.github.io/POMDPs.jl/latest/concepts/">Concepts</a> section.</p>
+<p>There are a few things to mention here. First, the TigerPOMDP type implements all the functions required by QMDPSolver to compute a policy. Second, each policy has a default updater (essentially a filter used to update the belief of the POMDP). To learn more about Updaters check out the <a href="http://juliapomdp.github.io/POMDPs.jl/latest/concepts/">Concepts</a> section.</p>
               
             </div>
           </div>

@@ -224,7 +224,7 @@ initial_state_distribution(p::BabyPOMDP) = [false] # note rand(rng, [false]) = f
 </code></pre>
 
 <p>This can be solved with the POMCP solver.</p>
-<pre><code class="julia">using POMCP
+<pre><code class="julia">using BasicPOMCP
 using POMDPToolbox
 
 pomdp = BabyPOMDP()
