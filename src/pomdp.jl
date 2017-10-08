@@ -93,7 +93,7 @@ function reward end
 
 Return the immediate reward for the s-a-s' triple
 """
-reward{S,A}(problem::Union{POMDP{S,A},MDP{S,A}}, s::S, a::A, sp::S) = reward(problem, s, a)
+reward(problem, s, a, sp) = reward(problem, s, a)
 @impl_dep {P<:Union{POMDP,MDP},S,A} reward(::P,::S,::A,::S) reward(::P,::S,::A)
 
 """
