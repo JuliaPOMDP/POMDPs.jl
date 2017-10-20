@@ -101,7 +101,7 @@ reward(problem::Union{POMDP,MDP}, s, a, sp) = reward(problem, s, a)
 
 Check if an observation is terminal.
 """
-isterminal_obs{S,A,O}(problem::POMDP{S,A,O}, observation::O) = false
+isterminal_obs{S,A,O}(problem::POMDP, observation) = false
 
 """
     isterminal{S,A,O}(problem::POMDP{S,A,O}, state::S)
