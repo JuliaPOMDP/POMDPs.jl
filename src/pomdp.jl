@@ -182,12 +182,3 @@ function Base.convert(T::Type, x::X, problem::Union{MDP,POMDP}) where X
     Base.depwarn("POMDPs.convert is deprecated. Please use convert_s, convert_a, or convert_o.", :convert)
     return convert_s(T, x, problem)
 end
-#=
-"""
-    convert{S}(::Type{V}, s::S, problem::Union{MDP,POMDP}) where V <: AbstractArray
-    convert{S}(::Type{S}, vec::V, problem::Union{MDP,POMDP}) where V <: AbstractArray
-
-Convert a state or observaton to vectorized form of floats or convert
-an array of floats back to a problem specific state or observation.
-"""
-Base.convert
