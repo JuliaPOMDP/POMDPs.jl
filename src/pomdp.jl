@@ -68,7 +68,7 @@ function observation end
 
 Return the observation distribution for the a-s' tuple (action and next state)
 """
-observation{S,A,O}(problem::POMDP{S,A,O}, a::A, sp::S) = observation(problem, sp)
+observation(problem::POMDP, a, sp) = observation(problem, sp)
 @impl_dep {P<:POMDP,S,A} observation(::P,::A,::S) observation(::P,::S)
 
 """
@@ -76,7 +76,7 @@ observation{S,A,O}(problem::POMDP{S,A,O}, a::A, sp::S) = observation(problem, sp
 
 Return the observation distribution for the s-a-s' tuple (state, action, and next state)
 """
-observation{S,A,O}(problem::POMDP{S,A,O}, s::S, a::A, sp::S) = observation(problem, a, sp)
+observation(problem::POMDP, s, a, sp) = observation(problem, a, sp)
 @impl_dep {P<:POMDP,S,A} observation(::P,::S,::A,::S) observation(::P,::A,::S)
 
 """
@@ -93,7 +93,7 @@ function reward end
 
 Return the immediate reward for the s-a-s' triple
 """
-reward(problem, s, a, sp) = reward(problem, s, a)
+reward(problem::Union{POMDP,MDP}, s, a, sp) = reward(problem, s, a)
 @impl_dep {P<:Union{POMDP,MDP},S,A} reward(::P,::S,::A,::S) reward(::P,::S,::A)
 
 """
@@ -101,7 +101,7 @@ reward(problem, s, a, sp) = reward(problem, s, a)
 
 Check if an observation is terminal.
 """
-isterminal_obs{S,A,O}(problem::POMDP{S,A,O}, observation::O) = false
+isterminal_obs(problem::POMDP, observation) = false
 
 """
     isterminal{S,A,O}(problem::POMDP{S,A,O}, state::S)
@@ -109,7 +109,7 @@ isterminal_obs{S,A,O}(problem::POMDP{S,A,O}, observation::O) = false
 
 Check if state s is terminal
 """
-isterminal{S,A}(problem::Union{POMDP{S,A},MDP{S,A}}, state::S) = false
+isterminal(problem::Union{POMDP,MDP}, state) = false
 
 """
     state_index{S,A,O}(problem::POMDP{S,A,O}, s::S)
@@ -182,18 +182,3 @@ function Base.convert(T::Type, x::X, problem::Union{MDP,POMDP}) where X
     Base.depwarn("POMDPs.convert is deprecated. Please use convert_s, convert_a, or convert_o.", :convert)
     return convert_s(T, x, problem)
 end
-#=
-"""
-    convert{S}(::Type{V}, s::S, problem::Union{MDP,POMDP}) where V <: AbstractArray
-    convert{S}(::Type{S}, vec::V, problem::Union{MDP,POMDP}) where V <: AbstractArray
-
-Convert a state or observaton to vectorized form of floats or convert
-an array of floats back to a problem specific state or observation.
-"""
-Base.convert
-
-Base.convert(T::Type{A1}, s::A2, problem::Union{MDP, POMDP}) where {A1<:AbstractArray, A2<:AbstractArray} = convert(T, s)
-
-Base.convert(::Type{A}, s::Number, problem::Union{MDP,POMDP}) where A<:AbstractArray{F} where F<:Number = F[s]
-Base.convert(::Type{N}, v::AbstractArray{F}, problem::Union{MDP, POMDP}) where {N<:Number, F<:Number} = convert(N, first(v))
-=#
