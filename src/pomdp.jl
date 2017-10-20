@@ -101,7 +101,7 @@ reward(problem::Union{POMDP,MDP}, s, a, sp) = reward(problem, s, a)
 
 Check if an observation is terminal.
 """
-isterminal_obs{S,A,O}(problem::POMDP, observation) = false
+isterminal_obs(problem::POMDP, observation) = false
 
 """
     isterminal{S,A,O}(problem::POMDP{S,A,O}, state::S)
@@ -135,8 +135,57 @@ Return the integer index of observation `o`. Used for discrete models only.
 function obs_index end
 
 """
-    convert{S}(::Type{Array{Float64}}, s::S, problem::POMDP)
-    convert{S}(::Type{S}, vec::Array{Float64}, problem::POMDP)
+    convert_s(::Type{V}, s, problem::Union{MDP,POMDP}) where V <: AbstractArray
+    convert_s(::Type{S}, vec::V, problem::Union{MDP,POMDP}) where {S,V} <: AbstractArray
+
+Convert a state to vectorized form or vice versa.
+"""
+function convert_s end
+
+convert_s(T::Type{A1}, s::A2, problem::Union{MDP, POMDP}) where {A1<:AbstractArray, A2<:AbstractArray} = convert(T, s)
+
+convert_s(::Type{A}, s::Number, problem::Union{MDP,POMDP}) where A<:AbstractArray{F} where F<:Number = F[s]
+convert_s(::Type{N}, v::AbstractArray{F}, problem::Union{MDP, POMDP}) where {N<:Number, F<:Number} = convert(N, first(v))
+
+
+"""
+    convert_a(::Type{V}, a, problem::Union{MDP,POMDP}) where V <: AbstractArray
+    convert_a(::Type{A}, vec::V, problem::Union{MDP,POMDP}) where {A,V} <: AbstractArray
+
+Convert an action to vectorized form or vice versa.
+"""
+function convert_a end
+
+convert_a(T::Type{A1}, s::A2, problem::Union{MDP, POMDP}) where {A1<:AbstractArray, A2<:AbstractArray} = convert(T, s)
+
+convert_a(::Type{A}, s::Number, problem::Union{MDP,POMDP}) where A<:AbstractArray{F} where F<:Number = F[s]
+convert_a(::Type{N}, v::AbstractArray{F}, problem::Union{MDP, POMDP}) where {N<:Number, F<:Number} = convert(N, first(v))
+
+
+"""
+    convert_o(::Type{V}, o, problem::Union{MDP,POMDP}) where V <: AbstractArray
+    convert_o(::Type{O}, vec::V, problem::Union{MDP,POMDP}) where {O,V} <: AbstractArray
+
+Convert an observation to vectorized form or vice versa.
+"""
+function convert_o end
+
+convert_o(T::Type{A1}, s::A2, problem::Union{MDP, POMDP}) where {A1<:AbstractArray, A2<:AbstractArray} = convert(T, s)
+
+convert_o(::Type{A}, s::Number, problem::Union{MDP,POMDP}) where A<:AbstractArray{F} where F<:Number = F[s]
+convert_o(::Type{N}, v::AbstractArray{F}, problem::Union{MDP, POMDP}) where {N<:Number, F<:Number} = convert(N, first(v))
+
+
+
+# XXX DEPRECATED - remove in version 0.7
+function Base.convert(T::Type, x::X, problem::Union{MDP,POMDP}) where X
+    Base.depwarn("POMDPs.convert is deprecated. Please use convert_s, convert_a, or convert_o.", :convert)
+    return convert_s(T, x, problem)
+end
+#=
+"""
+    convert{S}(::Type{V}, s::S, problem::Union{MDP,POMDP}) where V <: AbstractArray
+    convert{S}(::Type{S}, vec::V, problem::Union{MDP,POMDP}) where V <: AbstractArray
 
 Convert a state or observaton to vectorized form of floats or convert
 an array of floats back to a problem specific state or observation.

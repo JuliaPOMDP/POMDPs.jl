@@ -3,15 +3,15 @@
 Before writing our own POMDP problems or solvers, let's try out some of the available solvers and problem models
 available in JuliaPOMDP.
 
-Here is a short piece of code that solves the Tiger POMDP using SARSOP, and evaluates the results. Note that you must
-have the SARSOP, POMDPModels, and POMDPToolbox modules installed.
+Here is a short piece of code that solves the Tiger POMDP using QMDP, and evaluates the results. Note that you must
+have the QMDP, POMDPModels, and POMDPToolbox modules installed.
 
 ```julia
-using SARSOP, POMDPModels, POMDPToolbox
+using QMDP, POMDPModels, POMDPToolbox
 
 # initialize problem and solver
 pomdp = TigerPOMDP() # from POMDPModels
-solver = SARSOPSolver() # from SARSOP
+solver = QMDPSolver() # from QMDP
 
 # compute a policy
 policy = solve(solver, pomdp)
@@ -28,5 +28,5 @@ The first part of the code loads the desired packages and initializes the proble
 POMDP policy. Lastly, we evaluate the results.
 
 There are a few things to mention here. First, the TigerPOMDP type implements all the functions required by
-SARSOPSolver to compute a policy. Second, each policy has a default updater (essentially a filter used to update the
+QMDPSolver to compute a policy. Second, each policy has a default updater (essentially a filter used to update the
 belief of the POMDP). To learn more about Updaters check out the [Concepts](http://juliapomdp.github.io/POMDPs.jl/latest/concepts/) section.
