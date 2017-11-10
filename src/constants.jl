@@ -16,6 +16,7 @@ const NATIVE_PACKAGES = Set{String}(
                          "QMDP",
                          "POMCP",
                          "BasicPOMCP",
+                         "ARDESPOT",
                          "DESPOT",
                          "MCVI",
                          "GenerativeModels",
