@@ -144,7 +144,7 @@ end
 """
     @req f( ::T1, ::T2)
 
-Convert a `f( ::T1, ::T2)` expression to a `(f, Tuple{T1,T2})` for pushing to a `RequirementSet`.
+Convert a `f( ::T1, ::T2)` expression to a `(f, Tuple{T1,T2})::Req` for pushing to a `RequirementSet`.
 
 If in a `@POMDP_requirements` or `@POMDP_require` block, marks the requirement for including in the set of requirements.
 """

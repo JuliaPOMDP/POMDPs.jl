@@ -14,7 +14,7 @@ function show_requirer(io::IO, r::AbstractRequirementSet)
     end
 end
 
-function show_checked_list(io::IO, cl::CheckedList)
+function show_checked_list(io::IO, cl::AbstractVector{T}) where T <: Tuple
     for item in cl
         if first(item)
             print_with_color(:green, io, "  [✔] $(format_method(item[2], item[3]))")

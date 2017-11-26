@@ -61,7 +61,7 @@ const CheckedList = Vector{Tuple{Bool, Function, TupleType}}
 
 
 """
-Return a `(f, Tuple{T1,T2})` expression given a `f( ::T1, ::T2)` expression.
+Return a `(f, Tuple{T1,T2})::Req` expression given a `f( ::T1, ::T2)` expression.
 """
 function convert_req(ex::Expr)
     malformed = false

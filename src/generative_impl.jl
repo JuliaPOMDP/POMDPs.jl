@@ -21,7 +21,9 @@ end
             return rand(rng, td)
         end
     else
-        failed_synth_warning(generate_s)
+        treq = @req transition(::p,::s,::a)
+        reqs = [(implemented(treq...), treq...)]
+        failed_synth_warning(@req(generate_s(::p, ::s, ::a, ::rng)), reqs)
         return :(throw(MethodError(generate_s, (p,s,a,rng))))
     end
 end
@@ -41,13 +43,17 @@ function implemented(f::typeof(generate_sr), TT::Type)
 end
 
 @generated function generate_sr(p::Union{POMDP,MDP}, s, a, rng::AbstractRNG)
-    if implemented(generate_s, Tuple{p, s, a, rng})
+    if implemented(generate_s, Tuple{p, s, a, rng}) && implemented(reward, Tuple{p, s, a, s})
         return quote
             sp = generate_s(p, s, a, rng)
             return sp, reward(p, s, a, sp)
         end
     else
-        failed_synth_warning(generate_sr)
+        reqs = [@req(transition(::p,::s,::a)), @req(reward(::p, ::s, ::a, ::s))]
+        cl = [(implemented(r...), r...) for r in reqs]
+        greqs = [@req(generate_s(::p, ::s, ::a, ::AbstractRNG)), @req(reward(::p, ::s, ::a, ::s))]
+        gcl = [(implemented(r...), r...) for r in greqs]
+        failed_synth_warning(@req(generate_sr(::p, ::s, ::a, ::rng)), cl, gcl)
         return :(throw(MethodError(generate_sr, (p,s,a,rng))))
     end
 end
@@ -71,7 +77,9 @@ end
             return rand(rng, od)
         end
     else
-        failed_synth_warning(generate_o)
+        oreq = @req observation(::p, ::s, ::a, ::sp)
+        reqs = [(implemented(oreq...), oreq...)]
+        failed_synth_warning(@req(generate_o(::p, ::s, ::a, ::sp, ::rng)), reqs)
         return :(throw(MethodError(generate_o, (p, s, a, sp, rng))))
     end
 end
@@ -96,7 +104,11 @@ end
             return sp, generate_o(p, s, a, sp, rng)
         end
     else
-        failed_synth_warning(generate_so)
+        reqs = [@req(transition(::p,::s,::a)), @req(observation(::p, ::s, ::a, ::s))]
+        cl = [(implemented(r...), r...) for r in reqs]
+        greqs = [@req(generate_s(::p,::s,::a,::AbstractRNG)), @req(generate_o(::p, ::s, ::a, ::s, ::AbstractRNG))]
+        gcl = [(implemented(r...), r...) for r in greqs]
+        failed_synth_warning(@req(generate_so(::p, ::s, ::a, ::rng)), cl, gcl)
         return :(throw(MethodError(generate_so, (p,s,a,rng))))
     end
 end
@@ -129,7 +141,11 @@ end
             return sp, o, r
         end
     else
-        failed_synth_warning(generate_sor)
+        reqs = [@req(transition(::p,::s,::a)), @req(observation(::p, ::s, ::a, ::s)), @req(reward(::p,::s,::a,::s))]
+        cl = [(implemented(r...), r...) for r in reqs]
+        greqs = [@req(generate_sr(::p,::s,::a,::AbstractRNG)), @req(generate_o(::p, ::s, ::a, ::s, ::AbstractRNG))]
+        gcl = [(implemented(r...), r...) for r in greqs]
+        failed_synth_warning(@req(generate_sor(::p, ::s, ::a, ::rng)), cl, gcl)
         return :(throw(MethodError(generate_sor, (p,s,a,rng))))
     end
 end
@@ -150,13 +166,17 @@ function implemented(f::typeof(generate_or), TT::Type)
 end
 
 @generated function generate_or(p::POMDP, s, a, sp, rng::AbstractRNG)
-    if implemented(generate_o, Tuple{p, s, a, sp, rng})
+    if implemented(generate_o, Tuple{p, s, a, sp, rng}) && implemented(reward, Tuple{p, s, a, sp})
         return quote
             o = generate_o(p, s, a, sp, rng)
             return o, reward(p, s, a, sp)
         end
     else
-        failed_synth_warning(generate_or)
+        reqs = [@req(observation(::p, ::s, ::a, ::sp)), @req(reward(::p,::s,::a,::sp))]
+        cl = [(implemented(r...), r...) for r in reqs]
+        greqs = [@req(generate_o(::p, ::s, ::a, ::s, ::AbstractRNG)), @req(reward(::p,::s,::a,::sp))]
+        gcl = [(implemented(r...), r...) for r in greqs]
+        failed_synth_warning(@req(generate_or(::p, ::s, ::a, ::rng)), cl, gcl)
         return :(throw(MethodError(generate_or, (p,s,a,sp,rng))))
     end
 end
@@ -181,11 +201,31 @@ end
             return rand(rng, d)
         end
     else
-        failed_synth_warning(initial_state)
+        req = @req initial_state_distribution(::p)
+        reqs = [(implemented(req...), req...)]
+        failed_synth_warning(@req(initial_state(::p, ::rng)), reqs)
         return :(throw(MethodError(initial_state, (p, rng))))
     end
 end
 
-failed_synth_warning(func) = Core.println("""
-WARNING: POMDPs.jl: Could not find or synthesize $func(). Did you remember to explicitly import it? You may need to restart Julia if you were expecting $func to be automatically synthesized by combining other functions.\n
-                                """)
+function failed_synth_warning(gen::Tuple, reqs::Vector, greqs::Vector=[]) 
+    io = IOBuffer()
+    show_checked_list(io, reqs)
+    Core.println("""
+WARNING: POMDPs.jl: Could not find or synthesize $(format_method(gen...)). Either implement it directly, or, to automatically synthesize it, implement the following methods from the explicit interface:
+
+$(String(take!(io)))
+    """)
+    if !isempty(greqs)
+        io = IOBuffer()
+        show_checked_list(io, greqs)
+        Core.println("""
+OR implement the following methods from the generative interface:
+
+$(String(take!(io)))
+                     """)
+    end
+    Core.println("""
+([✔] = already implemented correctly; [X] = missing)
+    """)
+end

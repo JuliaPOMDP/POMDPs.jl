@@ -1,10 +1,22 @@
 import POMDPs: transition, reward, initial_state_distribution
 import POMDPs: generate_sr, generate_o
 
+struct W <: POMDP{Int, Bool, Int} end
 println("Warning expected:")
-@test_throws MethodError initial_state(A(), Base.GLOBAL_RNG)
+@test_throws MethodError initial_state(W(), Base.GLOBAL_RNG)
 println("Warning expected:")
-@test_throws MethodError generate_s(A(), 1, true, Base.GLOBAL_RNG)
+@test_throws MethodError generate_s(W(), 1, true, Base.GLOBAL_RNG)
+println("Warning expected:")
+@test_throws MethodError generate_sr(W(), 1, true, Base.GLOBAL_RNG)
+println("Warning expected:")
+@test_throws MethodError generate_o(W(), 1, true, 2, Base.GLOBAL_RNG)
+println("Warning expected:")
+@test_throws MethodError generate_so(W(), 1, true, Base.GLOBAL_RNG)
+println("Warning expected:")
+@test_throws MethodError generate_sor(W(), 1, true, Base.GLOBAL_RNG)
+println("Warning expected:")
+@test_throws MethodError generate_or(W(), 1, true, 2, Base.GLOBAL_RNG)
+
 
 mutable struct B <: POMDP{Int, Bool, Bool} end
 
