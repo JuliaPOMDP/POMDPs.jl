@@ -225,7 +225,5 @@ OR implement the following methods from the generative interface:
 $(String(take!(io)))
                      """)
     end
-    Core.println("""
-([✔] = already implemented correctly; [X] = missing)
-    """)
+    Core.println("([✔] = already implemented correctly; [X] = missing)")
 end
