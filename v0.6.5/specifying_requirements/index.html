@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  
+  <link rel="shortcut icon" href="../img/favicon.ico">
+  <title>Specifying Requirements - POMDPs.jl</title>
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  <link rel="stylesheet" href="../css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../css/theme_extra.css" type="text/css" />
+  <link rel="stylesheet" href="../css/highlight.css">
+  <link href="../assets/Documenter.css" rel="stylesheet">
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "Specifying Requirements";
+    var mkdocs_page_input_path = "specifying_requirements.md";
+    var mkdocs_page_url = "/specifying_requirements/";
+  </script>
+  
+  <script src="../js/jquery-2.1.1.min.js"></script>
+  <script src="../js/modernizr-2.8.3.min.js"></script>
+  <script type="text/javascript" src="../js/highlight.pack.js"></script> 
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+      <div class="wy-side-nav-search">
+        <a href=".." class="icon icon-home"> POMDPs.jl</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+	<ul class="current">
+	  
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="..">About</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../install/">Installation</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../get_started/">Getting Started</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../concepts/">Concepts and Architecture</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../def_pomdp/">Defining a POMDP</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../explicit/">Explicit Model Definition</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../generative/">Generative Model Definition</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../requirements/">Requirements</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../interfaces/">Spaces and Distributions</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../def_solver/">Defining a Solver</a>
+	    </li>
+          
+            <li class="toctree-l1 current">
+		
+    <a class="current" href="./">Specifying Requirements</a>
+    <ul class="subnav">
+            
+    <li class="toctree-l2"><a href="#specifying-requirements">Specifying Requirements</a></li>
+    
+        <ul>
+        
+            <li><a class="toctree-l3" href="#purpose">Purpose</a></li>
+        
+            <li><a class="toctree-l3" href="#internal-interface">Internal interface</a></li>
+        
+            <li><a class="toctree-l3" href="#pomdp_require">@POMDP_require</a></li>
+        
+            <li><a class="toctree-l3" href="#requirements_info">requirements_info</a></li>
+        
+            <li><a class="toctree-l3" href="#warn_requirements">@warn_requirements</a></li>
+        
+            <li><a class="toctree-l3" href="#determining-whether-a-function-is-implemented">Determining whether a function is implemented</a></li>
+        
+        </ul>
+    
+
+    </ul>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../api/">API</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../faq/">Frequently Asked Questions</a>
+	    </li>
+          
+        </ul>
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="..">POMDPs.jl</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="..">Docs</a> &raquo;</li>
+    
+      
+    
+    <li>Specifying Requirements</li>
+    <li class="wy-breadcrumbs-aside">
+      
+        <a href="https://github.com/JuliaPOMDP/POMDPs.jl/edit/master/docs/specifying_requirements.md"
+          class="icon icon-github"> Edit on GitHub</a>
+      
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <p><a id='specifying_requirements-1'></a></p>
+<h1 id="specifying-requirements">Specifying Requirements</h1>
+<p><a id='Purpose-1'></a></p>
+<h2 id="purpose">Purpose</h2>
+<p>When a researcher or student wants to use a solver in the POMDPs ecosystem, the first question they will ask is "What do I have to implement to use this solver?". The requirements interface provides a standard way for solver writers to answer this question.</p>
+<p><a id='Internal-interface-1'></a></p>
+<h2 id="internal-interface">Internal interface</h2>
+<p>The most important functions in the requirements interface are <a href="../api/#POMDPs.get_requirements"><code>get_requirements</code></a>, <a href="../api/#POMDPs.check_requirements"><code>check_requirements</code></a>, and <a href="../api/#POMDPs.show_requirements"><code>show_requirements</code></a>.</p>
+<p><code>get_requirements(f::Function, args::Tuple{...})</code> should be implemented by a solver or simulator writer for all important functions that use the POMDPs.jl interface. In practice, this function will rarely by implemented directly because the <a href="./#pomdp_require_section-1">@POMDP_require</a> macro automatically creates it. The function should return a <code>RequirementSet</code> object containing all of the methods POMDPs.jl functions that need to be implemented for the function to work with the specified arguments.</p>
+<p><a href="../api/#POMDPs.check_requirements"><code>check_requirements</code></a> returns true if <a href="./#implemented_section-1">all of the requirements in a <code>RequirementSet</code> are met</a>, and <a href="../api/#POMDPs.show_requirements"><code>show_requirements</code></a> prints out a list of the requirements in a <code>RequirementSet</code> and indicates which ones have been met.</p>
+<p><a id='pomdp_require_section-1'></a></p>
+<h2 id="pomdp_require">@POMDP_require</h2>
+<p>The <a href="../api/#POMDPs.@POMDP_require"><code>@POMDP_require</code></a> macro is the main point of interaction with the requirements system for solver writers. It uses a special syntax to automatically implement <a href="../api/#POMDPs.get_requirements"><code>get_requirements</code></a>. This is best shown by example. Consider this <code>@POMDP_require</code> block from the <a href="https://github.com/JuliaPOMDP/DiscreteValueIteration.jl">DiscreteValueIteration package</a>:</p>
+<pre><code class="julia">@POMDP_require solve(solver::ValueIterationSolver, mdp::Union{MDP,POMDP}) begin
+    P = typeof(mdp)
+    S = state_type(P)
+    A = action_type(P)
+    @req discount(::P)
+    @req n_states(::P)
+    @req n_actions(::P)
+    @subreq ordered_states(mdp)
+    @subreq ordered_actions(mdp)
+    @req transition(::P,::S,::A)
+    @req reward(::P,::S,::A,::S)
+    @req state_index(::P,::S)
+    as = actions(mdp)
+    ss = states(mdp)
+    @req iterator(::typeof(as))
+    @req iterator(::typeof(ss))
+    s = first(iterator(ss))
+    a = first(iterator(as))
+    dist = transition(mdp, s, a)
+    D = typeof(dist)
+    @req iterator(::D)
+    @req pdf(::D,::S)
+end
+</code></pre>
+
+<p>The first expression argument to the macro is a function signature specifying what the requirements apply to. The above example implements <code>get_requirements{P&lt;:Union{POMDP,MDP}}(solve::typeof(solve), args::Tuple{ValueIterationSolver,P})</code> which will construct a <code>RequirementSet</code> containing the requirements for executing the <code>solve</code> function with <code>ValueIterationSolver</code> and <code>MDP</code> or <code>POMDP</code> arguments at runtime.</p>
+<p>The second expression is a <a href="http://docs.julialang.org/en/release-0.5/manual/control-flow/#compound-expressions"><code>begin</code>-<code>end</code> block</a> that specifies the requirements. The arguments in the function signature (<code>solver</code> and <code>mdp</code> in this example) may be used within the block.</p>
+<p>The <a href="../api/#POMDPs.@req"><code>@req</code></a> macro is used to specify a required function. Each <a href="../api/#POMDPs.@req"><code>@req</code></a> should be followed by a function with the argument types specified. The <a href="../api/#POMDPs.@subreq"><code>@subreq</code></a> macro is used to denote that the requirements of another function are also required. Each <a href="../api/#POMDPs.@subreq"><code>@subreq</code></a> should be followed by a function call.</p>
+<p><a id='requirements_info-1'></a></p>
+<h2 id="requirements_info"><code>requirements_info</code></h2>
+<p>While the <code>@POMDP_require</code> macro is used to specify requirements for a specific method, the <a href="../api/#POMDPs.requirements_info"><code>requirements_info</code></a> function is a more flexible communication tool for a solver writer. <a href="../api/#POMDPs.requirements_info"><code>requirements_info</code></a> should print out a message describing the requirements for a solver. The exact form of the message is up to the solver writer, but it should be carefully thought-out because problem-writers will be directed to call the function (via the <code>@requirements_info</code> macro) as the first step in using a new solver (see <a href="../def_pomdp/">tutorial</a>).</p>
+<p>By default, <code>requirements_info</code> calls <a href="../@req"><code>show_requirements</code></a> on the <code>solve</code> function. This is adequate in many cases, but in some cases, notably for online solvers such as <a href="https://github.com/JuliaPOMDP/MCTS.jl">MCTS</a>, the requirements for <a href="../api/#POMDPs.solve"><code>solve</code></a> do not give a good indication of the requirements for using the solver. Instead, the requirements for <a href="../api/#POMDPs.action"><code>action</code></a> should be displayed. The following example shows a more informative version of <code>requirements_info</code> from the MCTS package. Since <a href="../api/#POMDPs.action"><code>action</code></a> requires a state argument, <code>requirements_info</code> prompts the user to provide one.</p>
+<pre><code class="julia">function POMDPs.requirements_info(solver::AbstractMCTSSolver, problem::Union{POMDP,MDP})
+    if state_type(typeof(problem)) &lt;: Number
+        s = one(state_type(typeof(problem)))
+        requirements_info(solver, problem, s)
+    else
+        println(&quot;&quot;&quot;
+            Since MCTS is an online solver, most of the computation occurs in `action(policy, state)`. In order to view the requirements for this function, please, supply a state as the third argument to `requirements_info`, e.g.
+
+                @requirements_info $(typeof(solver))() $(typeof(problem))() $(state_type(typeof(problem)))()
+
+                &quot;&quot;&quot;)
+    end
+end
+
+function POMDPs.requirements_info(solver::AbstractMCTSSolver, problem::Union{POMDP,MDP}, s)
+    policy = solve(solver, problem)
+    requirements_info(policy, s)
+end
+
+function POMDPs.requirements_info(policy::AbstractMCTSPolicy, s)
+    @show_requirements action(policy, s)
+end
+</code></pre>
+
+<p><a id='@warn_requirements-1'></a></p>
+<h2 id="warn_requirements"><code>@warn_requirements</code></h2>
+<p>The <code>@warn_requirements</code> macro is a useful tool to improve usability of a solver. It will show a requirements list only if some requirements are not met. It might be used, for example, in the solve function to give a problem writer a useful error if some required methods are missing (assuming the solver writer has already used <code>@POMDP_require</code> to specify the requirements for <code>solve</code>):</p>
+<pre><code class="julia">function solve(solver::ValueIterationSolver, mdp::Union{POMDP, MDP})
+    @warn_requirements solve(solver, mdp)
+
+    # do the work of solving
+end
+</code></pre>
+
+<p><code>@warn_requirements</code> does perform a runtime check of requirements every time it is called, so it should not be used in code that may be used in fast, high-performance loops.</p>
+<p><a id='implemented_section-1'></a></p>
+<h2 id="determining-whether-a-function-is-implemented">Determining whether a function is implemented</h2>
+<p>When checking requirements in <code>check_requirements</code>, or printing in <code>show_requirements</code>, the <a href="../api/#POMDPs.implemented"><code>implemented</code></a> function is used to determine whether an implementation for a function is available. For example <code>implemented(discount, Tuple{NewPOMDP})</code> should return true if the writer of the <code>NewPOMDP</code> problem has implemented discount for their problem. In most cases, the default implementation,</p>
+<pre><code class="julia">implemented(f::Function, TT::TupleType) = method_exists(f, TT)
+</code></pre>
+
+<p>will automatically handle this, but there may be cases in which you want to override the behavior of <code>implemented</code>, for example, if the function can be synthesized from other functions. Examples of this can be found in the <a href="https://github.com/JuliaPOMDP/POMDPs.jl/blob/master/src/generative_impl.jl.jl">default implementations of the generative interface funcitons</a>.</p>
+              
+            </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../api/" class="btn btn-neutral float-right" title="API">Next <span class="icon icon-circle-arrow-right"></span></a>
+      
+      
+        <a href="../def_solver/" class="btn btn-neutral" title="Defining a Solver"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="http://www.mkdocs.org">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+      
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" style="cursor: pointer">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+          <a href="https://github.com/JuliaPOMDP/POMDPs.jl/" class="fa fa-github" style="float: left; color: #fcfcfc"> GitHub</a>
+      
+      
+        <span><a href="../def_solver/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+      
+      
+        <span style="margin-left: 15px"><a href="../api/" style="color: #fcfcfc">Next &raquo;</a></span>
+      
+    </span>
+</div>
+    <script>var base_url = '..';</script>
+    <script src="../js/theme.js"></script>
+      <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"></script>
+      <script src="../assets/mathjaxhelper.js"></script>
+      <script src="../search/require.js"></script>
+      <script src="../search/search.js"></script>
+
+</body>
+</html>

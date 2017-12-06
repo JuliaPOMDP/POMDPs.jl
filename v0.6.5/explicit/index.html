@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  
+  <link rel="shortcut icon" href="../img/favicon.ico">
+  <title>Explicit Model Definition - POMDPs.jl</title>
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  <link rel="stylesheet" href="../css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../css/theme_extra.css" type="text/css" />
+  <link rel="stylesheet" href="../css/highlight.css">
+  <link href="../assets/Documenter.css" rel="stylesheet">
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "Explicit Model Definition";
+    var mkdocs_page_input_path = "explicit.md";
+    var mkdocs_page_url = "/explicit/";
+  </script>
+  
+  <script src="../js/jquery-2.1.1.min.js"></script>
+  <script src="../js/modernizr-2.8.3.min.js"></script>
+  <script type="text/javascript" src="../js/highlight.pack.js"></script> 
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+      <div class="wy-side-nav-search">
+        <a href=".." class="icon icon-home"> POMDPs.jl</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+	<ul class="current">
+	  
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="..">About</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../install/">Installation</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../get_started/">Getting Started</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../concepts/">Concepts and Architecture</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../def_pomdp/">Defining a POMDP</a>
+	    </li>
+          
+            <li class="toctree-l1 current">
+		
+    <a class="current" href="./">Explicit Model Definition</a>
+    <ul class="subnav">
+            
+    <li class="toctree-l2"><a href="#explicit-pomdp-interface">Explicit POMDP Interface</a></li>
+    
+        <ul>
+        
+            <li><a class="toctree-l3" href="#functional-form-explicit-pomdp">Functional Form Explicit POMDP</a></li>
+        
+            <li><a class="toctree-l3" href="#tabular-form-explicit-pomdp">Tabular Form Explicit POMDP</a></li>
+        
+        </ul>
+    
+
+    </ul>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../generative/">Generative Model Definition</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../requirements/">Requirements</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../interfaces/">Spaces and Distributions</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../def_solver/">Defining a Solver</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../specifying_requirements/">Specifying Requirements</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../api/">API</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../faq/">Frequently Asked Questions</a>
+	    </li>
+          
+        </ul>
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="..">POMDPs.jl</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="..">Docs</a> &raquo;</li>
+    
+      
+    
+    <li>Explicit Model Definition</li>
+    <li class="wy-breadcrumbs-aside">
+      
+        <a href="https://github.com/JuliaPOMDP/POMDPs.jl/edit/master/docs/explicit.md"
+          class="icon icon-github"> Edit on GitHub</a>
+      
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <p><a id='explicit_doc-1'></a></p>
+<h1 id="explicit-pomdp-interface">Explicit POMDP Interface</h1>
+<p>When using the explicit interface, the transition and observation probabilities must be explicitly defined. This section gives examples of two ways to define a discrete POMDP that is widely used in the literature.</p>
+<p>Note that there is no requirement that a problem defined using the explicit interface be discrete; it is equally easy to define a continuous problem using the explicit interface.</p>
+<p><a id='Functional-Form-Explicit-POMDP-1'></a></p>
+<h2 id="functional-form-explicit-pomdp">Functional Form Explicit POMDP</h2>
+<p>In this example we show how to implement the famous <a href="https://www.cs.rutgers.edu/~mlittman/papers/aij98-pomdp.pdf">Tiger Problem</a>.</p>
+<p>In this implementation of the problem we will assume that the agent get a reward of -1 for listening at the door, a reward of -100 for encountering the tiger, and a reward of 10 for escaping. The probability of hearing the tiger when listing at the tiger's door is 85%, and the discount factor is a parameter in the TigerPOMDP object.</p>
+<p>We define the Tiger POMDP type:</p>
+<pre><code class="julia">importall POMDPs
+type TigerPOMDP &lt;: POMDP{Bool, Int64, Bool}
+    discount_factor::Float64
+end
+TigerPOMDP() = TigerPOMDP(0.95) # default contructor
+discount(pomdp::TigerPOMDP) = pomdp.discount_factor
+</code></pre>
+
+<p>Notice that the <code>TigerPOMDP</code> inherits from the abstract <code>POMDP</code> type provided by POMDPs.jl. Our type is defined <code>TigerPOMDP &lt;: POMDP{Bool, Int64, Bool}</code>, indicating that our states are <code>Bools</code>, actions are <code>Int64</code>, and observations are <code>Bool</code>. In our problem there are only two states (whether the tiger is behind the left or right door), three actions (go left, go right, and listen), and two observations (hear the tiger behind the left or right door). We thus use booleans for the states and observations, and integers for the actions. Note that states, actions, and observations can use arrays, strings, complex data structures, or even custom types.</p>
+<p>Suppose that once implemented, we want to solve Tiger problems using the QMDP solver. To see what functions QMDP needs us to implement, use the <a href="../api/#POMDPs.@requirements_info"><code>@requirements_info</code></a> macro (see <a href="../requirements/#requirements-1">Interface Requirements for Problems</a>).</p>
+<pre><code class="julia">POMDPs.add(&quot;QMDP&quot;)
+using QMDP
+@requirements_info QMDPSolver() TigerPOMDP() 
+</code></pre>
+
+<p>We will begin by implementing the state, action, and observation spaces and functions for initializing them and sampling from them.</p>
+<pre><code class="julia"># STATE SPACE
+const TIGER_ON_LEFT = true
+const TIGER_ON_RIGHT = false
+
+states(pomdp::TigerPOMDP) = [TIGER_ON_LEFT, TIGER_ON_RIGHT]
+n_states(pomdp::TigerPOMDP) = 2
+
+# ACTION SPACE
+const OPEN_LEFT = 0
+const OPEN_RIGHT = 1
+const LISTEN = 2
+
+actions(pomdp::TigerPOMDP) = [OPEN_LEFT,OPEN_RIGHT,LISTEN]
+n_actions(pomdp::TigerPOMDP) = 3
+action_index(::TigerPOMDP, a::Int64) = a+1
+
+# OBSERVATION SPACE
+const OBSERVE_LEFT = true
+const OBSERVE_RIGHT = false
+
+observations(::TigerPOMDP) = [OBSERVE_LEFT, OBSERVE_RIGHT]
+n_observations(::TigerPOMDP) = 2
+</code></pre>
+
+<p>Before we can implement the core <code>transition</code>, <code>reward</code>, and <code>observation</code> functions we need to define how distributions over states and observations work for the Tiger POMDP. We need to sample from these distributions and compute their likelihoods. Are states and observations are binary, so we can use Bernoulli distributions:</p>
+<pre><code class="julia">type TigerDistribution
+    p_true::Float64
+end
+TigerDistribution() = TigerDistribution(0.5) # default constructor
+iterator(d::TigerDistribution) = [true, false]
+
+# returns the probability mass for discrete distributions
+function pdf(d::TigerDistribution, v::Bool)
+    if v
+        return d.p_true
+    else
+        return 1 - d.p_true
+    end
+end
+
+# sample from the distribution
+rand(rng::AbstractRNG, d::TigerDistribution) = rand(rng) ≤ d.p_true
+</code></pre>
+
+<p>We can now define our transition, observation, and reward functions. Transition and observation return the distribution over the next state and observation, and reward returns the scalar reward.</p>
+<pre><code class="julia">function transition(pomdp::TigerPOMDP, s::Bool, a::Int64)
+    d = TigerDistribution()
+    if a == OPEN_LEFT || a == OPEN_RIGHT
+        d.p_true = 0.5 # reset the tiger's location, which is what QMDP wants
+    elseif s == TIGER_ON_LEFT
+        d.p_true = 1.0 # tiger is on left
+    else
+        d.p_true = 0.0  # tiger is on right
+    end
+    d
+end
+
+function observation(pomdp::TigerPOMDP, a::Int64, sp::Bool)
+    d = TigerDistribution()
+    # obtain correct observation 85% of the time
+    if a == LISTEN
+        d.p_true = sp == TIGER_ON_LEFT ? 0.85 : 0.15
+    else
+        d.p_true = 0.5 # reset the observation - we did not listen
+    end
+    d
+end
+observation(pomdp::TigerPOMDP, s::Bool, a::Int64, sp::Bool) = observation(pomdp, a, sp) # convenience function
+
+function reward(pomdp::TigerPOMDP, s::Bool, a::Int64)
+    # rewarded for escaping, penalized for listening and getting caught
+    r = 0.0
+    if a == LISTEN
+        r -= 1.0 # action penalty
+    elseif (a == OPEN_LEFT &amp;&amp; s == TIGER_ON_LEFT) ||
+           (a == OPEN_RIGHT &amp;&amp; s == TIGER_ON_RIGHT)
+        r -= 100.0 # eaten by tiger
+    else
+        r += 10.0 # opened the correct door
+    end
+    r
+end
+reward(pomdp::TigerPOMDP, s::Bool, a::Int64, sp::Bool) = reward(pomdp, s, a) # convenience function
+</code></pre>
+
+<p>The last thing we need for the Tiger POMDP is an initial distribution over the state space. In POMDPs.jl we make a strong distinction between this distribution and a belief. In most literature these two concepts are considered the same. However, in more general terms, a belief is something that is mapped to an action using a POMDP policy. If the policy is represented as something other than alpha-vectors (a policy graph, tree, or a recurrent neural network to give a few examples), it may not make sense to think of a belief as a probability distribution over the state space. Thus, in POMDPs.jl we abstract the concept of a belief beyond a probability distribution, allowing users to use what makes the most sense.</p>
+<p>In order to reconcile this difference, each policy has a function called <a href="../api/#POMDPs.initialize_belief"><code>initialize_belief</code></a> which takes in an initial state distriubtion and a policy, and converts the distribution into what we call a belief in POMDPs.jl. As the problem writer we must provide <a href="../api/#POMDPs.initial_state_distribution"><code>initial_state_distribution</code></a>:</p>
+<pre><code class="julia">initial_state_distribution(pomdp::TigerPOMDP) = TigerDistribution(0.5)
+</code></pre>
+
+<p>We have fully defined the Tiger POMDP. We can use now use JuliaPOMDP solvers to compute and evaluate a policy:</p>
+<pre><code class="julia">using QMDP, POMDPToolbox
+
+pomdp = TigerPOMDP()
+solver = QMDPSolver()
+policy = solve(solver, pomdp)
+
+init_dist = initial_state_distribution(pomdp)
+hist = HistoryRecorder(max_steps=100) # from POMDPToolbox
+r = simulate(hist, pomdp, policy) # run 100 step simulation
+</code></pre>
+
+<p>Please note that you do not need to define all the functions for most solvers. If you want to use a specific solver, you usually only need a subset of what is above. Notably, when the problem only requires a generative model, you need not define any distributions. See <a href="../@ref">Interface Requirements for Problems</a>.</p>
+<p><a id='Tabular-Form-Explicit-POMDP-1'></a></p>
+<h2 id="tabular-form-explicit-pomdp">Tabular Form Explicit POMDP</h2>
+<p>The <code>DiscretePOMDP</code> problem representation allows you to specify discrete POMDP problems in tabular form. If you can write the transition probabilities, observation probabilities, and rewards in matrix form, you can use the <code>DiscreteMDP</code> or <code>DiscretePOMDP</code> types from <code>POMDPModels</code> which automatically implements all required functionality. Let us do this with the Tiger POMDP:</p>
+<pre><code class="julia">using POMDPModels
+
+# write out the matrix forms
+
+# REWARDS
+R = [-1. -100 10; -1 10 -100] # |S|x|A| state-action pair rewards
+
+# TRANSITIONS
+T = zeros(2,3,2) # |S|x|A|x|S|, T[s', a, s] = p(s'|a,s)
+T[:,:,1] = [1. 0.5 0.5; 0 0.5 0.5]
+T[:,:,2] = [0. 0.5 0.5; 1 0.5 0.5]
+
+# OBSERVATIONS
+O = zeros(2,3,2) # |O|x|A|x|S|, O[o, a, s] = p(o|a,s)
+O[:,:,1] = [0.85 0.5 0.5; 0.15 0.5 0.5]
+O[:,:,2] = [0.15 0.5 0.5; 0.85 0.5 0.5]
+
+discount = 0.95
+pomdp = DiscretePOMDP(T, R, O, discount)
+
+# solve the POMDP the same way
+solver = QMDPSolver()
+policy = solve(solver, pomdp)
+</code></pre>
+
+<p>It is often easiest to define smaller problems in tabular form. However, for larger problems it can be tedious and the functional form may be preferred. You can usually use any supported POMDP solver to solve these types of problems (the performance of the policy may vary however - SARSOP will usually outperform QMDP).</p>
+              
+            </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../generative/" class="btn btn-neutral float-right" title="Generative Model Definition">Next <span class="icon icon-circle-arrow-right"></span></a>
+      
+      
+        <a href="../def_pomdp/" class="btn btn-neutral" title="Defining a POMDP"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="http://www.mkdocs.org">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+      
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" style="cursor: pointer">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+          <a href="https://github.com/JuliaPOMDP/POMDPs.jl/" class="fa fa-github" style="float: left; color: #fcfcfc"> GitHub</a>
+      
+      
+        <span><a href="../def_pomdp/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+      
+      
+        <span style="margin-left: 15px"><a href="../generative/" style="color: #fcfcfc">Next &raquo;</a></span>
+      
+    </span>
+</div>
+    <script>var base_url = '..';</script>
+    <script src="../js/theme.js"></script>
+      <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"></script>
+      <script src="../assets/mathjaxhelper.js"></script>
+      <script src="../search/require.js"></script>
+      <script src="../search/search.js"></script>
+
+</body>
+</html>
