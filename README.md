@@ -88,6 +88,7 @@ of using SARSOP and QMDP to solve the tiger problem
 
 Detailed documentation can be found [here](http://juliapomdp.github.io/POMDPs.jl/latest/).
 
+[![Docs](https://img.shields.io/badge/docs-latest-blue.svg)](https://JuliaPOMDP.github.io/POMDPs.jl/latest)
 [![Docs](https://img.shields.io/badge/docs-stable-blue.svg)](https://JuliaPOMDP.github.io/POMDPs.jl/stable)
 
 
