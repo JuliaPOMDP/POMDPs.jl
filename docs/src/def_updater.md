@@ -44,7 +44,7 @@ function update(up::HistoryUpdater, b, a, o)
 end
 ```
 
-At each step, the history starts with the original distribution, then contains all the actions and observations received up to that point. The example below shows this for the crying baby problem (observatinos are true/false for crying and actions are true/false for feeding).
+At each step, the history starts with the original distribution, then contains all the actions and observations received up to that point. The example below shows this for the crying baby problem (observations are true/false for crying and actions are true/false for feeding).
 
 ```julia
 using POMDPToolbox
