@@ -178,12 +178,12 @@
 <h2 id="defining-an-updater">Defining an Updater</h2>
 <p>To create an updater, one should define a subtype of the <code>Updater</code> abstract type and implement two methods, one to create the initial belief from the problem's initial state distribution and one to perform a belief update:</p>
 <ul>
-<li>[<code>initialize_belief(updater, d)</code>] creates a belief from state distribution <code>d</code> appropriate to use with the updater. To extract information from <code>d</code>, use the functions from the <a href="../interfaces/#Distributions-1">distribution interface</a>.</li>
-<li><a href="../api/#POMDPs.update"><code>update(updater, b, a, o)</code></a> returns an updated belief given belief <code>b</code>, action <code>a</code>, and observation <code>o</code>. One can usually expect <code>b</code> to be the same type returned by <code>initialize_belief</code> because a careful user will always call <code>initialize_belief</code> before <code>update</code>, but it would also be reasonable to implement <code>update</code> for <code>b</code> of a different type if it is desirable to handle multiple belief types.</li>
+<li><a href="../api/#POMDPs.initialize_belief"><code>initialize_belief(updater, d)</code></a> creates a belief from state distribution <code>d</code> appropriate to use with the updater. To extract information from <code>d</code>, use the functions from the <a href="../interfaces/#Distributions-1">distribution interface</a>.</li>
+<li><a href="../api/#POMDPs.update"><code>update(updater, b, a, o)</code></a> returns an updated belief given belief <code>b</code>, action <code>a</code>, and observation <code>o</code>. One can usually expect <code>b</code> to be the same type returned by <a href="../api/#POMDPs.initialize_belief"><code>initialize_belief</code></a> because a careful user will always call <a href="../api/#POMDPs.initialize_belief"><code>initialize_belief</code></a> before <a href="../api/#POMDPs.update"><code>update</code></a>, but it would also be reasonable to implement <a href="../api/#POMDPs.update"><code>update</code></a> for <code>b</code> of a different type if it is desirable to handle multiple belief types.</li>
 </ul>
 <p><a id='Example:-History-Updater-1'></a></p>
 <h3 id="example-history-updater">Example: History Updater</h3>
-<p>One trivial type of belief would be the action-observation history. The history contains all of the information received up to the current time, but it is not usually very useful because most policies make decisions based on a state probability distribution. Here the belief type is simply the built in <code>Vector{Any}</code>, so we need only create the updater and write <code>update</code> and <code>initialize_belief</code>. Normally, <code>update</code> would contain belief update probability calculations, but in this example, we simply append the action and observation to the history.</p>
+<p>One trivial type of belief would be the action-observation history, a list containing the initial state distribution and every action taken and observation received. The history contains all of the information received up to the current time, but it is not usually very useful because most policies make decisions based on a state probability distribution. Here the belief type is simply the built in <code>Vector{Any}</code>, so we need only create the updater and write <a href="../api/#POMDPs.update"><code>update</code></a> and <a href="../api/#POMDPs.initialize_belief"><code>initialize_belief</code></a>. Normally, <a href="../api/#POMDPs.update"><code>update</code></a> would contain belief update probability calculations, but in this example, we simply append the action and observation to the history.</p>
 <p>(Note that this example is designed for readability rather than efficiency.)</p>
 <pre><code class="julia">importall POMDPs
 
@@ -206,6 +206,8 @@ using POMDPModels
 pomdp = BabyPOMDP()
 policy = RandomPolicy(pomdp, rng=MersenneTwister(1))
 up = HistoryUpdater()
+
+# within stepthrough initialize_belief is called on the initial state distribution of the pomdp, then update is called at each step.
 for b in stepthrough(pomdp, policy, up, &quot;b&quot;, rng=MersenneTwister(2), max_steps=5)
     @show b
 end
