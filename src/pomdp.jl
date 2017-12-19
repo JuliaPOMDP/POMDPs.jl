@@ -112,6 +112,14 @@ Check if state s is terminal
 isterminal(problem::Union{POMDP,MDP}, state) = false
 
 """
+    initial_state_distribution(pomdp::POMDP)
+    initial_state_distribution(mdp::MDP)
+
+Return a distribution of the initial state of the pomdp or mdp.
+"""
+function initial_state_distribution end
+
+"""
     state_index{S,A,O}(problem::POMDP{S,A,O}, s::S)
     state_index{S,A}(problem::MDP{S,A}, s::S)
 

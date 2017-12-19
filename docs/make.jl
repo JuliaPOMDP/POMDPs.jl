@@ -1,8 +1,6 @@
 using Documenter, POMDPs
 
 makedocs(
-    # options
-    #deps = Deps.pip("pygments", "mkdocs", "python-markdown-math"),
     modules = [POMDPs]    
 )
 

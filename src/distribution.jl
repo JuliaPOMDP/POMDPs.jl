@@ -5,7 +5,9 @@
 """
     rand{T}(rng::AbstractRNG, d::Any)
 
-Return a random element from distribution or space `d`. The sample can be a state, action or observation.
+Return a random element from distribution or space `d`.
+
+If `d` is a state or transition distribution, the sample will be a state; if `d` is an action distribution, the sample will be an action or if `d` is an observation distribution, the sample will be an observation.
 """
 Base.rand
 
@@ -33,7 +35,7 @@ Base.mean
 """
     iterator(d::Any)
 
-Return an iterable type (array or custom iterator) that iterates over possible values of distribution or space `d`. Values with zero probability may be skipped.
+Return an iterable object (array or custom iterator) that iterates over possible values of distribution or space `d`. Values with zero probability may be skipped.
 """
 function iterator end
 
@@ -45,12 +47,12 @@ iterator(a::AbstractArray) = a
 
 Return the type of objects that are sampled from a distribution or space `d` when `rand(rng, d)` is called.
 
-Only the `sampletype(::Type)` method should be implemented for a type, but it can be called on objects.
+The distribution writer should implement the `sampletype(::Type)` method for the distribution type, then the function can be called for that type or for objects of that type (i.e. the `sampletype(d::Any) = sampletype(typeof(d))` default is provided).
 """
 function sampletype end
 
 sampletype(d::Any) = sampletype(typeof(d))
 sampletype(t::Type) = throw(MethodError(sampletype, (t,)))
 
-implemented{T<:Type}(sampletype, TT::Tuple{T}) = method_exists(f, TT)
-implemented{T}(sampletype, ::Tuple{T}) = implemented(sampletype, Tuple{Type{T}})
+implemented{T<:Type}(f::typeof(sampletype), TT::Type{Tuple{T}}) = method_exists(f, TT) && which(f, TT).module != POMDPs
+implemented{T}(f::typeof(sampletype), ::Type{Tuple{T}}) = implemented(f, Tuple{Type{T}})

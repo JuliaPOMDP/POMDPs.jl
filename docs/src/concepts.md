@@ -1,5 +1,4 @@
-Concepts and Architecture
-=========================
+# Concepts and Architecture
 
 POMDPs.jl aims to coordinate the development of three software
 components: 1) a problem, 2) a solver, 3) an experiment. Each of these
@@ -16,8 +15,7 @@ with the solver, but a solver may sometimes be used with an updater that
 was implemented separately. The Simulator type is associated with the
 experiment.
 
-POMDPs and MDPs
----------------
+## POMDPs and MDPs
 
 An MDP is a mathematical framework for sequential decision making under
 uncertainty, and where all of the uncertainty arrises from outcomes that
@@ -49,8 +47,7 @@ such as a discount factor or a set of terminal states.
 
 More information can be found in the [Defining POMDPs](@ref defining_pomdps) section.
 
-Beliefs and Updaters
---------------------
+## [Beliefs and Updaters](@id beliefs_and_updaters)
 
 In a POMDP domain, the decision-making agent does not have complete
 information about the state of the problem, so the agent can only make
@@ -74,7 +71,7 @@ represented by any built-in or user-defined type.
 When an action is taken and a new observation is received, the belief is
 updated by the belief updater. In code, a belief updater is represented
 by a concrete subtype of the [`Updater`](@ref) abstract type, and the
-[`update`](@ref) function defines how the belief is updated when a new
+[`update(::Policy)`](@ref update) function defines how the belief is updated when a new
 observation is received.
 
 Although the agent may use a specialized belief structure to make
@@ -91,11 +88,12 @@ to make decisions, so a domain-specific updater implemented by the
 programmer that wrote the problem description may be appropriate.
 Finally, some advanced generic belief updaters such as particle filters
 may be implemented by a third party. The convenience function
-[`updater`](@ref) can be used to get a suitable default updater for a
+[`updater(policy)`](@ref) can be used to get a suitable default updater for a
 policy, however many policies can work with other updaters.
 
-Solvers and Policies
---------------------
+For more information on implementing a belief updater, see [Defining a Belief Updater](@ref)
+
+## Solvers and Policies
 
 Sequential decision making under uncertainty involves both online and
 offline calculations. In the broad sense, the term "solver" as used in
@@ -119,15 +117,11 @@ For an offline solver like SARSOP, nearly all of the decision
 computation occurs within this function, but for some online solvers
 such as POMCP, [`solve`](@ref) merely embeds the problem in the policy.
 
-Simulators
-----------
+## Simulators
 
-A simulator defines a way to run a single simulation. It is represented
-by a concrete subtype of the [`Simulator`](@ref) abstract type and the
-simulation is an implemention of [`simulate`](@ref). [`simulate`](@ref)
-should return the discounted sum of the stagewise rewards, and the
-simulator may or may not keep track of the state trajectory or other
-statistics or display the simulation as it is carried out.
+A simulator defines a way to run one or more simulations.
+It is represented by a concrete subtype of the [`Simulator`](@ref) abstract type and the simulation is an implemention of [`simulate`](@ref).
+Depending on the simulator, [`simulate`](@ref) may return a variety of data about the simulation, such as the discounted reward or the state history.
 
 \[1\] *Decision Making Under Uncertainty: Theory and Application* by
 Mykel J. Kochenderfer, MIT Press, 2015

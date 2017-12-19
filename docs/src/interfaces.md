@@ -6,7 +6,7 @@ Two important components of the definitions of MDPs and POMDPs are *spaces*, whi
 
 A space object should contain the information needed to define the set of all possible states, actions or observations. The implementation will depend on the attributes of the elements. For example, if the space is continuous, the space object may only contain the limits of the continuous range. In the case of a discrete problem, a vector containing all states is appropriate for representing a state.
 
-The following functions may be called on a space object:
+The following functions may be called on a space object (Click on a function to read its documentation):
 
 - [`rand`](@ref)
 - [`dimensions`](@ref)
@@ -15,7 +15,9 @@ The following functions may be called on a space object:
 
 ## Distributions
 
-A distribution object represents a probability distribution. The following functions may be called on a distribution object
+A distribution object represents a probability distribution.
+
+The following functions may be called on a distribution object (Click on a function to read its documentation):
 
 - [`rand`](@ref)
 - [`iterator`](@ref)

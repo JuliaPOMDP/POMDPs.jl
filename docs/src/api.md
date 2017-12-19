@@ -90,6 +90,9 @@ n_observations
 state_index
 action_index
 obs_index
+convert_s
+convert_a
+convert_o
 ```
 
 ## Distribution/Space Functions
