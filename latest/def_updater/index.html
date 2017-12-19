@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  
+  <link rel="shortcut icon" href="../img/favicon.ico">
+  <title>Defining an Updater - POMDPs.jl</title>
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  <link rel="stylesheet" href="../css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../css/theme_extra.css" type="text/css" />
+  <link rel="stylesheet" href="../css/highlight.css">
+  <link href="../assets/Documenter.css" rel="stylesheet">
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "Defining an Updater";
+    var mkdocs_page_input_path = "def_updater.md";
+    var mkdocs_page_url = "/def_updater/";
+  </script>
+  
+  <script src="../js/jquery-2.1.1.min.js"></script>
+  <script src="../js/modernizr-2.8.3.min.js"></script>
+  <script type="text/javascript" src="../js/highlight.pack.js"></script> 
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+      <div class="wy-side-nav-search">
+        <a href=".." class="icon icon-home"> POMDPs.jl</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+	<ul class="current">
+	  
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="..">About</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../install/">Installation</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../get_started/">Getting Started</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../concepts/">Concepts and Architecture</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../def_pomdp/">Defining a POMDP</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../explicit/">Explicit Model Definition</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../generative/">Generative Model Definition</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../requirements/">Requirements</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../interfaces/">Spaces and Distributions</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../def_solver/">Defining a Solver</a>
+	    </li>
+          
+            <li class="toctree-l1 current">
+		
+    <a class="current" href="./">Defining an Updater</a>
+    <ul class="subnav">
+            
+    <li class="toctree-l2"><a href="#defining-a-belief-updater">Defining a Belief Updater</a></li>
+    
+        <ul>
+        
+            <li><a class="toctree-l3" href="#defining-a-belief-type">Defining a Belief Type</a></li>
+        
+            <li><a class="toctree-l3" href="#defining-an-updater">Defining an Updater</a></li>
+        
+        </ul>
+    
+
+    </ul>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../specifying_requirements/">Specifying Requirements</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../api/">API</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../faq/">Frequently Asked Questions</a>
+	    </li>
+          
+        </ul>
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="..">POMDPs.jl</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="..">Docs</a> &raquo;</li>
+    
+      
+    
+    <li>Defining an Updater</li>
+    <li class="wy-breadcrumbs-aside">
+      
+        <a href="https://github.com/JuliaPOMDP/POMDPs.jl/edit/master/docs/def_updater.md"
+          class="icon icon-github"> Edit on GitHub</a>
+      
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <p><a id='Defining-a-Belief-Updater-1'></a></p>
+<h1 id="defining-a-belief-updater">Defining a Belief Updater</h1>
+<p>In this section we list the requirements for defining a belief updater. For a description of what a belief updater is, see <a href="../concepts/#beliefs_and_updaters-1">Concepts and Architecture - Beliefs and Updaters</a>. Typically a belief updater will have an associated belief type, and may be closely tied to a particular policy/planner.</p>
+<p><a id='Defining-a-Belief-Type-1'></a></p>
+<h2 id="defining-a-belief-type">Defining a Belief Type</h2>
+<p>A belief object should contain all of the information needed for the next belief update and for the policy to make a decision. The belief type could be a pre-defined type such as a distribution from <code>Distributions.jl</code> or <code>DiscreteBelief</code> or <code>SparseCat</code> from <code>POMDPToolbox.jl</code>, or it could be a custom type.</p>
+<p>Often, but not always, the belief will represent a probability distribution. In this case, the functions in the <a href="../interfaces/#Distributions-1">distribution interface</a> should be implemented if possible. Implementing these functions will make the belief usable with many of the policies and planners in the POMDPs.jl ecosystem, and will make it easy for others to convert between beliefs and to interpret what a belief means.</p>
+<p><a id='Defining-an-Updater-1'></a></p>
+<h2 id="defining-an-updater">Defining an Updater</h2>
+<p>To create an updater, one should define a subtype of the <code>Updater</code> abstract type and implement two methods, one to create the initial belief from the problem's initial state distribution and one to perform a belief update:</p>
+<ul>
+<li>[<code>initialize_belief(updater, d)</code>] creates a belief from state distribution <code>d</code> appropriate to use with the updater. To extract information from <code>d</code>, use the functions from the <a href="../interfaces/#Distributions-1">distribution interface</a>.</li>
+<li><a href="../api/#POMDPs.update"><code>update(updater, b, a, o)</code></a> returns an updated belief given belief <code>b</code>, action <code>a</code>, and observation <code>o</code>. One can usually expect <code>b</code> to be the same type returned by <code>initialize_belief</code> because a careful user will always call <code>initialize_belief</code> before <code>update</code>, but it would also be reasonable to implement <code>update</code> for <code>b</code> of a different type if it is desirable to handle multiple belief types.</li>
+</ul>
+<p><a id='Example:-History-Updater-1'></a></p>
+<h3 id="example-history-updater">Example: History Updater</h3>
+<p>One trivial type of belief would be the action-observation history. The history contains all of the information received up to the current time, but it is not usually very useful because most policies make decisions based on a state probability distribution. Here the belief type is simply the built in <code>Vector{Any}</code>, so we need only create the updater and write <code>update</code> and <code>initialize_belief</code>. Normally, <code>update</code> would contain belief update probability calculations, but in this example, we simply append the action and observation to the history.</p>
+<p>(Note that this example is designed for readability rather than efficiency.)</p>
+<pre><code class="julia">importall POMDPs
+
+struct HistoryUpdater &lt;: Updater end
+
+initialize_belief(up::HistoryUpdater, d) = Any[d]
+
+function update(up::HistoryUpdater, b, a, o)
+    bp = copy(b)
+    push!(bp, a)
+    push!(bp, o)
+    return bp
+end
+</code></pre>
+
+<p>At each step, the history starts with the original distribution, then contains all the actions and observations received up to that point. The example below shows this for the crying baby problem (observatinos are true/false for crying and actions are true/false for feeding).</p>
+<pre><code class="julia">using POMDPToolbox
+using POMDPModels
+
+pomdp = BabyPOMDP()
+policy = RandomPolicy(pomdp, rng=MersenneTwister(1))
+up = HistoryUpdater()
+for b in stepthrough(pomdp, policy, up, &quot;b&quot;, rng=MersenneTwister(2), max_steps=5)
+    @show b
+end
+
+# output
+
+b = Any[POMDPModels.BoolDistribution(0.0)]
+b = Any[POMDPModels.BoolDistribution(0.0), false, false]
+b = Any[POMDPModels.BoolDistribution(0.0), false, false, false, false]
+b = Any[POMDPModels.BoolDistribution(0.0), false, false, false, false, true, false]
+b = Any[POMDPModels.BoolDistribution(0.0), false, false, false, false, true, false, true, false]
+</code></pre>
+              
+            </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../specifying_requirements/" class="btn btn-neutral float-right" title="Specifying Requirements">Next <span class="icon icon-circle-arrow-right"></span></a>
+      
+      
+        <a href="../def_solver/" class="btn btn-neutral" title="Defining a Solver"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="http://www.mkdocs.org">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+      
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" style="cursor: pointer">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+          <a href="https://github.com/JuliaPOMDP/POMDPs.jl/" class="fa fa-github" style="float: left; color: #fcfcfc"> GitHub</a>
+      
+      
+        <span><a href="../def_solver/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+      
+      
+        <span style="margin-left: 15px"><a href="../specifying_requirements/" style="color: #fcfcfc">Next &raquo;</a></span>
+      
+    </span>
+</div>
+    <script>var base_url = '..';</script>
+    <script src="../js/theme.js"></script>
+      <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"></script>
+      <script src="../assets/mathjaxhelper.js"></script>
+      <script src="../search/require.js"></script>
+      <script src="../search/search.js"></script>
+
+</body>
+</html>

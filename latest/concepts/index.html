@@ -118,6 +118,11 @@
           
             <li class="toctree-l1">
 		
+    <a class="" href="../def_updater/">Defining an Updater</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
     <a class="" href="../specifying_requirements/">Specifying Requirements</a>
 	    </li>
           
@@ -183,7 +188,7 @@
 <p>When an action is taken and a new observation is received, the belief is updated by the belief updater. In code, a belief updater is represented by a concrete subtype of the <a href="../api/#POMDPs.Updater"><code>Updater</code></a> abstract type, and the <a href="../api/#POMDPs.update"><code>update(::Policy)</code></a> function defines how the belief is updated when a new observation is received.</p>
 <p>Although the agent may use a specialized belief structure to make decisions, the information initially given to the agent about the state of the problem is usually most conveniently represented as a state distribution, thus the <a href="../api/#POMDPs.initialize_belief"><code>initialize_belief</code></a> function is provided to convert a state distribution to a specialized belief structure that an updater can work with.</p>
 <p>In many cases, the belief structure is closely related to the solution technique, so it will be implemented by the programmer who writes the solver. In other cases, the agent can use a variety of belief structures to make decisions, so a domain-specific updater implemented by the programmer that wrote the problem description may be appropriate. Finally, some advanced generic belief updaters such as particle filters may be implemented by a third party. The convenience function <a href="../api/#POMDPs.updater"><code>updater(policy)</code></a> can be used to get a suitable default updater for a policy, however many policies can work with other updaters.</p>
-<p>For more information on implementing a belief updater, see <a href="def_updater.md#Defining-a-Belief-Updater-1">Defining a Belief Updater</a></p>
+<p>For more information on implementing a belief updater, see <a href="../def_updater/#Defining-a-Belief-Updater-1">Defining a Belief Updater</a></p>
 <p><a id='Solvers-and-Policies-1'></a></p>
 <h2 id="solvers-and-policies">Solvers and Policies</h2>
 <p>Sequential decision making under uncertainty involves both online and offline calculations. In the broad sense, the term "solver" as used in the node in the figure at the top of the page refers to the software package that performs the calculations at both of these times. However, the code is broken up into two pieces, the solver that performs calculations offline and the policy that performs calculations online.</p>

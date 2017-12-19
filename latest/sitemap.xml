@@ -83,6 +83,14 @@
 
     
     <url>
+     <loc>/def_updater/</loc>
+     <lastmod>2017-12-19</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+    
+
+    
+    <url>
      <loc>/specifying_requirements/</loc>
      <lastmod>2017-12-19</lastmod>
      <changefreq>daily</changefreq>
