@@ -31,6 +31,7 @@ pages:
 - Requirements: requirements.md
 - Spaces and Distributions: interfaces.md
 - Defining a Solver: def_solver.md
+- Defining an Updater: def_updater.md
 - Specifying Requirements: specifying_requirements.md
 - API: api.md
 - Frequently Asked Questions: faq.md
