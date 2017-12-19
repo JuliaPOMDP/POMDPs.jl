@@ -17,15 +17,15 @@ Implementing these functions will make the belief usable with many of the polici
 
 To create an updater, one should define a subtype of the `Updater` abstract type and implement two methods, one to create the initial belief from the problem's initial state distribution and one to perform a belief update:
 
-- [`initialize_belief(updater, d)`] creates a belief from state distribution `d` appropriate to use with the updater. To extract information from `d`, use the functions from the [distribution interface](@ref Distributions).
-- [`update(updater, b, a, o)`](@ref) returns an updated belief given belief `b`, action `a`, and observation `o`. One can usually expect `b` to be the same type returned by `initialize_belief` because a careful user will always call `initialize_belief` before `update`, but it would also be reasonable to implement `update` for `b` of a different type if it is desirable to handle multiple belief types.
+- [`initialize_belief(updater, d)`](@ref) creates a belief from state distribution `d` appropriate to use with the updater. To extract information from `d`, use the functions from the [distribution interface](@ref Distributions).
+- [`update(updater, b, a, o)`](@ref) returns an updated belief given belief `b`, action `a`, and observation `o`. One can usually expect `b` to be the same type returned by [`initialize_belief`](@ref) because a careful user will always call [`initialize_belief`](@ref) before [`update`](@ref), but it would also be reasonable to implement [`update`](@ref) for `b` of a different type if it is desirable to handle multiple belief types.
 
 ### Example: History Updater
 
-One trivial type of belief would be the action-observation history.
+One trivial type of belief would be the action-observation history, a list containing the initial state distribution and every action taken and observation received.
 The history contains all of the information received up to the current time, but it is not usually very useful because most policies make decisions based on a state probability distribution.
-Here the belief type is simply the built in `Vector{Any}`, so we need only create the updater and write `update` and `initialize_belief`.
-Normally, `update` would contain belief update probability calculations, but in this example, we simply append the action and observation to the history.
+Here the belief type is simply the built in `Vector{Any}`, so we need only create the updater and write [`update`](@ref) and [`initialize_belief`](@ref).
+Normally, [`update`](@ref) would contain belief update probability calculations, but in this example, we simply append the action and observation to the history.
 
 (Note that this example is designed for readability rather than efficiency.)
 
@@ -53,6 +53,8 @@ using POMDPModels
 pomdp = BabyPOMDP()
 policy = RandomPolicy(pomdp, rng=MersenneTwister(1))
 up = HistoryUpdater()
+
+# within stepthrough initialize_belief is called on the initial state distribution of the pomdp, then update is called at each step.
 for b in stepthrough(pomdp, policy, up, "b", rng=MersenneTwister(2), max_steps=5)
     @show b
 end
