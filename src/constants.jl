@@ -14,6 +14,7 @@ const NATIVE_PACKAGES = Set{String}(
                         ["DiscreteValueIteration",
                          "MCTS",
                          "QMDP",
+                         "FIB",
                          "POMCP",
                          "BasicPOMCP",
                          "ARDESPOT",
