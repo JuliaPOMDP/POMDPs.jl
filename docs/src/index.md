@@ -26,6 +26,7 @@ JuliaPOMDP are as follows:
 ### POMDP solvers:
 
 - [QMDP](https://github.com/JuliaPOMDP/QMDP.jl)
+- [FIB](https://github.com/JuliaPOMDP/FIB.jl)
 - [SARSOP](https://github.com/JuliaPOMDP/SARSOP.jl)
 - [POMCP](https://github.com/JuliaPOMDP/POMCP.jl)
 - [DESPOT](https://github.com/JuliaPOMDP/DESPOT.jl)
