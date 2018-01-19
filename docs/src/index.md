@@ -32,6 +32,7 @@ JuliaPOMDP are as follows:
 - [DESPOT](https://github.com/JuliaPOMDP/DESPOT.jl)
 - [MCVI](https://github.com/JuliaPOMDP/MCVI.jl)
 - [POMDPSolve](https://github.com/JuliaPOMDP/POMDPSolve.jl)
+- [AEMS](https://github.com/JuliaPOMDP/AEMS.jl)
 
 ### Support Tools:
 
