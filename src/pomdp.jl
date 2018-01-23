@@ -57,9 +57,19 @@ function transition end
 
 """
     observation{S,A,O}(problem::POMDP{S,A,O}, statep::S)
+    observation{S,A,O}(problem::POMDP{S,A,O}, action::A, statep::S)
+    observation{S,A,O}(problem::POMDP{S,A,O}, state::S, action::A, statep::S)
 
-Return the observation distribution for a state (this method can only be
-implemented when the observation does not depend on the action)
+Return the observation distribution. You need only define the method with the fewest arguments needed to determine the observation distribution.
+
+# Example
+```julia
+using POMDPToolbox # for SparseCat
+
+struct MyPOMDP <: POMDP{Int, Int, Int} end
+
+observation(p::MyPOMDP, sp::Int) = SparseCat([sp-1, sp, sp+1], [0.1, 0.8, 0.1])
+```
 """
 function observation end
 
