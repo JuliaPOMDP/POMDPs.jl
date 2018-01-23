@@ -28,7 +28,8 @@ const NATIVE_PACKAGES = Set{String}(
                          "ParticleFilters",
                          "TabularTDLearning",
                          "POMDPReinforce",
-                         "POMCPOW"
+                         "POMCPOW",
+                         "AEMS"
                         ])
 
 # Packages registered on METADATA
