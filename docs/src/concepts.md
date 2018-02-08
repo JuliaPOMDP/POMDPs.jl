@@ -71,7 +71,7 @@ represented by any built-in or user-defined type.
 When an action is taken and a new observation is received, the belief is
 updated by the belief updater. In code, a belief updater is represented
 by a concrete subtype of the [`Updater`](@ref) abstract type, and the
-[`update(::Policy)`](@ref update) function defines how the belief is updated when a new
+[`update(updater, belief, action, observation)`](@ref update) function defines how the belief is updated when a new
 observation is received.
 
 Although the agent may use a specialized belief structure to make
