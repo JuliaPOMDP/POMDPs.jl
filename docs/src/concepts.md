@@ -15,6 +15,10 @@ with the solver, but a solver may sometimes be used with an updater that
 was implemented separately. The Simulator type is associated with the
 experiment.
 
+The code components of the POMDPs.jl ecosystem relevant to problems and solvers are shown below. The arrows represent the flow of information from the problems to the solvers. The figure shows the two interfaces that form POMDPs.jl - Explicit and Generative. Details about these interfaces can be found in the section on [Defining POMDPs](@ref defining_pomdps).
+
+![interface_relationships](figures/interface_relationships.svg)
+
 ## POMDPs and MDPs
 
 An MDP is a mathematical framework for sequential decision making under
