@@ -1,11 +1,10 @@
 using Base.Test
-using POMDPToolbox
 using POMDPs
 
 let
     struct M <: POMDP{Int, Int, Char} end
     @test_throws MethodError generate_s(M(), 1, 1, MersenneTwister(4))
-    POMDPs.transition(::M, ::Int, ::Int) = SparseCat([1],[1.0])
+    POMDPs.transition(::M, ::Int, ::Int) = [1]
     @test generate_s(M(), 1, 1, MersenneTwister(4)) == 1
     @test_throws MethodError generate_sor(M(), 1, 1, MersenneTwister(4))
     @test_throws MethodError generate_sr(M(), 1, 1, MersenneTwister(4))
