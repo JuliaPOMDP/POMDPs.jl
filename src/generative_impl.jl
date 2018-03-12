@@ -162,13 +162,13 @@ end
 @generated function generate_sor(p::POMDP, s, a, rng::AbstractRNG)
     so_impl = quote
         sp, o = generate_so(p, s, a, rng)
-        return sp, o, reward(p, s, a, sp)
+        sp, o, reward(p, s, a, sp)
     end
 
     sr_impl = quote
         sp, r = generate_sr(p, s, a, rng)
         o = generate_o(p, s, a, sp, rng)
-        return sp, o, r
+        sp, o, r
     end
 
     if implemented(generate_so, Tuple{p, s, a, rng}) && implemented(reward, Tuple{p, s, a, s})
@@ -183,11 +183,8 @@ end
         failed_synth_warning(@req(generate_sor(::p, ::s, ::a, ::rng)), cl, gcl)
         return quote
             try # dirty trick to get the compiler to insert the right backedges
-                if rand() > 0.5
-                    $so_impl
-                else
-                    $sr_impl
-                end
+                $so_impl
+                $sr_impl
             catch
                 throw(MethodError(generate_sor, (p,s,a,rng)))
             end
