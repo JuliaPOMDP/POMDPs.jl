@@ -153,8 +153,8 @@ Return the integer index of observation `o`. Used for discrete models only.
 function obs_index end
 
 """
-    convert_s(::Type{V}, s, problem::Union{MDP,POMDP}) where V <: AbstractArray
-    convert_s(::Type{S}, vec::V, problem::Union{MDP,POMDP}) where {S,V} <: AbstractArray
+    convert_s(::Type{V}, s, problem::Union{MDP,POMDP}) where V<:AbstractArray
+    convert_s(::Type{S}, vec::V, problem::Union{MDP,POMDP}) where {S,V<:AbstractArray}
 
 Convert a state to vectorized form or vice versa.
 """
@@ -167,8 +167,8 @@ convert_s(::Type{N}, v::AbstractArray{F}, problem::Union{MDP, POMDP}) where {N<:
 
 
 """
-    convert_a(::Type{V}, a, problem::Union{MDP,POMDP}) where V <: AbstractArray
-    convert_a(::Type{A}, vec::V, problem::Union{MDP,POMDP}) where {A,V} <: AbstractArray
+    convert_a(::Type{V}, a, problem::Union{MDP,POMDP}) where V<:AbstractArray
+    convert_a(::Type{A}, vec::V, problem::Union{MDP,POMDP}) where {A,V<:AbstractArray}
 
 Convert an action to vectorized form or vice versa.
 """
@@ -181,8 +181,8 @@ convert_a(::Type{N}, v::AbstractArray{F}, problem::Union{MDP, POMDP}) where {N<:
 
 
 """
-    convert_o(::Type{V}, o, problem::Union{MDP,POMDP}) where V <: AbstractArray
-    convert_o(::Type{O}, vec::V, problem::Union{MDP,POMDP}) where {O,V} <: AbstractArray
+    convert_o(::Type{V}, o, problem::Union{MDP,POMDP}) where V<:AbstractArray
+    convert_o(::Type{O}, vec::V, problem::Union{MDP,POMDP}) where {O,V<:AbstractArray}
 
 Convert an observation to vectorized form or vice versa.
 """
