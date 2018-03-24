@@ -44,11 +44,11 @@ actions(problem::Union{MDP,POMDP}, state) = actions(problem)
 @impl_dep {P<:Union{POMDP,MDP},S} actions(::P,::S) actions(::P)
 
 """
-    actions{S,A,O,B}(problem::POMDP{S,A,O}, belief::B)
+    actions(problem::POMDP, belief)
 
 Return the action space accessible from the states with nonzero belief.
 """
-actions{S,A,O,B}(problem::POMDP{S,A,O}, belief::B) = actions(problem)
+actions(problem::POMDP, belief) = actions(problem)
 
 """
     observations(problem::POMDP)
