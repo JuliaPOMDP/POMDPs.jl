@@ -45,7 +45,7 @@ function n_observations end
 
 Return the discount factor for the problem.
 """
-discount(::Union{MDP,POMDP}) = 1.0
+function discount end
 
 """
     transition{S,A,O}(problem::POMDP{S,A,O}, state::S, action::A)
@@ -57,9 +57,19 @@ function transition end
 
 """
     observation{S,A,O}(problem::POMDP{S,A,O}, statep::S)
+    observation{S,A,O}(problem::POMDP{S,A,O}, action::A, statep::S)
+    observation{S,A,O}(problem::POMDP{S,A,O}, state::S, action::A, statep::S)
 
-Return the observation distribution for a state (this method can only be
-implemented when the observation does not depend on the action)
+Return the observation distribution. You need only define the method with the fewest arguments needed to determine the observation distribution.
+
+# Example
+```julia
+using POMDPToolbox # for SparseCat
+
+struct MyPOMDP <: POMDP{Int, Int, Int} end
+
+observation(p::MyPOMDP, sp::Int) = SparseCat([sp-1, sp, sp+1], [0.1, 0.8, 0.1])
+```
 """
 function observation end
 
@@ -143,8 +153,8 @@ Return the integer index of observation `o`. Used for discrete models only.
 function obs_index end
 
 """
-    convert_s(::Type{V}, s, problem::Union{MDP,POMDP}) where V <: AbstractArray
-    convert_s(::Type{S}, vec::V, problem::Union{MDP,POMDP}) where {S,V} <: AbstractArray
+    convert_s(::Type{V}, s, problem::Union{MDP,POMDP}) where V<:AbstractArray
+    convert_s(::Type{S}, vec::V, problem::Union{MDP,POMDP}) where {S,V<:AbstractArray}
 
 Convert a state to vectorized form or vice versa.
 """
@@ -157,8 +167,8 @@ convert_s(::Type{N}, v::AbstractArray{F}, problem::Union{MDP, POMDP}) where {N<:
 
 
 """
-    convert_a(::Type{V}, a, problem::Union{MDP,POMDP}) where V <: AbstractArray
-    convert_a(::Type{A}, vec::V, problem::Union{MDP,POMDP}) where {A,V} <: AbstractArray
+    convert_a(::Type{V}, a, problem::Union{MDP,POMDP}) where V<:AbstractArray
+    convert_a(::Type{A}, vec::V, problem::Union{MDP,POMDP}) where {A,V<:AbstractArray}
 
 Convert an action to vectorized form or vice versa.
 """
@@ -171,8 +181,8 @@ convert_a(::Type{N}, v::AbstractArray{F}, problem::Union{MDP, POMDP}) where {N<:
 
 
 """
-    convert_o(::Type{V}, o, problem::Union{MDP,POMDP}) where V <: AbstractArray
-    convert_o(::Type{O}, vec::V, problem::Union{MDP,POMDP}) where {O,V} <: AbstractArray
+    convert_o(::Type{V}, o, problem::Union{MDP,POMDP}) where V<:AbstractArray
+    convert_o(::Type{O}, vec::V, problem::Union{MDP,POMDP}) where {O,V<:AbstractArray}
 
 Convert an observation to vectorized form or vice versa.
 """
