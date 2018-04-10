@@ -33,6 +33,7 @@ struct E end
 include("test_inferrence.jl")
 include("test_requirements.jl")
 include("test_generative.jl")
+include("test_tutorials.jl")
 include("test_generative_backedges.jl")
 
 let
