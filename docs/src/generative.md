@@ -4,7 +4,7 @@
 
 The *generative* interface contains a small collection of functions that makes implementing and solving problems with generative models easier. These functions return states and observations instead of distributions as in the [Explicit interface](@ref explicit_doc).
 
-The functions are:
+The generative interface functions are the following (note that this is not actual julia code):
 ```julia
 generate_s(pomdp, s, a, rng) -> sp
 generate_o(pomdp, s, a, sp, rng) -> o
