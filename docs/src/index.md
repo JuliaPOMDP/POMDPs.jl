@@ -21,6 +21,7 @@ JuliaPOMDP are as follows:
 ### MDP solvers:
 
 - [Value Iteration](https://github.com/JuliaPOMDP/DiscreteValueIteration.jl)
+- [Local Approximation Value Iteration](https://github.com/JuliaPOMDP/LocalApproximationValueIteration.jl)
 - [Monte Carlo Tree Search](https://github.com/JuliaPOMDP/MCTS.jl)
 
 ### POMDP solvers:
