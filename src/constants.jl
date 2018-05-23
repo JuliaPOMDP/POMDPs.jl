@@ -30,6 +30,7 @@ const NATIVE_PACKAGES = Set{String}(
                          "POMDPReinforce",
                          "POMCPOW",
                          "AEMS",
+                         "IncrementalPruning",
                          "LocalApproximationValueIteration"
                         ])
 
