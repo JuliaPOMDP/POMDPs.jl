@@ -29,7 +29,8 @@ const NATIVE_PACKAGES = Set{String}(
                          "TabularTDLearning",
                          "POMDPReinforce",
                          "POMCPOW",
-                         "AEMS"
+                         "AEMS",
+                         "IncrementalPruning"
                         ])
 
 # Packages registered on METADATA
