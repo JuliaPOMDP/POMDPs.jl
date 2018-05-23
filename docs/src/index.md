@@ -33,6 +33,7 @@ JuliaPOMDP are as follows:
 - [MCVI](https://github.com/JuliaPOMDP/MCVI.jl)
 - [POMDPSolve](https://github.com/JuliaPOMDP/POMDPSolve.jl)
 - [AEMS](https://github.com/JuliaPOMDP/AEMS.jl)
+- [IncrementalPruning](https://github.com/JuliaPOMDP/IncrementalPruning.jl)
 
 ### Support Tools:
 
