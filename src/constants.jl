@@ -30,7 +30,8 @@ const NATIVE_PACKAGES = Set{String}(
                          "POMDPReinforce",
                          "POMCPOW",
                          "AEMS",
-                         "IncrementalPruning"
+                         "IncrementalPruning",
+                         "LocalApproximationValueIteration"
                         ])
 
 # Packages registered on METADATA
