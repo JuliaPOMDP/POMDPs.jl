@@ -11,7 +11,11 @@ before_script:
   - export PATH=$HOME/.local/bin:$PATH
 script:
   - if [[ -a .git/shallow ]]; then git fetch --unshallow; fi
-  - julia --check-bounds=yes -e 'Pkg.clone(pwd()); using POMDPs; Pkg.test("POMDPs")'
+  - julia --check-bounds=yes -e 'Pkg.clone(pwd())'
+  - julia --check-bounds=yes -e 'using POMDPs'
+  - julia --check-bounds=yes -e 'Pkg.add("POMDPToolbox")'
+  - julia --check-bounds=yes -e 'using POMDPToolbox'
+  - julia --check-bounds=yes -e 'Pkg.test("POMDPs")'
 after_success:
   - julia -e 'Pkg.add("Documenter")'
   - julia -e 'cd(Pkg.dir("POMDPs")); include(joinpath("docs", "make.jl"))'
