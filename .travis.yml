@@ -5,12 +5,13 @@ os:
 julia:
   - 0.6
 notifications:
-  email: false
+  email:
+    - sunbergzach@gmail.com
 before_script:
   - export PATH=$HOME/.local/bin:$PATH
 script:
   - if [[ -a .git/shallow ]]; then git fetch --unshallow; fi
-  - julia --check-bounds=yes -e 'Pkg.clone(pwd()); using POMDPs #=to force precompilation=#; Pkg.test("POMDPs")'
+  - julia --check-bounds=yes -e 'Pkg.clone(pwd()); using POMDPs; Pkg.test("POMDPs")'
 after_success:
   - julia -e 'Pkg.add("Documenter")'
   - julia -e 'cd(Pkg.dir("POMDPs")); include(joinpath("docs", "make.jl"))'
