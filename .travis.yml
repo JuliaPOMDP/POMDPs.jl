@@ -12,9 +12,6 @@ before_script:
 script:
   - if [[ -a .git/shallow ]]; then git fetch --unshallow; fi
   - julia --check-bounds=yes -e 'Pkg.clone(pwd())'
-  - julia --check-bounds=yes -e 'using POMDPs'
-  - julia --check-bounds=yes -e 'Pkg.add("POMDPToolbox")'
-  - julia --check-bounds=yes -e 'using POMDPToolbox'
   - julia --check-bounds=yes -e 'Pkg.test("POMDPs")'
 after_success:
   - julia -e 'Pkg.add("Documenter")'
