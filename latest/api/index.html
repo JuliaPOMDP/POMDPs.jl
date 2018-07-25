@@ -295,7 +295,7 @@ A: action type
 O: observation type
 </code></pre>
 
-<p><a target='_blank' href='https://github.com/JuliaPOMDP/POMDPs.jl/blob/5070fbff640704f7bb24c0a273c35444dab24de1/src/pomdp.jl#L2-L8' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaPOMDP/POMDPs.jl/blob/0e8be18e4af75f361adadb06cb89e4f5f40afa4b/src/pomdp.jl#L2-L8' class='documenter-source'>source</a><br></p>
 <p><a id='POMDPs.MDP' href='#POMDPs.MDP'>#</a>
 <strong><code>POMDPs.MDP</code></strong> &mdash; <em>Type</em>.</p>
 <p>Abstract base type for a fully observable Markov decision process.</p>
@@ -303,20 +303,20 @@ O: observation type
 A: action type
 </code></pre>
 
-<p><a target='_blank' href='https://github.com/JuliaPOMDP/POMDPs.jl/blob/5070fbff640704f7bb24c0a273c35444dab24de1/src/pomdp.jl#L11-L16' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaPOMDP/POMDPs.jl/blob/0e8be18e4af75f361adadb06cb89e4f5f40afa4b/src/pomdp.jl#L11-L16' class='documenter-source'>source</a><br></p>
 <p><a id='POMDPs.Solver' href='#POMDPs.Solver'>#</a>
 <strong><code>POMDPs.Solver</code></strong> &mdash; <em>Type</em>.</p>
 <p>Base type for an MDP/POMDP solver</p>
-<p><a target='_blank' href='https://github.com/JuliaPOMDP/POMDPs.jl/blob/5070fbff640704f7bb24c0a273c35444dab24de1/src/solver.jl#L2-L4' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaPOMDP/POMDPs.jl/blob/0e8be18e4af75f361adadb06cb89e4f5f40afa4b/src/solver.jl#L2-L4' class='documenter-source'>source</a><br></p>
 <p><a id='POMDPs.Policy' href='#POMDPs.Policy'>#</a>
 <strong><code>POMDPs.Policy</code></strong> &mdash; <em>Type</em>.</p>
 <p>Base type for a policy (a map from every possible belief, or more abstract policy state, to an optimal or suboptimal action)</p>
-<p><a target='_blank' href='https://github.com/JuliaPOMDP/POMDPs.jl/blob/5070fbff640704f7bb24c0a273c35444dab24de1/src/policy.jl#L7-L9' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaPOMDP/POMDPs.jl/blob/0e8be18e4af75f361adadb06cb89e4f5f40afa4b/src/policy.jl#L7-L9' class='documenter-source'>source</a><br></p>
 <p><a id='POMDPs.Updater' href='#POMDPs.Updater'>#</a>
 <strong><code>POMDPs.Updater</code></strong> &mdash; <em>Type</em>.</p>
 <p>Abstract type for an object that defines how the belief should be updated</p>
 <p>A belief is a general construct that represents the knowledge an agent has about the state of the system. This can be a probability distribution, an action observation history or a more general representation.</p>
-<p><a target='_blank' href='https://github.com/JuliaPOMDP/POMDPs.jl/blob/5070fbff640704f7bb24c0a273c35444dab24de1/src/belief.jl#L7-L13' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaPOMDP/POMDPs.jl/blob/0e8be18e4af75f361adadb06cb89e4f5f40afa4b/src/belief.jl#L7-L13' class='documenter-source'>source</a><br></p>
 <p><a id='Model-Functions-1'></a></p>
 <h2 id="model-functions">Model Functions</h2>
 <p><a id='explicit_api-1'></a></p>
@@ -329,7 +329,7 @@ transition{S,A}(problem::MDP{S,A}, state::S, action::A)
 </code></pre>
 
 <p>Return the transition distribution from the current state-action pair</p>
-<p><a target='_blank' href='https://github.com/JuliaPOMDP/POMDPs.jl/blob/5070fbff640704f7bb24c0a273c35444dab24de1/src/pomdp.jl#L50-L55' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaPOMDP/POMDPs.jl/blob/0e8be18e4af75f361adadb06cb89e4f5f40afa4b/src/pomdp.jl#L50-L55' class='documenter-source'>source</a><br></p>
 <p><a id='POMDPs.observation' href='#POMDPs.observation'>#</a>
 <strong><code>POMDPs.observation</code></strong> &mdash; <em>Function</em>.</p>
 <pre><code>observation{S,A,O}(problem::POMDP{S,A,O}, statep::S)
@@ -346,7 +346,7 @@ struct MyPOMDP &lt;: POMDP{Int, Int, Int} end
 observation(p::MyPOMDP, sp::Int) = SparseCat([sp-1, sp, sp+1], [0.1, 0.8, 0.1])
 </code></pre>
 
-<p><a target='_blank' href='https://github.com/JuliaPOMDP/POMDPs.jl/blob/5070fbff640704f7bb24c0a273c35444dab24de1/src/pomdp.jl#L58-L73' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaPOMDP/POMDPs.jl/blob/0e8be18e4af75f361adadb06cb89e4f5f40afa4b/src/pomdp.jl#L58-L73' class='documenter-source'>source</a><br></p>
 <p><a id='POMDPs.initial_state_distribution' href='#POMDPs.initial_state_distribution'>#</a>
 <strong><code>POMDPs.initial_state_distribution</code></strong> &mdash; <em>Function</em>.</p>
 <pre><code>initial_state_distribution(pomdp::POMDP)
@@ -354,7 +354,7 @@ initial_state_distribution(mdp::MDP)
 </code></pre>
 
 <p>Return a distribution of the initial state of the pomdp or mdp.</p>
-<p><a target='_blank' href='https://github.com/JuliaPOMDP/POMDPs.jl/blob/5070fbff640704f7bb24c0a273c35444dab24de1/src/pomdp.jl#L124-L129' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaPOMDP/POMDPs.jl/blob/0e8be18e4af75f361adadb06cb89e4f5f40afa4b/src/pomdp.jl#L124-L129' class='documenter-source'>source</a><br></p>
 <p><a id='generative_api-1'></a></p>
 <h3 id="generative">Generative</h3>
 <p>These functions should return <em>states</em>, <em>observations</em>, and <em>rewards</em>.</p>
@@ -364,7 +364,7 @@ initial_state_distribution(mdp::MDP)
 </code></pre>
 
 <p>Return the next state given current state <code>s</code> and action taken <code>a</code>.</p>
-<p><a target='_blank' href='https://github.com/JuliaPOMDP/POMDPs.jl/blob/5070fbff640704f7bb24c0a273c35444dab24de1/src/generative.jl#L3-L7' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaPOMDP/POMDPs.jl/blob/0e8be18e4af75f361adadb06cb89e4f5f40afa4b/src/generative.jl#L3-L7' class='documenter-source'>source</a><br></p>
 <p><a id='POMDPs.generate_o' href='#POMDPs.generate_o'>#</a>
 <strong><code>POMDPs.generate_o</code></strong> &mdash; <em>Function</em>.</p>
 <pre><code>generate_o{S,A,O}(p::POMDP{S,A,O}, s::S, a::A, sp::S, rng::AbstractRNG)
@@ -376,35 +376,35 @@ initial_state_distribution(mdp::MDP)
 </code></pre>
 
 <p>Return the observation from the current state. This should be used to generate initial observations.</p>
-<p><a target='_blank' href='https://github.com/JuliaPOMDP/POMDPs.jl/blob/5070fbff640704f7bb24c0a273c35444dab24de1/src/generative.jl#L10-L20' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaPOMDP/POMDPs.jl/blob/0e8be18e4af75f361adadb06cb89e4f5f40afa4b/src/generative.jl#L10-L20' class='documenter-source'>source</a><br></p>
 <p><a id='POMDPs.generate_sr' href='#POMDPs.generate_sr'>#</a>
 <strong><code>POMDPs.generate_sr</code></strong> &mdash; <em>Function</em>.</p>
 <pre><code>generate_sr{S}(p::Union{POMDP{S},MDP{S}}, s, a, rng::AbstractRNG)
 </code></pre>
 
 <p>Return the next state <code>sp</code> and reward for taking action <code>a</code> in current state <code>s</code>.</p>
-<p><a target='_blank' href='https://github.com/JuliaPOMDP/POMDPs.jl/blob/5070fbff640704f7bb24c0a273c35444dab24de1/src/generative.jl#L23-L27' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaPOMDP/POMDPs.jl/blob/0e8be18e4af75f361adadb06cb89e4f5f40afa4b/src/generative.jl#L23-L27' class='documenter-source'>source</a><br></p>
 <p><a id='POMDPs.generate_so' href='#POMDPs.generate_so'>#</a>
 <strong><code>POMDPs.generate_so</code></strong> &mdash; <em>Function</em>.</p>
 <pre><code>generate_so{S,A,O}(p::POMDP{S,A,O}, s::S, a::A, rng::AbstractRNG)
 </code></pre>
 
 <p>Return the next state <code>sp</code> and observation <code>o</code>.</p>
-<p><a target='_blank' href='https://github.com/JuliaPOMDP/POMDPs.jl/blob/5070fbff640704f7bb24c0a273c35444dab24de1/src/generative.jl#L30-L34' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaPOMDP/POMDPs.jl/blob/0e8be18e4af75f361adadb06cb89e4f5f40afa4b/src/generative.jl#L30-L34' class='documenter-source'>source</a><br></p>
 <p><a id='POMDPs.generate_or' href='#POMDPs.generate_or'>#</a>
 <strong><code>POMDPs.generate_or</code></strong> &mdash; <em>Function</em>.</p>
 <pre><code>generate_or{S,A,O}(p::POMDP{S,A,O}, s::S, a::A, sp::S, rng::AbstractRNG)
 </code></pre>
 
 <p>Return the observation <code>o</code> and reward for taking action <code>a</code> in current state <code>s</code> reaching state <code>sp</code>.</p>
-<p><a target='_blank' href='https://github.com/JuliaPOMDP/POMDPs.jl/blob/5070fbff640704f7bb24c0a273c35444dab24de1/src/generative.jl#L37-L41' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaPOMDP/POMDPs.jl/blob/0e8be18e4af75f361adadb06cb89e4f5f40afa4b/src/generative.jl#L37-L41' class='documenter-source'>source</a><br></p>
 <p><a id='POMDPs.generate_sor' href='#POMDPs.generate_sor'>#</a>
 <strong><code>POMDPs.generate_sor</code></strong> &mdash; <em>Function</em>.</p>
 <pre><code>generate_sor{S,A,O}(p::POMDP{S,A,O}, s::S, a::A, rng::AbstractRNG)
 </code></pre>
 
 <p>Return the next state <code>sp</code>, observation <code>o</code> and reward for taking action <code>a</code> in current state <code>s</code>.</p>
-<p><a target='_blank' href='https://github.com/JuliaPOMDP/POMDPs.jl/blob/5070fbff640704f7bb24c0a273c35444dab24de1/src/generative.jl#L44-L48' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaPOMDP/POMDPs.jl/blob/0e8be18e4af75f361adadb06cb89e4f5f40afa4b/src/generative.jl#L44-L48' class='documenter-source'>source</a><br></p>
 <p><a id='POMDPs.initial_state' href='#POMDPs.initial_state'>#</a>
 <strong><code>POMDPs.initial_state</code></strong> &mdash; <em>Function</em>.</p>
 <pre><code>initial_state{S}(p::Union{POMDP{S},MDP{S}}, rng::AbstractRNG)
@@ -412,7 +412,7 @@ initial_state_distribution(mdp::MDP)
 
 <p>Return the initial state for the problem <code>p</code>.</p>
 <p>Usually the initial state is sampled from an initial state distribution.</p>
-<p><a target='_blank' href='https://github.com/JuliaPOMDP/POMDPs.jl/blob/5070fbff640704f7bb24c0a273c35444dab24de1/src/generative.jl#L51-L57' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaPOMDP/POMDPs.jl/blob/0e8be18e4af75f361adadb06cb89e4f5f40afa4b/src/generative.jl#L51-L57' class='documenter-source'>source</a><br></p>
 <p><a id='common_api-1'></a></p>
 <h3 id="common">Common</h3>
 <p><a id='POMDPs.states' href='#POMDPs.states'>#</a>
@@ -422,7 +422,7 @@ states(problem::MDP)
 </code></pre>
 
 <p>Returns the complete state space of a POMDP. </p>
-<p><a target='_blank' href='https://github.com/JuliaPOMDP/POMDPs.jl/blob/5070fbff640704f7bb24c0a273c35444dab24de1/src/space.jl#L12-L17' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaPOMDP/POMDPs.jl/blob/0e8be18e4af75f361adadb06cb89e4f5f40afa4b/src/space.jl#L12-L17' class='documenter-source'>source</a><br></p>
 <p><a id='POMDPs.actions' href='#POMDPs.actions'>#</a>
 <strong><code>POMDPs.actions</code></strong> &mdash; <em>Function</em>.</p>
 <pre><code>actions(problem::POMDP)
@@ -430,14 +430,14 @@ actions(problem::MDP)
 </code></pre>
 
 <p>Returns the entire action space of a POMDP.</p>
-<p><a target='_blank' href='https://github.com/JuliaPOMDP/POMDPs.jl/blob/5070fbff640704f7bb24c0a273c35444dab24de1/src/space.jl#L29-L34' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaPOMDP/POMDPs.jl/blob/0e8be18e4af75f361adadb06cb89e4f5f40afa4b/src/space.jl#L29-L34' class='documenter-source'>source</a><br></p>
 <p><a id='POMDPs.observations' href='#POMDPs.observations'>#</a>
 <strong><code>POMDPs.observations</code></strong> &mdash; <em>Function</em>.</p>
 <pre><code>observations(problem::POMDP)
 </code></pre>
 
 <p>Return the entire observation space.</p>
-<p><a target='_blank' href='https://github.com/JuliaPOMDP/POMDPs.jl/blob/5070fbff640704f7bb24c0a273c35444dab24de1/src/space.jl#L53-L57' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaPOMDP/POMDPs.jl/blob/0e8be18e4af75f361adadb06cb89e4f5f40afa4b/src/space.jl#L53-L57' class='documenter-source'>source</a><br></p>
 <p><a id='POMDPs.reward' href='#POMDPs.reward'>#</a>
 <strong><code>POMDPs.reward</code></strong> &mdash; <em>Function</em>.</p>
 <pre><code>reward{S,A,O}(problem::POMDP{S,A,O}, state::S, action::A)
@@ -445,7 +445,7 @@ reward{S,A}(problem::MDP{S,A}, state::S, action::A)
 </code></pre>
 
 <p>Return the immediate reward for the s-a pair</p>
-<p><a target='_blank' href='https://github.com/JuliaPOMDP/POMDPs.jl/blob/5070fbff640704f7bb24c0a273c35444dab24de1/src/pomdp.jl#L92-L97' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaPOMDP/POMDPs.jl/blob/0e8be18e4af75f361adadb06cb89e4f5f40afa4b/src/pomdp.jl#L92-L97' class='documenter-source'>source</a><br></p>
 <p><a id='POMDPs.isterminal' href='#POMDPs.isterminal'>#</a>
 <strong><code>POMDPs.isterminal</code></strong> &mdash; <em>Function</em>.</p>
 <pre><code>isterminal{S,A,O}(problem::POMDP{S,A,O}, state::S)
@@ -453,14 +453,14 @@ isterminal{S,A}(problem::MDP{S,A}, state::S)
 </code></pre>
 
 <p>Check if state s is terminal</p>
-<p><a target='_blank' href='https://github.com/JuliaPOMDP/POMDPs.jl/blob/5070fbff640704f7bb24c0a273c35444dab24de1/src/pomdp.jl#L116-L121' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaPOMDP/POMDPs.jl/blob/0e8be18e4af75f361adadb06cb89e4f5f40afa4b/src/pomdp.jl#L116-L121' class='documenter-source'>source</a><br></p>
 <p><a id='POMDPs.isterminal_obs' href='#POMDPs.isterminal_obs'>#</a>
 <strong><code>POMDPs.isterminal_obs</code></strong> &mdash; <em>Function</em>.</p>
 <pre><code>isterminal_obs{S,A,O}(problem::POMDP{S,A,O}, observation::O)
 </code></pre>
 
 <p>Check if an observation is terminal.</p>
-<p><a target='_blank' href='https://github.com/JuliaPOMDP/POMDPs.jl/blob/5070fbff640704f7bb24c0a273c35444dab24de1/src/pomdp.jl#L109-L113' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaPOMDP/POMDPs.jl/blob/0e8be18e4af75f361adadb06cb89e4f5f40afa4b/src/pomdp.jl#L109-L113' class='documenter-source'>source</a><br></p>
 <p><a id='POMDPs.discount' href='#POMDPs.discount'>#</a>
 <strong><code>POMDPs.discount</code></strong> &mdash; <em>Function</em>.</p>
 <pre><code>discount(problem::POMDP)
@@ -468,7 +468,7 @@ discount(problem::MDP)
 </code></pre>
 
 <p>Return the discount factor for the problem.</p>
-<p><a target='_blank' href='https://github.com/JuliaPOMDP/POMDPs.jl/blob/5070fbff640704f7bb24c0a273c35444dab24de1/src/pomdp.jl#L42-L47' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaPOMDP/POMDPs.jl/blob/0e8be18e4af75f361adadb06cb89e4f5f40afa4b/src/pomdp.jl#L42-L47' class='documenter-source'>source</a><br></p>
 <p><a id='POMDPs.n_states' href='#POMDPs.n_states'>#</a>
 <strong><code>POMDPs.n_states</code></strong> &mdash; <em>Function</em>.</p>
 <pre><code>n_states(problem::POMDP)
@@ -476,7 +476,7 @@ n_states(problem::MDP)
 </code></pre>
 
 <p>Return the number of states in <code>problem</code>. Used for discrete models only.</p>
-<p><a target='_blank' href='https://github.com/JuliaPOMDP/POMDPs.jl/blob/5070fbff640704f7bb24c0a273c35444dab24de1/src/pomdp.jl#L19-L24' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaPOMDP/POMDPs.jl/blob/0e8be18e4af75f361adadb06cb89e4f5f40afa4b/src/pomdp.jl#L19-L24' class='documenter-source'>source</a><br></p>
 <p><a id='POMDPs.n_actions' href='#POMDPs.n_actions'>#</a>
 <strong><code>POMDPs.n_actions</code></strong> &mdash; <em>Function</em>.</p>
 <pre><code>n_actions(problem::POMDP)
@@ -484,14 +484,14 @@ n_actions(problem::MDP)
 </code></pre>
 
 <p>Return the number of actions in <code>problem</code>. Used for discrete models only.</p>
-<p><a target='_blank' href='https://github.com/JuliaPOMDP/POMDPs.jl/blob/5070fbff640704f7bb24c0a273c35444dab24de1/src/pomdp.jl#L27-L32' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaPOMDP/POMDPs.jl/blob/0e8be18e4af75f361adadb06cb89e4f5f40afa4b/src/pomdp.jl#L27-L32' class='documenter-source'>source</a><br></p>
 <p><a id='POMDPs.n_observations' href='#POMDPs.n_observations'>#</a>
 <strong><code>POMDPs.n_observations</code></strong> &mdash; <em>Function</em>.</p>
 <pre><code>n_observations(problem::POMDP)
 </code></pre>
 
 <p>Return the number of observations in <code>problem</code>. Used for discrete models only.</p>
-<p><a target='_blank' href='https://github.com/JuliaPOMDP/POMDPs.jl/blob/5070fbff640704f7bb24c0a273c35444dab24de1/src/pomdp.jl#L35-L39' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaPOMDP/POMDPs.jl/blob/0e8be18e4af75f361adadb06cb89e4f5f40afa4b/src/pomdp.jl#L35-L39' class='documenter-source'>source</a><br></p>
 <p><a id='POMDPs.state_index' href='#POMDPs.state_index'>#</a>
 <strong><code>POMDPs.state_index</code></strong> &mdash; <em>Function</em>.</p>
 <pre><code>state_index{S,A,O}(problem::POMDP{S,A,O}, s::S)
@@ -499,7 +499,7 @@ state_index{S,A}(problem::MDP{S,A}, s::S)
 </code></pre>
 
 <p>Return the integer index of state <code>s</code>. Used for discrete models only.</p>
-<p><a target='_blank' href='https://github.com/JuliaPOMDP/POMDPs.jl/blob/5070fbff640704f7bb24c0a273c35444dab24de1/src/pomdp.jl#L132-L137' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaPOMDP/POMDPs.jl/blob/0e8be18e4af75f361adadb06cb89e4f5f40afa4b/src/pomdp.jl#L132-L137' class='documenter-source'>source</a><br></p>
 <p><a id='POMDPs.action_index' href='#POMDPs.action_index'>#</a>
 <strong><code>POMDPs.action_index</code></strong> &mdash; <em>Function</em>.</p>
 <pre><code>action_index{S,A,O}(problem::POMDP{S,A,O}, a::A)
@@ -507,14 +507,14 @@ action_index{S,A}(problem::MDP{S,A}, a::A)
 </code></pre>
 
 <p>Return the integer index of action <code>a</code>. Used for discrete models only.</p>
-<p><a target='_blank' href='https://github.com/JuliaPOMDP/POMDPs.jl/blob/5070fbff640704f7bb24c0a273c35444dab24de1/src/pomdp.jl#L140-L145' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaPOMDP/POMDPs.jl/blob/0e8be18e4af75f361adadb06cb89e4f5f40afa4b/src/pomdp.jl#L140-L145' class='documenter-source'>source</a><br></p>
 <p><a id='POMDPs.obs_index' href='#POMDPs.obs_index'>#</a>
 <strong><code>POMDPs.obs_index</code></strong> &mdash; <em>Function</em>.</p>
 <pre><code>obs_index{S,A,O}(problem::POMDP{S,A,O}, o::O)
 </code></pre>
 
 <p>Return the integer index of observation <code>o</code>. Used for discrete models only.</p>
-<p><a target='_blank' href='https://github.com/JuliaPOMDP/POMDPs.jl/blob/5070fbff640704f7bb24c0a273c35444dab24de1/src/pomdp.jl#L148-L152' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaPOMDP/POMDPs.jl/blob/0e8be18e4af75f361adadb06cb89e4f5f40afa4b/src/pomdp.jl#L148-L152' class='documenter-source'>source</a><br></p>
 <p><a id='POMDPs.convert_s' href='#POMDPs.convert_s'>#</a>
 <strong><code>POMDPs.convert_s</code></strong> &mdash; <em>Function</em>.</p>
 <pre><code>convert_s(::Type{V}, s, problem::Union{MDP,POMDP}) where V&lt;:AbstractArray
@@ -522,7 +522,7 @@ convert_s(::Type{S}, vec::V, problem::Union{MDP,POMDP}) where {S,V&lt;:AbstractA
 </code></pre>
 
 <p>Convert a state to vectorized form or vice versa.</p>
-<p><a target='_blank' href='https://github.com/JuliaPOMDP/POMDPs.jl/blob/5070fbff640704f7bb24c0a273c35444dab24de1/src/pomdp.jl#L155-L160' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaPOMDP/POMDPs.jl/blob/0e8be18e4af75f361adadb06cb89e4f5f40afa4b/src/pomdp.jl#L155-L160' class='documenter-source'>source</a><br></p>
 <p><a id='POMDPs.convert_a' href='#POMDPs.convert_a'>#</a>
 <strong><code>POMDPs.convert_a</code></strong> &mdash; <em>Function</em>.</p>
 <pre><code>convert_a(::Type{V}, a, problem::Union{MDP,POMDP}) where V&lt;:AbstractArray
@@ -530,7 +530,7 @@ convert_a(::Type{A}, vec::V, problem::Union{MDP,POMDP}) where {A,V&lt;:AbstractA
 </code></pre>
 
 <p>Convert an action to vectorized form or vice versa.</p>
-<p><a target='_blank' href='https://github.com/JuliaPOMDP/POMDPs.jl/blob/5070fbff640704f7bb24c0a273c35444dab24de1/src/pomdp.jl#L169-L174' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaPOMDP/POMDPs.jl/blob/0e8be18e4af75f361adadb06cb89e4f5f40afa4b/src/pomdp.jl#L169-L174' class='documenter-source'>source</a><br></p>
 <p><a id='POMDPs.convert_o' href='#POMDPs.convert_o'>#</a>
 <strong><code>POMDPs.convert_o</code></strong> &mdash; <em>Function</em>.</p>
 <pre><code>convert_o(::Type{V}, o, problem::Union{MDP,POMDP}) where V&lt;:AbstractArray
@@ -538,7 +538,7 @@ convert_o(::Type{O}, vec::V, problem::Union{MDP,POMDP}) where {O,V&lt;:AbstractA
 </code></pre>
 
 <p>Convert an observation to vectorized form or vice versa.</p>
-<p><a target='_blank' href='https://github.com/JuliaPOMDP/POMDPs.jl/blob/5070fbff640704f7bb24c0a273c35444dab24de1/src/pomdp.jl#L183-L188' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaPOMDP/POMDPs.jl/blob/0e8be18e4af75f361adadb06cb89e4f5f40afa4b/src/pomdp.jl#L183-L188' class='documenter-source'>source</a><br></p>
 <p><a id='Distribution/Space-Functions-1'></a></p>
 <h2 id="distributionspace-functions">Distribution/Space Functions</h2>
 <p><a id='Base.Random.rand' href='#Base.Random.rand'>#</a>
@@ -548,42 +548,42 @@ convert_o(::Type{O}, vec::V, problem::Union{MDP,POMDP}) where {O,V&lt;:AbstractA
 
 <p>Return a random element from distribution or space <code>d</code>.</p>
 <p>If <code>d</code> is a state or transition distribution, the sample will be a state; if <code>d</code> is an action distribution, the sample will be an action or if <code>d</code> is an observation distribution, the sample will be an observation.</p>
-<p><a target='_blank' href='https://github.com/JuliaPOMDP/POMDPs.jl/blob/5070fbff640704f7bb24c0a273c35444dab24de1/src/distribution.jl#L5-L11' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaPOMDP/POMDPs.jl/blob/0e8be18e4af75f361adadb06cb89e4f5f40afa4b/src/distribution.jl#L5-L11' class='documenter-source'>source</a><br></p>
 <p><a id='Distributions.pdf' href='#Distributions.pdf'>#</a>
 <strong><code>Distributions.pdf</code></strong> &mdash; <em>Function</em>.</p>
 <pre><code>pdf(d::Any, x::Any)
 </code></pre>
 
 <p>Evaluate the probability density of distribution <code>d</code> at sample <code>x</code>.</p>
-<p><a target='_blank' href='https://github.com/JuliaPOMDP/POMDPs.jl/blob/5070fbff640704f7bb24c0a273c35444dab24de1/src/distribution.jl#L14-L18' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaPOMDP/POMDPs.jl/blob/0e8be18e4af75f361adadb06cb89e4f5f40afa4b/src/distribution.jl#L14-L18' class='documenter-source'>source</a><br></p>
 <p><a id='StatsBase.mode' href='#StatsBase.mode'>#</a>
 <strong><code>StatsBase.mode</code></strong> &mdash; <em>Function</em>.</p>
 <pre><code>mode(d::Any)
 </code></pre>
 
 <p>Return the most likely value in a distribution d.</p>
-<p><a target='_blank' href='https://github.com/JuliaPOMDP/POMDPs.jl/blob/5070fbff640704f7bb24c0a273c35444dab24de1/src/distribution.jl#L21-L25' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaPOMDP/POMDPs.jl/blob/0e8be18e4af75f361adadb06cb89e4f5f40afa4b/src/distribution.jl#L21-L25' class='documenter-source'>source</a><br></p>
 <p><a id='Base.mean' href='#Base.mean'>#</a>
 <strong><code>Base.mean</code></strong> &mdash; <em>Function</em>.</p>
 <pre><code>mean(d::Any)
 </code></pre>
 
 <p>Return the mean of a distribution d.</p>
-<p><a target='_blank' href='https://github.com/JuliaPOMDP/POMDPs.jl/blob/5070fbff640704f7bb24c0a273c35444dab24de1/src/distribution.jl#L28-L32' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaPOMDP/POMDPs.jl/blob/0e8be18e4af75f361adadb06cb89e4f5f40afa4b/src/distribution.jl#L28-L32' class='documenter-source'>source</a><br></p>
 <p><a id='POMDPs.dimensions' href='#POMDPs.dimensions'>#</a>
 <strong><code>POMDPs.dimensions</code></strong> &mdash; <em>Function</em>.</p>
 <pre><code>dimensions(s::Any)
 </code></pre>
 
 <p>Returns the number of dimensions in space <code>s</code>.</p>
-<p><a target='_blank' href='https://github.com/JuliaPOMDP/POMDPs.jl/blob/5070fbff640704f7bb24c0a273c35444dab24de1/src/space.jl#L5-L9' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaPOMDP/POMDPs.jl/blob/0e8be18e4af75f361adadb06cb89e4f5f40afa4b/src/space.jl#L5-L9' class='documenter-source'>source</a><br></p>
 <p><a id='POMDPs.iterator' href='#POMDPs.iterator'>#</a>
 <strong><code>POMDPs.iterator</code></strong> &mdash; <em>Function</em>.</p>
 <pre><code>iterator(d::Any)
 </code></pre>
 
 <p>Return an iterable object (array or custom iterator) that iterates over possible values of distribution or space <code>d</code>. Values with zero probability may be skipped.</p>
-<p><a target='_blank' href='https://github.com/JuliaPOMDP/POMDPs.jl/blob/5070fbff640704f7bb24c0a273c35444dab24de1/src/distribution.jl#L35-L39' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaPOMDP/POMDPs.jl/blob/0e8be18e4af75f361adadb06cb89e4f5f40afa4b/src/distribution.jl#L35-L39' class='documenter-source'>source</a><br></p>
 <p><a id='POMDPs.sampletype' href='#POMDPs.sampletype'>#</a>
 <strong><code>POMDPs.sampletype</code></strong> &mdash; <em>Function</em>.</p>
 <pre><code>sampletype(T::Type)
@@ -592,7 +592,7 @@ sampletype(d::Any) = sampletype(typeof(d))
 
 <p>Return the type of objects that are sampled from a distribution or space <code>d</code> when <code>rand(rng, d)</code> is called.</p>
 <p>The distribution writer should implement the <code>sampletype(::Type)</code> method for the distribution type, then the function can be called for that type or for objects of that type (i.e. the <code>sampletype(d::Any) = sampletype(typeof(d))</code> default is provided).</p>
-<p><a target='_blank' href='https://github.com/JuliaPOMDP/POMDPs.jl/blob/5070fbff640704f7bb24c0a273c35444dab24de1/src/distribution.jl#L44-L51' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaPOMDP/POMDPs.jl/blob/0e8be18e4af75f361adadb06cb89e4f5f40afa4b/src/distribution.jl#L44-L51' class='documenter-source'>source</a><br></p>
 <p><a id='Belief-Functions-1'></a></p>
 <h2 id="belief-functions">Belief Functions</h2>
 <p><a id='POMDPs.update' href='#POMDPs.update'>#</a>
@@ -601,7 +601,7 @@ sampletype(d::Any) = sampletype(typeof(d))
 </code></pre>
 
 <p>Return a new instance of an updated belief given <code>belief_old</code> and the latest action and observation.</p>
-<p><a target='_blank' href='https://github.com/JuliaPOMDP/POMDPs.jl/blob/5070fbff640704f7bb24c0a273c35444dab24de1/src/belief.jl#L17-L21' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaPOMDP/POMDPs.jl/blob/0e8be18e4af75f361adadb06cb89e4f5f40afa4b/src/belief.jl#L17-L21' class='documenter-source'>source</a><br></p>
 <p><a id='POMDPs.initialize_belief' href='#POMDPs.initialize_belief'>#</a>
 <strong><code>POMDPs.initialize_belief</code></strong> &mdash; <em>Function</em>.</p>
 <pre><code>initialize_belief(updater::Updater,
@@ -611,7 +611,7 @@ initialize_belief(updater::Updater, belief::Any)
 
 <p>Returns a belief that can be updated using <code>updater</code> that has similar distribution to <code>state_distribution</code> or <code>belief</code>.</p>
 <p>The conversion may be lossy. This function is also idempotent, i.e. there is a default implementation that passes the belief through when it is already the correct type: <code>initialize_belief(updater::Updater, belief) = belief</code></p>
-<p><a target='_blank' href='https://github.com/JuliaPOMDP/POMDPs.jl/blob/5070fbff640704f7bb24c0a273c35444dab24de1/src/belief.jl#L24-L35' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaPOMDP/POMDPs.jl/blob/0e8be18e4af75f361adadb06cb89e4f5f40afa4b/src/belief.jl#L24-L35' class='documenter-source'>source</a><br></p>
 <p><a id='Policy-and-Solver-Functions-1'></a></p>
 <h2 id="policy-and-solver-functions">Policy and Solver Functions</h2>
 <p><a id='POMDPs.solve' href='#POMDPs.solve'>#</a>
@@ -620,34 +620,34 @@ initialize_belief(updater::Updater, belief::Any)
 </code></pre>
 
 <p>Solves the POMDP using method associated with solver, and returns a policy.</p>
-<p><a target='_blank' href='https://github.com/JuliaPOMDP/POMDPs.jl/blob/5070fbff640704f7bb24c0a273c35444dab24de1/src/solver.jl#L7-L11' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaPOMDP/POMDPs.jl/blob/0e8be18e4af75f361adadb06cb89e4f5f40afa4b/src/solver.jl#L7-L11' class='documenter-source'>source</a><br></p>
 <p><a id='POMDPs.updater' href='#POMDPs.updater'>#</a>
 <strong><code>POMDPs.updater</code></strong> &mdash; <em>Function</em>.</p>
 <pre><code>updater(policy::Policy)
 </code></pre>
 
 <p>Returns a default Updater appropriate for a belief type that policy <code>p</code> can use</p>
-<p><a target='_blank' href='https://github.com/JuliaPOMDP/POMDPs.jl/blob/5070fbff640704f7bb24c0a273c35444dab24de1/src/policy.jl#L21-L25' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaPOMDP/POMDPs.jl/blob/0e8be18e4af75f361adadb06cb89e4f5f40afa4b/src/policy.jl#L21-L25' class='documenter-source'>source</a><br></p>
 <p><a id='POMDPs.action' href='#POMDPs.action'>#</a>
 <strong><code>POMDPs.action</code></strong> &mdash; <em>Function</em>.</p>
 <pre><code>action{B}(policy::Policy, x::B)
 </code></pre>
 
 <p>Fills and returns action based on the current state or belief, given the policy. <code>B</code> is a generalized information state - can be a state in an MDP, a distribution in POMDP, or any other representation needed to make a decision using the given policy.</p>
-<p><a target='_blank' href='https://github.com/JuliaPOMDP/POMDPs.jl/blob/5070fbff640704f7bb24c0a273c35444dab24de1/src/policy.jl#L12-L18' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaPOMDP/POMDPs.jl/blob/0e8be18e4af75f361adadb06cb89e4f5f40afa4b/src/policy.jl#L12-L18' class='documenter-source'>source</a><br></p>
 <p><a id='POMDPs.value' href='#POMDPs.value'>#</a>
 <strong><code>POMDPs.value</code></strong> &mdash; <em>Function</em>.</p>
 <pre><code>value{B}(p::Policy, x::B)
 </code></pre>
 
 <p>Returns the utility value from policy <code>p</code> given the state</p>
-<p><a target='_blank' href='https://github.com/JuliaPOMDP/POMDPs.jl/blob/5070fbff640704f7bb24c0a273c35444dab24de1/src/policy.jl#L28-L32' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaPOMDP/POMDPs.jl/blob/0e8be18e4af75f361adadb06cb89e4f5f40afa4b/src/policy.jl#L28-L32' class='documenter-source'>source</a><br></p>
 <p><a id='Simulator-1'></a></p>
 <h2 id="simulator">Simulator</h2>
 <p><a id='POMDPs.Simulator' href='#POMDPs.Simulator'>#</a>
 <strong><code>POMDPs.Simulator</code></strong> &mdash; <em>Type</em>.</p>
 <p>Base type for an object defining how simulations should be carried out.</p>
-<p><a target='_blank' href='https://github.com/JuliaPOMDP/POMDPs.jl/blob/5070fbff640704f7bb24c0a273c35444dab24de1/src/simulator.jl#L7-L9' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaPOMDP/POMDPs.jl/blob/0e8be18e4af75f361adadb06cb89e4f5f40afa4b/src/simulator.jl#L7-L9' class='documenter-source'>source</a><br></p>
 <p><a id='POMDPs.simulate' href='#POMDPs.simulate'>#</a>
 <strong><code>POMDPs.simulate</code></strong> &mdash; <em>Function</em>.</p>
 <pre><code>simulate{S,A,O,B}(simulator::Simulator, problem::POMDP{S,A,O}, policy::Policy{B}, updater::Updater{B}, initial_belief::B)
@@ -656,7 +656,7 @@ simulate{S,A}(simulator::Simulator, problem::MDP{S,A}, policy::Policy, initial_s
 
 <p>Run a simulation using the specified policy.</p>
 <p>The return type is flexible and depends on the simulator. For example implementations, see the POMDPToolbox package.</p>
-<p><a target='_blank' href='https://github.com/JuliaPOMDP/POMDPs.jl/blob/5070fbff640704f7bb24c0a273c35444dab24de1/src/simulator.jl#L12-L19' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaPOMDP/POMDPs.jl/blob/0e8be18e4af75f361adadb06cb89e4f5f40afa4b/src/simulator.jl#L12-L19' class='documenter-source'>source</a><br></p>
 <p><a id='Other-1'></a></p>
 <h2 id="other">Other</h2>
 <p>The following functions are not part of the API for specifying and solving POMDPs, but are included in the package.</p>
@@ -674,7 +674,7 @@ state_type(p::Union{POMDP,MDP})
 state_type(A) # returns Int
 </code></pre>
 
-<p><a target='_blank' href='https://github.com/JuliaPOMDP/POMDPs.jl/blob/5070fbff640704f7bb24c0a273c35444dab24de1/src/type_inferrence.jl#L2-L13' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaPOMDP/POMDPs.jl/blob/0e8be18e4af75f361adadb06cb89e4f5f40afa4b/src/type_inferrence.jl#L2-L13' class='documenter-source'>source</a><br></p>
 <p><a id='POMDPs.action_type' href='#POMDPs.action_type'>#</a>
 <strong><code>POMDPs.action_type</code></strong> &mdash; <em>Function</em>.</p>
 <pre><code>action_type(t::Type)
@@ -687,7 +687,7 @@ action_type(p::Union{POMDP,MDP})
 action_type(A) # returns Int
 </code></pre>
 
-<p><a target='_blank' href='https://github.com/JuliaPOMDP/POMDPs.jl/blob/5070fbff640704f7bb24c0a273c35444dab24de1/src/type_inferrence.jl#L20-L31' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaPOMDP/POMDPs.jl/blob/0e8be18e4af75f361adadb06cb89e4f5f40afa4b/src/type_inferrence.jl#L20-L31' class='documenter-source'>source</a><br></p>
 <p><a id='POMDPs.obs_type' href='#POMDPs.obs_type'>#</a>
 <strong><code>POMDPs.obs_type</code></strong> &mdash; <em>Function</em>.</p>
 <pre><code>obs_type(t::Type)
@@ -699,7 +699,7 @@ action_type(A) # returns Int
 obs_type(A) # returns Int
 </code></pre>
 
-<p><a target='_blank' href='https://github.com/JuliaPOMDP/POMDPs.jl/blob/5070fbff640704f7bb24c0a273c35444dab24de1/src/type_inferrence.jl#L38-L48' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaPOMDP/POMDPs.jl/blob/0e8be18e4af75f361adadb06cb89e4f5f40afa4b/src/type_inferrence.jl#L38-L48' class='documenter-source'>source</a><br></p>
 <p><a id='Requirements-Specification-1'></a></p>
 <h3 id="requirements-specification">Requirements Specification</h3>
 <p><a id='POMDPs.check_requirements' href='#POMDPs.check_requirements'>#</a>
@@ -708,28 +708,28 @@ obs_type(A) # returns Int
 </code></pre>
 
 <p>Check whether the methods in <code>r</code> have implementations with <code>implemented()</code>. Return true if all methods have implementations.</p>
-<p><a target='_blank' href='https://github.com/JuliaPOMDP/POMDPs.jl/blob/5070fbff640704f7bb24c0a273c35444dab24de1/src/requirements_interface.jl#L166-L170' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaPOMDP/POMDPs.jl/blob/0e8be18e4af75f361adadb06cb89e4f5f40afa4b/src/requirements_interface.jl#L166-L170' class='documenter-source'>source</a><br></p>
 <p><a id='POMDPs.show_requirements' href='#POMDPs.show_requirements'>#</a>
 <strong><code>POMDPs.show_requirements</code></strong> &mdash; <em>Function</em>.</p>
 <pre><code>show_requirements(r::AbstractRequirementSet)
 </code></pre>
 
 <p>Check whether the methods in <code>r</code> have implementations with <code>implemented()</code> and print out a formatted list showing which are missing. Return true if all methods have implementations.</p>
-<p><a target='_blank' href='https://github.com/JuliaPOMDP/POMDPs.jl/blob/5070fbff640704f7bb24c0a273c35444dab24de1/src/requirements_interface.jl#L176-L180' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaPOMDP/POMDPs.jl/blob/0e8be18e4af75f361adadb06cb89e4f5f40afa4b/src/requirements_interface.jl#L176-L180' class='documenter-source'>source</a><br></p>
 <p><a id='POMDPs.get_requirements' href='#POMDPs.get_requirements'>#</a>
 <strong><code>POMDPs.get_requirements</code></strong> &mdash; <em>Function</em>.</p>
 <pre><code>get_requirements(f::Function, args::Tuple)
 </code></pre>
 
 <p>Return a RequirementSet for the function f and arguments args.</p>
-<p><a target='_blank' href='https://github.com/JuliaPOMDP/POMDPs.jl/blob/5070fbff640704f7bb24c0a273c35444dab24de1/src/requirements_interface.jl#L21-L25' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaPOMDP/POMDPs.jl/blob/0e8be18e4af75f361adadb06cb89e4f5f40afa4b/src/requirements_interface.jl#L21-L25' class='documenter-source'>source</a><br></p>
 <p><a id='POMDPs.requirements_info' href='#POMDPs.requirements_info'>#</a>
 <strong><code>POMDPs.requirements_info</code></strong> &mdash; <em>Function</em>.</p>
 <pre><code>requirements_info(s::Solver, p::Union{POMDP,MDP}, ...)
 </code></pre>
 
 <p>Print information about the requirement for solver s.</p>
-<p><a target='_blank' href='https://github.com/JuliaPOMDP/POMDPs.jl/blob/5070fbff640704f7bb24c0a273c35444dab24de1/src/requirements_interface.jl#L125-L129' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaPOMDP/POMDPs.jl/blob/0e8be18e4af75f361adadb06cb89e4f5f40afa4b/src/requirements_interface.jl#L125-L129' class='documenter-source'>source</a><br></p>
 <p><a id='POMDPs.@POMDP_require' href='#POMDPs.@POMDP_require'>#</a>
 <strong><code>POMDPs.@POMDP_require</code></strong> &mdash; <em>Macro</em>.</p>
 <pre><code>@POMDP_require solve(s::CoolSolver, p::POMDP) begin
@@ -745,7 +745,7 @@ end
 </code></pre>
 
 <p>Create a get_requirements implementation for the function signature and the requirements block.</p>
-<p><a target='_blank' href='https://github.com/JuliaPOMDP/POMDPs.jl/blob/5070fbff640704f7bb24c0a273c35444dab24de1/src/requirements_interface.jl#L39-L52' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaPOMDP/POMDPs.jl/blob/0e8be18e4af75f361adadb06cb89e4f5f40afa4b/src/requirements_interface.jl#L39-L52' class='documenter-source'>source</a><br></p>
 <p><a id='POMDPs.@POMDP_requirements' href='#POMDPs.@POMDP_requirements'>#</a>
 <strong><code>POMDPs.@POMDP_requirements</code></strong> &mdash; <em>Macro</em>.</p>
 <pre><code>reqs = @POMDP_requirements CoolSolver begin
@@ -761,35 +761,35 @@ end
 </code></pre>
 
 <p>Create a RequirementSet object.</p>
-<p><a target='_blank' href='https://github.com/JuliaPOMDP/POMDPs.jl/blob/5070fbff640704f7bb24c0a273c35444dab24de1/src/requirements_interface.jl#L68-L81' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaPOMDP/POMDPs.jl/blob/0e8be18e4af75f361adadb06cb89e4f5f40afa4b/src/requirements_interface.jl#L68-L81' class='documenter-source'>source</a><br></p>
 <p><a id='POMDPs.@requirements_info' href='#POMDPs.@requirements_info'>#</a>
 <strong><code>POMDPs.@requirements_info</code></strong> &mdash; <em>Macro</em>.</p>
 <pre><code>@requirements_info ASolver() [YourPOMDP()]
 </code></pre>
 
 <p>Print information about the requirements for a solver.</p>
-<p><a target='_blank' href='https://github.com/JuliaPOMDP/POMDPs.jl/blob/5070fbff640704f7bb24c0a273c35444dab24de1/src/requirements_interface.jl#L114-L118' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaPOMDP/POMDPs.jl/blob/0e8be18e4af75f361adadb06cb89e4f5f40afa4b/src/requirements_interface.jl#L114-L118' class='documenter-source'>source</a><br></p>
 <p><a id='POMDPs.@get_requirements' href='#POMDPs.@get_requirements'>#</a>
 <strong><code>POMDPs.@get_requirements</code></strong> &mdash; <em>Macro</em>.</p>
 <pre><code>@get_requirements f(arg1, arg2)
 </code></pre>
 
 <p>Call get_requirements(f, (arg1,arg2)).</p>
-<p><a target='_blank' href='https://github.com/JuliaPOMDP/POMDPs.jl/blob/5070fbff640704f7bb24c0a273c35444dab24de1/src/requirements_interface.jl#L29-L33' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaPOMDP/POMDPs.jl/blob/0e8be18e4af75f361adadb06cb89e4f5f40afa4b/src/requirements_interface.jl#L29-L33' class='documenter-source'>source</a><br></p>
 <p><a id='POMDPs.@show_requirements' href='#POMDPs.@show_requirements'>#</a>
 <strong><code>POMDPs.@show_requirements</code></strong> &mdash; <em>Macro</em>.</p>
 <pre><code>@show_requirements solve(solver, problem)
 </code></pre>
 
 <p>Print a a list of requirements for a function call.</p>
-<p><a target='_blank' href='https://github.com/JuliaPOMDP/POMDPs.jl/blob/5070fbff640704f7bb24c0a273c35444dab24de1/src/requirements_interface.jl#L102-L106' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaPOMDP/POMDPs.jl/blob/0e8be18e4af75f361adadb06cb89e4f5f40afa4b/src/requirements_interface.jl#L102-L106' class='documenter-source'>source</a><br></p>
 <p><a id='POMDPs.@warn_requirements' href='#POMDPs.@warn_requirements'>#</a>
 <strong><code>POMDPs.@warn_requirements</code></strong> &mdash; <em>Macro</em>.</p>
 <pre><code>@warn_requirements solve(solver, problem)
 </code></pre>
 
 <p>Print a warning if there are unmet requirements.</p>
-<p><a target='_blank' href='https://github.com/JuliaPOMDP/POMDPs.jl/blob/5070fbff640704f7bb24c0a273c35444dab24de1/src/requirements_interface.jl#L87-L91' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaPOMDP/POMDPs.jl/blob/0e8be18e4af75f361adadb06cb89e4f5f40afa4b/src/requirements_interface.jl#L87-L91' class='documenter-source'>source</a><br></p>
 <p><a id='POMDPs.@req' href='#POMDPs.@req'>#</a>
 <strong><code>POMDPs.@req</code></strong> &mdash; <em>Macro</em>.</p>
 <pre><code>@req f( ::T1, ::T2)
@@ -797,21 +797,21 @@ end
 
 <p>Convert a <code>f( ::T1, ::T2)</code> expression to a <code>(f, Tuple{T1,T2})::Req</code> for pushing to a <code>RequirementSet</code>.</p>
 <p>If in a <code>@POMDP_requirements</code> or <code>@POMDP_require</code> block, marks the requirement for including in the set of requirements.</p>
-<p><a target='_blank' href='https://github.com/JuliaPOMDP/POMDPs.jl/blob/5070fbff640704f7bb24c0a273c35444dab24de1/src/requirements_interface.jl#L144-L150' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaPOMDP/POMDPs.jl/blob/0e8be18e4af75f361adadb06cb89e4f5f40afa4b/src/requirements_interface.jl#L144-L150' class='documenter-source'>source</a><br></p>
 <p><a id='POMDPs.@subreq' href='#POMDPs.@subreq'>#</a>
 <strong><code>POMDPs.@subreq</code></strong> &mdash; <em>Macro</em>.</p>
 <pre><code>@subreq f(arg1, arg2)
 </code></pre>
 
 <p>In a <code>@POMDP_requirements</code> or <code>@POMDP_require</code> block, include the requirements for <code>f(arg1, arg2)</code> as a child argument set.</p>
-<p><a target='_blank' href='https://github.com/JuliaPOMDP/POMDPs.jl/blob/5070fbff640704f7bb24c0a273c35444dab24de1/src/requirements_interface.jl#L155-L159' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaPOMDP/POMDPs.jl/blob/0e8be18e4af75f361adadb06cb89e4f5f40afa4b/src/requirements_interface.jl#L155-L159' class='documenter-source'>source</a><br></p>
 <p><a id='POMDPs.implemented' href='#POMDPs.implemented'>#</a>
 <strong><code>POMDPs.implemented</code></strong> &mdash; <em>Function</em>.</p>
 <pre><code>implemented(function, Tuple{Arg1Type, Arg2Type})
 </code></pre>
 
 <p>Check whether there is an implementation available that will return a suitable value.</p>
-<p><a target='_blank' href='https://github.com/JuliaPOMDP/POMDPs.jl/blob/5070fbff640704f7bb24c0a273c35444dab24de1/src/requirements_interface.jl#L2-L6' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaPOMDP/POMDPs.jl/blob/0e8be18e4af75f361adadb06cb89e4f5f40afa4b/src/requirements_interface.jl#L2-L6' class='documenter-source'>source</a><br></p>
 <p><a id='Utility-Tools-1'></a></p>
 <h3 id="utility-tools">Utility Tools</h3>
 <p><a id='POMDPs.add' href='#POMDPs.add'>#</a>
@@ -825,28 +825,28 @@ end
 julia&gt; POMDPs.add(&quot;MCTS&quot;)
 </code></pre>
 
-<p><a target='_blank' href='https://github.com/JuliaPOMDP/POMDPs.jl/blob/5070fbff640704f7bb24c0a273c35444dab24de1/src/utils.jl#L1-L12' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaPOMDP/POMDPs.jl/blob/0e8be18e4af75f361adadb06cb89e4f5f40afa4b/src/utils.jl#L1-L12' class='documenter-source'>source</a><br></p>
 <p><a id='POMDPs.add_all' href='#POMDPs.add_all'>#</a>
 <strong><code>POMDPs.add_all</code></strong> &mdash; <em>Function</em>.</p>
 <pre><code>add_all()
 </code></pre>
 
 <p>Downloads and installs all the packages supported by JuliaPOMDP</p>
-<p><a target='_blank' href='https://github.com/JuliaPOMDP/POMDPs.jl/blob/5070fbff640704f7bb24c0a273c35444dab24de1/src/utils.jl#L32-L36' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaPOMDP/POMDPs.jl/blob/0e8be18e4af75f361adadb06cb89e4f5f40afa4b/src/utils.jl#L32-L36' class='documenter-source'>source</a><br></p>
 <p><a id='POMDPs.test_all' href='#POMDPs.test_all'>#</a>
 <strong><code>POMDPs.test_all</code></strong> &mdash; <em>Function</em>.</p>
 <pre><code>test_all()
 </code></pre>
 
 <p>Tests all the JuliaPOMDP packages installed on your current machine.</p>
-<p><a target='_blank' href='https://github.com/JuliaPOMDP/POMDPs.jl/blob/5070fbff640704f7bb24c0a273c35444dab24de1/src/utils.jl#L99-L103' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaPOMDP/POMDPs.jl/blob/0e8be18e4af75f361adadb06cb89e4f5f40afa4b/src/utils.jl#L99-L103' class='documenter-source'>source</a><br></p>
 <p><a id='POMDPs.available' href='#POMDPs.available'>#</a>
 <strong><code>POMDPs.available</code></strong> &mdash; <em>Function</em>.</p>
 <pre><code>available()
 </code></pre>
 
 <p>Prints all the available packages in JuliaPOMDP</p>
-<p><a target='_blank' href='https://github.com/JuliaPOMDP/POMDPs.jl/blob/5070fbff640704f7bb24c0a273c35444dab24de1/src/utils.jl#L114-L118' class='documenter-source'>source</a><br></p>
+<p><a target='_blank' href='https://github.com/JuliaPOMDP/POMDPs.jl/blob/0e8be18e4af75f361adadb06cb89e4f5f40afa4b/src/utils.jl#L114-L118' class='documenter-source'>source</a><br></p>
               
             </div>
           </div>
