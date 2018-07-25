@@ -49,7 +49,7 @@ will only get dispatched if you specified that the `states` function you wrote w
 supports multiple-dispatch, these type assertion are a way for doing object-oriented programming in Julia.
 
 
-## Why are all the solvers in seperate modules?
+## Why are all the solvers in separate modules?
 
 We did not put all the solvers and support tools into POMDPs.jl, because we wanted POMDPs.jl to be a lightweight
 interface package.
@@ -57,3 +57,9 @@ This has a number of advantages. The first is that if a user only wants to use a
 JuliaPOMDP organization, they do not have to install all the other solvers and their dependencies.
 The second advantage is that people who are not directly part of the JuliaPOMDP organization can write their own solvers
 without going into the source code of other solvers. This makes the framework easier to adopt and to extend.
+
+## How can I implement terminal actions?
+
+Terminal actions are actions that cause the MDP to terminate without generating a new state. POMDPs.jl handles terminal conditions via the `isterminal` function on states, and does not directly support terminal actions. If your MDP has a terminal action, you need to implement the model functions accordingly to generate a terminal state. In both generative and explicit cases, you will need some dummy state, say `spt`, that can be recognized as terminal by the `isterminal` function. One way to do this is to give `spt` a state value that is out of bounds (e.g. a vector of `NaN`s or `-1`s) and then check for that in `isterminal`, so that this does not clash with any conventional termination conditions on the state.
+
+If a terminal action is taken, regardless of current state, the `transition` function should return a distribution with only one next state, `spt`, with probability 1.0. In the generative case, the new state generated should be `spt`. The `reward` function or the `r` in `generate_sr` can be set according to the cost of the terminal action.
