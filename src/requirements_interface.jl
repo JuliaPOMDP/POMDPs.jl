@@ -4,7 +4,7 @@
 
 Check whether there is an implementation available that will return a suitable value.
 """
-implemented(f::Function, TT::TupleType) = method_exists(f, TT)
+implemented(f::Function, TT::TupleType) = hasmethod(f, TT)
 
 """
     @implemented function(::Arg1Type, ::Arg2Type)

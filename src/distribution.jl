@@ -54,5 +54,5 @@ function sampletype end
 sampletype(d::Any) = sampletype(typeof(d))
 sampletype(t::Type) = throw(MethodError(sampletype, (t,)))
 
-implemented{T<:Type}(f::typeof(sampletype), TT::Type{Tuple{T}}) = method_exists(f, TT) && which(f, TT).module != POMDPs
-implemented{T}(f::typeof(sampletype), ::Type{Tuple{T}}) = implemented(f, Tuple{Type{T}})
+implemented(f::typeof(sampletype), TT::Type{Tuple{T}}) where T<:Type = (f, TT) && which(f, TT).module != POMDPs
+implemented(f::typeof(sampletype), ::Type{Tuple{T}}) where T = implemented(f, Tuple{Type{T}})

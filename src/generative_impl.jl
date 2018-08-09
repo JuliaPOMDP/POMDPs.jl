@@ -3,7 +3,7 @@
 # This file is long, messy and fragile. One day a more robust paradigm should be used.
 
 function implemented(f::typeof(generate_s), TT::Type)
-    if !method_exists(f, TT)
+    if !hasmethod(f, TT)
         return false
     end
     m = which(f, TT)
@@ -37,7 +37,7 @@ end
 
 
 function implemented(f::typeof(generate_sr), TT::Type)
-    if !method_exists(f, TT)
+    if !hasmethod(f, TT)
         return false
     end
     m = which(f, TT)
@@ -74,7 +74,7 @@ end
 end
 
 function implemented(f::typeof(generate_o), TT::Type)
-    if !method_exists(f, TT)
+    if !hasmethod(f, TT)
         return false
     end
     m = which(f, TT)
@@ -108,7 +108,7 @@ end
 end
 
 function implemented(f::typeof(generate_so), TT::Type)
-    if !method_exists(f, TT)
+    if !hasmethod(f, TT)
         return false
     end
     m = which(f, TT)
@@ -146,7 +146,7 @@ end
 
 
 function implemented(f::typeof(generate_sor), TT::Type)
-    if !method_exists(f, TT)
+    if !hasmethod(f, TT)
         return false
     end
     m = which(f, TT)
@@ -194,7 +194,7 @@ end
 
 
 function implemented(f::typeof(generate_or), TT::Type)
-    if !method_exists(f, TT)
+    if !hasmethod(f, TT)
         return false
     end
     m = which(f, TT)
@@ -232,7 +232,7 @@ end
 
 
 function implemented(f::typeof(initial_state), TT::Type)
-    if !method_exists(f, TT)
+    if !hasmethod(f, TT)
         return false
     end
     m = which(f, TT)
