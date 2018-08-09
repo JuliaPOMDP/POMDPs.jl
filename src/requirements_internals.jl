@@ -313,11 +313,12 @@ THIS IS ONLY INTENDED FOR USE INSIDE POMDPs AND MAY NOT FUNCTION CORRECTLY ELSEW
 """
 macro impl_dep(curly, signature, dependency)
     # this is kinda hacky and fragile with the cell1d - email Zach if it breaks
-    @assert curly.head == :cell1d
+    @assert curly.head == :braces
     implemented_curly = :(implemented{$(curly.args...)})
     tplex = convert_req(signature)
     deptplex = convert_req(dependency)
     impled = quote
+        # TODO FAILS here
         function $implemented_curly(f::typeof(first($tplex)), TT::Type{last($tplex)})
             m = which(f,TT)
             if m.module == POMDPs && !implemented($deptplex...)

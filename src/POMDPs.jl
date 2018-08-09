@@ -5,7 +5,10 @@ Provides a basic interface for defining and solving MDPs/POMDPs
 """
 module POMDPs
 
-import Base: rand, mean
+using Nullables
+using Random
+import Base: rand
+import Statistics: mean
 import Distributions: pdf, mode
 
 export 
