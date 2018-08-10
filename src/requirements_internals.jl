@@ -303,7 +303,7 @@ function handle_reqs!(node::Any, reqs_name::Symbol)
 end
 
 """
-    @impl_dep {P<:POMDP,S,A} reward(::P,::S,::A,::S) reward(::P,::S,::A)
+    @impl_dep reward(::P,::S,::A,::S) where {P<:POMDP,S,A} reward(::P,::S,::A)
 
 Declare an implementation dependency and automatically implement `implemented`.
 
@@ -311,15 +311,18 @@ In the example above, `@implemented reward(::P,::S,::A,::S)` will return true if
 
 THIS IS ONLY INTENDED FOR USE INSIDE POMDPs AND MAY NOT FUNCTION CORRECTLY ELSEWHERE
 """
-macro impl_dep(curly, signature, dependency)
-    @assert curly.head == :braces
-    @show curly.args
-    # implemented_curly = :(implemented{$(curly.args...)})
-    tplex = convert_req(signature)
+macro impl_dep(signature, dependency)
+    if signature.head == :where
+        sig_req = signature.args[1]
+        wheres = signature.args[2:end]
+    else
+        sig_req = signature
+        wheres = ()
+    end
+    tplex = convert_req(sig_req)
     deptplex = convert_req(dependency)
     impled = quote
-        # function $implemented_curly(f::typeof(first($tplex)), TT::Type{last($tplex)})
-        function implemented(f::typeof(first($tplex)), TT::Type{last($tplex)}) where 
+        function implemented(f::typeof(first($tplex)), TT::Type{last($tplex)}) where {$(wheres...)}
             m = which(f,TT)
             if m.module == POMDPs && !implemented($deptplex...)
                 return false
@@ -329,6 +332,5 @@ macro impl_dep(curly, signature, dependency)
             return false
         end
     end
-    @show impled.args[2].args[1].args
     return esc(impled)
 end
