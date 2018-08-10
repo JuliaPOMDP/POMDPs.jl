@@ -5,7 +5,6 @@ Provides a basic interface for defining and solving MDPs/POMDPs
 """
 module POMDPs
 
-using Nullables
 using Random
 import Base: rand
 import Statistics: mean

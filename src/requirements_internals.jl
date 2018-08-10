@@ -5,17 +5,17 @@ abstract type AbstractRequirementSet end
 
 mutable struct Unspecified <: AbstractRequirementSet
     requirer
-    parent::Nullable{Any}
+    parent::Union{Nothing, Any}
 end
 
-Unspecified(requirer) = Unspecified(requirer, Nullable{Any}())
+Unspecified(requirer) = Unspecified(requirer, nothing)
 
 mutable struct RequirementSet <: AbstractRequirementSet
     requirer
     reqs::Vector{Req} # not actually a set - to preserve intuitive ordering
     deps::Vector{AbstractRequirementSet}
-    parent::Nullable{Any}
-    exception::Nullable{Any} # Exception that kept this from being created correctly (too scared to make this Nullable{Exception}, but that's what it should be
+    parent::Union{Nothing, Any}
+    exception::Union{Nothing, Exception}
 end
 
 function RequirementSet(requirer, parent=nothing)
@@ -23,14 +23,14 @@ function RequirementSet(requirer, parent=nothing)
                           Vector{Tuple{Function, TupleType}}(),
                           AbstractRequirementSet[],
                           parent,
-                          Nullable{Any}())
+                          nothing)
 end
 
 Base.push!(r::RequirementSet, func::Function, argtypes::TupleType) = push!(r, (func, argtypes))
 Base.push!(r::RequirementSet, t::Tuple{Function, TupleType}) = push!(r.reqs, t)
 
 function push_dep!(r::RequirementSet, dep::AbstractRequirementSet)
-    dep.parent = Nullable{Any}(r.requirer)
+    dep.parent = r.requirer
     push!(r.deps, dep)
 end
 
@@ -126,19 +126,19 @@ function recursively_show(io::IO,
         show_checked_list(io, checked)
     end
 
-    if isnull(r.exception) # no exception
-        first_exception = Nullable{RequirementSet}()
+    if r.exception == nothing # no exception
+        first_exception = nothing
     else
         allthere = false
         show_incomplete(io, r)
-        first_exception = Nullable{RequirementSet}(r)
+        first_exception = r
     end
 
     for dep in r.deps
         depcomplete, depexception = recursively_show(io, dep, analyzed, reported)
         allthere = allthere && depcomplete
-        if isnull(first_exception) && !isnull(depexception)
-            first_exception = Nullable{RequirementSet}(get(depexception))
+        if first_exception == nothing && depexception != nothing
+            first_exception = depexception
         end
     end
 
@@ -147,12 +147,12 @@ end
 
 function recursively_show(io::IO, r::Unspecified, analyzed::Set, reported::Set{Req})
     if r.requirer in analyzed
-        return true, Nullable{RequirementSet}()
+        return true, nothing
     else
         push!(analyzed, r.requirer)
         show_requirer(io::IO, r)
         println(io, "  [No requirements specified]")
-        return true, Nullable{RequirementSet}()
+        return true, nothing
     end
 end
 
@@ -164,7 +164,7 @@ function recursively_check(r::RequirementSet, analyzed::Set)
 
     push!(analyzed, r.requirer)
 
-    allthere = isnull(r.exception)
+    allthere = r.exception == nothing
     if allthere
         for fp in r.reqs
             if !implemented(first(fp), last(fp))
@@ -312,14 +312,14 @@ In the example above, `@implemented reward(::P,::S,::A,::S)` will return true if
 THIS IS ONLY INTENDED FOR USE INSIDE POMDPs AND MAY NOT FUNCTION CORRECTLY ELSEWHERE
 """
 macro impl_dep(curly, signature, dependency)
-    # this is kinda hacky and fragile with the cell1d - email Zach if it breaks
     @assert curly.head == :braces
-    implemented_curly = :(implemented{$(curly.args...)})
+    @show curly.args
+    # implemented_curly = :(implemented{$(curly.args...)})
     tplex = convert_req(signature)
     deptplex = convert_req(dependency)
     impled = quote
-        # TODO FAILS here
-        function $implemented_curly(f::typeof(first($tplex)), TT::Type{last($tplex)})
+        # function $implemented_curly(f::typeof(first($tplex)), TT::Type{last($tplex)})
+        function implemented(f::typeof(first($tplex)), TT::Type{last($tplex)}) where 
             m = which(f,TT)
             if m.module == POMDPs && !implemented($deptplex...)
                 return false
@@ -329,5 +329,6 @@ macro impl_dep(curly, signature, dependency)
             return false
         end
     end
+    @show impled.args[2].args[1].args
     return esc(impled)
 end

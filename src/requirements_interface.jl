@@ -197,7 +197,7 @@ function show_requirements(r::AbstractRequirementSet)
         println()
     end
 
-    if !isnull(first_exception)
+    if first_exception != nothing
         print("Throwing the first exception (from processing ")
         print_with_color(:blue, handle_method(get(first_exception).requirer))
         println(" requirements):\n")

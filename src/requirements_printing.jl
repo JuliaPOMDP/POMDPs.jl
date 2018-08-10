@@ -7,7 +7,7 @@ end
 function show_requirer(io::IO, r::AbstractRequirementSet)
     print(io, "For ")
     print_with_color(:blue, io, "$(handle_method(r.requirer))")
-    if isnull(r.parent)
+    if r.parent == nothing
         println(io, ":")
     else
         println(io, " (in $(handle_method(get(r.parent)))):")
@@ -27,7 +27,7 @@ function show_checked_list(io::IO, cl::AbstractVector{T}) where T <: Tuple
 end
 
 function show_incomplete(io, r::RequirementSet)
-    @assert !isnull(r.exception)
+    @assert r.exception != nothing
     extype = typeof(get(r.exception))
     print_with_color(:red, io, "  WARNING: Some requirements may not be shown because a $(extype) was thrown.")
     println(io)
