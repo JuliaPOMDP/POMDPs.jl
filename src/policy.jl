@@ -26,8 +26,11 @@ Returns a default Updater appropriate for a belief type that policy `p` can use
 function updater end
 
 """
-    value{B}(p::Policy, x::B)
+    value(p::Policy, s)
+    value(p::Policy, s, a)
 
-Returns the utility value from policy `p` given the state
+Returns the utility value from policy `p` given the state (or belief), or state-action (or belief-action) pair.
+
+The state-action version is commonly referred to as the Q-value.
 """
 function value end
