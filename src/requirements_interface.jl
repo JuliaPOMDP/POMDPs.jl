@@ -56,8 +56,8 @@ macro POMDP_require(typedcall, block)
     ts = Symbol[Symbol(:T,i) for i in 1:length(types)]
     req_spec = :(($fname, Tuple{$(types...)}))
     fimpl = quote
-        function POMDPs.get_requirements{$(tconstr...)}(f::typeof($(esc(fname))), # dang
-                                                 args::Tuple{$(ts...)})
+        function POMDPs.get_requirements(f::typeof($(esc(fname))), # dang
+                                         args::Tuple{$(ts...)}) where {$(tconstr...)}
             ($([esc(a) for a in args]...),) = args # whoah
             return $(pomdp_requirements(req_spec, block))
         end

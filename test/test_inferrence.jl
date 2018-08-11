@@ -1,5 +1,4 @@
-using Base.Test
-
+using Test
 using POMDPs
 
 mutable struct X <: POMDP{Float64,Bool,Int} end

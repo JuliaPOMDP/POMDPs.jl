@@ -1,6 +1,6 @@
-using Base.Test
+using Test
 
-tcall = parse("f(arg1::T1, arg2::T2)")
+tcall = Meta.parse("f(arg1::T1, arg2::T2)")
 @test POMDPs.unpack_typedcall(tcall) == (:f, [:arg1, :arg2], [:T1, :T2])
 
 # tests case where types aren't specified
@@ -32,7 +32,7 @@ module MyModule
         @req rand(::AbstractRNG, ::typeof(t_dist))
     end
 
-    function POMDPs.solve{S,A,O}(s::CoolSolver, problem::POMDP{S,A,O})
+    function POMDPs.solve(s::CoolSolver, problem::POMDP{S,A,O}) where {S,A,O}
         @warn_requirements solve(s, problem)
         reqs = @get_requirements solve(s,problem)
         @assert p==nothing
