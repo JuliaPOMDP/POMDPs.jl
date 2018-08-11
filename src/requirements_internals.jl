@@ -42,7 +42,7 @@ function pomdp_requirements(name::Union{Expr,String}, block::Expr)
     req_found = handle_reqs!(block, :reqs)
     if !req_found
         block = esc(block)
-        warn("No @req or @subreq found in @POMDP_requirements block.")
+        @warn("No @req or @subreq found in @POMDP_requirements block.")
     end
 
     newblock = quote
@@ -87,10 +87,10 @@ function convert_req(ex::Expr)
         malformed = true
     end
     if malformed # throw error at parse time so solver writers will have to deal with this
-        throw(ErrorException("""
+        error("""
               Malformed requirement expression: $ex
               Requirements should be expressed in the form `function_name(::Type1, ::Type2)`
-              """))
+              """)
     else
         return quote ($func, Tuple{$(argtypes...)}) end
     end
@@ -254,6 +254,7 @@ end
 
 
 # this is where the freaking magic happens.
+# BUT I am not 100% sure the macroexpands are called with the right modules
 """
     handle_reqs!(block, reqs_name::Symbol)
 
@@ -266,7 +267,7 @@ function handle_reqs!(node::Expr, reqs_name::Symbol)
     if node.head == :macrocall && node.args[1] == Symbol("@req")
         macro_node = copy(node)
         node.head = :call
-        expanded = macroexpand(macro_node)
+        expanded = macroexpand(POMDPs, macro_node)
         if isa(expanded, Expr) && expanded.head == :error
             rethrow(expanded.args[1])
         end
@@ -275,11 +276,11 @@ function handle_reqs!(node::Expr, reqs_name::Symbol)
     elseif node.head == :macrocall && node.args[1] == Symbol("@subreq")
         macro_node = copy(node)
         node.head = :call
-        expanded = macroexpand(macro_node)
+        expanded = macroexpand(POMDPs, macro_node)
         if isa(expanded, Expr) && expanded.head == :error
             rethrow(expanded.args[1])
         end
-        node.args = [:push_dep!, reqs_name, esc(macroexpand(expanded))]
+        node.args = [:push_dep!, reqs_name, esc(macroexpand(POMDPs, expanded))]
         return true
     else
         found = falses(length(node.args))

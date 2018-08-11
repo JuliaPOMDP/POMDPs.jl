@@ -1,6 +1,6 @@
-using Base.Test
+using Test
 
-tcall = parse("f(arg1::T1, arg2::T2)")
+tcall = Meta.parse("f(arg1::T1, arg2::T2)")
 @test POMDPs.unpack_typedcall(tcall) == (:f, [:arg1, :arg2], [:T1, :T2])
 
 # tests case where types aren't specified
@@ -11,6 +11,7 @@ end
 
 module MyModule
     using POMDPs
+    using Random
 
     export CoolSolver, solve
 
@@ -32,7 +33,7 @@ module MyModule
         @req rand(::AbstractRNG, ::typeof(t_dist))
     end
 
-    function POMDPs.solve{S,A,O}(s::CoolSolver, problem::POMDP{S,A,O})
+    function POMDPs.solve(s::CoolSolver, problem::POMDP{S,A,O}) where {S,A,O}
         @warn_requirements solve(s, problem)
         reqs = @get_requirements solve(s,problem)
         @assert p==nothing
@@ -49,7 +50,7 @@ module MyModule
 end
 
 using POMDPs
-using MyModule
+using Main.MyModule
 
 mutable struct SimplePOMDP <: POMDP{Float64, Bool, Int} end
 POMDPs.actions(SimplePOMDP) = [true, false]
@@ -62,10 +63,10 @@ println("There should be a warning about no @reqs here:")
     1+1
 end
 @test reqs == nothing
-@test_throws ErrorException eval(macroexpand(quote @POMDP_requirements "Malformed" begin
+@test_throws LoadError macroexpand(Main, quote @POMDP_requirements "Malformed" begin
         @req iterator(typeof(as))
     end
-end))
+end)
 
 # solve(CoolSolver(), SimplePOMDP())
 @test_throws MethodError solve(CoolSolver(), SimplePOMDP())
@@ -81,7 +82,7 @@ POMDPs.transition(p::SimplePOMDP, s::Float64, ::Bool) = SimpleDistribution(state
 
 POMDPs.observations(p::SimplePOMDP) = [1,2,3]
 
-Base.rand(rng::AbstractRNG, d::SimpleDistribution) = sample(rng, d.ss, WeightVec(d.b))
+Random.rand(rng::AbstractRNG, d::SimpleDistribution) = sample(rng, d.ss, WeightVec(d.b))
 
 println("There should be no warnings or requirements output below this point!\n")
 
