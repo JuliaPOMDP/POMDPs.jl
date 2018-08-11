@@ -12,7 +12,7 @@ state_type(A) # returns Int
 ```
 """
 state_type(t::Type) = state_type(supertype(t))
-state_type(t::Type{POMDP{S,A,O}}) = S
+state_type(t::Type{POMDP{S,A,O}}) where {S, A, O}= S
 state_type(t::Type{MDP{S,A}}) where {S,A} = S
 state_type(t::Type{Any}) = error("Attempted to extract the state type for $t. This is not a subtype of `POMDP` or `MDP`. Did you declare your problem type as a subtype of `POMDP{S,A,O}` or `MDP{S,A}`?")
 state_type(p::Union{POMDP,MDP}) = state_type(typeof(p))

@@ -131,6 +131,8 @@ function requirements_info(s::Union{Solver,Simulator})
     stype = typeof(s)
     try
         stype = stype.name.name
+    catch
+        
     end
     println("""Please supply a POMDP as a second argument to requirements_info.
             e.g. `@requirements_info $(stype)() YourPOMDP()`
