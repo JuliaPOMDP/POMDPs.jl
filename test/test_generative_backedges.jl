@@ -1,5 +1,6 @@
-using Base.Test
+using Test
 using POMDPs
+using Random
 
 let
     struct M <: POMDP{Int, Int, Char} end

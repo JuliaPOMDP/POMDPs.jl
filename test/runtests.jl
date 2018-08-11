@@ -1,6 +1,7 @@
 using Test
 
 using POMDPs
+using Random
 mutable struct A <: POMDP{Int,Bool,Bool} end
 @test_throws MethodError n_states(A())
 @test_throws MethodError state_index(A(), 1)
