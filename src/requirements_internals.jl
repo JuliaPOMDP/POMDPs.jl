@@ -266,7 +266,7 @@ function handle_reqs!(node::Expr, reqs_name::Symbol)
     if node.head == :macrocall && node.args[1] == Symbol("@req")
         macro_node = copy(node)
         node.head = :call
-        expanded = macroexpand(macro_node)
+        expanded = @macroexpand macro_node
         if isa(expanded, Expr) && expanded.head == :error
             rethrow(expanded.args[1])
         end
@@ -275,11 +275,11 @@ function handle_reqs!(node::Expr, reqs_name::Symbol)
     elseif node.head == :macrocall && node.args[1] == Symbol("@subreq")
         macro_node = copy(node)
         node.head = :call
-        expanded = macroexpand(macro_node)
+        expanded = @macroexpand macro_node
         if isa(expanded, Expr) && expanded.head == :error
             rethrow(expanded.args[1])
         end
-        node.args = [:push_dep!, reqs_name, esc(macroexpand(expanded))]
+        node.args = [:push_dep!, reqs_name, esc(@macroexpand expanded)]
         return true
     else
         found = falses(length(node.args))
