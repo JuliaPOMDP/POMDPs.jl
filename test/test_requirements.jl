@@ -49,7 +49,7 @@ module MyModule
 end
 
 using POMDPs
-using MyModule
+using .MyModule
 
 mutable struct SimplePOMDP <: POMDP{Float64, Bool, Int} end
 POMDPs.actions(SimplePOMDP) = [true, false]

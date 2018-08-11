@@ -42,7 +42,7 @@ function pomdp_requirements(name::Union{Expr,String}, block::Expr)
     req_found = handle_reqs!(block, :reqs)
     if !req_found
         block = esc(block)
-        warn("No @req or @subreq found in @POMDP_requirements block.")
+        @warn "No @req or @subreq found in @POMDP_requirements block."
     end
 
     newblock = quote
