@@ -254,7 +254,6 @@ end
 
 
 # this is where the freaking magic happens.
-# BUT I am not 100% sure the macroexpands are called with the right modules
 """
     handle_reqs!(block, reqs_name::Symbol)
 
