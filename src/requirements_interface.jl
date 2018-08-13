@@ -180,7 +180,8 @@ end
 Check whether the methods in `r` have implementations with `implemented()` and print out a formatted list showing which are missing. Return true if all methods have implementations.
 """
 function show_requirements(r::AbstractRequirementSet)
-    buf = IOBuffer()
+    # buf = IOBuffer()
+    buf = stdout
     reported = Set{Req}()
     analyzed = Set()
 
@@ -189,12 +190,12 @@ function show_requirements(r::AbstractRequirementSet)
 
     allthere, first_exception = recursively_show(buf, r, analyzed, reported)
 
-    # all printing to the screen happens here at once
-    println()
-    print(String(take!(buf)))
-    println()
+    # # all printing to the screen happens here at once
+    # println()
+    # print(String(take!(buf)))
+    # println()
     if !allthere
-        println("Note: Missing methods are often due to incorrect importing. Consider using `importall POMDPs`.")
+        println("Note: Missing methods are often due to incorrect importing. You must explicitly import POMDPs functions to add new methods.")
         println()
     end
 

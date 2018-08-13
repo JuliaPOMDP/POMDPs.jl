@@ -29,7 +29,7 @@ end
 function show_incomplete(io, r::RequirementSet)
     @assert r.exception != nothing
     extype = typeof(r.exception)
-    printstyled(io, "  WARNING: Some requirements may not be shown because a $(extype) was thrown.", color=:red)
+    printstyled(io, "  WARNING: Some requirements may not be shown because a $(extype) was thrown.", color=:yellow)
     println(io)
 end
 
