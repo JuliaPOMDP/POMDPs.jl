@@ -1,20 +1,3 @@
-# language: julia
-# os:
-#   - linux
-#   - osx
-# julia:
-#   - 1.0
-# notifications:
-#   email:
-#     - sunbergzach@gmail.com
-# before_script:
-#   - export PATH=$HOME/.local/bin:$PATH
-# script:
-#   - if [[ -a .git/shallow ]]; then git fetch --unshallow; fi
-#   - julia --check-bounds=yes -e 'using Pkg; Pkg.clone(pwd()); Pkg.test("POMDPs")'
-# after_success:
-#   - julia -e 'using Pkg; Pkg.add("Documenter"); cd(Pkg.dir("POMDPs")); include(joinpath("docs", "make.jl"))'
-
 language: julia
 
 julia:
