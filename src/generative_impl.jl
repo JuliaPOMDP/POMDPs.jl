@@ -265,22 +265,39 @@ end
     end
 end
 
+
 function failed_synth_warning(gen::Tuple, reqs::Vector, greqs::Vector=[]) 
-    io = IOBuffer()
-    show_checked_list(io, reqs)
-    Core.println("""
-WARNING: POMDPs.jl: Could not find or synthesize $(format_method(gen...)). Either implement it directly, or, to automatically synthesize it, implement the following methods from the explicit interface:
+    @warn("POMDPs.jl: Could not find or synthesize $(format_method(gen...)).")
+    println("""
 
-$(String(take!(io)))
-    """)
+            Hint for fixing warning above: Either implement $(format_method(gen...)) directly, or, to automatically synthesize it, implement the following methods from the explicit interface:
+            """)
+    show_checked_list(stdout, reqs)
     if !isempty(greqs)
-        io = IOBuffer()
-        show_checked_list(io, greqs)
-        Core.println("""
-OR implement the following methods from the generative interface:
-
-$(String(take!(io)))
-                     """)
+        println("\nOR implement the following methods from the generative interface:\n")
+        show_checked_list(stdout, greqs)
     end
-    Core.println("([✔] = already implemented correctly; [X] = missing)")
+    println("\n([✔] = already implemented correctly; [X] = missing)\n")
 end
+
+
+# # the old way - if errors start happening because there are side effects in generated functions, you may want to use this
+# function failed_synth_warning(gen::Tuple, reqs::Vector, greqs::Vector=[]) 
+#     io = IOBuffer()
+#     show_checked_list(io, reqs)
+#     Core.println("""
+# WARNING: POMDPs.jl: Could not find or synthesize $(format_method(gen...)). Either implement it directly, or, to automatically synthesize it, implement the following methods from the explicit interface:
+# 
+# $(String(take!(io)))
+#     """)
+#     if !isempty(greqs)
+#         io = IOBuffer()
+#         show_checked_list(io, greqs)
+#         Core.println("""
+# OR implement the following methods from the generative interface:
+# 
+# $(String(take!(io)))
+#                      """)
+#     end
+#     Core.println("([✔] = already implemented correctly; [X] = missing)")
+# end

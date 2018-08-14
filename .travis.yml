@@ -19,7 +19,6 @@ language: julia
 
 julia:
   - 1.0
-  - nightly
 
 os:
   - linux
@@ -31,7 +30,7 @@ notifications:
 
 script:
   - if [[ -a .git/shallow ]]; then git fetch --unshallow; fi
-  - julia --project --check-bounds=yes -e 'import Pkg; Pkg.build(); Pkg.test(; coverage=true)'
+  - julia --project --check-bounds=yes -e 'import Pkg; Pkg.build(); Pkg.test(POMDPs; coverage=true)'
 
 after_success:
   - julia --project -e 'import Pkg; Pkg.add("Documenter"); include("docs/make.jl")'
