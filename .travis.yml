@@ -1,18 +1,21 @@
 language: julia
+
+julia:
+  - 0.7
+  - 1.0
+
 os:
   - linux
   - osx
-julia:
-  - 0.6
+
 notifications:
   email:
     - sunbergzach@gmail.com
-before_script:
-  - export PATH=$HOME/.local/bin:$PATH
+
 script:
   - if [[ -a .git/shallow ]]; then git fetch --unshallow; fi
-  - julia --check-bounds=yes -e 'Pkg.clone(pwd())'
-  - julia --check-bounds=yes -e 'Pkg.test("POMDPs")'
+  - julia --project --check-bounds=yes -e 'import Pkg; Pkg.build(); Pkg.test("POMDPs"; coverage=true)'
+
 after_success:
-  - julia -e 'Pkg.add("Documenter")'
-  - julia -e 'cd(Pkg.dir("POMDPs")); include(joinpath("docs", "make.jl"))'
+  - julia --project -e 'import Pkg; Pkg.add("Documenter"); include("docs/make.jl")'
+  - julia --project -e 'import Pkg; Pkg.add("Coverage"); using Coverage; Codecov.submit(Codecov.process_folder())'

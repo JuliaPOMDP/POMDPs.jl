@@ -4,7 +4,7 @@
 
 Check whether there is an implementation available that will return a suitable value.
 """
-implemented(f::Function, TT::TupleType) = method_exists(f, TT)
+implemented(f::Function, TT::TupleType) = hasmethod(f, TT)
 
 """
     @implemented function(::Arg1Type, ::Arg2Type)
@@ -56,8 +56,7 @@ macro POMDP_require(typedcall, block)
     ts = Symbol[Symbol(:T,i) for i in 1:length(types)]
     req_spec = :(($fname, Tuple{$(types...)}))
     fimpl = quote
-        function POMDPs.get_requirements{$(tconstr...)}(f::typeof($(esc(fname))), # dang
-                                                 args::Tuple{$(ts...)})
+        function POMDPs.get_requirements(f::typeof($(esc(fname))), args::Tuple{$(ts...)}) where {$(tconstr...)} # dang
             ($([esc(a) for a in args]...),) = args # whoah
             return $(pomdp_requirements(req_spec, block))
         end
@@ -131,6 +130,8 @@ function requirements_info(s::Union{Solver,Simulator})
     stype = typeof(s)
     try
         stype = stype.name.name
+    catch ex
+        # do nothing
     end
     println("""Please supply a POMDP as a second argument to requirements_info.
             e.g. `@requirements_info $(stype)() YourPOMDP()`
@@ -179,7 +180,7 @@ end
 Check whether the methods in `r` have implementations with `implemented()` and print out a formatted list showing which are missing. Return true if all methods have implementations.
 """
 function show_requirements(r::AbstractRequirementSet)
-    buf = IOBuffer()
+    buf = stdout
     reported = Set{Req}()
     analyzed = Set()
 
@@ -188,20 +189,16 @@ function show_requirements(r::AbstractRequirementSet)
 
     allthere, first_exception = recursively_show(buf, r, analyzed, reported)
 
-    # all printing to the screen happens here at once
-    println()
-    print(String(take!(buf)))
-    println()
     if !allthere
-        println("Note: Missing methods are often due to incorrect importing. Consider using `importall POMDPs`.")
+        println("Note: Missing methods are often due to incorrect importing. You must explicitly import POMDPs functions to add new methods.")
         println()
     end
 
-    if !isnull(first_exception)
+    if first_exception != nothing
         print("Throwing the first exception (from processing ")
-        print_with_color(:blue, handle_method(get(first_exception).requirer))
+        printstyled(handle_method(first_exception.requirer), color=:blue)
         println(" requirements):\n")
-        rethrow(get(get(first_exception).exception))
+        rethrow(first_exception.exception)
     end
 
     return allthere

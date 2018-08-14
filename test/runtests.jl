@@ -1,6 +1,7 @@
-using Base.Test
+using Test
 
 using POMDPs
+using Random
 mutable struct A <: POMDP{Int,Bool,Bool} end
 @test_throws MethodError n_states(A())
 @test_throws MethodError state_index(A(), 1)
@@ -33,7 +34,7 @@ struct E end
 include("test_inferrence.jl")
 include("test_requirements.jl")
 include("test_generative.jl")
-include("test_tutorials.jl")
+# include("test_tutorials.jl")
 include("test_generative_backedges.jl")
 
 let

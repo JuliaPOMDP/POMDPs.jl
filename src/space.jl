@@ -24,7 +24,7 @@ function states end
 Returns a subset of the state space reachable from `state`. 
 """
 states(problem::Union{POMDP,MDP}, s) = states(problem)
-@impl_dep {P<:Union{POMDP,MDP},S} states(::P,::S) states(::P)
+@impl_dep states(::P,::S) where {P<:Union{POMDP,MDP},S} states(::P)
 
 """
     actions(problem::POMDP)
@@ -41,7 +41,7 @@ function actions end
 Return the action space accessible from the given state.
 """
 actions(problem::Union{MDP,POMDP}, state) = actions(problem)
-@impl_dep {P<:Union{POMDP,MDP},S} actions(::P,::S) actions(::P)
+@impl_dep actions(::P,::S) where {P<:Union{POMDP,MDP},S} actions(::P)
 
 """
     actions(problem::POMDP, belief)
@@ -63,4 +63,4 @@ function observations end
 Return the observation space accessible from the given state and returns it.
 """
 observations(problem::POMDP, state) = observations(problem)
-@impl_dep {P<:POMDP,S} observations(::P,::S) observations(::P)
+@impl_dep observations(::P,::S) where {P<:POMDP,S} observations(::P)

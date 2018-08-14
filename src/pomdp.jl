@@ -79,7 +79,8 @@ function observation end
 Return the observation distribution for the a-s' tuple (action and next state)
 """
 observation(problem::POMDP, a, sp) = observation(problem, sp)
-@impl_dep {P<:POMDP,S,A} observation(::P,::A,::S) observation(::P,::S)
+# @impl_dep observation(::P,::A,::S) where {P<:POMDP,S,A} observation(::P,::S)
+@impl_dep observation(::P,::A,::S) where {P<:POMDP,S,A} observation(::P,::S)
 
 """
     observation{S,A,O}(problem::POMDP{S,A,O}, state::S, action::A, statep::S)
@@ -87,7 +88,7 @@ observation(problem::POMDP, a, sp) = observation(problem, sp)
 Return the observation distribution for the s-a-s' tuple (state, action, and next state)
 """
 observation(problem::POMDP, s, a, sp) = observation(problem, a, sp)
-@impl_dep {P<:POMDP,S,A} observation(::P,::S,::A,::S) observation(::P,::A,::S)
+@impl_dep observation(::P,::S,::A,::S) where {P<:POMDP,S,A} observation(::P,::A,::S)
 
 """
     reward{S,A,O}(problem::POMDP{S,A,O}, state::S, action::A)
@@ -104,7 +105,7 @@ function reward end
 Return the immediate reward for the s-a-s' triple
 """
 reward(problem::Union{POMDP,MDP}, s, a, sp) = reward(problem, s, a)
-@impl_dep {P<:Union{POMDP,MDP},S,A} reward(::P,::S,::A,::S) reward(::P,::S,::A)
+@impl_dep reward(::P,::S,::A,::S) where {P<:Union{POMDP,MDP},S,A} reward(::P,::S,::A)
 
 """
     isterminal_obs{S,A,O}(problem::POMDP{S,A,O}, observation::O)
