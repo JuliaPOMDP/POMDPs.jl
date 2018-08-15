@@ -20,8 +20,8 @@ module MyModule
     p = nothing # to test hygeine
     @POMDP_require solve(s::CoolSolver, p::POMDP) begin
         PType = typeof(p)
-        S = state_type(PType)
-        A = action_type(PType)
+        S = statetype(PType)
+        A = actiontype(PType)
         @req states(::PType)
         @req actions(::PType)
         @req transition(::PType, ::S, ::A)

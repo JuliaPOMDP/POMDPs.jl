@@ -42,18 +42,17 @@ let
     struct CV <: POMDP{Vector{Float64},Vector{Float64},Vector{Float64}} end
 
     @test convert_s(Vector{Float32}, 1, CI()) == Float32[1.0]
-    @test convert_s(state_type(CI), Float32[1.0], CI()) == 1
-    @test convert_s(state_type(CV), Float32[2.0,3.0], CV()) == [2.0, 3.0]
+    @test convert_s(statetype(CI), Float32[1.0], CI()) == 1
+    @test convert_s(statetype(CV), Float32[2.0,3.0], CV()) == [2.0, 3.0]
     @test convert_s(Vector{Float32}, [2.0, 3.0], CV()) == Float32[2.0, 3.0]
 
     @test convert_a(Vector{Float32}, 1, CI()) == Float32[1.0]
-    @test convert_a(state_type(CI), Float32[1.0], CI()) == 1
-    @test convert_a(state_type(CV), Float32[2.0,3.0], CV()) == [2.0, 3.0]
+    @test convert_a(statetype(CI), Float32[1.0], CI()) == 1
+    @test convert_a(statetype(CV), Float32[2.0,3.0], CV()) == [2.0, 3.0]
     @test convert_a(Vector{Float32}, [2.0, 3.0], CV()) == Float32[2.0, 3.0]
 
     @test convert_o(Vector{Float32}, 1, CI()) == Float32[1.0]
-    @test convert_o(state_type(CI), Float32[1.0], CI()) == 1
-    @test convert_o(state_type(CV), Float32[2.0,3.0], CV()) == [2.0, 3.0]
+    @test convert_o(statetype(CI), Float32[1.0], CI()) == 1
+    @test convert_o(statetype(CV), Float32[2.0,3.0], CV()) == [2.0, 3.0]
     @test convert_o(Vector{Float32}, [2.0, 3.0], CV()) == Float32[2.0, 3.0]
-
 end
