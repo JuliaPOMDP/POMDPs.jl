@@ -42,11 +42,11 @@ Distributions.support
 """
     iterator(d::Any)
 
-Return an iterable object (array or custom iterator) that iterates over possible values of distribution `d`. Values with zero probability may be skipped.
+DEPRECATED. Return an iterable object (array or custom iterator) that iterates over possible values of distribution `d`. Values with zero probability may be skipped.
 """
 @generated function iterator(x::Any)
     @warn("POMDPs.iterator(x) is deprecated. Simply iterate over the space directly or use support(d) for distributions.")
-    return :(x)
+    return :(support(x))
 end
 
 """
