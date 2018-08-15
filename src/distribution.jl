@@ -9,35 +9,35 @@ Return a random element from distribution or space `d`.
 
 If `d` is a state or transition distribution, the sample will be a state; if `d` is an action distribution, the sample will be an action or if `d` is an observation distribution, the sample will be an observation.
 """
-Base.rand
+function rand end
 
 """
     pdf(d::Any, x::Any)
 
 Evaluate the probability density of distribution `d` at sample `x`.
 """
-Distributions.pdf
+function pdf end
 
 """
     mode(d::Any)
 
 Return the most likely value in a distribution d.
 """
-Distributions.mode
+function mode end
 
 """
     mean(d::Any)
 
 Return the mean of a distribution d.
 """
-Statistics.mean
+function mean end
 
 """
     support(d::Any)
 
 Return the possible values that can be sampled from distribution d. Values with zero probability may be skipped.
 """
-Distributions.support
+function support end
 
 """
     iterator(d::Any)

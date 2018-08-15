@@ -6,7 +6,7 @@ module POMDPs
 using Random
 import Base: rand
 import Statistics
-import Distributions
+import Distributions: rand, pdf, mode, mean, support
 import Pkg
 
 export 
