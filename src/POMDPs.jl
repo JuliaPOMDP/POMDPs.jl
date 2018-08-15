@@ -9,6 +9,7 @@ using Random
 import Base: rand
 import Statistics: mean
 import Distributions: pdf, mode
+import Pkg
 
 export 
     # Abstract type

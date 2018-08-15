@@ -1,7 +1,7 @@
 """
     add(solver_name::AbstractString, v::Bool=true)
 
-Downloads and installs a registered solver with name `solver_name`. This is a light wrapper around `Pkg.clone()`, and it does nothing special or different other than looking up the URL.
+Downloads and installs a registered solver with name `solver_name`. This is a light wrapper around `Pkg.add()`, and it does nothing special or different other than looking up the URL.
 
 `v` is a verbose flag, when set to true, function will notify the user if solver is already installed.
 This function is not exported, and must be called:
@@ -17,10 +17,11 @@ function add(solver_name::AbstractString, v::Bool=true)
         Pkg.add(solver_name)
     else
         try
-            Pkg.clone(full_url)
+            Pkg.add(Pkg.PackageSpec(url=full_url))
             Pkg.build(solver_name)
         catch ex
-            if isa(ex, Base.Pkg.PkgError) && ex.msg == "$solver_name already exists"
+            @show typeof(ex)
+            if isa(ex, Pkg.Types.PkgError) && ex.msg == "$solver_name already exists"
                 v ? (println("Package already installed")) : (nothing)
             else
                 rethrow(ex)
@@ -34,23 +35,11 @@ end
 
 Downloads and installs all the packages supported by JuliaPOMDP
 """
-function add_all(;native_only=false)
-    native_only ? pkg_set = NATIVE_PACKAGES : pkg_set = SUPPORTED_PACKAGES 
+function add_all(;native_only=false, v::Bool=true)
+    pkg_set = native_only ? NATIVE_PACKAGES : SUPPORTED_PACKAGES 
     for p in pkg_set
-        add(p, false)
+        add(p, v)
     end
-end
-
-
-
-"""
-    remove(solver_name::AbstractString)
-
-Remove a JuliaPOMDP package.
-"""
-function remove(solver_name::AbstractString)
-    @assert solver_name in SUPPORTED_PACKAGES string("The JuliaPOMDP package: ", solver_name, " is not supported")
-    Pkg.rm(solver_name)
 end
 
 
@@ -67,29 +56,16 @@ end
 
 
 """
-    update()
-
-Updates all the installed packages
-"""
-function update()
-    for p in SUPPORTED_PACKAGES
-        # check if package is intalled
-        if isdir(Pkg.dir(p))
-            Pkg.checkout(p)
-        end
-    end
-end
-
-"""
     build()
 
 Builds all the existing packages
 """
 function build()
     for p in SUPPORTED_PACKAGES
-        # see of package is intalled
-        if isdir(Pkg.dir(p))
+        try
             Pkg.build(p)
+        catch ex
+            @warn("Error while building $p: $ex")
         end
     end
 end
@@ -105,8 +81,8 @@ function test_all(v::Bool=false)
     for p in SUPPORTED_PACKAGES
         try
             Pkg.test(p)
-        catch
-            v ? (println("Package ", p, "not being tested")) : (nothing)
+        catch ex
+            @warn("Error while testing $p: $ex")
         end
     end
 end
@@ -121,25 +97,3 @@ function available()
         println(p)
     end
 end
-
-# This does not appear to work
-#=
-"""
-    POMDPs.get_methods(flist::Vector{Function})
-
-Takes in a vector of function names, and returns the associated POMDPs.jl methods
-"""
-function get_methods(flist::Vector{Function})
-    ms = Method[]
-    # loop though functions
-    for f in flist
-        t = nothing
-        # find the method from POMDPs.jl
-        for m in methods(f)
-            t = m
-        end
-        push!(ms, t)
-    end
-    ms
-end
-=#
