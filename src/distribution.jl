@@ -16,14 +16,14 @@ Base.rand
 
 Evaluate the probability density of distribution `d` at sample `x`.
 """
-function pdf end # maybe eventually this should be Distributions.pdf
+Distributions.pdf
 
 """
     mode(d::Any)
 
 Return the most likely value in a distribution d.
 """
-function mode end
+Distributions.mode
 
 """
     mean(d::Any)
@@ -33,18 +33,21 @@ Return the mean of a distribution d.
 Statistics.mean
 
 """
+    support(d::Any)
+
+Return the possible values that can be sampled from distribution d. Values with zero probability may be skipped.
+"""
+Distributions.support
+
+"""
     iterator(d::Any)
 
 Return an iterable object (array or custom iterator) that iterates over possible values of distribution `d`. Values with zero probability may be skipped.
-
-Note: calling iterator to iterate over *spaces* is deprecated; it should only be used for distributions.
 """
-function iterator end
-
-# @generated function iterator(x::Any)
-#     @warn("POMDPs.iterator(x) is deprecated. Simply iterate over the space or distribution directly.")
-#     return :(x)
-# end
+@generated function iterator(x::Any)
+    @warn("POMDPs.iterator(x) is deprecated. Simply iterate over the space directly or use support(d) for distributions.")
+    return :(x)
+end
 
 """
     sampletype(T::Type)
