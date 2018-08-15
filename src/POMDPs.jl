@@ -55,7 +55,7 @@ export
     lowerbound,
     upperbound,
     getindex,
-    iterator,
+    support,
     sampletype,
     initialstate_distribution,
 
@@ -112,7 +112,8 @@ export
     action_type,
     obs_type,
     initial_state,
-    initial_state_distribution
+    initial_state_distribution,
+    iterator
 
 
 include("requirements_internals.jl")
