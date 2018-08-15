@@ -19,8 +19,8 @@ The [`@POMDP_require`](@ref) macro is the main point of interaction with the req
 ```julia
 @POMDP_require solve(solver::ValueIterationSolver, mdp::Union{MDP,POMDP}) begin
     P = typeof(mdp)
-    S = state_type(P)
-    A = action_type(P)
+    S = statetype(P)
+    A = actiontype(P)
     @req discount(::P)
     @req n_states(::P)
     @req n_actions(::P)
@@ -56,14 +56,14 @@ By default, `requirements_info` calls [`show_requirements`](@req) on the `solve`
 
 ```julia
 function POMDPs.requirements_info(solver::AbstractMCTSSolver, problem::Union{POMDP,MDP})
-    if state_type(typeof(problem)) <: Number
-        s = one(state_type(typeof(problem)))
+    if statetype(typeof(problem)) <: Number
+        s = one(statetype(typeof(problem)))
         requirements_info(solver, problem, s)
     else
         println("""
             Since MCTS is an online solver, most of the computation occurs in `action(policy, state)`. In order to view the requirements for this function, please, supply a state as the third argument to `requirements_info`, e.g.
 
-                @requirements_info $(typeof(solver))() $(typeof(problem))() $(state_type(typeof(problem)))()
+                @requirements_info $(typeof(solver))() $(typeof(problem))() $(statetype(typeof(problem)))()
 
                 """)
     end

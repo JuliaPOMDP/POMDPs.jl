@@ -137,9 +137,9 @@ The following functions are not part of the API for specifying and solving POMDP
 ### Type Inference
 
 ```@docs
-state_type
-action_type
-obs_type
+statetype
+actiontype
+obstype
 ```
 
 ### Requirements Specification

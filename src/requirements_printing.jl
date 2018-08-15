@@ -47,8 +47,8 @@ function format_method(f::Function, argtypes::TupleType; module_names=false)
         for t in argtypes.parameters
             if isa(t, Union)
                 str = "Union{"
-                for (i, tt) in enumerate(fieldnames(t))
-                    str = string(str, getfield(t, tt), i<length(fieldnames(t)) ? ',' : '}')
+                for (i, tt) in enumerate(fieldnames(typeof(t)))
+                    str = string(str, getfield(t, tt), i<length(fieldnames(typeof(t))) ? ',' : '}')
                 end
                 push!(mless_typenames, str)
             elseif isa(t, UnionAll)
