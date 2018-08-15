@@ -32,14 +32,17 @@ Return the mean of a distribution d.
 """
 Base.mean
 
-"""
-    iterator(d::Any)
-
-Return an iterable object (array or custom iterator) that iterates over possible values of distribution or space `d`. Values with zero probability may be skipped.
-"""
-function iterator end
-
-iterator(a::AbstractArray) = a
+# """
+#     iterator(d::Any)
+# 
+# Return an iterable object (array or custom iterator) that iterates over possible values of distribution or space `d`. Values with zero probability may be skipped.
+# """
+# function iterator end
+# iterator(a::AbstractArray) = a
+@generated function iterator(x::Any)
+    @warn("POMDPs.iterator(x) is deprecated. Simply iterate over the space or distribution directly.")
+    return :(x)
+end
 
 """
     sampletype(T::Type)

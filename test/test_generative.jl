@@ -1,9 +1,9 @@
-import POMDPs: transition, reward, initial_state_distribution
+import POMDPs: transition, reward, initialstate_distribution
 import POMDPs: generate_sr, generate_o
 
 struct W <: POMDP{Int, Bool, Int} end
 println("Warning expected:")
-@test_throws MethodError initial_state(W(), Random.GLOBAL_RNG)
+@test_throws MethodError initialstate(W(), Random.GLOBAL_RNG)
 println("Warning expected:")
 @test_throws MethodError generate_s(W(), 1, true, Random.GLOBAL_RNG)
 println("Warning expected:")
@@ -36,8 +36,8 @@ generate_o(b::B, s::Int, a::Bool, sp::Int, rng::AbstractRNG) = sp
 @test @implemented generate_sor(b::B, s::Int, a::Bool, rng::MersenneTwister)
 @test generate_sor(B(), 1, true, Random.GLOBAL_RNG) == (2, 2, -1.0) # should throw sor error
 
-initial_state_distribution(b::B) = Int[1,2,3]
-@test initial_state(B(), Random.GLOBAL_RNG) in initial_state_distribution(B())
+initialstate_distribution(b::B) = Int[1,2,3]
+@test initialstate(B(), Random.GLOBAL_RNG) in initialstate_distribution(B())
 
 
 mutable struct C <: POMDP{Nothing, Nothing, Nothing} end

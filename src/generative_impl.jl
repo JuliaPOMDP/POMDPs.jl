@@ -231,35 +231,35 @@ end
 end
 
 
-function implemented(f::typeof(initial_state), TT::Type)
+function implemented(f::typeof(initialstate), TT::Type)
     if !hasmethod(f, TT)
         return false
     end
     m = which(f, TT)
-    if m.module == POMDPs && !implemented(initial_state_distribution, Tuple{TT.parameters[1]})
+    if m.module == POMDPs && !implemented(initialstate_distribution, Tuple{TT.parameters[1]})
         return false
     else
         return true
     end
 end
 
-@generated function initial_state(p::Union{POMDP,MDP}, rng::AbstractRNG)
+@generated function initialstate(p::Union{POMDP,MDP}, rng::AbstractRNG)
     impl = quote
-        d = initial_state_distribution(p)
+        d = initialstate_distribution(p)
         return rand(rng, d)
     end
 
-    if implemented(initial_state_distribution, Tuple{p})
+    if implemented(initialstate_distribution, Tuple{p})
         return impl
     else
-        req = @req initial_state_distribution(::p)
+        req = @req initialstate_distribution(::p)
         reqs = [(implemented(req...), req...)]
-        failed_synth_warning(@req(initial_state(::p, ::rng)), reqs)
+        failed_synth_warning(@req(initialstate(::p, ::rng)), reqs)
         return quote
             try
                 $impl # trick to get the compiler to insert the right backedges
             catch
-                throw(MethodError(initial_state, (p, rng)))
+                throw(MethodError(initialstate, (p, rng)))
             end
         end
     end

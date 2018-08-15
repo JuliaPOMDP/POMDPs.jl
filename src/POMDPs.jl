@@ -39,13 +39,13 @@ export
     generate_so,
     generate_or,
     generate_sor,
-    initial_state,
+    initialstate,
     
     # Discrete Functions
     length,
-    state_index,
-    action_index,
-    obs_index,
+    stateindex,
+    actionindex,
+    obsindex,
     weight,
     
     # Common Functions
@@ -59,7 +59,7 @@ export
     getindex,
     iterator,
     sampletype,
-    initial_state_distribution,
+    initialstate_distribution,
 
     # Solver types
     Solver,
@@ -83,12 +83,12 @@ export
     # Utilities
     implemented,
     @implemented,
-    state_type,
-    action_type,
-    obs_type,
     convert_s,
     convert_a,
     convert_o,
+    statetype,
+    actiontype,
+    obstype,
 
     # Requirements checking
     RequirementSet,
@@ -103,7 +103,18 @@ export
     @show_requirements,
     @warn_requirements,
     @req,
-    @subreq
+    @subreq,
+
+
+    # Deprecated
+    state_index,
+    action_index,
+    obs_index,
+    state_type,
+    action_type,
+    obs_type,
+    initial_state,
+    initial_state_distribution
 
 
 include("requirements_internals.jl")
