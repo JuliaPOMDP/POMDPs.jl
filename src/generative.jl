@@ -49,10 +49,11 @@ Return the next state `sp`, observation `o` and reward for taking action `a` in 
 function generate_sor end
 
 """
-    initial_state{S}(p::Union{POMDP{S},MDP{S}}, rng::AbstractRNG)
+    initialstate{S}(p::Union{POMDP{S},MDP{S}}, rng::AbstractRNG)
 
 Return the initial state for the problem `p`.
 
 Usually the initial state is sampled from an initial state distribution.
 """
-function initial_state end
+function initialstate end
+@deprecate initial_state initialstate

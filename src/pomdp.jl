@@ -123,35 +123,39 @@ Check if state s is terminal
 isterminal(problem::Union{POMDP,MDP}, state) = false
 
 """
-    initial_state_distribution(pomdp::POMDP)
-    initial_state_distribution(mdp::MDP)
+    initialstate_distribution(pomdp::POMDP)
+    initialstate_distribution(mdp::MDP)
 
 Return a distribution of the initial state of the pomdp or mdp.
 """
-function initial_state_distribution end
+function initialstate_distribution end
+@deprecate initial_state_distribution initialstate_distribution
 
 """
-    state_index{S,A,O}(problem::POMDP{S,A,O}, s::S)
-    state_index{S,A}(problem::MDP{S,A}, s::S)
+    stateindex{S,A,O}(problem::POMDP{S,A,O}, s::S)
+    stateindex{S,A}(problem::MDP{S,A}, s::S)
 
 Return the integer index of state `s`. Used for discrete models only.
 """
-function state_index end
+function stateindex end
+@deprecate state_index stateindex
 
 """
-    action_index{S,A,O}(problem::POMDP{S,A,O}, a::A)
-    action_index{S,A}(problem::MDP{S,A}, a::A)
+    actionindex{S,A,O}(problem::POMDP{S,A,O}, a::A)
+    actionindex{S,A}(problem::MDP{S,A}, a::A)
 
 Return the integer index of action `a`. Used for discrete models only.
 """
-function action_index end
+function actionindex end
+@deprecate action_index actionindex
 
 """
-    obs_index{S,A,O}(problem::POMDP{S,A,O}, o::O)
+    obsindex{S,A,O}(problem::POMDP{S,A,O}, o::O)
 
 Return the integer index of observation `o`. Used for discrete models only.
 """
-function obs_index end
+function obsindex end
+@deprecate obs_index obsindex
 
 """
     convert_s(::Type{V}, s, problem::Union{MDP,POMDP}) where V<:AbstractArray
