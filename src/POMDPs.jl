@@ -1,5 +1,3 @@
-__precompile__()
-
 """
 Provides a basic interface for defining and solving MDPs/POMDPs
 """
@@ -7,7 +5,7 @@ module POMDPs
 
 using Random
 import Base: rand
-import Statistics: mean
+import Statistics
 import Distributions: pdf, mode
 import Pkg
 
