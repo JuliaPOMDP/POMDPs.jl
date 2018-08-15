@@ -6,7 +6,7 @@ module POMDPs
 using Random
 import Base: rand
 import Statistics
-import Distributions
+import Distributions: rand, pdf, mode, mean, support
 import Pkg
 
 export 
@@ -55,7 +55,7 @@ export
     lowerbound,
     upperbound,
     getindex,
-    iterator,
+    support,
     sampletype,
     initialstate_distribution,
 
@@ -112,7 +112,8 @@ export
     action_type,
     obs_type,
     initial_state,
-    initial_state_distribution
+    initial_state_distribution,
+    iterator
 
 
 include("requirements_internals.jl")
