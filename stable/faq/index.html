@@ -130,7 +130,9 @@
         
             <li><a class="toctree-l3" href="#why-do-i-need-to-put-type-assertions-pomdppomdp-into-the-function-signature">Why do I need to put type assertions pomdp::POMDP into the function signature?</a></li>
         
-            <li><a class="toctree-l3" href="#why-are-all-the-solvers-in-seperate-modules">Why are all the solvers in seperate modules?</a></li>
+            <li><a class="toctree-l3" href="#why-are-all-the-solvers-in-separate-modules">Why are all the solvers in separate modules?</a></li>
+        
+            <li><a class="toctree-l3" href="#how-can-i-implement-terminal-actions">How can I implement terminal actions?</a></li>
         
         </ul>
     
@@ -202,9 +204,13 @@ trans_prob_consistency_check(pomdp) # check the transition probabilities
 <p><a id='Why-do-I-need-to-put-type-assertions-pomdp::POMDP-into-the-function-signature?-1'></a></p>
 <h2 id="why-do-i-need-to-put-type-assertions-pomdppomdp-into-the-function-signature">Why do I need to put type assertions pomdp::POMDP into the function signature?</h2>
 <p>Specifying the type in your function signature allows Julia to call the appropriate function when your custom type is passed into it. For example if a POMDPs.jl solver calls <code>states</code> on the POMDP that you passed into it, the correct <code>states</code> function will only get dispatched if you specified that the <code>states</code> function you wrote works with your POMDP type. Because Julia supports multiple-dispatch, these type assertion are a way for doing object-oriented programming in Julia.</p>
-<p><a id='Why-are-all-the-solvers-in-seperate-modules?-1'></a></p>
-<h2 id="why-are-all-the-solvers-in-seperate-modules">Why are all the solvers in seperate modules?</h2>
+<p><a id='Why-are-all-the-solvers-in-separate-modules?-1'></a></p>
+<h2 id="why-are-all-the-solvers-in-separate-modules">Why are all the solvers in separate modules?</h2>
 <p>We did not put all the solvers and support tools into POMDPs.jl, because we wanted POMDPs.jl to be a lightweight interface package. This has a number of advantages. The first is that if a user only wants to use a few solvers from the JuliaPOMDP organization, they do not have to install all the other solvers and their dependencies. The second advantage is that people who are not directly part of the JuliaPOMDP organization can write their own solvers without going into the source code of other solvers. This makes the framework easier to adopt and to extend.</p>
+<p><a id='How-can-I-implement-terminal-actions?-1'></a></p>
+<h2 id="how-can-i-implement-terminal-actions">How can I implement terminal actions?</h2>
+<p>Terminal actions are actions that cause the MDP to terminate without generating a new state. POMDPs.jl handles terminal conditions via the <code>isterminal</code> function on states, and does not directly support terminal actions. If your MDP has a terminal action, you need to implement the model functions accordingly to generate a terminal state. In both generative and explicit cases, you will need some dummy state, say <code>spt</code>, that can be recognized as terminal by the <code>isterminal</code> function. One way to do this is to give <code>spt</code> a state value that is out of bounds (e.g. a vector of <code>NaN</code>s or <code>-1</code>s) and then check for that in <code>isterminal</code>, so that this does not clash with any conventional termination conditions on the state.</p>
+<p>If a terminal action is taken, regardless of current state, the <code>transition</code> function should return a distribution with only one next state, <code>spt</code>, with probability 1.0. In the generative case, the new state generated should be <code>spt</code>. The <code>reward</code> function or the <code>r</code> in <code>generate_sr</code> can be set according to the cost of the terminal action.</p>
               
             </div>
           </div>
