@@ -2,72 +2,72 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
      <loc>/</loc>
-     <lastmod>2018-08-17</lastmod>
+     <lastmod>2018-08-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>/install/</loc>
-     <lastmod>2018-08-17</lastmod>
+     <lastmod>2018-08-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>/get_started/</loc>
-     <lastmod>2018-08-17</lastmod>
+     <lastmod>2018-08-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>/concepts/</loc>
-     <lastmod>2018-08-17</lastmod>
+     <lastmod>2018-08-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>/def_pomdp/</loc>
-     <lastmod>2018-08-17</lastmod>
+     <lastmod>2018-08-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>/explicit/</loc>
-     <lastmod>2018-08-17</lastmod>
+     <lastmod>2018-08-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>/generative/</loc>
-     <lastmod>2018-08-17</lastmod>
+     <lastmod>2018-08-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>/requirements/</loc>
-     <lastmod>2018-08-17</lastmod>
+     <lastmod>2018-08-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>/interfaces/</loc>
-     <lastmod>2018-08-17</lastmod>
+     <lastmod>2018-08-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>/def_solver/</loc>
-     <lastmod>2018-08-17</lastmod>
+     <lastmod>2018-08-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>/def_updater/</loc>
-     <lastmod>2018-08-17</lastmod>
+     <lastmod>2018-08-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>/specifying_requirements/</loc>
-     <lastmod>2018-08-17</lastmod>
+     <lastmod>2018-08-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>/api/</loc>
-     <lastmod>2018-08-17</lastmod>
+     <lastmod>2018-08-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>/faq/</loc>
-     <lastmod>2018-08-17</lastmod>
+     <lastmod>2018-08-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
 </urlset>
