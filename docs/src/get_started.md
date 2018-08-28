@@ -18,7 +18,7 @@ policy = solve(solver, pomdp)
 
 #evaluate the policy
 belief_updater = updater(policy) # the default QMPD belief updater (discrete Bayesian filter)
-init_dist = initial_state_distribution(pomdp) # from POMDPModels
+init_dist = initialstate_distribution(pomdp) # from POMDPModels
 hr = HistoryRecorder(max_steps=100) # from POMDPToolbox
 hist = simulate(hr, pomdp, policy, belief_updater, init_dist) # run 100 step simulation
 println("reward: $(discounted_reward(hist))")

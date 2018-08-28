@@ -12,7 +12,7 @@ generate_sr(pomdp, s, a, rng) -> (s, r)
 generate_so(pomdp, s, a, rng) -> (s, o)
 generate_or(pomdp, s, a, sp, rng) -> (o, r)
 generate_sor(pomdp, s, a, rng) -> (s, o, r)
-initial_state(pomdp, rng) -> s
+initialstate(pomdp, rng) -> s
 ```
 
 Each `generate_` function is a single step simulator that returns a new state, observation, reward, or a combination given the current state and action (and `sp` in some cases). [`rng` is a random number generator such as `Base.GLOBAL_RNG` or another `MersenneTwister` that is passed as an argument and should be used to generate all random numbers within the function to ensure that all simulations are exactly repeatable.](http://docs.julialang.org/en/release-0.5/stdlib/numbers/#random-numbers)
@@ -61,7 +61,7 @@ end
 # r_hungry
 reward(p::BabyPOMDP, s::Bool, a::Bool) = (s ? p.r_hungry : 0.0) + (a ? p.r_feed : 0.0)
 
-initial_state_distribution(p::BabyPOMDP) = [false] # note rand(rng, [false]) = false, so this is encoding that the baby always starts out full
+initialstate_distribution(p::BabyPOMDP) = [false] # note rand(rng, [false]) = false, so this is encoding that the baby always starts out full
 ```
 
 This can be solved with the POMCP solver.

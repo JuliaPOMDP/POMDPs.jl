@@ -54,7 +54,7 @@ const LISTEN = 2
 
 actions(pomdp::TigerPOMDP) = [OPEN_LEFT,OPEN_RIGHT,LISTEN]
 n_actions(pomdp::TigerPOMDP) = 3
-action_index(::TigerPOMDP, a::Int64) = a+1
+actionindex(::TigerPOMDP, a::Int64) = a+1
 
 # OBSERVATION SPACE
 const OBSERVE_LEFT = true
@@ -141,10 +141,10 @@ Thus, in POMDPs.jl we abstract the concept of a belief beyond a probability dist
 
 In order to reconcile this difference, each policy has a function called [`initialize_belief`](@ref) which takes in an
 initial state distriubtion and a policy, and converts the
-distribution into what we call a belief in POMDPs.jl. As the problem writer we must provide [`initial_state_distribution`](@ref):
+distribution into what we call a belief in POMDPs.jl. As the problem writer we must provide [`initialstate_distribution`](@ref):
 
 ```julia
-initial_state_distribution(pomdp::TigerPOMDP) = TigerDistribution(0.5)
+initialstate_distribution(pomdp::TigerPOMDP) = TigerDistribution(0.5)
 ```
 
 We have fully defined the Tiger POMDP.
@@ -157,7 +157,7 @@ pomdp = TigerPOMDP()
 solver = QMDPSolver()
 policy = solve(solver, pomdp)
 
-init_dist = initial_state_distribution(pomdp)
+init_dist = initialstate_distribution(pomdp)
 hist = HistoryRecorder(max_steps=100) # from POMDPToolbox
 r = simulate(hist, pomdp, policy) # run 100 step simulation
 ```

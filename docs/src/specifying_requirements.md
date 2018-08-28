@@ -28,7 +28,7 @@ The [`@POMDP_require`](@ref) macro is the main point of interaction with the req
     @subreq ordered_actions(mdp)
     @req transition(::P,::S,::A)
     @req reward(::P,::S,::A,::S)
-    @req state_index(::P,::S)
+    @req stateindex(::P,::S)
     as = actions(mdp)
     ss = states(mdp)
     @req iterator(::typeof(as))

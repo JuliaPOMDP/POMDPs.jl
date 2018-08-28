@@ -143,8 +143,8 @@ function POMDPs.solve(solver::QMDPSolver, pomdp::POMDP)
                     # returns the reward from s-a-sp triple
                     r = reward(pomdp, s, a, sp)
     
-                    # state_index returns an integer
-                    sidx = state_index(pomdp, sp)
+                    # stateindex returns an integer
+                    sidx = stateindex(pomdp, sp)
                     q_new += p * (r + discount_factor * maximum(alphas[sidx,:]))
                 end
                 new_alpha = q_new
@@ -172,7 +172,7 @@ iterator(space) # returns an iterable object (array or iterator), used for discr
 transition(pomdp, s, a) # returns the transition distribution for the s, a pair
 reward(pomdp, s, a, sp) # returns real valued reward from s, a, sp triple
 pdf(dist, sp) # returns the probability of sp being in dist
-state_index(pomdp, sp) # returns the integer index of sp (for discrete state spaces)
+stateindex(pomdp, sp) # returns the integer index of sp (for discrete state spaces)
 ```
 
 Now that we have a solve function, we define the [`action`](@ref) function to let users evaluate the policy:
@@ -224,7 +224,7 @@ policy = solve(solver, pomdp)
 
 # initalize updater and belief
 b_up = updater(policy)
-init_dist = initial_state_distribution(pomdp)
+init_dist = initialstate_distribution(pomdp)
 
 # create a simulator object for recording histories
 sim_hist = HistoryRecorder(max_steps=100)

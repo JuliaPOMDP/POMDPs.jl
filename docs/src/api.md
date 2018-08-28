@@ -57,7 +57,7 @@ These functions return *distributions*.
 ```@docs
 transition
 observation
-initial_state_distribution
+initialstate_distribution
 ```
 
 ### [Generative](@id generative_api)
@@ -71,7 +71,7 @@ generate_sr
 generate_so
 generate_or
 generate_sor
-initial_state
+initialstate
 ```
 
 ### [Common](@id common_api)
@@ -87,9 +87,9 @@ discount
 n_states
 n_actions
 n_observations
-state_index
-action_index
-obs_index
+stateindex
+actionindex
+obsindex
 convert_s
 convert_a
 convert_o

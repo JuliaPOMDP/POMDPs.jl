@@ -11,7 +11,15 @@ If you have a validated solver that supports the POMDPs.jl API,
 contact the developers to add your solver to this list. 
 """
 const NATIVE_PACKAGES = Set{String}(
-                        ["DiscreteValueIteration",
+                        ["POMDPModels",
+                         "ParticleFilters",
+                         
+                         "POMDPModelTools",
+                         "POMDPPolicies",
+                         "BeliefUpdaters",
+                         "POMDPSimulators",
+
+                         "DiscreteValueIteration",
                          "MCTS",
                          "QMDP",
                          "FIB",
@@ -22,7 +30,6 @@ const NATIVE_PACKAGES = Set{String}(
                          "MCVI",
                          "GenerativeModels",
                          "POMDPModels",
-                         "POMDPToolbox",
                          "POMDPXFiles",
                          "POMDPFiles",
                          "ParticleFilters",
@@ -36,8 +43,8 @@ const NATIVE_PACKAGES = Set{String}(
 
 # Packages registered on METADATA
 const REGISTERED_PACKAGES = Set{String}(["ParticleFilters",
-                                         "POMDPToolbox",
-                                         "POMDPModels"])
+                                         "POMDPModels",
+                                        ])
 
 const NON_NATIVE_PACKAGES = Set{String}(
                              ["SARSOP",
