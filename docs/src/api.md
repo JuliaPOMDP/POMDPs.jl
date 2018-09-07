@@ -103,7 +103,7 @@ pdf
 mode
 mean
 dimensions
-iterator
+support
 sampletype
 ```
 
