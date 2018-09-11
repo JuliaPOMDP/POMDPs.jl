@@ -18,6 +18,7 @@ function add(solver_name::AbstractString, v::Bool=true)
     else
         try
             Pkg.clone(full_url)
+            Pkg.checkout(solver_name, BRANCH06)
             Pkg.build(solver_name)
         catch ex
             if isa(ex, Base.Pkg.PkgError) && ex.msg == "$solver_name already exists"
@@ -75,7 +76,7 @@ function update()
     for p in SUPPORTED_PACKAGES
         # check if package is intalled
         if isdir(Pkg.dir(p))
-            Pkg.checkout(p)
+            Pkg.checkout(p, BRANCH06)
         end
     end
 end

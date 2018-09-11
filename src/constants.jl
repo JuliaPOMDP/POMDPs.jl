@@ -52,3 +52,5 @@ const EXPORTED_TYPES = [MDP,
                         Solver, 
                         Updater,
                         Union{MDP, POMDP}]
+
+const BRANCH06 = "0.6-version"
