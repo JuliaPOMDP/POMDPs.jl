@@ -12,13 +12,17 @@ julia> POMDPs.add("MCTS")
 """
 function add(solver_name::AbstractString, v::Bool=true)
     @assert solver_name in SUPPORTED_PACKAGES string("The JuliaPOMDP package: ", solver_name, " is not supported")
-    full_url = string(REMOTE_URL, solver_name, ".jl")
     if solver_name in REGISTERED_PACKAGES
         Pkg.add(solver_name)
     else
         try
-            Pkg.clone(full_url)
-            Pkg.checkout(solver_name, BRANCH06)
+            Pkg.cd(clone_without_resolving, solver_name)
+            try
+                Pkg.checkout(solver_name, BRANCH06)
+            catch
+                warn("could not checkout 0.6-version of $solver_name")
+            end
+            Pkg.resolve()
             Pkg.build(solver_name)
         catch ex
             if isa(ex, Base.Pkg.PkgError) && ex.msg == "$solver_name already exists"
@@ -122,6 +126,23 @@ function available()
         println(p)
     end
 end
+
+
+function clone_without_resolving(pkg::AbstractString)
+    # copied from Pkg.clone
+    url = string(REMOTE_URL, pkg, ".jl")
+    info("Cloning $pkg from $url")
+    ispath(pkg) && throw(Pkg.PkgError("$pkg already exists"))
+    try
+        Base.LibGit2.with(Base.LibGit2.clone(url, pkg)) do repo
+            Base.LibGit2.set_remote_url(repo, url)
+        end
+    catch err
+        isdir(pkg) && Base.rm(pkg, recursive=true)
+        rethrow(err)
+    end
+end
+
 
 # This does not appear to work
 #=
