@@ -8,6 +8,7 @@ import Base: rand
 import Statistics
 import Distributions: rand, pdf, mode, mean, support
 import Pkg
+import LibGit2
 
 export 
     # Abstract type

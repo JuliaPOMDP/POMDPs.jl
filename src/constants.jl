@@ -3,6 +3,11 @@ url to remote JuliaPOMDP organization repo
 """
 const REMOTE_URL = "https://github.com/JuliaPOMDP/"
 
+"""
+url to JuliaPOMDP registry
+"""
+const POMDP_REGISTRY = "https://github.com/JuliaPOMDP/Registry"
+
 # TODO (max): would it be better to have a dict of form: string => url for solvers?
 """
 Set containing string names of officially supported solvers and utility packages
