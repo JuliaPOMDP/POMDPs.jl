@@ -275,7 +275,7 @@ end
 
 function failed_synth_warning(gen::Tuple, reqs::Vector, greqs::Vector=[]) 
     io = IOBuffer()
-    ioc = IOContext(io, :color=>true)
+    ioc = IOContext(io, stderr)
     print(ioc, "Hint: Either implement ")
     printstyled(ioc, format_method(gen...), color=:blue)
     println(ioc, " directly, or, to automatically synthesize it, implement the following methods from the explicit interface:\n")
