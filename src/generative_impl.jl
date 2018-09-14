@@ -274,15 +274,22 @@ end
 
 
 function failed_synth_warning(gen::Tuple, reqs::Vector, greqs::Vector=[]) 
-    @warn("POMDPs.jl: Could not find or synthesize $(format_method(gen...)).")
-    println("""
-
-            Hint for fixing warning above: Either implement $(format_method(gen...)) directly, or, to automatically synthesize it, implement the following methods from the explicit interface:
-            """)
-    show_checked_list(stdout, reqs)
+    io = IOBuffer()
+    ioc = IOContext(io, :color=>true)
+    print(ioc, "Hint: Either implement ")
+    printstyled(ioc, format_method(gen...), color=:blue)
+    println(ioc, " directly, or, to automatically synthesize it, implement the following methods from the explicit interface:\n")
+    show_checked_list(ioc, reqs)
     if !isempty(greqs)
-        println("\nOR implement the following methods from the generative interface:\n")
-        show_checked_list(stdout, greqs)
+        println(ioc, """
+    \nOR implement the following methods from the generative interface:
+    """)
+        show_checked_list(ioc, greqs)
     end
-    println("\n([✔] = already implemented correctly; [X] = missing)\n")
+    println(ioc, "\n([✔] = already implemented correctly; [X] = missing)")
+    @warn("""
+          POMDPs.jl: Could not find or synthesize $(format_method(gen...)).
+          
+          $(String(take!(io)))
+          """)
 end

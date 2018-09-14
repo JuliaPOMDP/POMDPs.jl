@@ -38,7 +38,7 @@ handle_method(str::Req) = format_method(str...)
 short_method(str::Any) = string(str)
 short_method(str::Req) = string(first(str))
 
-function format_method(f::Function, argtypes::TupleType; module_names=false)
+function format_method(f::Function, argtypes::TupleType; module_names=false, color=nothing)
     fname = f
     typenames = argtypes.parameters
     if !module_names
