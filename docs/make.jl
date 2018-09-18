@@ -9,7 +9,7 @@ makedocs(
 deploydocs(
     repo = "github.com/JuliaPOMDP/POMDPs.jl.git",
     julia = "1.0",
-    osname = "linux"
+    osname = "linux",
     target = "build",
     deps = nothing,
     make = nothing
