@@ -47,8 +47,8 @@ The requirements are as follows:
 # types
 QMDPSolver
 QMDPPolicy
-DiscreteUpdater # already implemented for us in POMDPToolbox
-DiscreteBelief # already implemented for us in POMDPToolbox
+DiscreteUpdater # already implemented for us in BeliefUpdaters
+DiscreteBelief # already implemented for us in BeliefUpdaters
 # methods
 updater(p::QMDPPolicy) # returns a belief updater suitable for use with QMDPPolicy
 initialize_belief(bu::DiscreteUpdater, initial_state_dist) # returns a Discrete belief
@@ -78,7 +78,7 @@ Note that the QMDPSolver inherits from the abstract Solver type that's part of P
 Now, let's define a policy type. In general, the policy should contain all the information needed to map a belief to an action. As mentioned earlier, we need alpha vectors to be part of our policy. We can represent the alpha vectors using a matrix of size $|\mathcal{S}| \times |\mathcal{A}|$. Recall that in POMDPs.jl, the actions can be represented in a number of ways (Int64, concrete types, etc), so we need a way to map these actions to integers so we can index into our alpha matrix. The type looks like:
 
 ```julia
-using POMDPToolbox # for ordered_actions
+using POMDPModelTools # for ordered_actions
 
 type QMDPPolicy <: Policy
     alphas::Matrix{Float64} # matrix of alpha vectors |S|x|A|
@@ -126,7 +126,6 @@ function POMDPs.solve(solver::QMDPSolver, pomdp::POMDP)
     for i = 1:max_iterations
         residual = 0.0
         # state loop
-        # the iterator function returns an iterable object (array, iterator, etc) over a discrete space
         for (istate, s) in enumerate(sspace)
             old_alpha = maximum(alphas[istate,:]) # for residual
             max_alpha = -Inf
@@ -168,7 +167,6 @@ At each iteration, the algorithm iterates over the state space and computes an a
 ```julia
 states(pomdp) # (in ordered_states) returns a state space object of the pomdp
 actions(pomdp) # (in ordered_actions) returns the action space object of the pomdp
-iterator(space) # returns an iterable object (array or iterator), used for discrete spaces only
 transition(pomdp, s, a) # returns the transition distribution for the s, a pair
 reward(pomdp, s, a, sp) # returns real valued reward from s, a, sp triple
 pdf(dist, sp) # returns the probability of sp being in dist
@@ -178,6 +176,8 @@ stateindex(pomdp, sp) # returns the integer index of sp (for discrete state spac
 Now that we have a solve function, we define the [`action`](@ref) function to let users evaluate the policy:
 
 ```julia
+using LinearAlgebra
+
 function POMDPs.action(policy::QMDPPolicy, b::DiscreteBelief)
     alphas = policy.alphas
     ihi = 0
@@ -203,7 +203,7 @@ Let's now talk about how we deal with beliefs. Since QMDP is a discrete POMDP so
 Lucky for us, the JuliaPOMDP organization contains tools that we can use out of the box for working with discrete beliefs. The POMDPToolbox package contains a `DiscreteBelief` type that does exactly what we need. The [`updater`](@ref) function allows us to declare that the `DiscreteUpdater` is the default updater to be used with a QMDP policy:
 
 ```julia
-using POMDPToolbox # remeber to load the package that implements discrete beliefs for us
+using BeliefUpdaters # remeber to load the package that implements discrete beliefs for us
 POMDPs.updater(p::QMDPPolicy) = DiscreteUpdater(p.pomdp) 
 ```
 These are all the functions that you'll need to have a working POMDPs.jl solver. Let's now use existing benchmark models to evaluate it.
@@ -214,6 +214,7 @@ We'll use the POMDPModels package from JuliaPOMDP to initialize a Tiger POMDP pr
 
 ```julia
 using POMDPModels
+using POMDPSimulators
 
 # initialize model and solver
 pomdp = TigerPOMDP()
