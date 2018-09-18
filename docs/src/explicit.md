@@ -152,7 +152,7 @@ We have fully defined the Tiger POMDP.
 We can use now use JuliaPOMDP solvers to compute and evaluate a policy:
 
 ```julia
-using QMDP, POMDPToolbox
+using QMDP, POMDPSimulators
 
 pomdp = TigerPOMDP()
 solver = QMDPSolver()

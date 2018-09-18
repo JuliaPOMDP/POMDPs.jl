@@ -31,7 +31,7 @@ We've provide some tools in POMDPToolbox that can check this for you.
 If you have a POMDP called pomdp, you can run the checks by doing the following:
 
 ```julia
-using POMDPToolbox
+using POMDPTesting
 probability_check(pomdp) # checks that both observation and transition functions give probs that sum to unity
 obs_prob_consistency_check(pomdp) # checks the observation probabilities
 trans_prob_consistency_check(pomdp) # check the transition probabilities
