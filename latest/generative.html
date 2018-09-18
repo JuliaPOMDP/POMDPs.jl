@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Generative POMDP Interface · POMDPs.jl</title><link href="https://cdnjs.cloudflare.com/ajax/libs/normalize/4.2.0/normalize.min.css" rel="stylesheet" type="text/css"/><link href="https://fonts.googleapis.com/css?family=Lato|Roboto+Mono" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL="."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.2.0/require.min.js" data-main="assets/documenter.js"></script><script src="siteinfo.js"></script><script src="../versions.js"></script><link href="assets/documenter.css" rel="stylesheet" type="text/css"/></head><body><nav class="toc"><h1>POMDPs.jl</h1><select id="version-selector" onChange="window.location.href=this.value" style="visibility: hidden"></select><form class="search" id="search-form" action="search.html"><input id="search-query" name="q" type="text" placeholder="Search docs"/></form><ul><li><a class="toctext" href="api.html">API Documentation</a></li><li><a class="toctext" href="concepts.html">Concepts and Architecture</a></li><li><a class="toctext" href="def_pomdp.html">Defining POMDPs</a></li><li><a class="toctext" href="def_solver.html">Defining a Solver</a></li><li><a class="toctext" href="def_updater.html">Defining a Belief Updater</a></li><li><a class="toctext" href="explicit.html">Explicit POMDP Interface</a></li><li><a class="toctext" href="faq.html">Frequently Asked Questions (FAQ)</a></li><li class="current"><a class="toctext" href="generative.html">Generative POMDP Interface</a><ul class="internal"><li><a class="toctext" href="#Description-1">Description</a></li><li><a class="toctext" href="#Example-1">Example</a></li><li><a class="toctext" href="#Which-function(s)-should-I-implement-for-my-problem-/-use-in-my-solver?-1">Which function(s) should I implement for my problem / use in my solver?</a></li></ul></li><li><a class="toctext" href="get_started.html">Getting Started</a></li><li><a class="toctext" href="index.html">POMDPs</a></li><li><a class="toctext" href="install.html">Installation</a></li><li><a class="toctext" href="interfaces.html">Spaces and Distributions</a></li><li><a class="toctext" href="requirements.html">Interface Requirements for Problems</a></li><li><a class="toctext" href="specifying_requirements.html">Specifying Requirements</a></li></ul></nav><article id="docs"><header><nav><ul><li><a href="generative.html">Generative POMDP Interface</a></li></ul><a class="edit-page" href="https://github.com/JuliaPOMDP/POMDPs.jl/blob/master/docs/src/generative.md"><span class="fa"></span> Edit on GitHub</a></nav><hr/><div id="topbar"><span>Generative POMDP Interface</span><a class="fa fa-bars" href="#"></a></div></header><h1><a class="nav-anchor" id="generative_doc-1" href="#generative_doc-1">Generative POMDP Interface</a></h1><h2><a class="nav-anchor" id="Description-1" href="#Description-1">Description</a></h2><p>The <em>generative</em> interface contains a small collection of functions that makes implementing and solving problems with generative models easier. These functions return states and observations instead of distributions as in the <a href="explicit.html#explicit_doc-1">Explicit interface</a>.</p><p>The generative interface functions are the following (note that this is not actual julia code):</p><pre><code class="language-julia">generate_s(pomdp, s, a, rng) -&gt; sp
+generate_o(pomdp, s, a, sp, rng) -&gt; o
+generate_sr(pomdp, s, a, rng) -&gt; (s, r)
+generate_so(pomdp, s, a, rng) -&gt; (s, o)
+generate_or(pomdp, s, a, sp, rng) -&gt; (o, r)
+generate_sor(pomdp, s, a, rng) -&gt; (s, o, r)
+initialstate(pomdp, rng) -&gt; s</code></pre><p>Each <code>generate_</code> function is a single step simulator that returns a new state, observation, reward, or a combination given the current state and action (and <code>sp</code> in some cases). <a href="http://docs.julialang.org/en/release-0.5/stdlib/numbers/#random-numbers"><code>rng</code> is a random number generator such as <code>Base.GLOBAL_RNG</code> or another <code>MersenneTwister</code> that is passed as an argument and should be used to generate all random numbers within the function to ensure that all simulations are exactly repeatable.</a></p><p>The functions that do not deal with observations may be defined for <code>MDP</code>s as well as <code>POMDP</code>s.</p><p>A problem writer will generally only have to implement one or two of these functions for all solvers to work (see below).</p><h2><a class="nav-anchor" id="Example-1" href="#Example-1">Example</a></h2><p>The following example shows an implementation of the Crying Baby problem [1]. A definition of this problem using the explicit interface is given in the <a href="https://github.com/JuliaPOMDP/POMDPModels.jl">POMDPModels package</a>.</p><pre><code class="language-julia">using POMDPs
+
+# state: true=hungry, action: true=feed, obs: true=crying
+
+type BabyPOMDP &lt;: POMDP{Bool, Bool, Bool}
+    r_feed::Float64
+    r_hungry::Float64
+    p_become_hungry::Float64
+    p_cry_when_hungry::Float64
+    p_cry_when_not_hungry::Float64
+    discount::Float64
+end
+BabyPOMDP() = BabyPOMDP(-5., -10., 0.1, 0.8, 0.1, 0.9)
+
+POMDPs.discount(p::BabyPOMDP) = p.discount
+
+function POMDPs.generate_s(p::BabyPOMDP, s::Bool, a::Bool, rng::AbstractRNG)
+    if s # hungry
+        return true
+    else # not hungry
+        return rand(rng) &lt; p.p_become_hungry ? true : false
+    end
+end
+
+function POMDPs.generate_o(p::BabyPOMDP, s::Bool, a::Bool, sp::Bool, rng::AbstractRNG)
+    if sp # hungry
+        return rand(rng) &lt; p.p_cry_when_hungry ? true : false
+    else # not hungry
+        return rand(rng) &lt; p.p_cry_when_not_hungry ? true : false
+    end
+end
+
+# r_hungry
+POMDPS.reward(p::BabyPOMDP, s::Bool, a::Bool) = (s ? p.r_hungry : 0.0) + (a ? p.r_feed : 0.0)
+
+POMDPS.initialstate_distribution(p::BabyPOMDP) = [false] # note rand(rng, [false]) = false, so this is encoding that the baby always starts out full</code></pre><p>This can be solved with the POMCP solver.</p><pre><code class="language-julia">using BasicPOMCP
+using POMDPSimulators
+
+pomdp = BabyPOMDP()
+solver = POMCPSolver()
+planner = solve(solver, pomdp)
+
+hist = simulate(HistoryRecorder(max_steps=10), pomdp, planner);
+println(&quot;reward: $(discounted_reward(hist))&quot;)</code></pre><h2><a class="nav-anchor" id="Which-function(s)-should-I-implement-for-my-problem-/-use-in-my-solver?-1" href="#Which-function(s)-should-I-implement-for-my-problem-/-use-in-my-solver?-1">Which function(s) should I implement for my problem / use in my solver?</a></h2><h3><a class="nav-anchor" id="Problem-Writers-1" href="#Problem-Writers-1">Problem Writers</a></h3><p>Generally, a problem implementer need only implement the simplest one or two of these functions, and the rest are automatically synthesized at runtime.</p><p>If there is a convenient way for the problem to generate a combination of states, observations, and rewards simultaneously (for example, if there is a simulator written in another programming language that generates these from the same function, or if it is computationally convenient to generate <code>sp</code> and <code>o</code> simultaneously), then the problem writer may wish to directly implement one of the combination <code>generate_</code> functions, e.g. <code>generate_sor()</code> directly.</p><p>Use the following logic to determine which functions to implement:</p><ul><li>If you are implementing the problem from scratch in Julia, implement <code>generate_s</code> and <code>generate_o</code>.</li><li>Otherwise, if your external simulator returns <em>x</em>, where <em>x</em> is one of <em>sr</em>, <em>so</em>, <em>or</em>, or <em>sor</em>, implement <code>generate_x</code>. (you may also have to implement <code>generate_s</code> separately for use in particle filters).</li></ul><p>Note: if an explicit definition is already implemented, you <strong>do not</strong> need to implement any functions from the generative interface - POMDPs.jl will automatically generate implementations of them for you at runtime (see generative_impl.jl).</p><h3><a class="nav-anchor" id="Solver-and-Simulator-Writers-1" href="#Solver-and-Simulator-Writers-1">Solver and Simulator Writers</a></h3><p>Solver writers should use the single function that generates everything that they need and nothing they don&#39;t. For example, if the solver needs access to the state, observation, and reward at every timestep, they should use <code>generate_sor()</code> rather than <code>generate_s()</code> and <code>generate_or()</code>, and if the solver needs access to the state and reward, they should use <code>generate_sr()</code> rather than <code>generate_sor()</code>. This will ensure the widest interoperability between solvers and problems.</p><p>In other words, if you need access to <em>x</em> where <em>x</em> is <em>s</em>, <em>o</em>, <em>sr</em>, <em>so</em>, <em>or</em>, or <em>sor</em> at a certain point in your code, use <code>generate_x</code>.</p><p>[1] <em>Decision Making Under Uncertainty: Theory and Application</em> by Mykel J. Kochenderfer, MIT Press, 2015</p><footer><hr/><a class="previous" href="faq.html"><span class="direction">Previous</span><span class="title">Frequently Asked Questions (FAQ)</span></a><a class="next" href="get_started.html"><span class="direction">Next</span><span class="title">Getting Started</span></a></footer></article></body></html>
