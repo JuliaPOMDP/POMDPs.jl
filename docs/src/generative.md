@@ -26,7 +26,7 @@ A problem writer will generally only have to implement one or two of these funct
 The following example shows an implementation of the Crying Baby problem \[1\]. A definition of this problem using the explicit interface is given in the [POMDPModels package](https://github.com/JuliaPOMDP/POMDPModels.jl).
 
 ```julia
-importall POMDPs
+using POMDPs
 
 # state: true=hungry, action: true=feed, obs: true=crying
 
@@ -40,9 +40,9 @@ type BabyPOMDP <: POMDP{Bool, Bool, Bool}
 end
 BabyPOMDP() = BabyPOMDP(-5., -10., 0.1, 0.8, 0.1, 0.9)
 
-discount(p::BabyPOMDP) = p.discount
+POMDPs.discount(p::BabyPOMDP) = p.discount
 
-function generate_s(p::BabyPOMDP, s::Bool, a::Bool, rng::AbstractRNG)
+function POMDPs.generate_s(p::BabyPOMDP, s::Bool, a::Bool, rng::AbstractRNG)
     if s # hungry
         return true
     else # not hungry
@@ -50,7 +50,7 @@ function generate_s(p::BabyPOMDP, s::Bool, a::Bool, rng::AbstractRNG)
     end
 end
 
-function generate_o(p::BabyPOMDP, s::Bool, a::Bool, sp::Bool, rng::AbstractRNG)
+function POMDPs.generate_o(p::BabyPOMDP, s::Bool, a::Bool, sp::Bool, rng::AbstractRNG)
     if sp # hungry
         return rand(rng) < p.p_cry_when_hungry ? true : false
     else # not hungry
@@ -59,16 +59,16 @@ function generate_o(p::BabyPOMDP, s::Bool, a::Bool, sp::Bool, rng::AbstractRNG)
 end
 
 # r_hungry
-reward(p::BabyPOMDP, s::Bool, a::Bool) = (s ? p.r_hungry : 0.0) + (a ? p.r_feed : 0.0)
+POMDPS.reward(p::BabyPOMDP, s::Bool, a::Bool) = (s ? p.r_hungry : 0.0) + (a ? p.r_feed : 0.0)
 
-initialstate_distribution(p::BabyPOMDP) = [false] # note rand(rng, [false]) = false, so this is encoding that the baby always starts out full
+POMDPS.initialstate_distribution(p::BabyPOMDP) = [false] # note rand(rng, [false]) = false, so this is encoding that the baby always starts out full
 ```
 
 This can be solved with the POMCP solver.
 
 ```julia
 using BasicPOMCP
-using POMDPToolbox
+using POMDPSimulators
 
 pomdp = BabyPOMDP()
 solver = POMCPSolver()

@@ -15,7 +15,7 @@ when listing at the tiger's door is 85%, and the discount factor is a parameter 
 We define the Tiger POMDP type:
 
 ```julia
-importall POMDPs
+using POMDPs
 type TigerPOMDP <: POMDP{Bool, Int64, Bool}
     discount_factor::Float64
 end
@@ -32,7 +32,8 @@ Suppose that once implemented, we want to solve Tiger problems using the QMDP so
 To see what functions QMDP needs us to implement, use the [`@requirements_info`](@ref) macro (see [Interface Requirements for Problems](@ref requirements)).
 
 ```julia
-POMDPs.add("QMDP")
+import Pkg
+Pkg.add("QMDP")
 using QMDP
 @requirements_info QMDPSolver() TigerPOMDP() 
 ```
@@ -151,7 +152,7 @@ We have fully defined the Tiger POMDP.
 We can use now use JuliaPOMDP solvers to compute and evaluate a policy:
 
 ```julia
-using QMDP, POMDPToolbox
+using QMDP, POMDPSimulators
 
 pomdp = TigerPOMDP()
 solver = QMDPSolver()

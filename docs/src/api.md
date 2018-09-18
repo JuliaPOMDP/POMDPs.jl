@@ -162,8 +162,6 @@ implemented
 ### Utility Tools
 
 ```@docs
-add
-add_all
-test_all
+add_registry
 available
 ```

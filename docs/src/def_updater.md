@@ -7,7 +7,7 @@ Typically a belief updater will have an associated belief type, and may be close
 ## Defining a Belief Type
 
 A belief object should contain all of the information needed for the next belief update and for the policy to make a decision.
-The belief type could be a pre-defined type such as a distribution from `Distributions.jl` or `DiscreteBelief` or `SparseCat` from `POMDPToolbox.jl`, or it could be a custom type.
+The belief type could be a pre-defined type such as a distribution from `Distributions.jl` or `DiscreteBelief` or `SparseCat` from `POMDPModelTools.jl`, or it could be a custom type.
 
 Often, but not always, the belief will represent a probability distribution.
 In this case, the functions in the [distribution interface](@ref Distributions) should be implemented if possible.
@@ -30,13 +30,13 @@ Normally, [`update`](@ref) would contain belief update probability calculations,
 (Note that this example is designed for readability rather than efficiency.)
 
 ```julia
-importall POMDPs
+import POMDPs
 
-struct HistoryUpdater <: Updater end
+struct HistoryUpdater <: POMDPs.Updater end
 
 initialize_belief(up::HistoryUpdater, d) = Any[d]
 
-function update(up::HistoryUpdater, b, a, o)
+function POMDPs.update(up::HistoryUpdater, b, a, o)
     bp = copy(b)
     push!(bp, a)
     push!(bp, o)
@@ -47,8 +47,10 @@ end
 At each step, the history starts with the original distribution, then contains all the actions and observations received up to that point. The example below shows this for the crying baby problem (observations are true/false for crying and actions are true/false for feeding).
 
 ```julia
-using POMDPToolbox
+using POMDPPolicies
+using POMDPSimulators
 using POMDPModels
+using Random
 
 pomdp = BabyPOMDP()
 policy = RandomPolicy(pomdp, rng=MersenneTwister(1))
