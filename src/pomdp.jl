@@ -1,5 +1,7 @@
 # POMDP model functions
 """
+    POMDP{S,A,O}
+
 Abstract base type for a partially observable Markov decision process.
 
     S: state type
@@ -9,6 +11,8 @@ Abstract base type for a partially observable Markov decision process.
 abstract type POMDP{S,A,O} end
 
 """
+    MDP{S,A}
+
 Abstract base type for a fully observable Markov decision process.
 
     S: state type
