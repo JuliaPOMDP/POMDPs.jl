@@ -37,7 +37,7 @@ var documenterSearchIndex = {"docs": [
     "page": "API Documentation",
     "title": "POMDPs.POMDP",
     "category": "type",
-    "text": "Abstract base type for a partially observable Markov decision process.\n\nS: state type\nA: action type\nO: observation type\n\n\n\n\n\n"
+    "text": "POMDP{S,A,O}\n\nAbstract base type for a partially observable Markov decision process.\n\nS: state type\nA: action type\nO: observation type\n\n\n\n\n\n"
 },
 
 {
@@ -45,7 +45,7 @@ var documenterSearchIndex = {"docs": [
     "page": "API Documentation",
     "title": "POMDPs.MDP",
     "category": "type",
-    "text": "Abstract base type for a fully observable Markov decision process.\n\nS: state type\nA: action type\n\n\n\n\n\n"
+    "text": "MDP{S,A}\n\nAbstract base type for a fully observable Markov decision process.\n\nS: state type\nA: action type\n\n\n\n\n\n"
 },
 
 {
