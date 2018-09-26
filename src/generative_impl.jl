@@ -288,7 +288,7 @@ function failed_synth_warning(gen::Tuple, reqs::Vector, greqs::Vector=[])
     end
     println(ioc, "\n([✔] = already implemented correctly; [X] = missing)")
     @warn("""
-          POMDPs.jl: Could not find or synthesize $(format_method(gen...)).
+          POMDPs.jl: Could not find or synthesize $(format_method(gen...)). Note that this is only a warning to help diagnose problems; consider fixing errors first.
           
           $(String(take!(io)))
           """)
