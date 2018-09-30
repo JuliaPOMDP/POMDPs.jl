@@ -82,7 +82,6 @@ actions
 observations
 reward
 isterminal
-isterminal_obs
 discount
 n_states
 n_actions

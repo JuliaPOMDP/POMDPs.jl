@@ -112,13 +112,6 @@ reward(problem::Union{POMDP,MDP}, s, a, sp) = reward(problem, s, a)
 @impl_dep reward(::P,::S,::A,::S) where {P<:Union{POMDP,MDP},S,A} reward(::P,::S,::A)
 
 """
-    isterminal_obs{S,A,O}(problem::POMDP{S,A,O}, observation::O)
-
-Check if an observation is terminal.
-"""
-isterminal_obs(problem::POMDP, observation) = false
-
-"""
     isterminal{S,A,O}(problem::POMDP{S,A,O}, state::S)
     isterminal{S,A}(problem::MDP{S,A}, state::S)
 
