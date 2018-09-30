@@ -225,14 +225,6 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "api.html#POMDPs.isterminal_obs",
-    "page": "API Documentation",
-    "title": "POMDPs.isterminal_obs",
-    "category": "function",
-    "text": "isterminal_obs{S,A,O}(problem::POMDP{S,A,O}, observation::O)\n\nCheck if an observation is terminal.\n\n\n\n\n\n"
-},
-
-{
     "location": "api.html#POMDPs.discount",
     "page": "API Documentation",
     "title": "POMDPs.discount",
@@ -317,7 +309,7 @@ var documenterSearchIndex = {"docs": [
     "page": "API Documentation",
     "title": "Common",
     "category": "section",
-    "text": "states\nactions\nobservations\nreward\nisterminal\nisterminal_obs\ndiscount\nn_states\nn_actions\nn_observations\nstateindex\nactionindex\nobsindex\nconvert_s\nconvert_a\nconvert_o"
+    "text": "states\nactions\nobservations\nreward\nisterminal\ndiscount\nn_states\nn_actions\nn_observations\nstateindex\nactionindex\nobsindex\nconvert_s\nconvert_a\nconvert_o"
 },
 
 {
