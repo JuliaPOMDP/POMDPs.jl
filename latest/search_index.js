@@ -453,7 +453,7 @@ var documenterSearchIndex = {"docs": [
     "page": "API Documentation",
     "title": "POMDPs.simulate",
     "category": "function",
-    "text": "simulate{S,A,O,B}(simulator::Simulator, problem::POMDP{S,A,O}, policy::Policy{B}, updater::Updater{B}, initial_belief::B)\nsimulate{S,A}(simulator::Simulator, problem::MDP{S,A}, policy::Policy, initial_state::S)\n\nRun a simulation using the specified policy.\n\nThe return type is flexible and depends on the simulator. For example implementations, see the POMDPToolbox package.\n\n\n\n\n\n"
+    "text": "simulate(simulator::Simulator, problem::POMDP{S,A,O}, policy::Policy, updater::Updater, initial_belief, initial_state::S)\nsimulate(simulator::Simulator, problem::MDP{S,A}, policy::Policy, initial_state::S)\n\nRun a simulation using the specified policy.\n\nThe return type is flexible and depends on the simulator. Simulations should adhere to the Simulation Standard.\n\n\n\n\n\n"
 },
 
 {
@@ -1110,6 +1110,70 @@ var documenterSearchIndex = {"docs": [
     "title": "Interface Requirements for Problems",
     "category": "section",
     "text": "Due to the large variety of problems that can be expressed as MDPs and POMDPs and the wide variety of solution techniques available, there is considerable variation in which of the POMDPs.jl interface functions must be implemented to use each solver. No solver requires all of the functions in the interface, so it is wise to determine which functions are needed before jumping into implementation.Solvers can communicate these requirements through the @requirements_info and @show_requirements macros. @requirements_info should give an overview of the requirements for a solver, which is supplied as the first argument, the macro can usually be more informative if a problem is specified as the second arg. For example, if you are implementing a new problem NewMDP and want to use the DiscreteValueIteration solver, you might run the following:(Image: requirements_info for a new problem)Note that a few of the requirements could not be shown because actions is not implemented for the new problem.If you would like to see a list of all of the requirements for a solver, try running @requirements_info with a fully implemented model from POMDPModels, for example,(Image: requirements_info for a fully-implemented problem)@show_requirements is a lower-level tool that can be used to show the requirements for a specific function call, for example@show_requirements solve(ValueIterationSolver(), NewMDP())orpolicy = solve(ValueIterationSolver(), GridWorld())\n@show_requirements action(policy, GridWorldState(1,1))In some cases, a solver writer may not have specified the requirements, in which case the requirements query macros will output[No requirements specified]In this case, please file an issue on the solver\'s github page to encourage the solver writer to specify requirements."
+},
+
+{
+    "location": "simulation.html#",
+    "page": "Simulation Standard",
+    "title": "Simulation Standard",
+    "category": "page",
+    "text": ""
+},
+
+{
+    "location": "simulation.html#Simulation-Standard-1",
+    "page": "Simulation Standard",
+    "title": "Simulation Standard",
+    "category": "section",
+    "text": "In order to maintain consistency across the POMDPs.jl ecosystem, this page defines a standard for how simulations should be conducted. All simulators should be consistent with this page, and, if solvers are attempting to find an optimal POMDP policy, they should optimize the expected value of r_total below. In particular, this page should be consulted when questions about how less-obvious concepts like terminal states are handled.In most cases, users need not implement their own simulators. Several simulators that are compatible with the standard in this document are implemented in the POMDPSimulators package and allow interaction from a variety of perspectives."
+},
+
+{
+    "location": "simulation.html#POMDP-Simulation-1",
+    "page": "Simulation Standard",
+    "title": "POMDP Simulation",
+    "category": "section",
+    "text": ""
+},
+
+{
+    "location": "simulation.html#Inputs-1",
+    "page": "Simulation Standard",
+    "title": "Inputs",
+    "category": "section",
+    "text": "In general, POMDP simulations take up to 5 inputs (see the simulate function for documentation on arguments):pomdp::POMDP: pomdp model object (see POMDPs and MDPs)\npolicy::Policy: policy (see Solvers and Policies)\nup::Updater: belief updater (see Beliefs and Updaters)\nisd: initial state distribution\ns: initial stateThe last three of these inputs are optional. If they are not explicitly provided, they should be inferred using the following POMDPs.jl functions:up =updater(policy)\nisd =initialstate_distribution(pomdp)\ns =initialstate(pomdp, rng)In addition, a random number generator rng is assumed to be available."
+},
+
+{
+    "location": "simulation.html#Simulation-Loop-1",
+    "page": "Simulation Standard",
+    "title": "Simulation Loop",
+    "category": "section",
+    "text": "The main simulation loop is shown below. Note that the isterminal check prevents any actions from being taken and reward from being collected from a terminal state.Before the loop begins, initialize_belief is called to create the belief based on the initial state distribution - this is especially important when the belief is solver specific, such as the finite-state-machine used by MCVI. b = initialize_belief(up, isd)\n\nr_total = 0.0\nd = 1.0\nwhile !isterminal(pomdp, s)\n    a = action(policy, b)\n    s, o, r = generate_sor(pomdp, s, a, rng)\n    r_total += d*r\n    d *= discount(pomdp)\n    b = update(up, b, a, o)\nendIn terms of the explicit interface, generate_sor above can be expressed as:function generate_sor(pomdp, s, a, rng)\n    sp = rand(rng, transition(pomdp, s, a))\n    o = rand(rng, observation(pomdp, s, a, sp))\n    r = reward(pomdp, s, a, sp)\n    return sp, o, r\nend"
+},
+
+{
+    "location": "simulation.html#MDP-Simulation-1",
+    "page": "Simulation Standard",
+    "title": "MDP Simulation",
+    "category": "section",
+    "text": ""
+},
+
+{
+    "location": "simulation.html#Inputs-2",
+    "page": "Simulation Standard",
+    "title": "Inputs",
+    "category": "section",
+    "text": "In general, MDP simulations take up to 3 inputs (see the simulate function for documentation on arguments):mdp::MDP: mdp model object (see POMDPs and MDPs)\npolicy::Policy: policy (see Solvers and Policies)\ns: initial stateThe last of these inputs is optional. If the initial state is not explicitly provided, it should be generated usings =initialstate(mdp, rng)In addition, a random number generator rng is assumed to be available."
+},
+
+{
+    "location": "simulation.html#Simulation-Loop-2",
+    "page": "Simulation Standard",
+    "title": "Simulation Loop",
+    "category": "section",
+    "text": "The main simulation loop is shown below. Note again that the isterminal check prevents any actions from being taken and reward from being collected from a terminal state.r_total = 0.0\ndisc = 1.0\nwhile !isterminal(mdp, s)\n    a = action(policy, b)\n    s, r = generate_sr(mdp, s, a, rng)\n    r_total += d*r\n    d *= discount(mdp)\nendIn terms of the explicit interface, generate_sr above can be expressed as:function generate_sr(mdp, s, a, rng)\n    sp = rand(rng, transition(pomdp, s, a))\n    r = reward(pomdp, s, a, sp)\n    return sp, r\nend"
 },
 
 {
