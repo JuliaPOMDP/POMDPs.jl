@@ -78,12 +78,7 @@ For more examples with visualization see [POMDPGallery.jl](https://github.com/Ju
 
 ## Tutorials
 
-The following tutorials aim to get you up to speed with POMDPs.jl:
-* [POMDPs.jl Demo](https://nbviewer.jupyter.org/github/sisl/aa228-notebook/blob/master/POMDPs-jl-demo.ipynb) is a terse overview for experienced julia programmers that shows POMDPs.jl by example without explanation.
-* [MDP Tutorial](http://nbviewer.ipython.org/github/sisl/POMDPs.jl/blob/master/examples/GridWorld.ipynb) for beginners gives a verbose description of using Value Iteration and Monte-Carlo Tree Search with the classic grid world problem.
-* [POMDP Tutorial](http://nbviewer.ipython.org/github/sisl/POMDPs.jl/blob/master/examples/Tiger.ipynb) gives a verbose description of using SARSOP and QMDP to solve the tiger problem.
-
-
+Several tutorials are hosted in the [POMDPExamples repository](https://github.com/JuliaPOMDP/POMDPExamples.jl).
 
 ## Documentation
 
