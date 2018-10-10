@@ -23,7 +23,7 @@ A problem writer will generally only have to implement one or two of these funct
 
 ## Example
 
-An example of defining a problem with the generative interface can be found at https://github.com/JuliaPOMDP/POMDPExamples.jl/blob/master/notebooks/Defining-a-POMDP-with-the-Generative-Interface.ipynb
+An example of defining a problem with the generative interface can be found at [https://github.com/JuliaPOMDP/POMDPExamples.jl/blob/master/notebooks/Defining-a-POMDP-with-the-Generative-Interface.ipynb](https://github.com/JuliaPOMDP/POMDPExamples.jl/blob/master/notebooks/Defining-a-POMDP-with-the-Generative-Interface.ipynb)
 
 ## Which function(s) should I implement for my problem / use in my solver?
 
