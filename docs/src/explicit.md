@@ -30,7 +30,7 @@ For MDPs, the observation related functions are not needed.
 
 In discrete problems, the `states`, `actions`, and `observations` functions can be used to iterate over the spaces (for discrete spaces). They can output a collection (such as a vector of states), or alternatively an object that one can iterate over if storing the state space in a collection is not practical. 
 
-Additional functions allow the user to specify the index of a given element (state, action or observation) in its corresponding space. The functions starting by `n_` are used to specify how many elements are in a discrete space.
+Additional functions allow the problem writer to specify the index of a given element (state, action or observation) in its corresponding space. The functions starting with `n_` are used to specify how many elements are in a discrete space.
 ```julia
 stateindex(pomdp, s)
 actionindex(pomdp, a)
