@@ -13,7 +13,7 @@ initialstate_distribution(pomdp)
 isterminal(pomdp)
 ```
 
-The functions `transition`, `observation`, and `initialstate_distribution` return a distribution over state. That is it possible to sample a state from this distribution as well as computing the pdf of a state given this distribution. `transition` represents the probability distribution of the next state given a current state s and action a. `observation` represents the probability distribution of an observation given the true underlying state sp and action a. 
+The functions `transition`, `observation`, and `initialstate_distribution` return a distribution over states or observations. This makes it possible to sample a state from this distribution as well as computing the pdf of a state given this distribution. `transition` represents the probability distribution of the next state given a current state s and action a. `observation` represents the probability distribution of an observation given the true underlying state sp and action a. 
 
 State, action and observation spaces are respectively represented by the output of the following functions:
 ```julia
