@@ -1,8 +1,8 @@
 # Simulation Standard
 
-In order to maintain consistency across the POMDPs.jl ecosystem, this page defines a standard for how simulations should be conducted. All simulators should be consistent with this page, and, if solvers are attempting to find an optimal POMDP policy, they should optimize the expected value of `r_total` below. In particular, this page should be consulted when questions about how less-obvious concepts like terminal states are handled.
+Important note: In most cases, **users need not implement their own simulators**. Several simulators that are compatible with the standard in this document are implemented in the [POMDPSimulators package](https://github.com/JuliaPOMDP/POMDPSimulators.jl) and allow [interaction from a variety of perspectives](https://juliapomdp.github.io/POMDPSimulators.jl/latest/which.html#Which-Simulator-Should-I-Use?-1). Moreover [DeepRL.jl](https://github.com/sisl/DeepRL.jl) provides an OpenAI Gym style environment interface to interact with environments that is more stable in some cases.
 
-In most cases, **users need not implement their own simulators**. Several simulators that are compatible with the standard in this document are implemented in the [POMDPSimulators package](https://github.com/JuliaPOMDP/POMDPSimulators.jl) and allow [interaction from a variety of perspectives](https://juliapomdp.github.io/POMDPSimulators.jl/latest/which.html#Which-Simulator-Should-I-Use?-1).
+In order to maintain consistency across the POMDPs.jl ecosystem, this page defines a standard for how simulations should be conducted. All simulators should be consistent with this page, and, if solvers are attempting to find an optimal POMDP policy, they should optimize the expected value of `r_total` below. In particular, this page should be consulted when questions about how less-obvious concepts like terminal states are handled.
 
 ## POMDP Simulation
 
