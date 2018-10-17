@@ -13,5 +13,5 @@ notifications:
     - sunbergzach@gmail.com
 
 after_success:
-  - julia --project -e 'import Pkg; Pkg.add("Documenter"); include("docs/make.jl")'
+  - julia --project -e 'import Pkg; ps=Pkg.PackageSpec(name="Documenter", version="0.19"); Pkg.add(ps); Pkg.pin(ps); include("docs/make.jl")'
   - julia --project -e 'import Pkg; Pkg.add("Coverage"); using Coverage; Codecov.submit(Codecov.process_folder())'
