@@ -105,6 +105,7 @@ POMDPs.jl itself contains only the interface for communicating about problem def
 | [POMDPModels](https://github.com/JuliaPOMDP/POMDPModels.jl) | [![Build Status](https://travis-ci.org/JuliaPOMDP/POMDPModels.jl.svg?branch=master)](https://travis-ci.org/JuliaPOMDP/POMDPModels.jl) | [![Coverage Status](https://coveralls.io/repos/github/JuliaPOMDP/POMDPModels.jl/badge.svg?)](https://coveralls.io/github/JuliaPOMDP/POMDPModels.jl?) |
 | [POMDPTesting](https://github.com/JuliaPOMDP/POMDPTesting.jl) | [![Build Status](https://travis-ci.org/JuliaPOMDP/POMDPTesting.jl.svg?branch=master)](https://travis-ci.org/JuliaPOMDP/POMDPTesting.jl) | [![Coverage Status](https://coveralls.io/repos/github/JuliaPOMDP/POMDPTesting.jl/badge.svg?)](https://coveralls.io/github/JuliaPOMDP/POMDPTesting.jl?) |
 | [ParticleFilters](https://github.com/JuliaPOMDP/ParticleFilters.jl) | [![Build Status](https://travis-ci.org/JuliaPOMDP/ParticleFilters.jl.svg?branch=master)](https://travis-ci.org/JuliaPOMDP/ParticleFilters.jl) | [![codecov.io](http://codecov.io/github/JuliaPOMDP/ParticleFilters.jl/coverage.svg?)](http://codecov.io/github/JuliaPOMDP/ParticleFilters.jl?) |
+| [RLInterface](https://github.com/JuliaPOMDP/RLInterface.jl) | [![Build Status](https://travis-ci.org/JuliaPOMDP/RLInterface.jl.svg?branch=master)](https://travis-ci.org/JuliaPOMDP/RLInterface.jl) | [![Coverage Status](https://coveralls.io/repos/github/JuliaPOMDP/RLInterface.jl/badge.svg?branch=master)](https://coveralls.io/github/JuliaPOMDP/RLInterface.jl?branch=master)
 
 #### MDP solvers:
 
