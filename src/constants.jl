@@ -44,7 +44,8 @@ const NATIVE_PACKAGES = Set{String}(
                          "POMCPOW",
                          "AEMS",
                          "IncrementalPruning",
-                         "LocalApproximationValueIteration"
+                         "LocalApproximationValueIteration",
+                         "DeepQLearning"
                         ])
 
 # Packages registered on METADATA
