@@ -23,6 +23,7 @@ const NATIVE_PACKAGES = Set{String}(
                          "POMDPPolicies",
                          "BeliefUpdaters",
                          "POMDPSimulators",
+                         "RLInterface",
 
                          "DiscreteValueIteration",
                          "MCTS",
