@@ -95,16 +95,23 @@ observation(problem::POMDP, s, a, sp) = observation(problem, a, sp)
 @impl_dep observation(::P,::S,::A,::S) where {P<:POMDP,S,A} observation(::P,::A,::S)
 
 """
-    reward{S,A,O}(problem::POMDP{S,A,O}, state::S, action::A)
-    reward{S,A}(problem::MDP{S,A}, state::S, action::A)
+    reward{S,A,O}(m::POMDP{S,A,O}, s::S, a::A)
+    reward{S,A}(m::MDP{S,A}, s::S, a::A)
 
-Return the immediate reward for the s-a pair
+Return the immediate reward for the s-a pair.
+
+For some problems, it is easier to express `reward(m, s, a, sp)` than
+`reward(m, s, a)`, but some solvers, e.g. SARSOP, can only use
+`reward(m, s, a)`. Both can be implemented for a problem, but when
+`reward(m, s, a)` is implemented, it should be consistent with
+`reward(m, s, a, sp)`, that is, it should be the expected value over all
+destination states.
 """
 function reward end
 
 """
-    reward{S,A,O}(problem::POMDP{S,A,O}, state::S, action::A, statep::S)
-    reward{S,A}(problem::MDP{S,A}, state::S, action::A, statep::S)
+    reward{S,A,O}(m::POMDP{S,A,O}, s::S, a::A, sp::S)
+    reward{S,A}(m::MDP{S,A}, s::S, a::A, sp::S)
 
 Return the immediate reward for the s-a-s' triple
 """
