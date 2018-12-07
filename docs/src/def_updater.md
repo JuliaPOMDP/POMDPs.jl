@@ -1,7 +1,7 @@
 # Defining a Belief Updater
 
 In this section we list the requirements for defining a belief updater.
-For a description of what a belief updater is, see [Concepts and Architecture - Beliefs and Updaters](@ref beliefs_and_updaters).
+For a description of what a belief updater is, see [Concepts and Architecture - Beliefs and Updaters](@ref Beliefs-and-Updaters).
 Typically a belief updater will have an associated belief type, and may be closely tied to a particular policy/planner.
 
 ## Defining a Belief Type

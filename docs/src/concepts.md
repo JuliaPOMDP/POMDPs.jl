@@ -51,7 +51,7 @@ such as a discount factor or a set of terminal states.
 
 More information can be found in the [Defining POMDPs](@ref defining_pomdps) section.
 
-## [Beliefs and Updaters](@id beliefs_and_updaters)
+## Beliefs and Updaters
 
 In a POMDP domain, the decision-making agent does not have complete
 information about the state of the problem, so the agent can only make
@@ -112,7 +112,7 @@ subtype of the [`Policy`](@ref) abstract type. The programmer implements
 [`action`](@ref) to describe what computations need to be done online.
 For an online solver such as POMCP, all of the decision computation
 occurs within [`action`](@ref) while for an offline solver like SARSOP,
-there is very little computation within [`action`](@ref)
+there is very little computation within [`action`](@ref). See [Interacting with Policies](@ref) for more information.
 
 The offline portion of the computation is carried out by the solver,
 which is represented by a concrete subtype of the [`Solver`](@ref)

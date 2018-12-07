@@ -28,7 +28,7 @@ In addition, a random number generator `rng` is assumed to be available.
 
 The main simulation loop is shown below. Note that the [`isterminal`](@ref) check prevents any actions from being taken and reward from being collected from a terminal state.
 
-Before the loop begins, [`initialize_belief`](@ref) is called to create the [belief](@ref beliefs_and_updaters) based on the initial state distribution - this is especially important when the belief is solver specific, such as the finite-state-machine used by MCVI. 
+Before the loop begins, [`initialize_belief`](@ref) is called to create the [belief](@ref Beliefs-and-Updaters) based on the initial state distribution - this is especially important when the belief is solver specific, such as the finite-state-machine used by MCVI. 
 
 ```julia
 b = initialize_belief(up, isd)
