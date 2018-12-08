@@ -126,6 +126,7 @@ such as POMCP, [`solve`](@ref) merely embeds the problem in the policy.
 A simulator defines a way to run one or more simulations.
 It is represented by a concrete subtype of the [`Simulator`](@ref) abstract type and the simulation is an implemention of [`simulate`](@ref).
 Depending on the simulator, [`simulate`](@ref) may return a variety of data about the simulation, such as the discounted reward or the state history.
+All simulators should perform simulations consistent with the [Simulation Standard](@ref).
 
 \[1\] *Decision Making Under Uncertainty: Theory and Application* by
 Mykel J. Kochenderfer, MIT Press, 2015
