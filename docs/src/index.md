@@ -1,4 +1,4 @@
-# POMDPs
+# [POMDPs.jl](https://github.com/JuliaPOMDP/POMDPs.jl)
 *A Julia interface for defining, solving and simulating partially observable Markov decision processes and their fully
 observable counterparts.*
 
@@ -8,8 +8,6 @@ observable counterparts.*
 - A number of popular state-of-the-art solvers available to use out of the box
 - Tools that make it easy to define problems and simulate solutions
 - Simple integration of custom solvers into the existing interface
-
-
 
 ## Available Packages
 

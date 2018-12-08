@@ -43,7 +43,7 @@ n_observations(pomdp)
 ### Example 
 
 An example of defining a problem using the explicit interface can be found at: 
-https://github.com/JuliaPOMDP/POMDPExamples.jl/blob/master/notebooks/Defining-a-POMDP-with-the-Explicit-Interface.ipynb
+[https://github.com/JuliaPOMDP/POMDPExamples.jl/blob/master/notebooks/Defining-a-POMDP-with-the-Explicit-Interface.ipynb](https://github.com/JuliaPOMDP/POMDPExamples.jl/blob/master/notebooks/Defining-a-POMDP-with-the-Explicit-Interface.ipynb)
 
 
 ## Tabular Form Explicit POMDP
