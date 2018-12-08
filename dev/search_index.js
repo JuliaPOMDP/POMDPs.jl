@@ -117,7 +117,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Concepts and Architecture",
     "title": "Simulators",
     "category": "section",
-    "text": "A simulator defines a way to run one or more simulations. It is represented by a concrete subtype of the Simulator abstract type and the simulation is an implemention of simulate. Depending on the simulator, simulate may return a variety of data about the simulation, such as the discounted reward or the state history.[1] Decision Making Under Uncertainty: Theory and Application by Mykel J. Kochenderfer, MIT Press, 2015[2] Bai, H., Hsu, D., & Lee, W. S. (2014). Integrated perception and planning in the continuous space: A POMDP approach. The International Journal of Robotics Research, 33(9), 1288-1302"
+    "text": "A simulator defines a way to run one or more simulations. It is represented by a concrete subtype of the Simulator abstract type and the simulation is an implemention of simulate. Depending on the simulator, simulate may return a variety of data about the simulation, such as the discounted reward or the state history. All simulators should perform simulations consistent with the Simulation Standard.[1] Decision Making Under Uncertainty: Theory and Application by Mykel J. Kochenderfer, MIT Press, 2015[2] Bai, H., Hsu, D., & Lee, W. S. (2014). Integrated perception and planning in the continuous space: A POMDP approach. The International Journal of Robotics Research, 33(9), 1288-1302"
 },
 
 {
