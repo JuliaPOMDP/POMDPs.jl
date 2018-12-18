@@ -37,7 +37,47 @@ var documenterSearchIndex = {"docs": [
     "page": "POMDPs.jl",
     "title": "Manual Outline",
     "category": "section",
-    "text": ""
+    "text": "When updating these documents, make sure this is synced with docs/make.jl!!"
+},
+
+{
+    "location": "#Basics-1",
+    "page": "POMDPs.jl",
+    "title": "Basics",
+    "category": "section",
+    "text": "Pages = [\"index.md\", \"install.md\", \"get_started.md\", \"concepts.md\"]"
+},
+
+{
+    "location": "#Defining-POMDP-Models-1",
+    "page": "POMDPs.jl",
+    "title": "Defining POMDP Models",
+    "category": "section",
+    "text": "Pages = [ \"def_pomdp.md\", \"explicit.md\", \"generative.md\", \"requirements.md\", \"interfaces.md\" ]"
+},
+
+{
+    "location": "#Writing-Solvers-and-Updaters-1",
+    "page": "POMDPs.jl",
+    "title": "Writing Solvers and Updaters",
+    "category": "section",
+    "text": "Pages = [ \"def_solver.md\", \"specifying_requirements.md\", \"def_updater.md\" ]"
+},
+
+{
+    "location": "#Analyzing-Results-1",
+    "page": "POMDPs.jl",
+    "title": "Analyzing Results",
+    "category": "section",
+    "text": "Pages = [ \"simulation.md\", \"policy_interaction.md\" ]"
+},
+
+{
+    "location": "#Reference-1",
+    "page": "POMDPs.jl",
+    "title": "Reference",
+    "category": "section",
+    "text": "Pages = [\"faq.md\", \"api.md\"]"
 },
 
 {
