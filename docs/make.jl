@@ -5,6 +5,9 @@ makedocs(
     format = :html,
     sitename = "POMDPs.jl",
     pages = [
+        ##############################################
+        ## MAKE SURE TO SYNC WITH docs/src/index.md ##
+        ##############################################
         "Basics" => [
             "index.md",
             "install.md",

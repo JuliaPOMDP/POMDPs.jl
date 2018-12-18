@@ -18,5 +18,34 @@ The list of solver and support packages is maintained at the [POMDPs.jl Readme](
 
 ## Manual Outline
 
+When updating these documents, make sure this is synced with [docs/make.jl](https://github.com/JuliaPOMDP/POMDPs.jl/blob/master/docs/make.jl)!!
+
+### Basics
+
 ```@contents
+Pages = ["index.md", "install.md", "get_started.md", "concepts.md"]
+```
+
+### Defining POMDP Models
+
+```@contents
+Pages = [ "def_pomdp.md", "explicit.md", "generative.md", "requirements.md", "interfaces.md" ]
+```
+
+### Writing Solvers and Updaters
+
+```@contents
+Pages = [ "def_solver.md", "specifying_requirements.md", "def_updater.md" ]
+```
+
+### Analyzing Results
+
+```@contents
+Pages = [ "simulation.md", "policy_interaction.md" ]
+```
+
+### Reference
+
+```@contents
+Pages = ["faq.md", "api.md"]
 ```
