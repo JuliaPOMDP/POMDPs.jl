@@ -773,7 +773,7 @@ var documenterSearchIndex = {"docs": [
     "page": "API Documentation",
     "title": "POMDPs.transition",
     "category": "function",
-    "text": "transition{S,A,O}(problem::POMDP{S,A,O}, state::S, action::A)\ntransition{S,A}(problem::MDP{S,A}, state::S, action::A)\n\nReturn the transition distribution from the current state-action pair\n\n\n\n\n\n"
+    "text": "transition(problem::POMDP, state, action)\ntransition(problem::MDP, state, action)\n\nReturn the transition distribution from the current state-action pair\n\n\n\n\n\n"
 },
 
 {
@@ -781,7 +781,7 @@ var documenterSearchIndex = {"docs": [
     "page": "API Documentation",
     "title": "POMDPs.observation",
     "category": "function",
-    "text": "observation{S,A,O}(problem::POMDP{S,A,O}, statep::S)\nobservation{S,A,O}(problem::POMDP{S,A,O}, action::A, statep::S)\nobservation{S,A,O}(problem::POMDP{S,A,O}, state::S, action::A, statep::S)\n\nReturn the observation distribution. You need only define the method with the fewest arguments needed to determine the observation distribution.\n\nExample\n\nusing POMDPToolbox # for SparseCat\n\nstruct MyPOMDP <: POMDP{Int, Int, Int} end\n\nobservation(p::MyPOMDP, sp::Int) = SparseCat([sp-1, sp, sp+1], [0.1, 0.8, 0.1])\n\n\n\n\n\n"
+    "text": "observation(problem::POMDP, statep)\nobservation(problem::POMDP, action, statep)\nobservation(problem::POMDP, state, action, statep)\n\nReturn the observation distribution. You need only define the method with the fewest arguments needed to determine the observation distribution.\n\nExample\n\nusing POMDPModelTools # for SparseCat\n\nstruct MyPOMDP <: POMDP{Int, Int, Int} end\n\nobservation(p::MyPOMDP, sp::Int) = SparseCat([sp-1, sp, sp+1], [0.1, 0.8, 0.1])\n\n\n\n\n\n"
 },
 
 {
@@ -893,7 +893,7 @@ var documenterSearchIndex = {"docs": [
     "page": "API Documentation",
     "title": "POMDPs.reward",
     "category": "function",
-    "text": "reward{S,A,O}(m::POMDP{S,A,O}, s::S, a::A)\nreward{S,A}(m::MDP{S,A}, s::S, a::A)\n\nReturn the immediate reward for the s-a pair.\n\nFor some problems, it is easier to express reward(m, s, a, sp) than reward(m, s, a), but some solvers, e.g. SARSOP, can only use reward(m, s, a). Both can be implemented for a problem, but when reward(m, s, a) is implemented, it should be consistent with reward(m, s, a, sp), that is, it should be the expected value over all destination states.\n\n\n\n\n\n"
+    "text": "reward(m::POMDP, s, a)\nreward(m::MDP, s, a)\n\nReturn the immediate reward for the s-a pair.\n\nFor some problems, it is easier to express reward(m, s, a, sp) than reward(m, s, a), but some solvers, e.g. SARSOP, can only use reward(m, s, a). Both can be implemented for a problem, but when reward(m, s, a) is implemented, it should be consistent with reward(m, s, a, sp), that is, it should be the expected value over all destination states.\n\n\n\n\n\n"
 },
 
 {
@@ -901,7 +901,7 @@ var documenterSearchIndex = {"docs": [
     "page": "API Documentation",
     "title": "POMDPs.isterminal",
     "category": "function",
-    "text": "isterminal{S,A,O}(problem::POMDP{S,A,O}, state::S)\nisterminal{S,A}(problem::MDP{S,A}, state::S)\n\nCheck if state s is terminal\n\n\n\n\n\n"
+    "text": "isterminal(problem::POMDP, state)\nisterminal(problem::MDP, state)\n\nCheck if state s is terminal\n\n\n\n\n\n"
 },
 
 {
@@ -941,7 +941,7 @@ var documenterSearchIndex = {"docs": [
     "page": "API Documentation",
     "title": "POMDPs.stateindex",
     "category": "function",
-    "text": "stateindex{S,A,O}(problem::POMDP{S,A,O}, s::S)\nstateindex{S,A}(problem::MDP{S,A}, s::S)\n\nReturn the integer index of state s. Used for discrete models only.\n\n\n\n\n\n"
+    "text": "stateindex(problem::POMDP, s)\nstateindex(problem::MDP, s)\n\nReturn the integer index of state s. Used for discrete models only.\n\n\n\n\n\n"
 },
 
 {
@@ -949,7 +949,7 @@ var documenterSearchIndex = {"docs": [
     "page": "API Documentation",
     "title": "POMDPs.actionindex",
     "category": "function",
-    "text": "actionindex{S,A,O}(problem::POMDP{S,A,O}, a::A)\nactionindex{S,A}(problem::MDP{S,A}, a::A)\n\nReturn the integer index of action a. Used for discrete models only.\n\n\n\n\n\n"
+    "text": "actionindex(problem::POMDP, a)\nactionindex(problem::MDP, a)\n\nReturn the integer index of action a. Used for discrete models only.\n\n\n\n\n\n"
 },
 
 {
@@ -957,7 +957,7 @@ var documenterSearchIndex = {"docs": [
     "page": "API Documentation",
     "title": "POMDPs.obsindex",
     "category": "function",
-    "text": "obsindex{S,A,O}(problem::POMDP{S,A,O}, o::O)\n\nReturn the integer index of observation o. Used for discrete models only.\n\n\n\n\n\n"
+    "text": "obsindex(problem::POMDP, o)\n\nReturn the integer index of observation o. Used for discrete models only.\n\n\n\n\n\n"
 },
 
 {
@@ -997,7 +997,7 @@ var documenterSearchIndex = {"docs": [
     "page": "API Documentation",
     "title": "Base.rand",
     "category": "function",
-    "text": "rand{T}(rng::AbstractRNG, d::Any)\n\nReturn a random element from distribution or space d.\n\nIf d is a state or transition distribution, the sample will be a state; if d is an action distribution, the sample will be an action or if d is an observation distribution, the sample will be an observation.\n\n\n\n\n\n"
+    "text": "rand(rng::AbstractRNG, d::Any)\n\nReturn a random element from distribution or space d.\n\nIf d is a state or transition distribution, the sample will be a state; if d is an action distribution, the sample will be an action or if d is an observation distribution, the sample will be an observation.\n\n\n\n\n\n"
 },
 
 {
