@@ -52,23 +52,23 @@ Return the discount factor for the problem.
 function discount end
 
 """
-    transition{S,A,O}(problem::POMDP{S,A,O}, state::S, action::A)
-    transition{S,A}(problem::MDP{S,A}, state::S, action::A)
+    transition(problem::POMDP, state, action)
+    transition(problem::MDP, state, action)
 
 Return the transition distribution from the current state-action pair
 """
 function transition end
 
 """
-    observation{S,A,O}(problem::POMDP{S,A,O}, statep::S)
-    observation{S,A,O}(problem::POMDP{S,A,O}, action::A, statep::S)
-    observation{S,A,O}(problem::POMDP{S,A,O}, state::S, action::A, statep::S)
+    observation(problem::POMDP, statep)
+    observation(problem::POMDP, action, statep)
+    observation(problem::POMDP, state, action, statep)
 
 Return the observation distribution. You need only define the method with the fewest arguments needed to determine the observation distribution.
 
 # Example
 ```julia
-using POMDPToolbox # for SparseCat
+using POMDPModelTools # for SparseCat
 
 struct MyPOMDP <: POMDP{Int, Int, Int} end
 
@@ -78,7 +78,7 @@ observation(p::MyPOMDP, sp::Int) = SparseCat([sp-1, sp, sp+1], [0.1, 0.8, 0.1])
 function observation end
 
 """
-    observation{S,A,O}(problem::POMDP{S,A,O}, action::A, statep::S)
+    observation(problem::POMDP, action, statep)
 
 Return the observation distribution for the a-s' tuple (action and next state)
 """
@@ -87,7 +87,7 @@ observation(problem::POMDP, a, sp) = observation(problem, sp)
 @impl_dep observation(::P,::A,::S) where {P<:POMDP,S,A} observation(::P,::S)
 
 """
-    observation{S,A,O}(problem::POMDP{S,A,O}, state::S, action::A, statep::S)
+    observation(problem::POMDP, state, action, statep)
 
 Return the observation distribution for the s-a-s' tuple (state, action, and next state)
 """
@@ -95,8 +95,8 @@ observation(problem::POMDP, s, a, sp) = observation(problem, a, sp)
 @impl_dep observation(::P,::S,::A,::S) where {P<:POMDP,S,A} observation(::P,::A,::S)
 
 """
-    reward{S,A,O}(m::POMDP{S,A,O}, s::S, a::A)
-    reward{S,A}(m::MDP{S,A}, s::S, a::A)
+    reward(m::POMDP, s, a)
+    reward(m::MDP, s, a)
 
 Return the immediate reward for the s-a pair.
 
@@ -110,8 +110,8 @@ destination states.
 function reward end
 
 """
-    reward{S,A,O}(m::POMDP{S,A,O}, s::S, a::A, sp::S)
-    reward{S,A}(m::MDP{S,A}, s::S, a::A, sp::S)
+    reward(m::POMDP, s, a, sp)
+    reward(m::MDP, s, a, sp)
 
 Return the immediate reward for the s-a-s' triple
 """
@@ -119,8 +119,8 @@ reward(problem::Union{POMDP,MDP}, s, a, sp) = reward(problem, s, a)
 @impl_dep reward(::P,::S,::A,::S) where {P<:Union{POMDP,MDP},S,A} reward(::P,::S,::A)
 
 """
-    isterminal{S,A,O}(problem::POMDP{S,A,O}, state::S)
-    isterminal{S,A}(problem::MDP{S,A}, state::S)
+    isterminal(problem::POMDP, state)
+    isterminal(problem::MDP, state)
 
 Check if state s is terminal
 """
@@ -136,8 +136,8 @@ function initialstate_distribution end
 @deprecate initial_state_distribution initialstate_distribution
 
 """
-    stateindex{S,A,O}(problem::POMDP{S,A,O}, s::S)
-    stateindex{S,A}(problem::MDP{S,A}, s::S)
+    stateindex(problem::POMDP, s)
+    stateindex(problem::MDP, s)
 
 Return the integer index of state `s`. Used for discrete models only.
 """
@@ -145,8 +145,8 @@ function stateindex end
 @deprecate state_index stateindex
 
 """
-    actionindex{S,A,O}(problem::POMDP{S,A,O}, a::A)
-    actionindex{S,A}(problem::MDP{S,A}, a::A)
+    actionindex(problem::POMDP, a)
+    actionindex(problem::MDP, a)
 
 Return the integer index of action `a`. Used for discrete models only.
 """
@@ -154,7 +154,7 @@ function actionindex end
 @deprecate action_index actionindex
 
 """
-    obsindex{S,A,O}(problem::POMDP{S,A,O}, o::O)
+    obsindex(problem::POMDP, o)
 
 Return the integer index of observation `o`. Used for discrete models only.
 """

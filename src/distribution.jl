@@ -3,7 +3,7 @@
 #############################
 
 """
-    rand{T}(rng::AbstractRNG, d::Any)
+    rand(rng::AbstractRNG, d::Any)
 
 Return a random element from distribution or space `d`.
 
