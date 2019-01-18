@@ -8,7 +8,7 @@ In order to maintain consistency across the POMDPs.jl ecosystem, this page defin
 
 ### Inputs
 
-In general, POMDP simulations take up to 5 inputs (see the [`simulate`](@ref) function for documentation on arguments):
+In general, POMDP simulations take up to 5 inputs (see also the [`simulate`](@ref) docstring):
 
 - `pomdp::POMDP`: pomdp model object (see [POMDPs and MDPs](@ref))
 - `policy::Policy`: policy (see [Solvers and Policies](@ref))
@@ -59,7 +59,7 @@ end
 
 ### Inputs
 
-In general, MDP simulations take up to 3 inputs (see the [`simulate`](@ref) function for documentation on arguments):
+In general, MDP simulations take up to 3 inputs (see also the [`simulate`](@ref) docstring):
 
 - `mdp::MDP`: mdp model object (see [POMDPs and MDPs](@ref))
 - `policy::Policy`: policy (see [Solvers and Policies](@ref))
