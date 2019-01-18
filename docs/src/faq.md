@@ -1,17 +1,5 @@
 # Frequently Asked Questions (FAQ)
 
-## Why am I getting a "No implementation for ..." error?
-
-You will typically see this error when you haven't implemented a function that a solver is trying to call.
-For example, if you are using the QMDP solver, and have not implemented `num_states` for your POMDP, you will see the no
-implementation error. To fix the error, you need to create a `num_states` function that takes in your POMDP. To see the
-required functions for a given solver you can run:
-
-```julia
-using QMDP
-QMDP.required_methods()
-```
-
 ## How do I save my policies?
 
 We recommend using [JLD](https://github.com/JuliaIO/JLD.jl) to save the whole policy object. This is a simple and
@@ -63,3 +51,33 @@ without going into the source code of other solvers. This makes the framework ea
 Terminal actions are actions that cause the MDP to terminate without generating a new state. POMDPs.jl handles terminal conditions via the `isterminal` function on states, and does not directly support terminal actions. If your MDP has a terminal action, you need to implement the model functions accordingly to generate a terminal state. In both generative and explicit cases, you will need some dummy state, say `spt`, that can be recognized as terminal by the `isterminal` function. One way to do this is to give `spt` a state value that is out of bounds (e.g. a vector of `NaN`s or `-1`s) and then check for that in `isterminal`, so that this does not clash with any conventional termination conditions on the state.
 
 If a terminal action is taken, regardless of current state, the `transition` function should return a distribution with only one next state, `spt`, with probability 1.0. In the generative case, the new state generated should be `spt`. The `reward` function or the `r` in `generate_sr` can be set according to the cost of the terminal action.
+
+## Why are there two versions of `reward`?
+
+Both `reward(m, s, a)` and `reward(m, s, a, sp)` are included because of these two facts:
+
+1) Some non-native solvers use `reward(m, s, a)`
+2) Sometimes the reward depends on `s` and `sp`.
+
+It is reasonable to implement both as long as the (s, a) version is the expectation of the (s, a, s') version (see below).
+
+## How do I implement `reward(m, s, a)` if the reward depends on the next state?
+
+The solvers that require `reward(m, s, a)` only work on problems with finite state and action spaces. In this case, you can define `reward(m, s, a)` in terms of `reward(m, s, a, sp)` with the following code:
+
+```julia
+const rdict = Dict{Tuple{S,A}, Float64}()
+
+for s in states(m)
+  for a in actions(m)
+    r = 0.0
+    td = transition(m, s, a) # transition distribution for s, a
+    for sp in support(td)
+      r += pdf(td, sp)*reward(m, s, a, sp)
+    end
+    rdict[(s, a)] = r
+  end
+end
+
+POMDPs.reward(m, s, a) = rdict[(s, a)]
+```

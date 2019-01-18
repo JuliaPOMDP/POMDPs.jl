@@ -4,8 +4,8 @@ Base type for an object defining how simulations should be carried out.
 abstract type Simulator end
 
 """
-    simulate(simulator::Simulator, problem::POMDP{S,A,O}, policy::Policy, updater::Updater, initial_belief, initial_state::S)
-    simulate(simulator::Simulator, problem::MDP{S,A}, policy::Policy, initial_state::S)
+    simulate(sim::Simulator, m::POMDP, p::Policy, u::Updater=updater(p), b0=initialstate_distribution(m), s0=initialstate(m, rng))
+    simulate(sim::Simulator, m::MDP, p::Policy, s0=initialstate(m, rng))
 
 Run a simulation using the specified policy.
 
