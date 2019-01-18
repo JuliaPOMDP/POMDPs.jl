@@ -26,7 +26,7 @@ Note: since an explicit definition contains all of the information required for 
 An explicit definition will allow for use with the widest variety of tools and solvers, but a generative definition will generally be much easier to implement.
 
 In order to determine which interface to use to express a problem, 2 questions should be asked:
-1. Is it impossible to specify the probability distributions explicitly (or difficult compared to writing a state simulator)?
+1. Is it difficult or impossible to specify the probability distributions explicitly?
 2. What solvers will be used to solve this, and what are their requirements?
 
 If the answer to (1) is yes, then a generative definition should be used. More information about how to analyze question (2) can be found in the [Requirements](@ref requirements) section of the documentation.
