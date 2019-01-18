@@ -41,7 +41,7 @@ Pages = [ "def_solver.md", "specifying_requirements.md", "def_updater.md" ]
 ### Analyzing Results
 
 ```@contents
-Pages = [ "simulation.md", "policy_interaction.md" ]
+Pages = [ "simulation.md", "run_simulation.md", "policy_interaction.md" ]
 ```
 
 ### Reference

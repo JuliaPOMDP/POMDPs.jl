@@ -2,7 +2,7 @@ using Documenter, POMDPs
 
 makedocs(
     modules = [POMDPs],
-    format = :html,
+    format = Documenter.HTML(),
     sitename = "POMDPs.jl",
     pages = [
         ##############################################
@@ -32,6 +32,7 @@ makedocs(
 
         "Analyzing Results" => [
             "simulation.md",
+            "run_simulation.md",
             "policy_interaction.md"
            ],
 
