@@ -69,7 +69,7 @@ var documenterSearchIndex = {"docs": [
     "page": "POMDPs.jl",
     "title": "Analyzing Results",
     "category": "section",
-    "text": "Pages = [ \"simulation.md\", \"policy_interaction.md\" ]"
+    "text": "Pages = [ \"simulation.md\", \"run_simulation.md\", \"policy_interaction.md\" ]"
 },
 
 {
@@ -565,7 +565,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Simulation Standard",
     "title": "Inputs",
     "category": "section",
-    "text": "In general, POMDP simulations take up to 5 inputs (see the simulate function for documentation on arguments):pomdp::POMDP: pomdp model object (see POMDPs and MDPs)\npolicy::Policy: policy (see Solvers and Policies)\nup::Updater: belief updater (see Beliefs and Updaters)\nisd: initial state distribution\ns: initial stateThe last three of these inputs are optional. If they are not explicitly provided, they should be inferred using the following POMDPs.jl functions:up =updater(policy)\nisd =initialstate_distribution(pomdp)\ns =initialstate(pomdp, rng)In addition, a random number generator rng is assumed to be available."
+    "text": "In general, POMDP simulations take up to 5 inputs (see also the simulate docstring):pomdp::POMDP: pomdp model object (see POMDPs and MDPs)\npolicy::Policy: policy (see Solvers and Policies)\nup::Updater: belief updater (see Beliefs and Updaters)\nisd: initial state distribution\ns: initial stateThe last three of these inputs are optional. If they are not explicitly provided, they should be inferred using the following POMDPs.jl functions:up =updater(policy)\nisd =initialstate_distribution(pomdp)\ns =initialstate(pomdp, rng)In addition, a random number generator rng is assumed to be available."
 },
 
 {
@@ -589,7 +589,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Simulation Standard",
     "title": "Inputs",
     "category": "section",
-    "text": "In general, MDP simulations take up to 3 inputs (see the simulate function for documentation on arguments):mdp::MDP: mdp model object (see POMDPs and MDPs)\npolicy::Policy: policy (see Solvers and Policies)\ns: initial stateThe last of these inputs is optional. If the initial state is not explicitly provided, it should be generated usings =initialstate(mdp, rng)In addition, a random number generator rng is assumed to be available."
+    "text": "In general, MDP simulations take up to 3 inputs (see also the simulate docstring):mdp::MDP: mdp model object (see POMDPs and MDPs)\npolicy::Policy: policy (see Solvers and Policies)\ns: initial stateThe last of these inputs is optional. If the initial state is not explicitly provided, it should be generated usings =initialstate(mdp, rng)In addition, a random number generator rng is assumed to be available."
 },
 
 {
@@ -598,6 +598,22 @@ var documenterSearchIndex = {"docs": [
     "title": "Simulation Loop",
     "category": "section",
     "text": "The main simulation loop is shown below. Note again that the isterminal check prevents any actions from being taken and reward from being collected from a terminal state.r_total = 0.0\ndisc = 1.0\nwhile !isterminal(mdp, s)\n    a = action(policy, b)\n    s, r = generate_sr(mdp, s, a, rng)\n    r_total += d*r\n    d *= discount(mdp)\nendIn terms of the explicit interface, generate_sr above can be expressed as:function generate_sr(mdp, s, a, rng)\n    sp = rand(rng, transition(pomdp, s, a))\n    r = reward(pomdp, s, a, sp)\n    return sp, r\nend"
+},
+
+{
+    "location": "run_simulation/#",
+    "page": "Running Simulations",
+    "title": "Running Simulations",
+    "category": "page",
+    "text": ""
+},
+
+{
+    "location": "run_simulation/#Running-Simulations-1",
+    "page": "Running Simulations",
+    "title": "Running Simulations",
+    "category": "section",
+    "text": "Running a simulation consists of two steps, creating a simulator and calling the simulate function. For example, given a POMDP or MDP model m, and a policy p, one can use the Rollout Simulator from the POMDPSimulators package to find the accumulated discounted reward from a single simulated trajectory as follows:sim = RolloutSimulator()\nr = simulate(sim, m, p)More inputs, such as a belief updater, initial state, initial belief, etc. may be specified as arguments to simulate. See the docstring for simulate and the appropriate \"Input\" sections in the Simulation Standard page for more information.More examples can be found in the POMDPExamples package. A variety of simulators that return more information and interact in different ways can be found in the POMDPSimulators package."
 },
 
 {
@@ -630,14 +646,6 @@ var documenterSearchIndex = {"docs": [
     "title": "Frequently Asked Questions (FAQ)",
     "category": "section",
     "text": ""
-},
-
-{
-    "location": "faq/#Why-am-I-getting-a-\"No-implementation-for-...\"-error?-1",
-    "page": "Frequently Asked Questions (FAQ)",
-    "title": "Why am I getting a \"No implementation for ...\" error?",
-    "category": "section",
-    "text": "You will typically see this error when you haven\'t implemented a function that a solver is trying to call. For example, if you are using the QMDP solver, and have not implemented num_states for your POMDP, you will see the no implementation error. To fix the error, you need to create a num_states function that takes in your POMDP. To see the required functions for a given solver you can run:using QMDP\nQMDP.required_methods()"
 },
 
 {
@@ -678,6 +686,22 @@ var documenterSearchIndex = {"docs": [
     "title": "How can I implement terminal actions?",
     "category": "section",
     "text": "Terminal actions are actions that cause the MDP to terminate without generating a new state. POMDPs.jl handles terminal conditions via the isterminal function on states, and does not directly support terminal actions. If your MDP has a terminal action, you need to implement the model functions accordingly to generate a terminal state. In both generative and explicit cases, you will need some dummy state, say spt, that can be recognized as terminal by the isterminal function. One way to do this is to give spt a state value that is out of bounds (e.g. a vector of NaNs or -1s) and then check for that in isterminal, so that this does not clash with any conventional termination conditions on the state.If a terminal action is taken, regardless of current state, the transition function should return a distribution with only one next state, spt, with probability 1.0. In the generative case, the new state generated should be spt. The reward function or the r in generate_sr can be set according to the cost of the terminal action."
+},
+
+{
+    "location": "faq/#Why-are-there-two-versions-of-reward?-1",
+    "page": "Frequently Asked Questions (FAQ)",
+    "title": "Why are there two versions of reward?",
+    "category": "section",
+    "text": "Both reward(m, s, a) and reward(m, s, a, sp) are included because of these two facts:Some non-native solvers use reward(m, s, a)\nSometimes the reward depends on s and sp.It is reasonable to implement both as long as the (s, a) version is the expectation of the (s, a, s\') version (see below)."
+},
+
+{
+    "location": "faq/#How-do-I-implement-reward(m,-s,-a)-if-the-reward-depends-on-the-next-state?-1",
+    "page": "Frequently Asked Questions (FAQ)",
+    "title": "How do I implement reward(m, s, a) if the reward depends on the next state?",
+    "category": "section",
+    "text": "The solvers that require reward(m, s, a) only work on problems with finite state and action spaces. In this case, you can define reward(m, s, a) in terms of reward(m, s, a, sp) with the following code:const rdict = Dict{Tuple{S,A}, Float64}()\n\nfor s in states(m)\n  for a in actions(m)\n    r = 0.0\n    td = transition(m, s, a) # transition distribution for s, a\n    for sp in support(td)\n      r += pdf(td, sp)*reward(m, s, a, sp)\n    end\n    rdict[(s, a)] = r\n  end\nend\n\nPOMDPs.reward(m, s, a) = rdict[(s, a)]"
 },
 
 {
@@ -1133,7 +1157,7 @@ var documenterSearchIndex = {"docs": [
     "page": "API Documentation",
     "title": "POMDPs.simulate",
     "category": "function",
-    "text": "simulate(simulator::Simulator, problem::POMDP{S,A,O}, policy::Policy, updater::Updater, initial_belief, initial_state::S)\nsimulate(simulator::Simulator, problem::MDP{S,A}, policy::Policy, initial_state::S)\n\nRun a simulation using the specified policy.\n\nThe return type is flexible and depends on the simulator. Simulations should adhere to the Simulation Standard.\n\n\n\n\n\n"
+    "text": "simulate(sim::Simulator, m::POMDP, p::Policy, u::Updater=updater(p), b0=initialstate_distribution(m), s0=initialstate(m, rng))\nsimulate(sim::Simulator, m::MDP, p::Policy, s0=initialstate(m, rng))\n\nRun a simulation using the specified policy.\n\nThe return type is flexible and depends on the simulator. Simulations should adhere to the Simulation Standard.\n\n\n\n\n\n"
 },
 
 {
