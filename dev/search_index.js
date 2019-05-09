@@ -653,7 +653,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Frequently Asked Questions (FAQ)",
     "title": "How do I save my policies?",
     "category": "section",
-    "text": "We recommend using JLD to save the whole policy object. This is a simple and fairly efficient way to save Julia objects. JLD uses the HDF5 format underneath. To save a computed policy, run:using JLD\nsave(\"my_policy.jld\", \"policy\", policy)"
+    "text": "We recommend using JLD2 to save the whole policy object. This is a simple and fairly efficient way to save Julia objects. JLD2 uses the HDF5 format underneath. To save a computed policy, run:using JLD2\nsave(\"my_policy.jld2\", \"policy\", policy)"
 },
 
 {
@@ -661,7 +661,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Frequently Asked Questions (FAQ)",
     "title": "Why isn\'t the solver working?",
     "category": "section",
-    "text": "There could be a number of things that are going wrong. Remeber, POMDPs can be failry hard to work with, but don\'t panic.  If you have a discrete POMDP or MDP and you\'re using a solver that requires the explicit transition probabilities (you\'ve implemented a pdf function), the first thing to try is make sure that your probability masses sum up to unity.  We\'ve provide some tools in POMDPToolbox that can check this for you. If you have a POMDP called pomdp, you can run the checks by doing the following:using POMDPTesting\nprobability_check(pomdp) # checks that both observation and transition functions give probs that sum to unity\nobs_prob_consistency_check(pomdp) # checks the observation probabilities\ntrans_prob_consistency_check(pomdp) # check the transition probabilitiesIf these throw an error, you may need to fix your transition or observation functions. "
+    "text": "There could be a number of things that are going wrong. Remeber, POMDPs can be fairly hard to work with, but don\'t panic.  If you have a discrete POMDP or MDP and you\'re using a solver that requires the explicit transition probabilities (you\'ve implemented a pdf function), the first thing to try is make sure that your probability masses sum up to unity.  We\'ve provide some tools in POMDPToolbox that can check this for you. If you have a POMDP called pomdp, you can run the checks by doing the following:using POMDPTesting\nprobability_check(pomdp) # checks that both observation and transition functions give probs that sum to unity\nobs_prob_consistency_check(pomdp) # checks the observation probabilities\ntrans_prob_consistency_check(pomdp) # check the transition probabilitiesIf these throw an error, you may need to fix your transition or observation functions. "
 },
 
 {
