@@ -653,7 +653,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Frequently Asked Questions (FAQ)",
     "title": "How do I save my policies?",
     "category": "section",
-    "text": "We recommend using JLD2 to save the whole policy object. This is a simple and fairly efficient way to save Julia objects. JLD2 uses the HDF5 format underneath. To save a computed policy, run:using JLD2\nsave(\"my_policy.jld2\", \"policy\", policy)"
+    "text": "We recommend using JLD2 to save the whole policy object:using JLD2\nsave(\"my_policy.jld2\", \"policy\", policy)"
 },
 
 {
