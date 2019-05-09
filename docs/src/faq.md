@@ -2,8 +2,7 @@
 
 ## How do I save my policies?
 
-We recommend using [JLD2](https://github.com/JuliaIO/JLD2.jl) to save the whole policy object. This is a simple and
-fairly efficient way to save Julia objects. JLD2 uses the HDF5 format underneath. To save a computed policy, run:
+We recommend using [JLD2](https://github.com/JuliaIO/JLD2.jl) to save the whole policy object:
 
 ```julia
 using JLD2
