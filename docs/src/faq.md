@@ -2,16 +2,16 @@
 
 ## How do I save my policies?
 
-We recommend using [JLD](https://github.com/JuliaIO/JLD.jl) to save the whole policy object. This is a simple and
-fairly efficient way to save Julia objects. JLD uses the HDF5 format underneath. To save a computed policy, run:
+We recommend using [JLD2](https://github.com/JuliaIO/JLD2.jl) to save the whole policy object. This is a simple and
+fairly efficient way to save Julia objects. JLD2 uses the HDF5 format underneath. To save a computed policy, run:
 
 ```julia
-using JLD
-save("my_policy.jld", "policy", policy)
+using JLD2
+save("my_policy.jld2", "policy", policy)
 ```
 ## Why isn't the solver working?
 
-There could be a number of things that are going wrong. Remeber, POMDPs can be failry hard to work with, but don't
+There could be a number of things that are going wrong. Remeber, POMDPs can be fairly hard to work with, but don't
 panic. 
 If you have a discrete POMDP or MDP and you're using a solver that requires the explicit transition probabilities
 (you've implemented a `pdf` function), the first thing to try is make sure that your probability masses sum up to unity. 
