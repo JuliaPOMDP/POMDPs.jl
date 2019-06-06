@@ -198,7 +198,7 @@ function show_requirements(r::AbstractRequirementSet)
         print("Throwing the first exception (from processing ")
         printstyled(handle_method(first_exception.requirer), color=:blue)
         println(" requirements):\n")
-        rethrow(first_exception.exception)
+        throw(first_exception.exception)
     end
 
     return allthere
