@@ -268,7 +268,7 @@ function handle_reqs!(node::Expr, reqs_name::Symbol)
         node.head = :call
         expanded = macroexpand(POMDPs, macro_node)
         if isa(expanded, Expr) && expanded.head == :error
-            rethrow(expanded.args[1])
+            throw(expanded.args[1])
         end
         node.args = [:push!, reqs_name, esc(expanded)]
         return true
@@ -277,7 +277,7 @@ function handle_reqs!(node::Expr, reqs_name::Symbol)
         node.head = :call
         expanded = macroexpand(POMDPs, macro_node)
         if isa(expanded, Expr) && expanded.head == :error
-            rethrow(expanded.args[1])
+            throw(expanded.args[1])
         end
         node.args = [:push_dep!, reqs_name, esc(macroexpand(POMDPs, expanded))]
         return true
