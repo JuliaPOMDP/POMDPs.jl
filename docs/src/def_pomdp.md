@@ -1,7 +1,11 @@
-# [Defining POMDPs](@id defining_pomdps)
+# [Defining POMDPs and MDPs](@id defining_pomdps)
 
 The expressive nature of POMDPs.jl gives problem writers the flexibility to write their problem in many forms.
 Custom POMDP problems are defined by implementing the functions specified by the POMDPs API.
+
+!!! note
+
+    The main generative and explicit interfaces use an object-oriented programming paradigm and require familiarity with Julia. If you are defining a small to medium sized discrete problem, [QuickPOMDPs](https://github.com/JuliaPOMDP/QuickPOMDPs.jl) may be easier to use, and requires less Julia knowledge and no object-oriented programming.
 
 ## Types of problem definitions
 

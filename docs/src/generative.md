@@ -1,4 +1,4 @@
-# [Generative POMDP Interface](@id generative_doc)
+# [Generative (PO)MDP Interface](@id generative_doc)
 
 ## Description
 
@@ -15,7 +15,7 @@ generate_sor(pomdp, s, a, rng) -> (s, o, r)
 initialstate(pomdp, rng) -> s
 ```
 
-Each `generate_` function is a single step simulator that returns a new state, observation, reward, or a combination given the current state and action (and `sp` in some cases). [`rng` is a random number generator such as `Base.GLOBAL_RNG` or another `MersenneTwister` that is passed as an argument and should be used to generate all random numbers within the function to ensure that all simulations are exactly repeatable.](http://docs.julialang.org/en/release-0.5/stdlib/numbers/#random-numbers)
+Each `generate_` function is a single step simulator that returns a new state, observation, reward, or a combination given the current state and action (and `sp` in some cases). [`rng` is a random number generator such as `Base.GLOBAL_RNG` or another `MersenneTwister` that is passed as an argument and should be used to generate all random numbers within the function to ensure that all simulations are exactly repeatable.](https://docs.julialang.org/en/v1/stdlib/Random/#Random-Numbers-1)
 
 The functions that do not deal with observations may be defined for `MDP`s as well as `POMDP`s.
 
