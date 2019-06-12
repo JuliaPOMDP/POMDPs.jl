@@ -15,7 +15,7 @@ makedocs(
             "concepts.md"
            ],
 
-        "Defining POMDP Models" => [
+        "Defining (PO)MDP Models" => [
             "def_pomdp.md",
             "explicit.md",
             "generative.md",

@@ -1,4 +1,4 @@
-# [Explicit POMDP Interface](@id explicit_doc)
+# [Explicit (PO)MDP Interface](@id explicit_doc)
 
 When using the explicit interface, the transition and observation probabilities must be explicitly defined. This section gives examples of two ways to define a discrete POMDP that is widely used in the literature.
 Note that there is no requirement that a problem defined using the explicit interface be discrete; it is equally easy to define a continuous problem using the explicit interface.

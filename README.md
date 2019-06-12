@@ -8,7 +8,7 @@
 [![Docs](https://img.shields.io/badge/docs-latest-blue.svg)](https://JuliaPOMDP.github.io/POMDPs.jl/latest)
 [![Gitter](https://badges.gitter.im/JuliaPOMDP/Lobby.svg)](https://gitter.im/JuliaPOMDP/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
-This package provides a core interface for working with [Markov decision processes (MDPs)](https://en.wikipedia.org/wiki/Markov_decision_process) and [partially observable Markov decision processes (POMDPs)](https://en.wikipedia.org/wiki/Partially_observable_Markov_decision_process). For examples, please see [POMDPExamples](https://github.com/JuliaPOMDP/POMDPExamples.jl) and the [Gallery](https://github.com/JuliaPOMDP/POMDPGallery.jl).
+This package provides a core interface for working with [Markov decision processes (MDPs)](https://en.wikipedia.org/wiki/Markov_decision_process) and [partially observable Markov decision processes (POMDPs)](https://en.wikipedia.org/wiki/Partially_observable_Markov_decision_process). For examples, please see [POMDPExamples](https://github.com/JuliaPOMDP/POMDPExamples.jl), [QuickPOMDPs](https://github.com/JuliaPOMDP/QuickPOMDPs.jl), and the [Gallery](https://github.com/JuliaPOMDP/POMDPGallery.jl).
 
 Our goal is to provide a common programming vocabulary for:
 
@@ -16,11 +16,11 @@ Our goal is to provide a common programming vocabulary for:
 2. Writing solver software.
 3. Running simulations efficiently.
 
-There are [nested interfaces for expressing and interacting with (PO)MDPs](http://juliapomdp.github.io/POMDPs.jl/latest/def_pomdp): When the *[explicit](http://juliapomdp.github.io/POMDPs.jl/latest/explicit)* interface is used, the transition and observation probabilities are explicitly defined using api [functions](http://juliapomdp.github.io/POMDPs.jl/latest/explicit/#functional-form-explicit-pomdp) or [tables](http://juliapomdp.github.io/POMDPs.jl/latest/explicit/#tabular-form-explicit-pomdp); when the *[generative](http://juliapomdp.github.io/POMDPs.jl/latest/generative)* interface is used, only a single step simulator (e.g. (s', o, r) = G(s,a)) needs to be defined.
+There are [nested interfaces for expressing and interacting with (PO)MDPs](http://juliapomdp.github.io/POMDPs.jl/latest/def_pomdp): When the *[explicit](http://juliapomdp.github.io/POMDPs.jl/latest/explicit)* interface is used, the transition and observation probabilities are explicitly defined using api [functions](http://juliapomdp.github.io/POMDPs.jl/latest/explicit/#functional-form-explicit-pomdp); when the *[generative](http://juliapomdp.github.io/POMDPs.jl/latest/generative)* interface is used, only a single step simulator (e.g. (s', o, r) = G(s,a)) needs to be defined. Problems may also be defined with probability [tables](http://juliapomdp.github.io/POMDPs.jl/latest/explicit/#tabular-form-explicit-pomdp), or with the simplified [QuickPOMDPs interfaces](https://github.com/JuliaPOMDP/QuickPOMDPs.jl).
 
 For help, please post to the [Google group](https://groups.google.com/forum/#!forum/pomdps-users), or on [gitter](https://gitter.im/JuliaPOMDP). Check [releases](https://github.com/JuliaPOMDP/POMDPs.jl/releases) for information on changes.
 
-POMDPs.jl and all packages in the JuliaPOMDP project are fully supported on Linux and OS X. Windows support is available for all native Julia packages*. 
+POMDPs.jl and all packages in the JuliaPOMDP project are fully supported on Linux and OS X. Windows support is available for all native Julia packages\*. 
 
 ## Installation
 To install POMDPs.jl, run the following from the Julia REPL: 
@@ -50,28 +50,57 @@ Pkg.add("SARSOP")
 
 ## Quick Start
 
-To run a simple simulation of the classic [Tiger POMDP](https://www.cs.rutgers.edu/~mlittman/papers/aij98-pomdp.pdf) using a policy created by the QMDP solver.
+To run a simple simulation of the classic [Tiger POMDP](https://www.cs.rutgers.edu/~mlittman/papers/aij98-pomdp.pdf) using a policy created by the QMDP solver, you can use the following code (Note that this uses the simplified [QuickPOMDPs interface](https://github.com/JuliaPOMDP/QuickPOMDPs.jl); the [main interface](https://juliapomdp.github.io/POMDPs.jl/latest/def_pomdp/) has much more expressive power):
 
 ```julia
-using POMDPs, POMDPModels, POMDPSimulators, QMDP
-pomdp = TigerPOMDP()
+using POMDPs, QuickPOMDPs, POMDPSimulators, QMDP
 
-# initialize a solver and compute a policy
-solver = QMDPSolver() # from QMDP
-policy = solve(solver, pomdp)
-belief_updater = updater(policy) # the default QMDP belief updater (discrete Bayesian filter)
+S = [:left, :right]
+A = [:left, :right, :listen]
+O = [:left, :right]
+γ = 0.95
 
-# run a short simulation with the QMDP policy
-history = simulate(HistoryRecorder(max_steps=10), pomdp, policy, belief_updater)
-
-# look at what happened
-for (s, b, a, o) in eachstep(history, "sbao")
-    println("State was $s,")
-    println("belief was $b,")
-    println("action $a was taken,")
-    println("and observation $o was received.\n")
+function T(s, a, sp)
+    if a == :listen
+        return s == sp
+    else # a door is opened
+        return 0.5 #reset
+    end
 end
-println("Discounted reward was $(discounted_reward(history)).")
+
+function Z(a, sp, o)
+    if a == :listen
+        if o == sp
+            return 0.85
+        else
+            return 0.15
+        end
+    else
+        return 0.5
+    end
+end
+
+function R(s, a)
+    if a == :listen  
+        return -1.0
+    elseif s == a # the tiger was found
+        return -100.0
+    else # the tiger was escaped
+        return 10.0
+    end
+end
+
+m = DiscreteExplicitPOMDP(S,A,O,T,Z,R,γ)
+
+solver = QMDPSolver()
+policy = solve(solver, m)
+
+rsum = 0.0
+for (s,b,a,o,r) in stepthrough(m, policy, "s,b,a,o,r", max_steps=10)
+    println("s: $s, b: $([pdf(b,s) for s in S]), a: $a, o: $o")
+    global rsum += r
+end
+println("Undiscounted reward was $rsum.")
 ```
 
 For more examples with visualization see [POMDPGallery.jl](https://github.com/JuliaPOMDP/POMDPGallery.jl).
