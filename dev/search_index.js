@@ -162,23 +162,23 @@ var documenterSearchIndex = {"docs": [
 
 {
     "location": "def_pomdp/#",
-    "page": "Defining POMDPs",
-    "title": "Defining POMDPs",
+    "page": "Defining POMDPs and MDPs",
+    "title": "Defining POMDPs and MDPs",
     "category": "page",
     "text": ""
 },
 
 {
     "location": "def_pomdp/#defining_pomdps-1",
-    "page": "Defining POMDPs",
-    "title": "Defining POMDPs",
+    "page": "Defining POMDPs and MDPs",
+    "title": "Defining POMDPs and MDPs",
     "category": "section",
-    "text": "The expressive nature of POMDPs.jl gives problem writers the flexibility to write their problem in many forms. Custom POMDP problems are defined by implementing the functions specified by the POMDPs API."
+    "text": "The expressive nature of POMDPs.jl gives problem writers the flexibility to write their problem in many forms. Custom POMDP problems are defined by implementing the functions specified by the POMDPs API.note: Note\nThe main generative and explicit interfaces use an object-oriented programming paradigm and require familiarity with Julia. If you are defining a small to medium sized discrete problem, QuickPOMDPs may be easier to use, and requires less Julia knowledge and no object-oriented programming."
 },
 
 {
     "location": "def_pomdp/#Types-of-problem-definitions-1",
-    "page": "Defining POMDPs",
+    "page": "Defining POMDPs and MDPs",
     "title": "Types of problem definitions",
     "category": "section",
     "text": "There are two ways of specifying the state dynamics and observation behavior of a POMDP. The problem definition may include either an explicit definition of the probability distributions, or an implicit definition given only by a generative model.An explicit definition contains the transition probabilities for each state and action, T(s  s a), and the observation probabilities for each state-action-state transition, O(o  s a s), (in continuous domains these are probability density functions). A generative definition contains only a single step simulator, s o r = G(s a) (or s r = G(sa) for an MDP).Accordingly, the POMDPs.jl model API is grouped into three sections:The explicit interface containing functions that return distributions\nThe generative interface containing functions that return states and observations\nCommon functions used in both."
@@ -186,7 +186,7 @@ var documenterSearchIndex = {"docs": [
 
 {
     "location": "def_pomdp/#What-do-I-need-to-implement?-1",
-    "page": "Defining POMDPs",
+    "page": "Defining POMDPs and MDPs",
     "title": "What do I need to implement?",
     "category": "section",
     "text": "Generally, a problem will be defined by implementing eitherAn explicit definition consisting of the three functions in (1) and some functions from (3), or\nA generative definition consisting of some functions from (2) and some functions from (3)(though in some cases (e.g. particle filtering), implementations from all three sections are useful).Note: since an explicit definition contains all of the information required for a generative definition, POMDPs.jl will automatically generate the generative functions at runtime if an explicit model is available.An explicit definition will allow for use with the widest variety of tools and solvers, but a generative definition will generally be much easier to implement.In order to determine which interface to use to express a problem, 2 questions should be asked:Is it difficult or impossible to specify the probability distributions explicitly?\nWhat solvers will be used to solve this, and what are their requirements?If the answer to (1) is yes, then a generative definition should be used. More information about how to analyze question (2) can be found in the Requirements section of the documentation.Specific documentation for the two interfaces can be found here:Explicit\nGenerative"
@@ -194,23 +194,23 @@ var documenterSearchIndex = {"docs": [
 
 {
     "location": "explicit/#",
-    "page": "Explicit POMDP Interface",
-    "title": "Explicit POMDP Interface",
+    "page": "Explicit (PO)MDP Interface",
+    "title": "Explicit (PO)MDP Interface",
     "category": "page",
     "text": ""
 },
 
 {
     "location": "explicit/#explicit_doc-1",
-    "page": "Explicit POMDP Interface",
-    "title": "Explicit POMDP Interface",
+    "page": "Explicit (PO)MDP Interface",
+    "title": "Explicit (PO)MDP Interface",
     "category": "section",
     "text": "When using the explicit interface, the transition and observation probabilities must be explicitly defined. This section gives examples of two ways to define a discrete POMDP that is widely used in the literature. Note that there is no requirement that a problem defined using the explicit interface be discrete; it is equally easy to define a continuous problem using the explicit interface."
 },
 
 {
     "location": "explicit/#Functional-Form-Explicit-POMDP-1",
-    "page": "Explicit POMDP Interface",
+    "page": "Explicit (PO)MDP Interface",
     "title": "Functional Form Explicit POMDP",
     "category": "section",
     "text": "The functional form of the explicit interface contains a small collection of functions to model transition and observation distributions. The explicit interface functions are the following (note that this is not actual julia code):transition(pomdp, s, a) \nobservation(pomdp, a, sp)\ninitialstate_distribution(pomdp)\nisterminal(pomdp)The functions transition, observation, and initialstate_distribution return a distribution over states or observations. This makes it possible to sample a state from this distribution as well as computing the pdf of a state given this distribution. transition represents the probability distribution of the next state given a current state s and action a. observation represents the probability distribution of an observation given the true underlying state sp and action a. State, action and observation spaces are respectively represented by the output of the following functions:states(pomdp)\nactions(pomdp)\nobservations(pomdp)For MDPs, the observation related functions are not needed. "
@@ -218,7 +218,7 @@ var documenterSearchIndex = {"docs": [
 
 {
     "location": "explicit/#Discrete-problems-1",
-    "page": "Explicit POMDP Interface",
+    "page": "Explicit (PO)MDP Interface",
     "title": "Discrete problems",
     "category": "section",
     "text": "In discrete problems, the states, actions, and observations functions can be used to iterate over the spaces (for discrete spaces). They can output a collection (such as a vector of states), or alternatively an object that one can iterate over if storing the state space in a collection is not practical. Additional functions allow the problem writer to specify the index of a given element (state, action or observation) in its corresponding space. The functions starting with n_ are used to specify how many elements are in a discrete space.stateindex(pomdp, s)\nactionindex(pomdp, a)\nobsindex(pomdp, o)\nn_states(pomdp)\nn_actions(pomdp)\nn_observations(pomdp)"
@@ -226,7 +226,7 @@ var documenterSearchIndex = {"docs": [
 
 {
     "location": "explicit/#Example-1",
-    "page": "Explicit POMDP Interface",
+    "page": "Explicit (PO)MDP Interface",
     "title": "Example",
     "category": "section",
     "text": "An example of defining a problem using the explicit interface can be found at:  https://github.com/JuliaPOMDP/POMDPExamples.jl/blob/master/notebooks/Defining-a-POMDP-with-the-Explicit-Interface.ipynb"
@@ -234,7 +234,7 @@ var documenterSearchIndex = {"docs": [
 
 {
     "location": "explicit/#Tabular-Form-Explicit-POMDP-1",
-    "page": "Explicit POMDP Interface",
+    "page": "Explicit (PO)MDP Interface",
     "title": "Tabular Form Explicit POMDP",
     "category": "section",
     "text": "The TabularPOMDP problem representation provided by POMDPModels.jl allows you to specify discrete POMDP problems in tabular form. It requires specifying the transition probabilites, observation probabilities, and rewards in matrix form and implements automatically all required functionality. The states, observations and actions are represented by integers.The transition matrix is 3 dimensional of size mathcalStimes mathcalA times mathcalS, then T[sj, a, si] corresponds to the probability of ending in sj while taking action a in si. The observation matrix is also 3 dimensional of size mathcalO times mathcalA times mathcalS, O[o, a, sp] represents the probability of observing o in in state sp and action a. The reward matrix is 2 dimensional of size mathcalStimes mathcalA, where R[s, a] is the reward obtained when taking action a in state s. The analogous TabularMDP allows to model discrete MDP in tabular form.It is often easiest to define smaller problems in tabular form. However, for larger problems it can be tedious and the functional form may be preferred."
@@ -242,7 +242,7 @@ var documenterSearchIndex = {"docs": [
 
 {
     "location": "explicit/#Example-2",
-    "page": "Explicit POMDP Interface",
+    "page": "Explicit (PO)MDP Interface",
     "title": "Example",
     "category": "section",
     "text": "An example of defining a problem using the tabular representation can be found at:  https://github.com/JuliaPOMDP/POMDPExamples.jl/blob/master/notebooks/Defining-a-tabular-POMDP.ipynb"
@@ -250,23 +250,23 @@ var documenterSearchIndex = {"docs": [
 
 {
     "location": "generative/#",
-    "page": "Generative POMDP Interface",
-    "title": "Generative POMDP Interface",
+    "page": "Generative (PO)MDP Interface",
+    "title": "Generative (PO)MDP Interface",
     "category": "page",
     "text": ""
 },
 
 {
     "location": "generative/#generative_doc-1",
-    "page": "Generative POMDP Interface",
-    "title": "Generative POMDP Interface",
+    "page": "Generative (PO)MDP Interface",
+    "title": "Generative (PO)MDP Interface",
     "category": "section",
     "text": ""
 },
 
 {
     "location": "generative/#Description-1",
-    "page": "Generative POMDP Interface",
+    "page": "Generative (PO)MDP Interface",
     "title": "Description",
     "category": "section",
     "text": "The generative interface contains a small collection of functions that makes implementing and solving problems with generative models easier. These functions return states and observations instead of distributions as in the Explicit interface.The generative interface functions are the following (note that this is not actual julia code):generate_s(pomdp, s, a, rng) -> sp\ngenerate_o(pomdp, s, a, sp, rng) -> o\ngenerate_sr(pomdp, s, a, rng) -> (s, r)\ngenerate_so(pomdp, s, a, rng) -> (s, o)\ngenerate_or(pomdp, s, a, sp, rng) -> (o, r)\ngenerate_sor(pomdp, s, a, rng) -> (s, o, r)\ninitialstate(pomdp, rng) -> sEach generate_ function is a single step simulator that returns a new state, observation, reward, or a combination given the current state and action (and sp in some cases). rng is a random number generator such as Base.GLOBAL_RNG or another MersenneTwister that is passed as an argument and should be used to generate all random numbers within the function to ensure that all simulations are exactly repeatable.The functions that do not deal with observations may be defined for MDPs as well as POMDPs.A problem writer will generally only have to implement one or two of these functions for all solvers to work (see below)."
@@ -274,7 +274,7 @@ var documenterSearchIndex = {"docs": [
 
 {
     "location": "generative/#Example-1",
-    "page": "Generative POMDP Interface",
+    "page": "Generative (PO)MDP Interface",
     "title": "Example",
     "category": "section",
     "text": "An example of defining a problem with the generative interface can be found at https://github.com/JuliaPOMDP/POMDPExamples.jl/blob/master/notebooks/Defining-a-POMDP-with-the-Generative-Interface.ipynb"
@@ -282,7 +282,7 @@ var documenterSearchIndex = {"docs": [
 
 {
     "location": "generative/#Which-function(s)-should-I-implement-for-my-problem-/-use-in-my-solver?-1",
-    "page": "Generative POMDP Interface",
+    "page": "Generative (PO)MDP Interface",
     "title": "Which function(s) should I implement for my problem / use in my solver?",
     "category": "section",
     "text": ""
@@ -290,7 +290,7 @@ var documenterSearchIndex = {"docs": [
 
 {
     "location": "generative/#Problem-Writers-1",
-    "page": "Generative POMDP Interface",
+    "page": "Generative (PO)MDP Interface",
     "title": "Problem Writers",
     "category": "section",
     "text": "Generally, a problem implementer need only implement the simplest one or two of these functions, and the rest are automatically synthesized at runtime.If there is a convenient way for the problem to generate a combination of states, observations, and rewards simultaneously (for example, if there is a simulator written in another programming language that generates these from the same function, or if it is computationally convenient to generate sp and o simultaneously), then the problem writer may wish to directly implement one of the combination generate_ functions, e.g. generate_sor() directly.Use the following logic to determine which functions to implement:If you are implementing the problem from scratch in Julia, implement generate_s and generate_o.\nOtherwise, if your external simulator returns x, where x is one of sr, so, or, or sor, implement generate_x. (you may also have to implement generate_s separately for use in particle filters).Note: if an explicit definition is already implemented, you do not need to implement any functions from the generative interface - POMDPs.jl will automatically generate implementations of them for you at runtime (see generative_impl.jl)."
@@ -298,7 +298,7 @@ var documenterSearchIndex = {"docs": [
 
 {
     "location": "generative/#Solver-and-Simulator-Writers-1",
-    "page": "Generative POMDP Interface",
+    "page": "Generative (PO)MDP Interface",
     "title": "Solver and Simulator Writers",
     "category": "section",
     "text": "Solver writers should use the single function that generates everything that they need and nothing they don\'t. For example, if the solver needs access to the state, observation, and reward at every timestep, they should use generate_sor() rather than generate_s() and generate_or(), and if the solver needs access to the state and reward, they should use generate_sr() rather than generate_sor(). This will ensure the widest interoperability between solvers and problems.In other words, if you need access to x where x is s, o, sr, so, or, or sor at a certain point in your code, use generate_x.[1] Decision Making Under Uncertainty: Theory and Application by Mykel J. Kochenderfer, MIT Press, 2015"
