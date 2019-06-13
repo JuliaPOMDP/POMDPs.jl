@@ -19,7 +19,7 @@ There are [nested interfaces for expressing and interacting with (PO)MDPs](http:
 
 **Python** can be used to define and solve MDPs and POMDPs via the QuickPOMDPs or tabular interfaces and [pyjulia](https://github.com/JuliaPy/pyjulia) \[Example: [tiger.py](https://github.com/JuliaPOMDP/QuickPOMDPs.jl/blob/master/examples/tiger.py)\]
 
-For help, please post to the [Google group](https://groups.google.com/forum/#!forum/pomdps-users), or on [gitter](https://gitter.im/JuliaPOMDP). Check [releases](https://github.com/JuliaPOMDP/POMDPs.jl/releases) for information on changes. POMDPs.jl and all packages in the JuliaPOMDP project are fully supported on Linux and OS X. Windows support is available for all native Julia packages\*.
+For help, please post to the [Google group](https://groups.google.com/forum/#!forum/pomdps-users), or on [gitter](https://gitter.im/JuliaPOMDP). Check [releases](https://github.com/JuliaPOMDP/POMDPs.jl/releases) for information on changes. POMDPs.jl and all packages in the JuliaPOMDP project are fully supported on Linux and OS X. Windows is supported for all native solvers\*, and most non-native solvers should work, but may require additional configuration.
 
 ## Installation
 To install POMDPs.jl, run the following from the Julia REPL: 
