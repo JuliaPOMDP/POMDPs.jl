@@ -4,7 +4,6 @@
 |-----------------|---------------------|
 | [![Build Status](https://travis-ci.org/JuliaPOMDP/POMDPs.jl.svg?branch=master)](https://travis-ci.org/JuliaPOMDP/POMDPs.jl) | [![Build Status](https://travis-ci.org/JuliaPOMDP/POMDPs.jl.svg?branch=master)](https://travis-ci.org/JuliaPOMDP/POMDPs.jl)|
 
-
 [![Docs](https://img.shields.io/badge/docs-latest-blue.svg)](https://JuliaPOMDP.github.io/POMDPs.jl/latest)
 [![Gitter](https://badges.gitter.im/JuliaPOMDP/Lobby.svg)](https://gitter.im/JuliaPOMDP/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
@@ -18,9 +17,9 @@ Our goal is to provide a common programming vocabulary for:
 
 There are [nested interfaces for expressing and interacting with (PO)MDPs](http://juliapomdp.github.io/POMDPs.jl/latest/def_pomdp): When the *[explicit](http://juliapomdp.github.io/POMDPs.jl/latest/explicit)* interface is used, the transition and observation probabilities are explicitly defined using api [functions](http://juliapomdp.github.io/POMDPs.jl/latest/explicit/#functional-form-explicit-pomdp); when the *[generative](http://juliapomdp.github.io/POMDPs.jl/latest/generative)* interface is used, only a single step simulator (e.g. (s', o, r) = G(s,a)) needs to be defined. Problems may also be defined with probability [tables](http://juliapomdp.github.io/POMDPs.jl/latest/explicit/#tabular-form-explicit-pomdp), or with the simplified [QuickPOMDPs interfaces](https://github.com/JuliaPOMDP/QuickPOMDPs.jl).
 
-For help, please post to the [Google group](https://groups.google.com/forum/#!forum/pomdps-users), or on [gitter](https://gitter.im/JuliaPOMDP). Check [releases](https://github.com/JuliaPOMDP/POMDPs.jl/releases) for information on changes.
+**Python** can be used to define and solve MDPs and POMDPs via the QuickPOMDPs or tabular interfaces and [pyjulia](https://github.com/JuliaPy/pyjulia) \[Example: [tiger.py](https://github.com/JuliaPOMDP/QuickPOMDPs.jl/blob/master/examples/tiger.py)\]
 
-POMDPs.jl and all packages in the JuliaPOMDP project are fully supported on Linux and OS X. Windows support is available for all native Julia packages\*. 
+For help, please post to the [Google group](https://groups.google.com/forum/#!forum/pomdps-users), or on [gitter](https://gitter.im/JuliaPOMDP). Check [releases](https://github.com/JuliaPOMDP/POMDPs.jl/releases) for information on changes. POMDPs.jl and all packages in the JuliaPOMDP project are fully supported on Linux and OS X. Windows support is available for all native Julia packages\*.
 
 ## Installation
 To install POMDPs.jl, run the following from the Julia REPL: 
