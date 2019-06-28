@@ -1,7 +1,8 @@
 # Default implementations of generative model functions
 
-# This file is long, messy and fragile. One day a more robust paradigm should be used.
+#=
 
+# This file is long, messy and fragile. One day a more robust paradigm should be used.
 function implemented(f::typeof(generate_s), TT::Type)
     if !hasmethod(f, TT)
         return false
@@ -293,3 +294,4 @@ function failed_synth_warning(gen::Tuple, reqs::Vector, greqs::Vector=[])
           $(String(take!(io)))
           """)
 end
+=#
