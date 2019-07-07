@@ -925,7 +925,7 @@ var documenterSearchIndex = {"docs": [
     "page": "API Documentation",
     "title": "POMDPs.isterminal",
     "category": "function",
-    "text": "isterminal(problem::POMDP, state)\nisterminal(problem::MDP, state)\n\nCheck if state s is terminal\n\n\n\n\n\n"
+    "text": "isterminal(m::Union{MDP,POMDP}, s)\n\nCheck if state s is terminal.\n\nIf a state is terminal, no actions will be taken in it and no additional rewards will be accumulated. Thus, the value at such a state is, by definition, zero.\n\n\n\n\n\n"
 },
 
 {
