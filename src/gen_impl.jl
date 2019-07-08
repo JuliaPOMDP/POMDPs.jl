@@ -1,12 +1,13 @@
-@generated function gen(v::Val{r::Symbol}, m, s, a, rng)
+function gen(v::Val{r::Symbol}, m, s, a, rng)
     if @implemented gen(m, s, a, rng)
         x = gen(m, s, a, rng)
         if haskey(x, r)
             return x.[r]
         elseif @implemented genfallback(v, m, s, a, rng)
-            return genfallback(Val(r), m, s, a, rng)
+            return genfallback(v, m, s, a, rng)
         else
-            #todo error
+            error("couldn't make gen for ", r)
+            #TODO error
         end
     else
         return genfallback(Val(r), m, s, a, rng)
@@ -17,8 +18,8 @@ gen(v::Val{r::Symbol}, args...) = genfallback(v, args...)
 
 @generated function gen(v::Val{t::Tuple}, m, s, a, rng) # always returns a NamedTuple
 
-    @debug("Creating an implementation for gen(::Val{$S}, ::M, ::S, ::A, ::RNG)",
-           M=m, S=s, A=a, RNG=rng)
+    # @debug("Creating an implementation for gen(::Val{$S}, ::M, ::S, ::A, ::RNG)",
+    #        M=m, S=s, A=a, RNG=rng)
 
     # use old generate_ function if available
     if implemented(old_generate_function(v), Tuple{m, s, a, rng})
@@ -26,7 +27,7 @@ gen(v::Val{r::Symbol}, args...) = genfallback(v, args...)
         return :($(old_generate_function(v))(m, s, a, rng))
     end
 
-    # use anything available from gen
+    # use anything available from gen(m, s, a, rng)
     if implemented(gen, Tuple{m,s,a,rng})
         @debug("Found gen(::M, ::S, ::A, ::RNG)::N", M=m, S=s, A=a, RNG=rng)
         expr = quote
@@ -44,14 +45,14 @@ gen(v::Val{r::Symbol}, args...) = genfallback(v, args...)
         # create block
         sym = Meta.quot(var)
         genvarargs = genvars[var].deps
-        genvartypes = 
         varblock = quote
             if haskey(x, $sym) # should be constant at compile time
                 $var = x[$sym]
-            elseif implemented(gen, Tuple{Var{$sym}, typeof(m), $(genvartypes...), typeof(rng)}) # should be constant at compile time
+            elseif @implemented gen(::Var{$sym}, m, $(genvarargs...), rng) # should be constant at compile time
                 $var = gen(Var($sym), m, $(genvarargs...), rng)
             else
-                # error
+                error("couldn't synthesize ", $sym)
+                # TODO error, backedges
                 # if gen implemented
                 #   gen was implemented, returned
                 # else
@@ -75,6 +76,32 @@ end
             return expression(impl)
         end
     end
+end
+
+function implemented(g::typeof(gen), tt::TupleType)
+    @assert tt <: Tuple
+    if first(tt.parameters) <: Val
+        argtypes_without_val = tt.parameters[2:end]
+        if implemented(g, argtypes_without_val) # gen(m,s,a,rng) is implemented
+            return true
+        elseif #implemented outside of POMDPs module
+            return true
+        elseif #genfallback implemented
+            return true
+        else
+            return false
+        end
+    else # gen(m,s,a,rng)
+        return hasmethod(g, tt)
+    end
+end
+
+function implemented(::typeof(genfallback), tt::TupleType)
+    @assert tt <: Tuple
+    ValT = first(tt.parameters)
+    @assert ValT <: Val
+    impls = genvars[first(ValT.parameters)].implementations(tt.parameters[2:end]...)
+    return any(satisfied, impls)
 end
 
 struct GenVar
