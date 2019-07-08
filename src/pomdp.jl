@@ -119,10 +119,11 @@ reward(problem::Union{POMDP,MDP}, s, a, sp) = reward(problem, s, a)
 @impl_dep reward(::P,::S,::A,::S) where {P<:Union{POMDP,MDP},S,A} reward(::P,::S,::A)
 
 """
-    isterminal(problem::POMDP, state)
-    isterminal(problem::MDP, state)
+    isterminal(m::Union{MDP,POMDP}, s)
 
-Check if state s is terminal
+Check if state `s` is terminal.
+
+If a state is terminal, no actions will be taken in it and no additional rewards will be accumulated. Thus, the value at such a state is, by definition, zero.
 """
 isterminal(problem::Union{POMDP,MDP}, state) = false
 

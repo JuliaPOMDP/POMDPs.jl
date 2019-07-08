@@ -47,7 +47,7 @@ explicit definition is often not required), and `O` is defined by
 implementing [`observation`](@ref) if the [*explicit*](@ref defining_pomdps) interface is used or [`generate_o`](@ref) if the [*generative*](@ref defining_pomdps) interface is used.
 
 POMDPs.jl also contains functions for defining optional problem behavior
-such as a discount factor or a set of terminal states.
+such as a [discount factor](@ref discount) or a set of [terminal states](@ref isterminal).
 
 More information can be found in the [Defining POMDPs](@ref defining_pomdps) section.
 
