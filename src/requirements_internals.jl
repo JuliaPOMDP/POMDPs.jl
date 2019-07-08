@@ -69,18 +69,22 @@ function convert_req(ex::Expr)
         func = ex.args[1]
         argtypes = Union{Symbol, Expr}[]
         for a in ex.args[2:end]
-            if isa(a, Expr) && a.head == :(::)
-                if length(a.args) == 1
-                    push!(argtypes, a.args[1])
-                elseif length(a.args) == 2
-                    push!(argtypes, a.args[2])
+            if isa(a, Expr)
+                if a.head == :(::)
+                    if length(a.args) == 1
+                        push!(argtypes, a.args[1])
+                    elseif length(a.args) == 2
+                        push!(argtypes, a.args[2])
+                    else
+                        malformed = true
+                        break
+                    end
                 else
                     malformed = true
                     break
                 end
             else
-                malformed = true
-                break
+                push!(argtypes, :(typeof($a)))
             end
         end
     else
@@ -89,7 +93,7 @@ function convert_req(ex::Expr)
     if malformed # throw error at parse time so solver writers will have to deal with this
         error("""
               Malformed requirement expression: $ex
-              Requirements should be expressed in the form `function_name(::Type1, ::Type2)`
+              Requirements should be expressed in the form `function_name(::Type1, ::Type2)` or `function_name(arg1, arg2)`.
               """)
     else
         return quote ($func, Tuple{$(argtypes...)}) end
