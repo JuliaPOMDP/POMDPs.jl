@@ -57,6 +57,10 @@ POMDPs.actions(SimplePOMDP) = [true, false]
 
 POMDPs.discount(::SimplePOMDP) = 0.9
 
+let a = 0.0, f(x) = x^2
+    @test @req(f(a, 4)) == @req(f(::typeof(a), ::typeof(4)))
+end
+
 reqs = nothing # to check the hygeine of the macro
 println("There should be a warning about no @reqs here:")
 @POMDP_requirements "Warn none" begin
