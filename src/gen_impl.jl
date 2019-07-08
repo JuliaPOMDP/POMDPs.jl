@@ -1,8 +1,15 @@
 @generated function gen(v::Val{r::Symbol}, m, s, a, rng)
-    if implemented(gen, Tuple{m, s, a, rng})
-        return :(gen(m, s, a, rng)[$(Meta.quot(r))])
+    if @implemented gen(m, s, a, rng)
+        x = gen(m, s, a, rng)
+        if haskey(x, r)
+            return x.[r]
+        elseif @implemented genfallback(v, m, s, a, rng)
+            return genfallback(Val(r), m, s, a, rng)
+        else
+            #todo error
+        end
     else
-        return :(genfallback(m, s, a, rng))
+        return genfallback(Val(r), m, s, a, rng)
     end
 end
 
