@@ -22,7 +22,7 @@ The code components of the POMDPs.jl ecosystem relevant to problems and solvers 
 ## POMDPs and MDPs
 
 An MDP is a mathematical framework for sequential decision making under
-uncertainty, and where all of the uncertainty arrises from outcomes that
+uncertainty, and where all of the uncertainty arises from outcomes that
 are partially random and partially under the control of a decision
 maker. Mathematically, an MDP is a tuple (S,A,T,R), where S is the state
 space, A is the action space, T is a transition function defining the
