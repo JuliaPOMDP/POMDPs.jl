@@ -49,10 +49,12 @@ end
     include("test_generative.jl")
 end
 
-# include("test_tutorials.jl")
-
 @testset "genback" begin
     include("test_generative_backedges.jl")
+end
+
+@testset "gendep" begin
+    include("test_deprecated_generative.jl")
 end
 
 struct CI <: POMDP{Int,Int,Int} end
