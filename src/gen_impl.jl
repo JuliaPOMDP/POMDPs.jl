@@ -1,9 +1,9 @@
 @generated function gen(v::Val{r::Symbol}, m, s, a, rng)
     if implemented(genfallback, Tuple{v, m, s, a, rng})
-        fallback = $(genfallback(v, m, s, a, rng))
+        fallback = :(genfallback(v, m, s, a, rng))
     else
         # TODO better error
-        fallback = $(error("couldn't make gen for ", r))
+        fallback = :(error("couldn't make gen for ", r))
     end
 
     if implemented(gen, Tuple{m, s, a, rng})
