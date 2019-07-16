@@ -10,7 +10,7 @@ The functional form of the explicit interface contains a small collection of fun
 transition(pomdp, s, a) 
 observation(pomdp, a, sp)
 initialstate_distribution(pomdp)
-isterminal(pomdp)
+isterminal(pomdp, s)
 ```
 
 The functions `transition`, `observation`, and `initialstate_distribution` return a distribution over states or observations. This makes it possible to sample a state from this distribution as well as computing the pdf of a state given this distribution. `transition` represents the probability distribution of the next state given a current state s and action a. `observation` represents the probability distribution of an observation given the true underlying state sp and action a. 
