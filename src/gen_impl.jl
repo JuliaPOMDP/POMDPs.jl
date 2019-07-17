@@ -1,28 +1,4 @@
-@generated function gen(v::Val{r::Symbol}, m, s, a, rng)
-    if implemented(genfallback, Tuple{v, m, s, a, rng})
-        fallback = :(genfallback(v, m, s, a, rng))
-    else
-        # TODO better error
-        fallback = :(error("couldn't make gen for ", r))
-    end
-
-    if implemented(gen, Tuple{m, s, a, rng})
-        expr = quote
-            x = gen(m, s, a, rng)
-            if haskey(x, r)
-                return x.[r]
-            else
-                return $fallback
-            end
-        end
-    else
-        return genfallback(v, m, s, a, rng)
-    end
-end
-
-gen(v::Val{r::Symbol}, args...) = genfallback(v, args...)
-
-@generated function gen(v::Val{t::Tuple}, m, s, a, rng)
+@generated function gen(v::Val{X}, m, s, a, rng) where X
 
     @debug("Creating an implementation for gen(::Val{$S}, ::M, ::S, ::A, ::RNG)",
            M=m, S=s, A=a, RNG=rng)
@@ -47,41 +23,29 @@ gen(v::Val{r::Symbol}, args...) = genfallback(v, args...)
     end
     @assert expr.head = :block
 
-    # fill in any elements that might be missing
+    if X isa Tuple
+        symbols = X
+    elseif X isa Symbol
+        symbols = (X,)
+    else
+
+    end
+
     return_tuple_elements = Expr[]
-    for var::Symbol in v.parameters
+    for var::Symbol in symbols
         sym = Meta.quot(var)
         genvarargs = genvars[var].deps
         genvarargtypes = [genvars[a].type(m) for a in genvarargs]
 
         # create fallback (at compile time because it depends on method table and genvars)
         if implemented(gen, Tuple{Var{$sym}, m, genvarargtypes..., rng})
-            @debug("Fallback: gen(::Var{:$var}, ::M, <VARARGTYPES>, ::RNG)",
-                   M=m, VARARGTYPES=genvarargtypes, RNG=rng)
             fallback = quote
                 $var = gen(Var($sym), m, $(genvarargs...), rng)
             end
         else
-            @debug("No fallback found for :$var.")
-
-            # if novalgen_implemented
-            #     errormsg = 
-            # else
-            #     errormsg = 
-            # end
-
             fallback = quote
-                try
-                    $(backedge_expression(genvars[var]))
-                catch
-                    error("couldn't synthesize ", $sym)
-                    # TODO error
-                    # if gen implemented
-                    #   gen was implemented, returned
-                    # else
-                    #   gen not implemented
-                    # to fix
-                end
+                @warn("warning about return of no-val-gen") # TODO: better warning
+                $var = gen(Var($sym), m, $(genvarargs...), rng)
             end
         end
 
@@ -89,28 +53,40 @@ gen(v::Val{r::Symbol}, args...) = genfallback(v, args...)
             if haskey(x, $sym) # should be constant at compile time
                 $var = x[$sym]
             else
-                $fallback
+                $fallback 
             end
         end
         append!(expr.args, varblock.args)
         push!(return_tuple_elements, :($var=$var))
     end
-    return_expr = :(return ($(return_tuple_elements...)))
+
+    if X isa Tuple
+        return_expr = :(return ($(return_tuple_elements...)))
+    else # X isa Symbol
+        return_expr = :(return $X)
+    end
     append!(expr.args, return_expr.args)
 
     @debug("Implementing gen(::Val{$S}, ::M, ::S, ::A, ::RNG) with:\n$expr")
     return expr
 end
 
-@generated function genfallback(v::Val{s}, m, genvarargs..., rng)
-    for impl in genvars[s].implementations(m, genvarargs..., rng)
-        if satisfied(genvars[s], impl)
-            return expression(genvars[s], impl)
-        end
+@generated function gen(v::Val, args...)
+    if implemented(genfallback, Tuple{v, args...})
+        return :(genfallback(v, args...))
     end
-    # TODO: better error
-    return :(error("genfallback failed for ", s))
+    throw(MethodError(gen, (v, args...)))
 end
+
+# @generated function genfallback(v::Val{s}, m, genvarargs..., rng)
+#     for impl in genvars[s].implementations(m, genvarargs..., rng)
+#         if satisfied(genvars[s], impl)
+#             return expression(genvars[s], impl)
+#         end
+#     end
+#     # TODO: better error
+#     return :(error("genfallback failed for ", s))
+# end
 
 function implemented(g::typeof(gen), TT::TupleType)
     if first(tt.parameters) <: Val
@@ -129,12 +105,12 @@ function implemented(g::typeof(gen), TT::TupleType)
     end
 end
 
-function implemented(::typeof(genfallback), tt::TupleType)
-    ValT = first(tt.parameters)
-    @assert ValT <: Val
-    impls = genvars[first(ValT.parameters)].implementations(tt.parameters[2:end]...)
-    return any(satisfied, impls)
-end
+# function implemented(::typeof(genfallback), tt::TupleType)
+#     ValT = first(tt.parameters)
+#     @assert ValT <: Val
+#     impls = genvars[first(ValT.parameters)].implementations(tt.parameters[2:end]...)
+#     return any(satisfied, impls)
+# end
 
 struct GenVarData
     mod::Module #?
@@ -173,7 +149,7 @@ genvars[:sp] = GenVarData(@__Module__,
                       "state at the end of the step",
                       [:s, :a],
                       statetype
-                     ) do M, S, A, RNG
+                     ) do v, m, s, a, rng
     [@req(transition(::M, ::S, ::A)) => rand_transition,
      DeprecatedFallback(generate_s, Tuple{M, S, A, RNG})
     ]
