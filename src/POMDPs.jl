@@ -9,6 +9,7 @@ import Statistics
 import Distributions: rand, pdf, mode, mean, support
 import Pkg
 import LibGit2
+using LightGraphs
 
 export 
     # Abstract type
@@ -31,12 +32,7 @@ export
     isterminal,
 
     # Generative model functions
-    generate_s,
-    generate_o,
-    generate_sr,
-    generate_so,
-    generate_or,
-    generate_sor,
+    gen,
     initialstate,
     
     # Discrete Functions
@@ -102,6 +98,12 @@ export
 
 
     # Deprecated
+    generate_s,
+    generate_o,
+    generate_sr,
+    generate_so,
+    generate_or,
+    generate_sor,
     state_index,
     action_index,
     obs_index,
@@ -128,5 +130,6 @@ include("gen_impl.jl")
 include("type_inferrence.jl")
 include("constants.jl")
 include("utils.jl")
+include("deprecated.jl")
 
 end

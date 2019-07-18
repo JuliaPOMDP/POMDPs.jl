@@ -1,12 +1,13 @@
 @generated function gen(v::Val{X}, m, s, a, rng) where X
 
-    @debug("Creating an implementation for gen(::Val{$S}, ::M, ::S, ::A, ::RNG)",
+    @debug("Creating an implementation for gen(::Val{$X}, ::M, ::S, ::A, ::RNG)",
            M=m, S=s, A=a, RNG=rng)
+    vp = first(v.parameters)
 
     # use old generate_ function if available
-    if implemented(old_generate_function(v), Tuple{m, s, a, rng})
+    if haskey(old_generate, vp) && implemented(old_generate[v], Tuple{m, s, a, rng})
         @warn("Using ")
-        return :($(old_generate_function(v))(m, s, a, rng))
+        return :($(old_generate[vp])(m, s, a, rng))
     end
 
     # use anything available from gen(m, s, a, rng)
@@ -21,24 +22,22 @@
         novalgen_implemented = false
         expr = :(x = NamedTuple())
     end
-    @assert expr.head = :block
 
     if X isa Tuple
         symbols = X
     elseif X isa Symbol
         symbols = (X,)
     else
-
+        error("X must be a Symbol or Tuple")
     end
 
-    return_tuple_elements = Expr[]
-    for var::Symbol in symbols
+    # add fallbacks for other variables
+    for var in sorted_genvars(symbols)
         sym = Meta.quot(var)
         genvarargs = genvars[var].deps
         genvarargtypes = [genvars[a].type(m) for a in genvarargs]
 
-        # create fallback (at compile time because it depends on method table and genvars)
-        if implemented(gen, Tuple{Var{$sym}, m, genvarargtypes..., rng})
+        if implemented(gen, Tuple{Var{var}, m, genvarargtypes..., rng})
             fallback = quote
                 $var = gen(Var($sym), m, $(genvarargs...), rng)
             end
@@ -57,36 +56,32 @@
             end
         end
         append!(expr.args, varblock.args)
-        push!(return_tuple_elements, :($var=$var))
     end
 
     if X isa Tuple
-        return_expr = :(return ($(return_tuple_elements...)))
+        return_expr = quote
+            return ($((:($var=$var) for var in symbols)...))
+        end
     else # X isa Symbol
         return_expr = :(return $X)
     end
     append!(expr.args, return_expr.args)
 
-    @debug("Implementing gen(::Val{$S}, ::M, ::S, ::A, ::RNG) with:\n$expr")
+    @debug("Implementing gen(::Val{$X}, ::M, ::S, ::A, ::RNG) with:\n$expr")
     return expr
 end
 
 @generated function gen(v::Val, args...)
-    if implemented(genfallback, Tuple{v, args...})
+    vp = first(v.parameters)
+    if haskey(old_generate, vp) && implemented(old_generate[vp], args)
+        @warn("Using ")
+        return :($(old_generate[vp])(args...))
+    elseif implemented(genfallback, Tuple{v, args...})
         return :(genfallback(v, args...))
+    else
+        return :(throw(MethodError(gen, (v, args...))))
     end
-    throw(MethodError(gen, (v, args...)))
 end
-
-# @generated function genfallback(v::Val{s}, m, genvarargs..., rng)
-#     for impl in genvars[s].implementations(m, genvarargs..., rng)
-#         if satisfied(genvars[s], impl)
-#             return expression(genvars[s], impl)
-#         end
-#     end
-#     # TODO: better error
-#     return :(error("genfallback failed for ", s))
-# end
 
 function implemented(g::typeof(gen), TT::TupleType)
     if first(tt.parameters) <: Val
@@ -94,23 +89,36 @@ function implemented(g::typeof(gen), TT::TupleType)
         argtypes_without_val = TT.parameters[2:end]
         if implemented(g, argtypes_without_val) # gen(m,s,a,rng) is implemented
             return true
+        elseif haskey(old_generate, v) && implemented(old_generate[v], TT)
+            return true
         elseif m.module != POMDPs # implemented by a user elsewhere
             return true
         elseif implemented(genfallback, TT)
             return true
+        else
+            return false
         end
-        return false
     else # gen(m,s,a,rng)
         return hasmethod(g, TT)
     end
 end
 
-# function implemented(::typeof(genfallback), tt::TupleType)
-#     ValT = first(tt.parameters)
-#     @assert ValT <: Val
-#     impls = genvars[first(ValT.parameters)].implementations(tt.parameters[2:end]...)
-#     return any(satisfied, impls)
-# end
+@generated function genfallback(v::Val{s}, m, genvarargs..., rng)
+    for impl in genvars[s].implementations(m, genvarargs..., rng)
+        if satisfied(genvars[s], impl)
+            return expression(genvars[s], impl)
+        end
+    end
+    # TODO: better error
+    return :(error("genfallback failed for ", s))
+end
+
+function implemented(::typeof(genfallback), tt::TupleType)
+    ValT = first(tt.parameters)
+    @assert ValT <: Val
+    impls = genvars[first(ValT.parameters)].implementations(tt.parameters[2:end]...)
+    return any(satisfied, impls)
+end
 
 struct GenVarData
     mod::Module #?
@@ -133,11 +141,6 @@ const genvars = Dict{Symbol, GenVarData}()
 # - backedge_expression
 # - suggestion
 
-struct DeprecatedFallback
-    f::Function
-    argtypes::TupleType
-end
-
 rand_transition(m, s, a, rng) = rand(rng, transition(m, s, a))
 rand_observation(m, s, a, sp, rng) = rand(rng, observation(m, s, a, sp))
 
@@ -149,21 +152,17 @@ genvars[:sp] = GenVarData(@__Module__,
                       "state at the end of the step",
                       [:s, :a],
                       statetype
-                     ) do v, m, s, a, rng
-    [@req(transition(::M, ::S, ::A)) => rand_transition,
-     DeprecatedFallback(generate_s, Tuple{M, S, A, RNG})
-    ]
+                     ) do M, S, A, RNG
+    [@req(transition(::M, ::S, ::A)) => rand_transition]
 end
 
 genvars[:o] = GenVarData(@__Module__,
                      "observation",
                      "observation (usually depends on sp)",
                      [:s, :a, :sp],
-                     obstype,
+                     obstype
                     ) do M, S, A, SP, RNG
-    [@req(observation(::M, ::S, ::A, ::SP)) => rand_observation,
-     DeprecatedFallback(generate_o, Tuple{M, S, A, SP, RNG})
-    ]
+    [@req(observation(::M, ::S, ::A, ::SP)) => rand_observation]
 end
 
 genvars[:r] = GenVarData(@__Module__,
@@ -173,6 +172,27 @@ genvars[:r] = GenVarData(@__Module__,
                      m->Number,
                     ) do M, S, A, SP, O, RNG
     [@req(reward(::M, ::S, ::A, ::SP, ::O)) => :(reward(m, s, a, sp, o))]
+end
+
+function sorted_genvars(symbols)
+    dag = SimpleDiGraph(length(genvars))
+    labels = Symbol[]
+    nodes = Dict{Symbol, Int}()
+    for sym in symbols
+        if !haskey(nodes, sym)
+            push!(labels, sym)
+            nodes[sym] = length(labels)
+        end
+        for dep in genvars[sym].deps
+            if !haskey(nodes, dep)
+                push!(labels, dep)
+                nodes[dep] = length(labels)
+            end
+            add_edge!(dag, nodes[sym], nodes[dep])
+        end
+    end
+    sortednodes = topological_sort_by_dfs(dag)
+    return labels[sortednodes]
 end
 
 satisfied(gv::GenVarData, impl::Pair{Req}) = implemented(first(impl))
