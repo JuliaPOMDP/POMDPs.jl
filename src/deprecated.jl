@@ -1,9 +1,9 @@
-@deprecate generate_s(args...) gen(Val(:s), args...)
+@deprecate generate_s(args...) gen(Val(:sp), args...)
 @deprecate generate_o(args...) gen(Val(:o), args...)
-@deprecate generate_sr(args...) gen(Val((:s,:r)), args...)
-@deprecate generate_so(args...) gen(Val((:s,:o)), args...)
+@deprecate generate_sr(args...) gen(Val((:sp,:r)), args...)
+@deprecate generate_so(args...) gen(Val((:sp,:o)), args...)
 @deprecate generate_or(args...) gen(Val((:o,:r)), args...)
-@deprecate generate_sor(args...) gen(Val((:s,:o,:r)), args...)
+@deprecate generate_sor(args...) gen(Val((:sp,:o,:r)), args...)
 
 const old_generate = Dict(:sp => generate_s,
                     :o => generate_o,

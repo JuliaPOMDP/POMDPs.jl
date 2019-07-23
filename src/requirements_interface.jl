@@ -12,7 +12,7 @@ implemented(f::Function, TT::TupleType) = hasmethod(f, TT)
 Check whether there is an implementation available that will return a suitable value.
 """
 macro implemented(ex)
-    tplex = convert_req(req_ex)
+    tplex = convert_req(ex)
     return quote
         implemented($(esc(tplex))...)
     end

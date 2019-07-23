@@ -3,6 +3,9 @@ using Test
 using POMDPs
 using Random
 
+# using Logging
+# global_logger(ConsoleLogger(stderr, Logging.Debug))
+
 mutable struct A <: POMDP{Int,Bool,Bool} end
 @testset "implement" begin
 
