@@ -12,9 +12,24 @@ const old_generate = Dict(:sp => generate_s,
                     (:o,:r) => generate_or,
                     (:sp,:o,:r) => generate_sor)
 
+const new_genvars = Dict(generate_s => :sp,
+                    generate_o => :o,
+                    generate_sr => (:sp,:r),
+                    generate_so => (:sp,:o),
+                    generate_or => (:o,:r),
+                    generate_sor => (:sp,:o,:r))
+
+
 GenerateFunctions = Union{(typeof(f) for f in values(old_generate))...}
 
-function implemented(g::GenerateFunctions, TT::TupleType)
+function implemented_by_user(g::GenerateFunctions, TT::TupleType)
     m = which(g, TT)
     return m.module != POMDPs
+end
+
+function implemented(g::GenerateFunctions, TT::TupleType)
+    if implemented_by_user(g, TT)
+        return true
+    end
+    return implemented(gen, Tuple{Val{new_genvars[g]}, TT.parameters...})
 end

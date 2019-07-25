@@ -4,7 +4,7 @@ using Random
 
 let
     struct M <: POMDP{Int, Int, Char} end
-    @test_throws MethodError generate_s(M(), 1, 1, MersenneTwister(4))
+    @test_throws MethodError gen(Val(:sp), M(), 1, 1, MersenneTwister(4))
     POMDPs.transition(::M, ::Int, ::Int) = [1]
     @test gen(Val(:sp), M(), 1, 1, MersenneTwister(4)) == 1
     @test_throws MethodError gen(Val((:sp,:o,:r)), M(), 1, 1, MersenneTwister(4))

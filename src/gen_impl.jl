@@ -5,7 +5,7 @@
     vp = first(v.parameters)
 
     # use old generate_ function if available
-    if haskey(old_generate, vp) && implemented(old_generate[vp], Tuple{m, s, a, rng})
+    if haskey(old_generate, vp) && implemented_by_user(old_generate[vp], Tuple{m, s, a, rng})
         @warn("Using ")
         return :($(old_generate[vp])(m, s, a, rng))
     end
@@ -29,7 +29,7 @@
     elseif X isa Symbol
         symbols = (X,)
     else
-        error("X must be a Symbol or Tuple") # TODO better error
+        error("X in gen(::Val{X}, ...) must be a Symbol or Tuple; got $X.")
     end
 
     # add fallbacks for other variables
@@ -37,6 +37,33 @@
         sym = Meta.quot(var)
         genvarargs = genvars[var].deps(m)
         genvarargtypes = [genvars[a].type(m) for a in genvarargs]
+
+        # this error will be printed whenever we don't get the value from gen(m,s,a,rng)
+        # it also contains backedge code
+        if novalgen_implemented
+            novalgen_error = quote
+                desired = $sym
+                retkeys = try
+                        collect(keys(x))
+                    catch
+                        "<No keys in a $(typeof(x))>"
+                    end
+                @error("""gen(::M, ::S, ::A, ::RNG) was implemented and returned $x.
+
+                       The keys in the returned object were $retkeys which does not include :$desired, and no fallback was found for :$desired. Expect an error to be thrown below.
+                       """, M=typeof(m), S=typeof(s), A=typeof(a), RNG=typeof(rng))
+            end
+        else
+            novalgen_error = quote
+                try
+                    gen(m, s, a, rng) # for backedges
+                catch
+                finally
+                    desired = $sym
+                    @error("gen(::M, ::S, ::A, ::RNG) was not implemented and no fallback was found for :$desired. Expect an error to be thrown below.", M=typeof(m), S=typeof(s), A=typeof(a), RNG=typeof(rng))
+                end
+            end
+        end
 
         if var == X && genvarargs == [:s, :a]
             # in this case, calling gen would lead to a stack overflow
@@ -47,9 +74,10 @@
                 end
             else
                 fallback = quote
-                    # TODO helpful errors
+                    $novalgen_error
                     try
-                        $(genvars[var].fallback)(m, s, a, rng)
+                        $(genvars[var].fallback)(m, s, a, rng) # for backedges
+                    catch
                     finally
                         throw(MethodError(gen, (v, m, s, a, rng)))
                     end
@@ -61,9 +89,10 @@
             end
         else
             fallback = quote
-                @warn("warning about return of no-val-gen") # TODO: better warning
+                $novalgen_error
                 $var = gen(Val($sym), m, $(genvarargs...), rng)
             end
+                
         end
 
         varblock = quote
@@ -90,7 +119,7 @@ end
 
 @generated function gen(v::Val, args...)
     vp = first(v.parameters)
-    if haskey(old_generate, vp) && implemented(old_generate[vp], Tuple{args...})
+    if haskey(old_generate, vp) && implemented_by_user(old_generate[vp], Tuple{args...})
         @warn("Using ")
         return :($(old_generate[vp])(args...))
     elseif vp isa Symbol
@@ -102,13 +131,14 @@ end
             return quote
                 try
                     $(genvars[vp].fallback)(args...) # for backedges
+                catch
                 finally
                     throw(MethodError(gen, (v, args...)))
                 end
             end
         end
     else
-        @error("""Automatic implementation of `gen(::Val{X}, ...)` where `X` is a `Tuple` is only supported in the case of gen(::Val{X}, m, s, a, rng). Expect an error below.
+        @error("""Automatic implementation of `gen(::Val{X}, ...)` where `X <: Tuple` is only supported in the case of gen(::Val{X}, m, s, a, rng). Expect an error below.
                
                You may wish to implement the missing function yourself, or if you would like this functionality, please file an issue at https://github.com/JuliaPOMDP/POMDPs.jl/issues/new.
                """)
@@ -127,7 +157,7 @@ function implemented(g::typeof(gen), TT::TupleType)
             return true
         elseif implemented(g, Tuple{argtypes_without_val...}) # gen(m,s,a,rng) is implemented
             return true
-        elseif haskey(old_generate, vp) && implemented(old_generate[vp], TT)
+        elseif haskey(old_generate, vp) && implemented_by_user(old_generate[vp], Tuple{argtypes_without_val...})
             return true
         elseif vp isa Symbol &&
                 genvars[vp].fallback_implemented != nothing &&

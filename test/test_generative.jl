@@ -18,6 +18,14 @@ println("Warning expected:")
 @test_throws MethodError gen(Val((:sp,:o,:r)), W(), 1, true, Random.GLOBAL_RNG)
 println("Warning expected:")
 @test_throws MethodError gen(Val((:o,:r)), W(), 1, true, 2, Random.GLOBAL_RNG)
+POMDPs.gen(::W, ::Int, ::Bool, ::AbstractRNG) = nothing
+@test_throws AssertionError gen(Val(:sp), W(), 1, true, Random.GLOBAL_RNG)
+@test_throws AssertionError gen(Val((:sp,:r)), W(), 1, true, Random.GLOBAL_RNG)
+POMDPs.gen(::W, ::Int, ::Bool, ::AbstractRNG) = (useless=nothing,)
+println("Warning expected:")
+@test_throws MethodError gen(Val(:sp), W(), 1, true, Random.GLOBAL_RNG)
+println("Warning expected:")
+@test_throws MethodError gen(Val((:sp,:r)), W(), 1, true, Random.GLOBAL_RNG)
 
 
 struct B <: POMDP{Int, Bool, Bool} end
@@ -27,7 +35,7 @@ transition(b::B, s::Int, a::Bool) = Int[s+a]
 @test gen(Val(:sp), B(), 1, false, Random.GLOBAL_RNG) == 1
 
 @test !@implemented gen(::Val{(:sp,:o,:r)}, ::B, ::Int, ::Bool, ::MersenneTwister)
-# @test_throws MethodError generate_sor(B(), 1, false, Random.GLOBAL_RNG)
+@test_throws MethodError gen(Val((:sp,:o,:r)), B(), 1, false, Random.GLOBAL_RNG)
 
 reward(b::B, s::Int, a::Bool, sp::Int) = -1.0
 gen(::Val{:o}, b::B, s::Int, a::Bool, sp::Int, rng::AbstractRNG) = sp
