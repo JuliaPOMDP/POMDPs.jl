@@ -6,7 +6,12 @@
 
     # use old generate_ function if available
     if haskey(old_generate, vp) && implemented_by_user(old_generate[vp], Tuple{m, s, a, rng})
-        @warn("Using ")
+        @warn("""Using user-implemented function
+                  $(old_generate[vp])(::M, ::S, ::A, ::RNG)
+              which is deprecated in POMDPs v0.8. Please implement this as
+                  POMDPs.gen(::M, ::S, ::A, ::RNG) or
+                  POMDPs.gen(::Val{:$X}, ::M, ::S, ::A, ::RNG)
+              instead. See the POMDPs.gen documentation for more details.""", M=m, S=s, A=a, RNG=rng)
         return :($(old_generate[vp])(m, s, a, rng))
     end
 
@@ -119,21 +124,28 @@ end
 
 @generated function gen(v::Val, args...)
     vp = first(v.parameters)
-    if haskey(old_generate, vp) && implemented_by_user(old_generate[vp], Tuple{args...})
-        @warn("Using ")
-        return :($(old_generate[vp])(args...))
-    elseif vp isa Symbol
-        if genvars[vp].fallback_implemented != nothing &&
-            genvars[vp].fallback_implemented(args...)
-            return :($(genvars[vp].fallback)(args...))
+    if vp isa Symbol
+        if haskey(old_generate, vp) && implemented_by_user(old_generate[vp], Tuple{args...})
+            argtypes = join(("::$a" for a in args), ", ")
+            @warn("""Using user-implemented function
+                      $(old_generate[vp])($argtypes)
+                  which is deprecated in POMDPs v0.8. Please implement this as
+                      POMDPs.gen(::Val{:$vp}, $argtypes)
+                  """)
+            return :($(old_generate[vp])(args...))
         else
-            # TODO helpful errors
-            return quote
-                try
-                    $(genvars[vp].fallback)(args...) # for backedges
-                catch
-                finally
-                    throw(MethodError(gen, (v, args...)))
+            if genvars[vp].fallback_implemented != nothing &&
+                genvars[vp].fallback_implemented(args...)
+                return :($(genvars[vp].fallback)(args...))
+            else
+                # TODO helpful errors
+                return quote
+                    try
+                        $(genvars[vp].fallback)(args...) # for backedges
+                    catch
+                    finally
+                        throw(MethodError(gen, (v, args...)))
+                    end
                 end
             end
         end

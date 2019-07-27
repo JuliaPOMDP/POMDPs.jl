@@ -12,7 +12,6 @@ println("Warning expected:")
 println("Warning expected:")
 @test_throws MethodError generate_or(DW(), 1, true, 2, Random.GLOBAL_RNG)
 
-
 struct DB <: POMDP{Int, Bool, Bool} end
 
 POMDPs.transition(b::DB, s::Int, a::Bool) = Int[s+a]
@@ -31,9 +30,7 @@ POMDPs.generate_o(b::DB, s::Int, a::Bool, sp::Int, rng::AbstractRNG) = sp
 @test @implemented generate_sor(b::DB, s::Int, a::Bool, rng::MersenneTwister)
 @test generate_sor(DB(), 1, true, Random.GLOBAL_RNG) == (2, 2, -1.0)
 
-## This will no longer work
-# struct DC <: POMDP{Nothing, Nothing, Nothing} end
-# POMDPs.generate_sr(c::DC, s::Nothing, a::Nothing, rng::AbstractRNG) = nothing, 0.0
-# POMDPs.generate_o(c::DC, s::Nothing, a::Nothing, sp::Nothing, rng::AbstractRNG) = nothing
-# @test @implemented generate_sor(::DC, ::Nothing, ::Nothing, ::MersenneTwister)
-# @test generate_sor(DC(), nothing, nothing, Random.GLOBAL_RNG) == (nothing, nothing, 0.0)
+# to exercise deprecation warning
+struct DC <: POMDP{Nothing, Nothing, Nothing} end
+POMDPs.generate_s(c::DC, s::Nothing, a::Nothing, rng::AbstractRNG) = nothing
+@test gen(Val(:sp), DC(), nothing, nothing, Random.GLOBAL_RNG) == nothing
