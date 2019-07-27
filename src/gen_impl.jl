@@ -72,18 +72,24 @@
 
         if var == X && genvarargs == [:s, :a]
             # in this case, calling gen would lead to a stack overflow
-            if genvars[var].fallback_implemented != nothing &&
-                    genvars[var].fallback_implemented(m, s, a, rng)
+            if genvars[var].fallback != nothing &&
+                    genvars[var].fallback.isimplemented(m, s, a, rng)
                 fallback = quote
-                    $var = $(genvars[var].fallback)(m, s, a, rng)
+                    $var = $(genvars[var].fallback.impl)(m, s, a, rng)
                 end
             else
                 fallback = quote
                     $novalgen_error
+                    suggestion = sprint($(genvars[var].fallback.suggest), m, s, a, rng)
+                    @error("""No fallback found for gen(::Val{:$X}, m, s, a, rng). Either implement it directly, or consider the following suggestion:
+
+                           $suggestion
+                           """)
                     try
-                        $(genvars[var].fallback)(m, s, a, rng) # for backedges
+                        $(genvars[var].fallback.impl)(m, s, a, rng) # for backedges
                     catch
                     finally
+                        # this is in the finally block because we want problems with fallback_implemented to get fixed
                         throw(MethodError(gen, (v, m, s, a, rng)))
                     end
                 end
@@ -122,29 +128,34 @@
     return expr
 end
 
-@generated function gen(v::Val, args...)
-    vp = first(v.parameters)
-    if vp isa Symbol
-        if haskey(old_generate, vp) && implemented_by_user(old_generate[vp], Tuple{args...})
-            argtypes = join(("::$a" for a in args), ", ")
+@generated function gen(v::Val{X}, args...) where X
+    if X isa Symbol
+        if haskey(old_generate, X) && implemented_by_user(old_generate[X], Tuple{args...})
+            argtypestring = join(("::$a" for a in args), ", ")
             @warn("""Using user-implemented function
-                      $(old_generate[vp])($argtypes)
+                      $(old_generate[X])($argtypestring)
                   which is deprecated in POMDPs v0.8. Please implement this as
-                      POMDPs.gen(::Val{:$vp}, $argtypes)
+                      POMDPs.gen(::Val{:$X}, $argtypestring)
                   """)
-            return :($(old_generate[vp])(args...))
+            return :($(old_generate[X])(args...))
         else
-            if genvars[vp].fallback_implemented != nothing &&
-                genvars[vp].fallback_implemented(args...)
-                return :($(genvars[vp].fallback)(args...))
+            if genvars[X].fallback != nothing &&
+                genvars[X].fallback.isimplemented(args...)
+                return :($(genvars[X].fallback.impl)(args...))
             else
-                # TODO helpful errors
+                argtypestring = join(("::$a" for a in args), ", ") # outside quote for purity
                 return quote
+                    suggestion = sprint($(genvars[X].fallback.suggest), args...)
+                    argtypestring = $argtypestring
+                    @error("""No fallback found for gen(::Val{:$X}, $argtypestring). Either implement it directly, or consider the following suggestion:
+
+                           $suggestion
+                           """)
                     try
-                        $(genvars[vp].fallback)(args...) # for backedges
+                        $(genvars[X].fallback.impl)(args...) # for backedges
                     catch
                     finally
-                        throw(MethodError(gen, (v, args...)))
+                        throw(MethodError(gen, (v, args...))) # in finally so errors in isimplemented get fixed
                     end
                 end
             end
@@ -172,8 +183,8 @@ function implemented(g::typeof(gen), TT::TupleType)
         elseif haskey(old_generate, vp) && implemented_by_user(old_generate[vp], Tuple{argtypes_without_val...})
             return true
         elseif vp isa Symbol &&
-                genvars[vp].fallback_implemented != nothing &&
-                genvars[vp].fallback_implemented(argtypes_without_val...)
+                genvars[vp].fallback != nothing &&
+                genvars[vp].fallback.isimplemented(argtypes_without_val...)
             return true
         elseif vp isa Tuple
             # Note: already checked for gen(m,s,a,rng) above
@@ -191,76 +202,5 @@ function implemented(g::typeof(gen), TT::TupleType)
         end
     else # gen(m,s,a,rng)
         return hasmethod(g, TT)
-    end
-end
-
-struct GenVarData
-    mod::Module #?
-    longname::String
-    descripton::String
-    deps::Function
-    type::Function # function of the model type - only used if things depend on it; can be abstract
-    fallback_implemented::Union{Function,Nothing}
-    fallback::Union{Function,Nothing}
-end
-
-GenVarData(m, l, d, deps, t) = GenVarData(m, l, d, deps, t, nothing, nothing)
-
-const genvars = Dict{Symbol, GenVarData}()
-
-rand_transition(m, s, a, rng) = rand(rng, transition(m, s, a))
-rand_observation(m, s, a, sp, rng) = rand(rng, observation(m, s, a, sp))
-
-genvars[:s] = GenVarData(@__MODULE__, "state", "state at the beginning of the step", M->Symbol[], statetype)
-genvars[:a] = GenVarData(@__MODULE__, "action", "action taken by the agent", M->Symbol[], actiontype)
-
-genvars[:sp] = GenVarData(@__MODULE__,
-                      "new state",
-                      "state at the end of the step",
-                      M->[:s, :a],
-                      statetype,
-                      (M, S, A, RNG) -> implemented(transition, Tuple{M,S,A}),
-                      rand_transition)
-
-genvars[:o] = GenVarData(@__MODULE__,
-                     "observation",
-                     "observation (usually depends on sp)",
-                     M->[:s, :a, :sp],
-                     obstype,
-                     (M, S, A, SP, RNG) -> implemented(observation, Tuple{M,S,A,SP}),
-                     rand_observation)
-
-genvars[:r] = GenVarData(@__MODULE__,
-                     "reward",
-                     "reward generated by the step",
-                     M-> M <: POMDP ? [:s, :a, :sp, :o] : [:s, :a, :sp],
-                     M->Number,
-                     # for fallback, just get rid of the rng arg
-                     (argtypes...) -> implemented(reward, Tuple{argtypes[1:end-1]...}),
-                     (args...) -> reward(args[1:end-1]...))
-
-function sorted_genvars(M::Type, symbols)
-    dag = SimpleDiGraph(length(genvars))
-    labels = Symbol[]
-    nodemap = Dict{Symbol, Int}()
-    for sym in symbols
-        if !haskey(nodemap, sym)
-            push!(labels, sym)
-            nodemap[sym] = length(labels)
-        end
-        add_dep_edges!(dag, nodemap, labels, M, sym)
-    end
-    sortednodes = topological_sort_by_dfs(dag)
-    return labels[filter(n -> n<=length(labels), sortednodes)]
-end
-
-function add_dep_edges!(dag, nodemap, labels, M::Type, sym)
-    for dep in genvars[sym].deps(M)
-        if !haskey(nodemap, dep)
-            push!(labels, dep)
-            nodemap[dep] = length(labels)
-        end
-        add_edge!(dag, nodemap[dep], nodemap[sym])
-        add_dep_edges!(dag, nodemap, labels, M, dep)
     end
 end
