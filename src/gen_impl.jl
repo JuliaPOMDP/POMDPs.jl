@@ -1,6 +1,6 @@
-@generated function gen(v::Val{X}, m, s, a, rng) where X
+@generated function gen(v::Return{X}, m, s, a, rng) where X
 
-    @debug("Creating an implementation for gen(::Val{$X}, ::M, ::S, ::A, ::RNG)",
+    @debug("Creating an implementation for gen(::Return{$X}, ::M, ::S, ::A, ::RNG)",
            M=m, S=s, A=a, RNG=rng)
     vp = first(v.parameters)
 
@@ -10,7 +10,7 @@
                   $(old_generate[vp])(::M, ::S, ::A, ::RNG)
               which is deprecated in POMDPs v0.8. Please implement this as
                   POMDPs.gen(::M, ::S, ::A, ::RNG) or
-                  POMDPs.gen(::Val{:$X}, ::M, ::S, ::A, ::RNG)
+                  POMDPs.gen(::Return{:$X}, ::M, ::S, ::A, ::RNG)
               instead. See the POMDPs.gen documentation for more details.""", M=m, S=s, A=a, RNG=rng)
         return :($(old_generate[vp])(m, s, a, rng))
     end
@@ -34,7 +34,7 @@
     elseif X isa Symbol
         symbols = (X,)
     else
-        error("X in gen(::Val{X}, ...) must be a Symbol or Tuple; got $X.")
+        error("X in gen(::Return{X}, ...) must be a Symbol or Tuple; got $X.")
     end
 
     # add fallbacks for other variables
@@ -81,7 +81,7 @@
                 fallback = quote
                     $novalgen_error
                     suggestion = sprint($(genvars[var].fallback.suggest), m, s, a, rng)
-                    @error("""No fallback found for gen(::Val{:$X}, m, s, a, rng). Either implement it directly, or consider the following suggestion:
+                    @error("""No fallback found for gen(::Return{:$X}, m, s, a, rng). Either implement it directly, or consider the following suggestion:
 
                            $suggestion
                            """)
@@ -94,14 +94,14 @@
                     end
                 end
             end
-        elseif implemented(gen, Tuple{Val{var}, m, genvarargtypes..., rng})
+        elseif implemented(gen, Tuple{Return{var}, m, genvarargtypes..., rng})
             fallback = quote
-                $var = gen(Val($sym), m, $(genvarargs...), rng)
+                $var = gen(Return($sym), m, $(genvarargs...), rng)
             end
         else
             fallback = quote
                 $novalgen_error
-                $var = gen(Val($sym), m, $(genvarargs...), rng)
+                $var = gen(Return($sym), m, $(genvarargs...), rng)
             end
                 
         end
@@ -124,18 +124,18 @@
     end
     append!(expr.args, return_expr.args)
 
-    @debug("Implementing gen(::Val{$X}, ::M, ::S, ::A, ::RNG) with:\n$expr")
+    @debug("Implementing gen(::Return{$X}, ::M, ::S, ::A, ::RNG) with:\n$expr")
     return expr
 end
 
-@generated function gen(v::Val{X}, args...) where X
+@generated function gen(v::Return{X}, args...) where X
     if X isa Symbol
         if haskey(old_generate, X) && implemented_by_user(old_generate[X], Tuple{args...})
             argtypestring = join(("::$a" for a in args), ", ")
             @warn("""Using user-implemented function
                       $(old_generate[X])($argtypestring)
                   which is deprecated in POMDPs v0.8. Please implement this as
-                      POMDPs.gen(::Val{:$X}, $argtypestring)
+                      POMDPs.gen(::Return{:$X}, $argtypestring)
                   """)
             return :($(old_generate[X])(args...))
         else
@@ -147,7 +147,7 @@ end
                 return quote
                     suggestion = sprint($(genvars[X].fallback.suggest), args...)
                     argtypestring = $argtypestring
-                    @error("""No fallback found for gen(::Val{:$X}, $argtypestring). Either implement it directly, or consider the following suggestion:
+                    @error("""No fallback found for gen(::Return{:$X}, $argtypestring). Either implement it directly, or consider the following suggestion:
 
                            $suggestion
                            """)
@@ -161,7 +161,7 @@ end
             end
         end
     else
-        @error("""Automatic implementation of `gen(::Val{X}, ...)` where `X <: Tuple` is only supported in the case of gen(::Val{X}, m, s, a, rng). Expect an error below.
+        @error("""Automatic implementation of `gen(::Return{X}, ...)` where `X <: Tuple` is only supported in the case of gen(::Return{X}, m, s, a, rng). Expect an error below.
                
                You may wish to implement the missing function yourself, or if you would like this functionality, please file an issue at https://github.com/JuliaPOMDP/POMDPs.jl/issues/new.
                """)
@@ -171,7 +171,7 @@ end
 
 function implemented(g::typeof(gen), TT::TupleType)
     v = first(TT.parameters)
-    if v <: Val
+    if v <: Return
         m = which(g, TT)
         argtypes_without_val = TT.parameters[2:end]
         vp = first(v.parameters)
@@ -192,7 +192,7 @@ function implemented(g::typeof(gen), TT::TupleType)
             rngtype = last(argtypes_without_val)
             for var in filter(v->!(v in (:s, :a)), sorted_genvars(modeltype, vp))
                 deptypes = collect(genvars[d].type(modeltype) for d in genvars[var].deps(modeltype))
-                if !implemented(gen, Tuple{Val{var}, modeltype, deptypes..., rngtype})
+                if !implemented(gen, Tuple{Return{var}, modeltype, deptypes..., rngtype})
                     return false
                 end
             end

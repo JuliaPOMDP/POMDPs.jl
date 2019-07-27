@@ -32,6 +32,7 @@ export
     isterminal,
 
     # Generative model functions
+    Return,
     gen,
     initialstate,
     
@@ -126,6 +127,7 @@ include("belief.jl")
 include("space.jl")
 include("policy.jl")
 include("type_inferrence.jl")
+include("return.jl")
 include("generative.jl")
 include("gen_impl.jl")
 include("genvars.jl")
