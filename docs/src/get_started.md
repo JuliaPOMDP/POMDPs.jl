@@ -7,7 +7,7 @@ Here is a short piece of code that solves the Tiger POMDP using QMDP, and evalua
 have the QMDP, POMDPModels, and POMDPToolbox modules installed.
 
 ```julia
-using QMDP, POMDPModels, POMDPSimulators
+using POMDPs, QMDP, POMDPModels, POMDPSimulators
 
 # initialize problem and solver
 pomdp = TigerPOMDP() # from POMDPModels
