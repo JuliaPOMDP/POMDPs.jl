@@ -48,15 +48,16 @@
         if novalgen_implemented
             novalgen_error = quote
                 desired = $sym
-                retkeys = try
-                        collect(keys(x))
-                    catch
-                        "<No keys in a $(typeof(x))>"
-                    end
-                @error("""gen(::M, ::S, ::A, ::RNG) was implemented and returned $x.
+                @error("""The function
+                       
+                       $(schecked(@req(gen(m, s, a, rng)), context=logger_context()))
+                       was implemented, but it returned
 
-                       The keys in the returned object were $retkeys which does not include :$desired, and no fallback was found for :$desired. Expect an error to be thrown below.
-                       """, M=typeof(m), S=typeof(s), A=typeof(a), RNG=typeof(rng))
+                       $x
+
+                       which does not contain key :$desired. (This message is intended to compliment
+                       and help debug the error below.)
+                       """)
             end
         else
             novalgen_error = quote
@@ -65,7 +66,12 @@
                 catch
                 finally
                     desired = $sym
-                    @error("gen(::M, ::S, ::A, ::RNG) was not implemented and no fallback was found for :$desired. Expect an error to be thrown below.", M=typeof(m), S=typeof(s), A=typeof(a), RNG=typeof(rng))
+                    @error("""The function
+                           
+                           $(schecked(@req(gen(m,s,a,rng)), context=logger_context()))
+                           was not implemented and thus could not be used to generate :$desired. (This
+                           message is intended to compliment and help debug the error below.)
+                           """)
                 end
             end
         end
@@ -80,11 +86,26 @@
             else
                 fallback = quote
                     $novalgen_error
-                    suggestion = sprint($(genvars[var].fallback.suggest), m, s, a, rng)
-                    @error("""No fallback found for gen(::Return{:$X}, m, s, a, rng). Either implement it directly, or consider the following suggestion:
+                    suggestion = sprint($(genvars[var].fallback.suggest), m, s, a, rng, context=logger_context())
+                    desired = $sym
+                    if novalgen_implemented
+                        @error("""POMDPs.jl could not find a way to generate :$desired. 
+                               
+                               Consider the error messages above and below and consider implementing 
 
-                           $suggestion
-                           """)
+                               $suggestion
+                               """)
+                    else
+                        @error("""POMDPs.jl could not find a way to generate :$desired. 
+                               
+                               Consider implementing 
+
+                               $(schecked(@req(gen(::Return{$sym}, m, s, a, rng)), context=logger_context()))
+                               or
+
+                               $suggestion
+                               """)
+                    end
                     try
                         $(genvars[var].fallback.impl)(m, s, a, rng) # for backedges
                     catch

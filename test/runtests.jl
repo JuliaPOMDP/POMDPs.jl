@@ -3,6 +3,8 @@ using Test
 using POMDPs
 using Random
 
+POMDPs.logger_context(::Test.TestLogger) = IOContext(stderr)
+
 # using Logging
 # global_logger(ConsoleLogger(stderr, Logging.Debug))
 

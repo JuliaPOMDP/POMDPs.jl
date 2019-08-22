@@ -2,7 +2,51 @@
 
 ## Description
 
-The *generative* interface contains a small collection of functions that makes implementing and solving problems with generative models easier. These functions return states and observations instead of distributions as in the [Explicit interface](@ref explicit_doc).
+The *generative* interface consists of two functions:
+- [`gen`](@ref) returns samples (e.g. states, observations and rewards) from a generative POMDP model.
+- [`initialstate`](@ref) returns a sampled initial state.
+The generative interface is typically used when it is easier to return sampled states and observations rather than explicit distributions as in the [Explicit interface](@ref explicit_doc).
+
+## Basic Implementation Instructions
+
+To implement the generative interface for a 'POMDP' or 'MDP' type 'M', one should implement
+
+- [`gen`](@ref)`(m::M, s, a, `[`rng`](@ref Random-number-generators)`)`. This should return a [`NamedTuple`](todo link) with entries `sp` (mnemonic "s-prime") for the next state, `r` for the reward, and `o` for the observation (if `M <: POMDP`).
+- [`initialstate`](@ref)`(m::M, `[`rng`](@ref Random-number-generators)`)`, which should return a sampled initial state.
+
+## Examples
+
+An example of defining a problem with the generative interface can be found at [https://github.com/JuliaPOMDP/POMDPExamples.jl/blob/master/notebooks/Defining-a-POMDP-with-the-Generative-Interface.ipynb](https://github.com/JuliaPOMDP/POMDPExamples.jl/blob/master/notebooks/Defining-a-POMDP-with-the-Generative-Interface.ipynb)
+
+## Advanced concepts
+
+The following sections lay out the details of the generative implementation in POMDPs.jl.
+
+### Specified return types
+
+While [`gen`](@ref)`(m, s, a, rng)` provides a convenient way to specify the 
+
+### Genvars
+
+
+
+### Random number generators
+
+The `rng` argument to functions in the generative interface is a random number generator such as `Base.GLOBAL_RNG` or another `MersenneTwister`. It should be used to generate all random numbers within the function (e.g. use `rand(rng)` instead of `rand()`). This will ensure that all simulations are exactly repeatable. See the [Julia documentation on random numbers](https://docs.julialang.org/en/v1/stdlib/Random/#Random-Numbers-1) for more information about these objects.
+
+### Mixing with the explicit interface
+
+POMDPs.jl will automatically use function from the [Explicit interface](@ref explicit_doc)
+
+### Performance
+
+
+
+
+
+
+
+contains a small collection of functions that makes implementing and solving problems with generative models easier. These functions return states and observations instead of distributions as in the [Explicit interface](@ref explicit_doc).
 
 The generative interface functions are the following (note that this is not actual julia code):
 ```julia

@@ -5,6 +5,7 @@
 Check whether there is an implementation available that will return a suitable value.
 """
 implemented(f::Function, TT::TupleType) = hasmethod(f, TT)
+implemented(req::Req) = implemented(first(req), last(req))
 
 """
     @implemented function(::Arg1Type, ::Arg2Type)

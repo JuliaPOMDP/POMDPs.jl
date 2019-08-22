@@ -1,3 +1,7 @@
+# list_genvars
+# genvar_details
+# add_genvar
+
 struct Fallback
     isimplemented::Function
     impl::Function
@@ -32,7 +36,7 @@ genvars[:sp] = GenVarData(@__MODULE__,
                           (M, S, A, RNG) -> implemented(transition, Tuple{M,S,A}),
                           rand_transition,
                           function (io, m, s, a, rng)
-                              print(io, "Implement transition(::$(typeof(m)), ::$(typeof(s)), ::$(typeof(a))).")
+                              print(io, schecked(@req(transition(m,s,a)), context=io))
                           end
                          ))
 
@@ -45,7 +49,7 @@ genvars[:o] = GenVarData(@__MODULE__,
                          (M, S, A, SP, RNG) -> implemented(observation, Tuple{M,S,A,SP}),
                          rand_observation,
                          function (io, m, s, a, sp, rng)
-                             print(io, "Implement observation(::$(typeof(m)), ::$(typeof(s)), ::$(typeof(a)), ::$(typeof(sp))).")
+                             print(io, schecked(@req(observation(m,s,a,sp)), context=io))
                          end
                         ))
 
@@ -59,8 +63,7 @@ genvars[:r] = GenVarData(@__MODULE__,
                          (argtypes...) -> implemented(reward, Tuple{argtypes[1:end-1]...}),
                          (args...) -> reward(args[1:end-1]...),
                          function (io, args...)
-                             argtypestring = join(("::$(typeof(a))" for a in args[1:end-1]), ", ")
-                             print(io, "Implement reward($(argtypestring)).")
+                             print(io, schecked(Req(reward, typeof(args[1:end-1])), context=io))
                          end
                         ))
 

@@ -10,6 +10,7 @@ import Distributions: rand, pdf, mode, mean, support
 import Pkg
 import LibGit2
 using LightGraphs
+using Logging
 
 export 
     # Abstract type
