@@ -65,12 +65,7 @@ initialstate_distribution
 These functions should return *states*, *observations*, and *rewards*.
 
 ```@docs
-generate_s
-generate_o
-generate_sr
-generate_so
-generate_or
-generate_sor
+gen
 initialstate
 ```
 
