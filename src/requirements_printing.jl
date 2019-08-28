@@ -1,7 +1,7 @@
 function show_heading(io::IO, requirer)
     print(io, "INFO: POMDPs.jl requirements for ")
     printstyled(io, handle_method(requirer), color=:blue)
-    println(io, " and dependencies. ([✔] = implemented correctly; [✗] = missing)")
+    println(io, " and dependencies. ([✔] = implemented correctly; [X] = missing)")
 end
 
 function show_requirer(io::IO, r::AbstractRequirementSet)
@@ -20,7 +20,7 @@ function show_checked_list(io::IO, cl::AbstractVector{T}) where T <: Tuple
             printstyled(io, "  [✔] $(format_method(item[2], item[3]))", color=:green)
             println(io)
         else
-            printstyled(io, "  [✗] $(format_method(item[2], item[3]))", color=:red)
+            printstyled(io, "  [X] $(format_method(item[2], item[3]))", color=:red)
             println(io)
         end
     end

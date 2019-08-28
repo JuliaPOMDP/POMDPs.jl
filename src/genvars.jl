@@ -1,33 +1,35 @@
-# types for storing data about genvars
+# Types for storing data about genvars
 struct Fallback
-    isimplemented::Function
-    impl::Function
-    suggest::Function
+    isimplemented::Function # function of model, dependency genvars, and rng types (e.g. (M, S, A, RNG))
+    impl::Function          # actual function that is called to create the fallback value. Function of model, dependency genvars, and rng (e.g. (m, s, a, rng))
+    suggest::Function       # function of an io object, model, dependency genvars, and rng (e.g. (io, m, s, a, rng))
 end
+
+Fallback(object) = Fallback((_...)->true, (_...)->object, (io, _...)->print(io, "<No suggestion provided. (this point should never be reached)>"))
 
 struct GenVarData
     mod::Module
     longname::String
     descripton::String
-    deps::Function
+    deps::Function # function of the model type
     type::Function # function of the model type - only used if things depend on it; can be abstract
     fallback::Union{Fallback,Nothing}
 end
 
 GenVarData(m, l, d, deps, t) = GenVarData(m, l, d, deps, t, nothing)
 
-# create a global registry of genvars
+# Global registry of genvars
 const genvar_registry = Dict{Symbol, GenVarData}()
 
-# public interface
+# Public interface
 """
-Print a short human-readable summary of all the genvars
+Print a short human-readable summary of all the genvars.
 """
 function list_genvars()
     for v in genvars()
         data = genvar_data(v)
         println("genvar: :$v ($(data.longname))")
-        println("module: $(data.module)")
+        println("module: $(data.mod)")
         println("description: $(data.descripton)")
         println()
     end
@@ -40,6 +42,7 @@ Add a genvar to the POMDPs.jl registry of genvars so that problems, solvers, and
 """
 function add_genvar(name::Symbol, data::GenVarData)
     genvar_registry[name] = data
+    return name
 end
 
 """
@@ -53,8 +56,13 @@ genvars() = keys(genvar_registry)
 Return a struct containing the data associated with a particular genvar.
 """
 genvar_data(genvar::Symbol) = genvar_registry[genvar]
+# <End public interface>
 
-# add all the basic genvars
+# just for convenience
+rand_transition(m, s, a, rng) = rand(rng, transition(m, s, a))
+rand_observation(m, s, a, sp, rng) = rand(rng, observation(m, s, a, sp))
+
+# Create the basic genvars
 genvar_registry[:s] = GenVarData(@__MODULE__, "state", "state at the beginning of the step", M->Symbol[], statetype)
 genvar_registry[:a] = GenVarData(@__MODULE__, "action", "action taken by the agent", M->Symbol[], actiontype)
 
@@ -98,8 +106,12 @@ genvar_registry[:r] = GenVarData(@__MODULE__,
                          end
                         ))
 
+# Utilities for genvars
+"""
+Create a list of genvars sorted so that dependencies come before dependents.
+"""
 function sorted_genvars(M::Type, symbols)
-    dag = SimpleDiGraph(length(genvars))
+    dag = SimpleDiGraph(length(genvars()))
     labels = Symbol[]
     nodemap = Dict{Symbol, Int}()
     for sym in symbols
@@ -114,7 +126,8 @@ function sorted_genvars(M::Type, symbols)
 end
 
 function add_dep_edges!(dag, nodemap, labels, M::Type, sym)
-    for dep in genvar_registry[sym].deps(M)
+    deps = genvar_data(sym).deps(M)
+    for dep in deps
         if !haskey(nodemap, dep)
             push!(labels, dep)
             nodemap[dep] = length(labels)
@@ -123,9 +136,3 @@ function add_dep_edges!(dag, nodemap, labels, M::Type, sym)
         add_dep_edges!(dag, nodemap, labels, M, dep)
     end
 end
-
-# just for convenience
-rand_transition(m, s, a, rng) = rand(rng, transition(m, s, a))
-rand_observation(m, s, a, sp, rng) = rand(rng, observation(m, s, a, sp))
-
-

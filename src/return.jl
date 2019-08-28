@@ -1,6 +1,6 @@
 """
     Return(x::Symbol)
-    Return(x::NTuple{N, Symbol}...)
+    Return(::Symbol, ::Symbol,...)
     Return{x::Symbol}()
     Return{x::NTuple{N, Symbol})
 
@@ -28,8 +28,9 @@ function Return(x::Symbol)
     Return{x}()
 end
 
-function Return(args::NTuple{N,Symbol}...) where N
+function Return(args...)
     for a in args
+        @assert a isa Symbol
         if a == :s
             @warn("Return(:s) is not normally used. Did you mean Return(:sp)? To suppress this warning, use Return{:s}().")
         end

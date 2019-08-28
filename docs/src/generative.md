@@ -47,7 +47,6 @@ The symbols that can be used with [`Return`](@ref) to specify what [`gen`](@ref)
 A human-readable list of all the genvars that POMDPs.jl knows about can be shown with [`list_genvars()`](@ref).
 For programmatic use, [`genvars()`](@ref)
 Details for the meaning of a genvar can be 
-As of this version `POMDPs.genvars` 
 
 ### Random number generators
 

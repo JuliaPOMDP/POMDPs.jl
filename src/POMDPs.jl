@@ -36,13 +36,12 @@ export
     Return,
     gen,
     initialstate,
-    
+
     # Discrete Functions
     length,
     stateindex,
     actionindex,
     obsindex,
-    weight,
     
     # Common Functions
     rand,
@@ -83,6 +82,12 @@ export
     actiontype,
     obstype,
 
+    # Genvars
+    list_genvars,
+    add_genvar,
+    genvars,
+    genvar_data,
+
     # Requirements checking
     RequirementSet,
     check_requirements,
@@ -97,7 +102,6 @@ export
     @warn_requirements,
     @req,
     @subreq,
-
 
     # Deprecated
     generate_s,
@@ -128,10 +132,10 @@ include("belief.jl")
 include("space.jl")
 include("policy.jl")
 include("type_inferrence.jl")
+include("genvars.jl")
 include("return.jl")
 include("generative.jl")
 include("gen_impl.jl")
-include("genvars.jl")
 include("constants.jl")
 include("utils.jl")
 include("deprecated.jl")

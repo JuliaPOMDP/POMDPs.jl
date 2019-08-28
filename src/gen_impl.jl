@@ -79,7 +79,7 @@
         if var == X && genvarargs == [:s, :a]
             # in this case, calling gen would lead to a stack overflow
             if genvar_data(var).fallback != nothing &&
-                    ganvar_data(var).fallback.isimplemented(m, s, a, rng)
+                    genvar_data(var).fallback.isimplemented(m, s, a, rng)
                 fallback = quote
                     $var = $(genvar_data(var).fallback.impl)(m, s, a, rng)
                 end
@@ -88,7 +88,7 @@
                     $novalgen_error
                     suggestion = sprint($(genvar_data(var).fallback.suggest), m, s, a, rng, context=logger_context())
                     desired = $sym
-                    if novalgen_implemented
+                    if $novalgen_implemented
                         @error("""POMDPs.jl could not find a way to generate :$desired. 
                                
                                Consider the error messages above and below and consider implementing 
@@ -197,11 +197,12 @@ function implemented(g::typeof(gen), TT::TupleType)
         argtypes_without_val = TT.parameters[2:end]
         vp = first(v.parameters)
         vptpl = vp isa Tuple ? vp : tuple(vp)
+
         if m.module != POMDPs # implemented by a user elsewhere
             return true
         elseif implemented(g, Tuple{argtypes_without_val...}) # gen(m,s,a,rng) is implemented
             return true
-        elseif haskey(old_generate, vp) && implemented_by_user(old_generate[vp], Tuple{argtypes_without_val...})
+        elseif haskey(old_generate, vp) && implemented_by_user(old_generate[vp], Tuple{argtypes_without_val...}) # old generate function is implemented
             return true
         elseif vp isa Symbol &&
                 genvar_data(vp).fallback != nothing &&

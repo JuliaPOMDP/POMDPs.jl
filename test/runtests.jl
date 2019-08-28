@@ -58,6 +58,10 @@ end
     include("test_generative_backedges.jl")
 end
 
+@testset "genvars" begin
+    include("test_genvars.jl")
+end
+
 @testset "gendep" begin
     include("test_deprecated_generative.jl")
 end
