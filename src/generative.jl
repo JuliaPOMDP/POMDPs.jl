@@ -3,7 +3,7 @@
 
 Sample from a generative POMDP or MDP model.
 
-# `NamedTuple` Version
+---
 
     gen(m::MDP, s, a, rng::AbstractRNG)
 
@@ -24,7 +24,7 @@ The `NamedTuple` version of `gen` is the most convenient for problem writers to 
 ## Return
 The function should return a `NamedTuple`. Typically, this `NamedTuple` will have the keys `sp` and `r` for an `MDP` and `sp`, `o`, and `r` for a `POMDP`. Occasionally, packages may request other values. The symbols for these values that appear as keys in the `NamedTuple` are known as *genvars*. The genvars for all loaded packages can be shown with `list_genvars()`. See the documentation for more details.
 
-# `Return` Version
+---
 
     gen(rt::Return, m::Union{MDP,POMDP}, s, a, rng::AbstractRNG)
 

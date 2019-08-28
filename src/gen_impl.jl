@@ -40,8 +40,8 @@
     # add fallbacks for other variables
     for var in filter(v->!(v in (:s, :a)), sorted_genvars(m, symbols))
         sym = Meta.quot(var)
-        genvarargs = genvars[var].deps(m)
-        genvarargtypes = [genvars[a].type(m) for a in genvarargs]
+        genvarargs = genvar_data(var).deps(m)
+        genvarargtypes = [genvar_data(a).type(m) for a in genvarargs]
 
         # this error will be printed whenever we don't get the value from gen(m,s,a,rng)
         # it also contains backedge code
@@ -78,15 +78,15 @@
 
         if var == X && genvarargs == [:s, :a]
             # in this case, calling gen would lead to a stack overflow
-            if genvars[var].fallback != nothing &&
-                    genvars[var].fallback.isimplemented(m, s, a, rng)
+            if genvar_data(var).fallback != nothing &&
+                    ganvar_data(var).fallback.isimplemented(m, s, a, rng)
                 fallback = quote
-                    $var = $(genvars[var].fallback.impl)(m, s, a, rng)
+                    $var = $(genvar_data(var).fallback.impl)(m, s, a, rng)
                 end
             else
                 fallback = quote
                     $novalgen_error
-                    suggestion = sprint($(genvars[var].fallback.suggest), m, s, a, rng, context=logger_context())
+                    suggestion = sprint($(genvar_data(var).fallback.suggest), m, s, a, rng, context=logger_context())
                     desired = $sym
                     if novalgen_implemented
                         @error("""POMDPs.jl could not find a way to generate :$desired. 
@@ -107,7 +107,7 @@
                                """)
                     end
                     try
-                        $(genvars[var].fallback.impl)(m, s, a, rng) # for backedges
+                        $(genvar_data(var).fallback.impl)(m, s, a, rng) # for backedges
                     catch
                     finally
                         # this is in the finally block because we want problems with fallback_implemented to get fixed
@@ -160,20 +160,20 @@ end
                   """)
             return :($(old_generate[X])(args...))
         else
-            if genvars[X].fallback != nothing &&
-                genvars[X].fallback.isimplemented(args...)
-                return :($(genvars[X].fallback.impl)(args...))
+            if genvar_data(X).fallback != nothing &&
+                genvar_data(X).fallback.isimplemented(args...)
+                return :($(genvar_data(X).fallback.impl)(args...))
             else
                 argtypestring = join(("::$a" for a in args), ", ") # outside quote for purity
                 return quote
-                    suggestion = sprint($(genvars[X].fallback.suggest), args...)
+                    suggestion = sprint($(genvar_data(X).fallback.suggest), args...)
                     argtypestring = $argtypestring
                     @error("""No fallback found for gen(::Return{:$X}, $argtypestring). Either implement it directly, or consider the following suggestion:
 
                            $suggestion
                            """)
                     try
-                        $(genvars[X].fallback.impl)(args...) # for backedges
+                        $(genvar_data(X).fallback.impl)(args...) # for backedges
                     catch
                     finally
                         throw(MethodError(gen, (v, args...))) # in finally so errors in isimplemented get fixed
@@ -204,15 +204,15 @@ function implemented(g::typeof(gen), TT::TupleType)
         elseif haskey(old_generate, vp) && implemented_by_user(old_generate[vp], Tuple{argtypes_without_val...})
             return true
         elseif vp isa Symbol &&
-                genvars[vp].fallback != nothing &&
-                genvars[vp].fallback.isimplemented(argtypes_without_val...)
+                genvar_data(vp).fallback != nothing &&
+                genvar_data(vp).fallback.isimplemented(argtypes_without_val...)
             return true
         elseif vp isa Tuple
             # Note: already checked for gen(m,s,a,rng) above
             modeltype = first(argtypes_without_val)
             rngtype = last(argtypes_without_val)
             for var in filter(v->!(v in (:s, :a)), sorted_genvars(modeltype, vp))
-                deptypes = collect(genvars[d].type(modeltype) for d in genvars[var].deps(modeltype))
+                deptypes = collect(genvar_data(d).type(modeltype) for d in genvar_data(var).deps(modeltype))
                 if !implemented(gen, Tuple{Return{var}, modeltype, deptypes..., rngtype})
                     return false
                 end

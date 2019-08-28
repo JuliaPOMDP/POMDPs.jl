@@ -25,17 +25,29 @@ The following sections lay out the details of the generative implementation in P
 
 ### Specified return types
 
-While [`gen`](@ref)`(m, s, a, rng)` provides a convenient way to specify the next state and reward (and observation for POMDPs), sometimes a solver or updater will only need access to a subset of these outputs. For this case, there are methods of `gen` with specified return types. For example,
+While [`gen`](@ref)`(m, s, a, rng)` provides a convenient way to specify the next state and reward (and observation for POMDPs), sometimes a solver or updater will only need access to a subset of these outputs. For this case, there are methods of `gen` with return types specified using [`Return`](@ref) objects. For example,
 ```
 gen(Return(:sp, :o), m, s, a, rng)
 ```
-will only return the next state and observation in a tuple (and not the reward). This will automatically work if the compiler finds a way 
+will return a tuple containing only the next state and observation (and not the reward).
+[`Return`](@ref) types are value types similar to `Val`.
+See the Julia documentation {TODO: link} on value types for more information.
 
+In order to avoid calculating 
 
+Methods of [`gen`](@ref) with [`Return`](@ref) arguments generally do not need to be implemented directly in a problem definition.
+Instead they are synthesized automatically by POMDPs.jl if the compiler can find a way to generate all of the returned values using [`gen`](@ref) or a combination of [`gen`](@ref) and other functions.
+
+In some cases it will make sense to directly implement methods of [`gen`](@ref) with the first [`Return`](@ref) argument or use functions from the explicit interface.
+See the [Mixing with the explicit interface](@ref) and [Performance considerations](@ref) sections below for more discussion on when this may be appropriate.
 
 ### Genvars
 
-
+The symbols that can be used with [`Return`](@ref) to specify what [`gen`](@ref) returns are known as "genvars".
+A human-readable list of all the genvars that POMDPs.jl knows about can be shown with [`list_genvars()`](@ref).
+For programmatic use, [`genvars()`](@ref)
+Details for the meaning of a genvar can be 
+As of this version `POMDPs.genvars` 
 
 ### Random number generators
 
@@ -43,7 +55,8 @@ The `rng` argument to functions in the generative interface is a random number g
 
 ### Mixing with the explicit interface
 
-POMDPs.jl will automatically use functions from the [Explicit interface](@ref explicit_doc) if any variables cannot be generated with [`gen`](@ref), so it is reasonable to parts of the generative and explicit interface. For example, it would be reasonable to implement
+POMDPs.jl will automatically use functions from the [Explicit interface](@ref explicit_doc) if any variables cannot be generated with [`gen`](@ref), so it is reasonable to use parts of both generative and explicit interfaces to define the same problem.
+For example, it would be reasonable to implement
 ```julia
 struct M <: POMDP{Int, Int, Float64} end
 
