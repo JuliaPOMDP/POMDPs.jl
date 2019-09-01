@@ -5,6 +5,8 @@ using Random
 
 POMDPs.logger_context(::Test.TestLogger) = IOContext(stderr)
 
+mightbemissing(x) = ismissing(x) || x
+
 # using Logging
 # global_logger(ConsoleLogger(stderr, Logging.Debug))
 
@@ -54,9 +56,9 @@ end
     include("test_generative.jl")
 end
 
-# @testset "genback" begin
-#     include("test_generative_backedges.jl")
-# end
+@testset "genback" begin
+    include("test_generative_backedges.jl")
+end
 
 # @testset "genvars" begin
 #     include("test_genvars.jl")

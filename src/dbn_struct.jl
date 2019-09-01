@@ -4,16 +4,16 @@ struct DBNTuple{names} end
 DBNVar(name::Symbol) = DBNVar{name}()
 DBNTuple(names...) = DBNTuple{names}()
 
-struct DBNDef{N<:NamedTuple, D<:NamedTuple}
+struct DBNDef{N<:NamedTuple}
     nodes::N
-    deps::D
+    deps::NamedTuple
 end
 
 function DBNStructure(::Type{M}) where M <: MDP
     DBNDef((s = nothing,
             a = nothing,
-            sp = DistributionDBNNode(:sp, transition),
-            r = FunctionDBNNode(:r, reward)
+            sp = DistributionDBNNode(transition),
+            r = FunctionDBNNode(reward)
            ),
            (s = (),
             a = (),
@@ -45,18 +45,33 @@ struct DistributionDBNNode{F}
     dist_func::F
 end
 
-function gen(n::DistributionDBNNode, m, args...)
-    rand(args[end], n.dist_func(m, args[1:end-1]...))
+@generated function gen(n::DistributionDBNNode, m, args...)
+    # apparently needs to be @generated for type stability
+    argexpr = (:(args[$i]) for i in 1:length(args)-1)
+    quote
+        rand(last(args), n.dist_func(m, $(argexpr...)))
+    end
+end
+
+function implemented(g::typeof(gen), n::DistributionDBNNode, M::Type, Deps::TupleType, RNG::Type)
+    return implemented(n.dist_func, Tuple{M, Deps.parameters...})
 end
 
 struct FunctionDBNNode{F}
     f::F
 end
 
-function gen(n::FunctionDBNNode, m, args...)
-    return n.f(m, args[1:end-1]...)
+@generated function gen(n::FunctionDBNNode, m, args...)
+    # apparently this needs to be @generated for type stability
+    argexpr = (:(args[$i]) for i in 1:length(args)-1)
+    quote
+        n.f(m, $(argexpr...))
+    end
 end
 
+function implemented(g::typeof(gen), n::FunctionDBNNode, M::Type, Deps::TupleType, RNG::Type)
+    return implemented(n.f, Tuple{M, Deps.parameters...})
+end
 
 """
 Create a list of node names sorted so that dependencies come before dependents.
