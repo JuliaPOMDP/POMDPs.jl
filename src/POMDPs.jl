@@ -33,7 +33,6 @@ export
     isterminal,
 
     # Generative model functions
-    Return,
     gen,
     initialstate,
 
@@ -82,11 +81,11 @@ export
     actiontype,
     obstype,
 
-    # Genvars
-    list_genvars,
-    add_genvar,
-    genvars,
-    genvar_data,
+    # DBNs
+    DBNVar,
+    DBNTuple,
+    DBNDef,
+    DBNStructure,
 
     # Requirements checking
     RequirementSet,
@@ -132,8 +131,7 @@ include("belief.jl")
 include("space.jl")
 include("policy.jl")
 include("type_inferrence.jl")
-include("genvars.jl")
-include("return.jl")
+include("dbn_struct.jl")
 include("generative.jl")
 include("gen_impl.jl")
 include("constants.jl")
