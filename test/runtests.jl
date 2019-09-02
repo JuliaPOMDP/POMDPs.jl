@@ -60,13 +60,13 @@ end
     include("test_generative_backedges.jl")
 end
 
-# @testset "genvars" begin
-#     include("test_genvars.jl")
+# @testset "dbn_struct" begin
+#     include("test_dbn_struct.jl")
 # end
 
-# @testset "gendep" begin
-#     include("test_deprecated_generative.jl")
-# end
+@testset "gendep" begin
+    include("test_deprecated_generative.jl")
+end
 
 struct CI <: POMDP{Int,Int,Int} end
 struct CV <: POMDP{Vector{Float64},Vector{Float64},Vector{Float64}} end

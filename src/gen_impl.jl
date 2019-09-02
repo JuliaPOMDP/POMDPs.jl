@@ -41,23 +41,48 @@
     return expr
 end
 
-function gen(::DBNVar{x}, m, s, a, rng) where x
-    # TODO deal with deprecation of old generate functions
+@generated function gen(::DBNVar{x}, m, s, a, rng) where x
+    # this function is only @generated to deal with the deprecation of generate_ functions
+    
+    # deprecation of old generate_ functions
+    if haskey(old_generate, x) && implemented_by_user(old_generate[x], Tuple{m, s, a, rng})
+        @warn("""Using user-implemented function
+                  $(old_generate[x])(::M, ::S, ::A, ::RNG)
+              which is deprecated in POMDPs v0.8. Please implement this as
+                  POMDPs.gen(::M, ::S, ::A, ::RNG) or
+                  POMDPs.gen(::DBNVar{$x}, ::M, ::S, ::A, ::RNG)
+              instead. See the POMDPs.gen documentation for more details.""", M=m, S=s, A=a, RNG=rng)
+        return :($(old_generate[x])(m, s, a, rng))
+    end
 
-    nt = gen(m, s, a, rng)
-    @assert nt isa NamedTuple "gen(m::Union{MDP,POMDP}, ...) must return a NamedTuple; got a $(typeof(nt))"
-    if haskey(nt, x)
-        return nt[x]
-    else
-        return gen(DBNStructure(m).nodes[x], m, s, a, rng)
+    quote
+        nt = gen(m, s, a, rng)
+        @assert nt isa NamedTuple "gen(m::Union{MDP,POMDP}, ...) must return a NamedTuple; got a $(typeof(nt))"
+        if haskey(nt, x)
+            return nt[x]
+        else
+            return gen(DBNStructure(m).nodes[x], m, s, a, rng)
+        end
     end
 end
 
-function gen(::DBNVar{x}, m, args...) where x
-    # TODO deal with deprecation of old generate functions
-    # TODO warning if not implemented
+@generated function gen(::DBNVar{x}, m, args...) where x
+    # this function is only @generated to deal with deprecation of gen functions
 
-    gen(DBNStructure(m).nodes[x], m, args...)
+    # deprecation of old generate_ functions
+    if haskey(old_generate, x) && implemented_by_user(old_generate[x], Tuple{m, args...})
+        @warn("""Using user-implemented function
+                  $(old_generate[x])(::M, ::Argtypes...)
+              which is deprecated in POMDPs v0.8. Please implement this as
+                  POMDPs.gen(::M, ::Argtypes...) or
+                  POMDPs.gen(::DBNVar{$x}, ::M, ::Argtypes...)
+              instead. See the POMDPs.gen documentation for more details.""", M=m, Argtypes=args)
+        return :($(old_generate[x])(m, args...))
+    end
+
+    quote 
+        gen(DBNStructure(m).nodes[x], m, args...)
+    end
 end
 
 gen(m::Union{MDP, POMDP}, s, a, rng) = NamedTuple()
@@ -71,12 +96,11 @@ function implemented(g::typeof(gen), TT::TupleType)
     if v <: Union{MDP, POMDP}
         return false # already checked above for implementation in another module
     else
-        # TODO handle old generate_case
-        # @assert v <: Union{DBNVar, DBNTuple}
-        # vp = first(v.parameters)
-        # if haskey(old_generate, vp) && implemented_by_user(old_generate[vp], Tuple{argtypes_without_val...}) # old generate function is implemented
-        #     return true
-        # end
+        @assert v <: Union{DBNVar, DBNTuple}
+        vp = first(v.parameters)
+        if haskey(old_generate, vp) && implemented_by_user(old_generate[vp], Tuple{TT.parameters[2:end]...}) # old generate function is implemented
+            return true
+        end
 
         return implemented(g, v, TT.parameters[2], Tuple{TT.parameters[3:end-1]...}, TT.parameters[end])
     end
