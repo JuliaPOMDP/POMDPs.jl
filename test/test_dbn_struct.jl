@@ -14,7 +14,7 @@ ns = Set(nodenames(dbn))
 
 dbn = DBNStructure(DBNB)
 @test node(dbn, :sp) == DistributionDBNNode(transition)
-@test Set(depvars(dbn, :sp)) == Set((DBNVar{:s}, DBNVar{:a}))
+@test Set(depvars(dbn, :sp)) == Set((DBNVar(:s), DBNVar(:a)))
 @test Set(depnames(dbn, :sp)) == Set((:s, :a))
 
 module InfoModule
