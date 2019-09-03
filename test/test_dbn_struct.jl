@@ -1,16 +1,21 @@
 struct DBNA <: MDP{Int, Int} end
-dbn = DBNStructure(DBNA())
+dbn = DBNStructure(DBNA)
 
 @test all(v in Set((:s, :a, :r, :sp)) for v in nodenames(dbn))
 ns = Set(nodenames(dbn))
 @test all(v in ns for v in [:s, :a, :r, :sp])
 
 struct DBNB <: POMDP{Int, Int, Int} end
-dbn = DBNStructure(DBNB())
+dbn = DBNStructure(DBNB)
 
 @test all(v in Set((:s, :a, :r, :sp, :o)) for v in nodenames(dbn))
 ns = Set(nodenames(dbn))
 @test all(v in ns for v in [:s, :a, :r, :sp, :o])
+
+dbn = DBNStructure(DBNB)
+@test node(dbn, :sp) == DistributionDBNNode(transition)
+@test Set(depvars(dbn, :sp)) == Set((DBNVar{:s}, DBNVar{:a}))
+@test Set(depnames(dbn, :sp)) == Set((:s, :a))
 
 module InfoModule
     using POMDPs
