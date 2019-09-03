@@ -1,4 +1,4 @@
-@generated function gen(v::DBNTuple{symbols}, m, s, a, rng) where symbols
+@generated function gen(v::DBNOut{symbols}, m, s, a, rng) where symbols
 
     # deprecation of old generate_ functions
     if haskey(old_generate, symbols) && implemented_by_user(old_generate[symbols], Tuple{m, s, a, rng})
@@ -6,7 +6,7 @@
                   $(old_generate[symbols])(::M, ::S, ::A, ::RNG)
               which is deprecated in POMDPs v0.8. Please implement this as
                   POMDPs.gen(::M, ::S, ::A, ::RNG) or
-                  POMDPs.gen(::DBNTuple{$symbols}, ::M, ::S, ::A, ::RNG)
+                  POMDPs.gen(::DBNOut{$symbols}, ::M, ::S, ::A, ::RNG)
               instead. See the POMDPs.gen documentation for more details.""", M=m, S=s, A=a, RNG=rng)
         return :($(old_generate[symbols])(m, s, a, rng))
     end
@@ -19,7 +19,9 @@
 
     # add gen for any other variables
     dbn = DBNStructure(m)
-    for var in filter(v->!(v in (:s, :a)), sorted_nodenames(dbn, symbols))
+    sorted = sorted_nodenames(dbn, symbols)
+    required = filter(v->!(node(dbn, v) isa InputDBNNode), sorted)
+    for var in required
         sym = Meta.quot(var)
 
         depargs = deps(dbn, var)
@@ -35,36 +37,40 @@
     end
 
     # add return expression
-    return_expr = :(return $(Expr(:tuple, symbols...)))
+    if symbols isa Tuple
+        return_expr = :(return $(Expr(:tuple, symbols...)))
+    else
+        return_expr = :(return $symbols)
+    end
     append!(expr.args, return_expr.args)
 
     return expr
 end
 
-@generated function gen(::DBNVar{x}, m, s, a, rng) where x
-    # this function is only @generated to deal with the deprecation of generate_ functions
-    
-    # deprecation of old generate_ functions
-    if haskey(old_generate, x) && implemented_by_user(old_generate[x], Tuple{m, s, a, rng})
-        @warn("""Using user-implemented function
-                  $(old_generate[x])(::M, ::S, ::A, ::RNG)
-              which is deprecated in POMDPs v0.8. Please implement this as
-                  POMDPs.gen(::M, ::S, ::A, ::RNG) or
-                  POMDPs.gen(::DBNVar{$x}, ::M, ::S, ::A, ::RNG)
-              instead. See the POMDPs.gen documentation for more details.""", M=m, S=s, A=a, RNG=rng)
-        return :($(old_generate[x])(m, s, a, rng))
-    end
-
-    quote
-        nt = gen(m, s, a, rng)
-        @assert nt isa NamedTuple "gen(m::Union{MDP,POMDP}, ...) must return a NamedTuple; got a $(typeof(nt))"
-        if haskey(nt, x)
-            return nt[x]
-        else
-            return gen(node(DBNStructure(m), x), m, s, a, rng)
-        end
-    end
-end
+# @generated function gen(::DBNVar{x}, m, s, a, rng) where x
+#     # this function is only @generated to deal with the deprecation of generate_ functions
+#     
+#     # deprecation of old generate_ functions
+#     if haskey(old_generate, x) && implemented_by_user(old_generate[x], Tuple{m, s, a, rng})
+#         @warn("""Using user-implemented function
+#                   $(old_generate[x])(::M, ::S, ::A, ::RNG)
+#               which is deprecated in POMDPs v0.8. Please implement this as
+#                   POMDPs.gen(::M, ::S, ::A, ::RNG) or
+#                   POMDPs.gen(::DBNVar{$x}, ::M, ::S, ::A, ::RNG)
+#               instead. See the POMDPs.gen documentation for more details.""", M=m, S=s, A=a, RNG=rng)
+#         return :($(old_generate[x])(m, s, a, rng))
+#     end
+# 
+#     quote
+#         nt = gen(m, s, a, rng)
+#         @assert nt isa NamedTuple "gen(m::Union{MDP,POMDP}, ...) must return a NamedTuple; got a $(typeof(nt))"
+#         if haskey(nt, x)
+#             return nt[x]
+#         else
+#             return gen(node(DBNStructure(m), x), m, s, a, rng)
+#         end
+#     end
+# end
 
 @generated function gen(::DBNVar{x}, m, args...) where x
     # this function is only @generated to deal with deprecation of gen functions
@@ -96,7 +102,7 @@ function implemented(g::typeof(gen), TT::TupleType)
     if v <: Union{MDP, POMDP}
         return false # already checked above for implementation in another module
     else
-        @assert v <: Union{DBNVar, DBNTuple}
+        @assert v <: Union{DBNVar, DBNOut}
         vp = first(v.parameters)
         if haskey(old_generate, vp) && implemented_by_user(old_generate[vp], Tuple{TT.parameters[2:end]...}) # old generate function is implemented
             return true
@@ -112,7 +118,7 @@ function implemented(g::typeof(gen), Var::Type{D}, M::Type, Deps::TupleType, RNG
     return implemented(g, node(dbn, v), M, Deps, RNG)
 end
 
-function implemented(g::typeof(gen), Vars::Type{D}, M::Type, Deps::TupleType, RNG::Type) where D <: DBNTuple
+function implemented(g::typeof(gen), Vars::Type{D}, M::Type, Deps::TupleType, RNG::Type) where D <: DBNOut
     if length(Deps.parameters) == 2 && implemented(g, Tuple{M, Deps.parameters..., RNG}) # gen(m, s, a, rng) is implemented
         return true # should this be true or missing?
     else

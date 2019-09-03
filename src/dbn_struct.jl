@@ -2,7 +2,9 @@
     DBNVar(x::Symbol)
     DBNVar{x::Symbol}()
 
-Reference to a named node in the POMDP or MDP dynamic Bayesian network.
+Reference to a named node in the POMDP or MDP dynamic Bayesian network (DBN).
+
+Note that `gen(::DBNVar, m, depargs..., rng)` always takes an argument for each dependency, `gen(::DBNOut, m, s, a, rng)` only takes `s` and `a` arguments (the inputs to the entire DBN).
 
 `DBNVar` is a "value type". See the documentation of `Val` for more conceptual details about value types.
 """
@@ -11,16 +13,21 @@ struct DBNVar{name} end
 DBNVar(name::Symbol) = DBNVar{name}()
 
 """
-    DBNTuple(::Symbol, ::Symbol,...)
-    DBNTuple{x::NTuple{N, Symbol}}()
+    DBNOut(x::Symbol)
+    DBNOut{x::Symbol}()
+    DBNOut(::Symbol, ::Symbol,...)
+    DBNOut{x::NTuple{N, Symbol}}()
 
-Reference to a collection of named nodes in the POMDP or MDP dynamic Bayesian network.
+Reference to one or more named nodes in the POMDP or MDP dynamic Bayesian network (DBN).
 
-`DBNTuple` is a "value type". See the documentation of `Val` for more conceptual details about value types.
+Note that `gen(::DBNOut, m, s, a, rng)` always takes `s` and `a` arguments (the inputs to the entire DBN) while `gen(::DBNVar, m, depargs..., rng)` takes a variable number of arguments (one for each dependency).
+
+`DBNOut` is a "value type". See the documentation of `Val` for more conceptual details about value types.
 """
-struct DBNTuple{names} end
+struct DBNOut{names} end
 
-DBNTuple(names...) = DBNTuple{names}()
+DBNOut(name::Symbol) = DBNOut{name}()
+DBNOut(names...) = DBNOut{names}()
 
 struct DBNDef{N<:NamedTuple}
     nodes::N
@@ -40,8 +47,8 @@ nodenames(d::DBNDef) = keys(d.nodes)
 end
 
 function mdp_dbn()
-    DBNDef((s = nothing,
-            a = nothing,
+    DBNDef((s = InputDBNNode(),
+            a = InputDBNNode(),
             sp = DistributionDBNNode(transition),
             r = FunctionDBNNode(reward),
            ),
@@ -54,19 +61,19 @@ function mdp_dbn()
 end
 
 function pomdp_dbn()
-    DBNDef((s = nothing,
-           a = nothing,
-           sp = DistributionDBNNode(transition),
-           o = DistributionDBNNode(observation),
-           r = FunctionDBNNode(reward),
-          ),
-          (s = (),
-           a = (),
-           sp = (:s, :a),
-           o = (:s, :a, :sp),
-           r = (:s, :a, :sp, :o),
+    DBNDef((s = InputDBNNode(),
+            a = InputDBNNode(),
+            sp = DistributionDBNNode(transition),
+            o = DistributionDBNNode(observation),
+            r = FunctionDBNNode(reward),
+           ),
+           (s = (),
+            a = (),
+            sp = (:s, :a),
+            o = (:s, :a, :sp),
+            r = (:s, :a, :sp, :o),
+           )
           )
-         )
 end
 
 """
@@ -92,6 +99,8 @@ DBNStructure(::Type{M}) where M <: MDP = mdp_dbn()
 DBNStructure(::Type{M}) where M <: POMDP = pomdp_dbn()
 
 DBNStructure(m) = DBNStructure(typeof(m))
+
+struct InputDBNNode end # this does nothing for now
 
 struct DistributionDBNNode{F}
     dist_func::F
@@ -149,6 +158,8 @@ function sorted_nodenames(dbn::DBNDef, symbols)
     sortednodes = topological_sort_by_dfs(dag)
     return labels[filter(n -> n<=length(labels), sortednodes)]
 end 
+
+sorted_nodenames(dbn::DBNDef, symbol::Symbol) = sorted_nodenames(dbn, tuple(symbol))
 
 function add_dep_edges!(dag, nodemap, labels, dbn, sym)
     deps = dbn.deps[sym]

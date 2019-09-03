@@ -5,34 +5,34 @@ Sample from generative model of a POMDP or MDP.
 
 There are 3 versions:
 - For problem-writers, the most convenient version to implement is gen(m::Union{MDP,POMDP}, s, a, rng::AbstractRNG), which returns a `NamedTuple`.
-- Solvers and simulators should use the version with a `DBNTuple` argument.
+- Solvers and simulators should use the version with a `DBNOut` argument.
 - Defining behavior for and sampling from individual nodes of the dynamic Bayesian network can be accomplished using the version with a `DBNVar` argument.
 
 See below for detailed documentation for each type.
 
 ---
 
-    gen(t::DBNTuple, m::Union{MDP,POMDP}, s, a, rng::AbstractRNG)
+    gen(t::DBNOut{X}, m::Union{MDP,POMDP}, s, a, rng::AbstractRNG) where X
 
 Sample values from several nodes in the dynamic Bayesian network. 
 
 An implementation of this method is automatically provided by POMDPs.jl. Solvers and simulators should use this version. Problem writers may implement it directly in special cases (see the POMDPs.jl documentation for more information).
 
 # Arguments
-- `t::DBNTuple`: which DBN nodes the function should sample from.
+- `t::DBNOut`: which DBN nodes the function should sample from.
 - `m`: an `MDP` or `POMDP` model
 - `s`: the current state
 - `a`: the action
 - `rng`: a random number generator (Typically a `MersenneTwister`)
 
 # Return
-A Tuple containing the sampled values from the specified nodes.
+If the `DBNOut` parameter, `X`, is a symbol, return a value sample from the corresponding node. If `X` is a tuple of symbols, return a `Tuple` of values sampled from the specified nodes.
 
 # Examples
 Let `m` be an `MDP` or `POMDP`, `s` be a state of `m`, `a` be an action of `m`, and `rng` be an `AbstractRNG`.
-- `gen(DBNTuple(:sp, :r), m, s, a, rng)` returns a `Tuple` containing the next state and reward.
-- `gen(DBNTuple(:sp, :o, :r), m, s, a, rng)` returns a `Tuple` containing the next state, observation, and reward.
-- `gen(DBNTuple(:sp), m, s, a, rng)` returns a `Tuple` containing only the next state.
+- `gen(DBNOut(:sp, :r), m, s, a, rng)` returns a `Tuple` containing the next state and reward.
+- `gen(DBNOut(:sp, :o, :r), m, s, a, rng)` returns a `Tuple` containing the next state, observation, and reward.
+- `gen(DBNOut(:sp), m, s, a, rng)` returns the next state.
 
 ---
 
@@ -40,7 +40,7 @@ Let `m` be an `MDP` or `POMDP`, `s` be a state of `m`, `a` be an action of `m`, 
 
 Convenience function for implementing the entire MDP/POMDP generative model in one function by returning a `NamedTuple`.
 
-The `NamedTuple` version of `gen` is the most convenient for problem writers to implement. However, it should *never* be used directly by solvers or simulators. Instead solvers and simulators should use the version with a `DBNTuple` first argument. 
+The `NamedTuple` version of `gen` is the most convenient for problem writers to implement. However, it should *never* be used directly by solvers or simulators. Instead solvers and simulators should use the version with a `DBNOut` first argument. 
 
 # Arguments
 - `m`: an `MDP` or `POMDP` model
@@ -57,7 +57,7 @@ The function should return a `NamedTuple`. Typically, this `NamedTuple` will be 
 
 Sample a value from a node in the dynamic Bayesian network. 
 
-These functions will be used within gen(::DBNTuple, ...) to sample values for all outputs and their dependencies. They may be implemented directly by a problem-writer if they wish to implement a generative model for a particular node in the dynamic Bayesian network, and may be called in solvers to sample a value for a particular node.
+These functions will be used within gen(::DBNOut, ...) to sample values for all outputs and their dependencies. They may be implemented directly by a problem-writer if they wish to implement a generative model for a particular node in the dynamic Bayesian network, and may be called in solvers to sample a value for a particular node.
 
 # Arguments
 - `v::DBNVar{name}`: which DBN node the function should sample from.

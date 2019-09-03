@@ -34,9 +34,9 @@ POMDPs.generate_o(b::DB, s::Int, a::Bool, sp::Int, rng::AbstractRNG) = sp
 struct DC <: POMDP{Nothing, Nothing, Nothing} end
 POMDPs.generate_s(c::DC, s::Nothing, a::Nothing, rng::AbstractRNG) = nothing
 @test gen(DBNVar(:sp), DC(), nothing, nothing, Random.GLOBAL_RNG) == nothing
-@test gen(DBNTuple(:sp), DC(), nothing, nothing, Random.GLOBAL_RNG) == (nothing,)
+@test gen(DBNOut(:sp), DC(), nothing, nothing, Random.GLOBAL_RNG) == nothing
 
-# test whether implemented gets DBNTuple versions
+# test whether implemented gets DBNOut versions
 struct DD <: MDP{Nothing, Nothing} end
 POMDPs.generate_sr(m::DD, s, a, rng) = nothing
-@test @implemented gen(::DBNTuple{(:sp, :r)}, ::DD, ::Nothing, ::Nothing, ::MersenneTwister)
+@test @implemented gen(::DBNOut{(:sp, :r)}, ::DD, ::Nothing, ::Nothing, ::MersenneTwister)
