@@ -86,6 +86,15 @@ export
     DBNTuple,
     DBNDef,
     DBNStructure,
+    DistributionDBNNode,
+    FunctionDBNNode,
+    ConstantDBNNode,
+    node,
+    deps,
+    nodenames,
+    add_node,
+    pomdp_dbn,
+    mdp_dbn,
 
     # Requirements checking
     RequirementSet,

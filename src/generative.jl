@@ -1,49 +1,76 @@
 """
     gen(...)
 
-Sample from a generative POMDP or MDP model.
+Sample from generative model of a POMDP or MDP.
+
+There are 3 versions:
+- For problem-writers, the most convenient version to implement is gen(m::Union{MDP,POMDP}, s, a, rng::AbstractRNG), which returns a `NamedTuple`.
+- Solvers and simulators should use the version with a `DBNTuple` argument.
+- Defining behavior for and sampling from individual nodes of the dynamic Bayesian network can be accomplished using the version with a `DBNVar` argument.
+
+See below for detailed documentation for each type.
 
 ---
 
-    gen(m::MDP, s, a, rng::AbstractRNG)
+    gen(t::DBNTuple, m::Union{MDP,POMDP}, s, a, rng::AbstractRNG)
 
-Return the `NamedTuple` `(sp=<the next state>, r=<the reward>)` and possibly other values (see below).
+Sample values from several nodes in the dynamic Bayesian network. 
 
-    gen(m::POMDP, s, a, rng::AbstractRNG)
+An implementation of this method is automatically provided by POMDPs.jl. Solvers and simulators should use this version. Problem writers may implement it directly in special cases (see the POMDPs.jl documentation for more information).
 
-Return the `NamedTuple` `(sp=<the next state>, o=<the observation>, r=<the reward>)` and possibly other values (see below).
-
-The `NamedTuple` version of `gen` is the most convenient for problem writers to implement. However, it should *never* be used directly by solvers or simulators. Instead solvers and simulators should use the version with a return indicator argument described below. 
-
-## Arguments
+# Arguments
+- `t::DBNTuple`: which DBN nodes the function should sample from.
 - `m`: an `MDP` or `POMDP` model
 - `s`: the current state
 - `a`: the action
 - `rng`: a random number generator (Typically a `MersenneTwister`)
 
-## Return
-The function should return a `NamedTuple`. Typically, this `NamedTuple` will have the keys `sp` and `r` for an `MDP` and `sp`, `o`, and `r` for a `POMDP`. Occasionally, packages may request other values. The symbols for these values that appear as keys in the `NamedTuple` are known as *genvars*. The genvars for all loaded packages can be shown with `list_genvars()`. See the documentation for more details.
+# Return
+A Tuple containing the sampled values from the specified nodes.
+
+# Examples
+Let `m` be an `MDP` or `POMDP`, `s` be a state of `m`, `a` be an action of `m`, and `rng` be an `AbstractRNG`.
+- `gen(DBNTuple(:sp, :r), m, s, a, rng)` returns a `Tuple` containing the next state and reward.
+- `gen(DBNTuple(:sp, :o, :r), m, s, a, rng)` returns a `Tuple` containing the next state, observation, and reward.
+- `gen(DBNTuple(:sp), m, s, a, rng)` returns a `Tuple` containing only the next state.
 
 ---
 
-    gen(rt::Return, m::Union{MDP,POMDP}, s, a, rng::AbstractRNG)
+    gen(m::Union{MDP,POMDP}, s, a, rng::AbstractRNG)
 
-Generate the values specified with return indicator `rt`. 
+Convenience function for implementing the entire MDP/POMDP generative model in one function by returning a `NamedTuple`.
 
-An implementation of this method is automatically provided by POMDPs.jl. Solvers and simulators should use this version. Problem writers may implement it in special cases (see the POMDPs.jl documentation for more information).
+The `NamedTuple` version of `gen` is the most convenient for problem writers to implement. However, it should *never* be used directly by solvers or simulators. Instead solvers and simulators should use the version with a `DBNTuple` first argument. 
 
-## Arguments
-- `rt`: return value specifier (See `Return`)
-- `m`, `s`, `a`, `rng`: same as above
+# Arguments
+- `m`: an `MDP` or `POMDP` model
+- `s`: the current state
+- `a`: the action
+- `rng`: a random number generator (Typically a `MersenneTwister`)
 
-## Return
-This `Return` version of `gen` will return a `Tuple` or a single object. The values in this tuple should correspond to the genvars that are specified as parameters of `rt`. See the docstring for `Return` for more details.
+# Return
+The function should return a `NamedTuple`. Typically, this `NamedTuple` will be `(sp=<next state>, r=<reward>)` for an `MDP` or `(sp=<next state>, o=<observation>, r=<reward>) for a `POMDP`.
 
-    gen(rt::Return, m::Union{MDP,POMDP}, genvarargs..., rng::AbstractRNG)
+---
 
-Generate the values specified with return indicator `rt`.
+    gen(v::DBNVar{name}, m::Union{MDP,POMDP}, depargs..., rng::AbstractRNG)
 
-In some cases, `s` and `a` are not the only inputs needed to generate the returned values specified in `rt`. For example, occasionally `gen(Return(:o), m, s, a, sp, rng)` will be implemented by a problem writer or used by a solver to generate observations when the next state has already been generated. `genvarargs` represents the other possible genvar values that may be needed.
+Sample a value from a node in the dynamic Bayesian network. 
+
+These functions will be used within gen(::DBNTuple, ...) to sample values for all outputs and their dependencies. They may be implemented directly by a problem-writer if they wish to implement a generative model for a particular node in the dynamic Bayesian network, and may be called in solvers to sample a value for a particular node.
+
+# Arguments
+- `v::DBNVar{name}`: which DBN node the function should sample from.
+- `depargs`: values for all the dependent nodes. Dependencies are determined by `deps(DBNStructure(m), name)`.
+- `rng`: a random number generator (Typically a `MersenneTwister`)
+
+# Return
+A sampled value from the specified node.
+
+# Examples
+Let `m` be a `POMDP`, `s` and `sp` be states of `m`, `a` be an action of `m`, and `rng` be an `AbstractRNG`.
+- `gen(DBNVar(:sp), m, s, a, rng)` returns the next state.
+- `gen(DBNVar(:o), m, s, a, sp, rng)` returns the observation given the previous state, action, and new state.
 """
 function gen end
 

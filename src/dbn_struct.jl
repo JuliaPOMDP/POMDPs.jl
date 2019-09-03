@@ -1,43 +1,95 @@
+"""
+    DBNVar(x::Symbol)
+    DBNVar{x::Symbol}()
+
+Reference to a named node in the POMDP or MDP dynamic Bayesian network.
+
+`DBNVar` is a "value type". See the documentation of `Val` for more conceptual details about value types.
+"""
 struct DBNVar{name} end
-struct DBNTuple{names} end
 
 DBNVar(name::Symbol) = DBNVar{name}()
+
+"""
+    DBNTuple(::Symbol, ::Symbol,...)
+    DBNTuple{x::NTuple{N, Symbol}}()
+
+Reference to a collection of named nodes in the POMDP or MDP dynamic Bayesian network.
+
+`DBNTuple` is a "value type". See the documentation of `Val` for more conceptual details about value types.
+"""
+struct DBNTuple{names} end
+
 DBNTuple(names...) = DBNTuple{names}()
 
 struct DBNDef{N<:NamedTuple}
     nodes::N
-    deps::NamedTuple
+    deps::NamedTuple # this could be a parameter in the future
 end
 
-function DBNStructure(::Type{M}) where M <: MDP
+# todo DBNDef structure
+
+node(d::DBNDef, name::Symbol) = d.nodes[name]
+deps(d::DBNDef, name::Symbol) = d.deps[name]
+nodenames(d::DBNDef) = keys(d.nodes)
+@generated function add_node(d::DBNDef, n::DBNVar{name}, node, deps) where name
+    quote 
+        @assert !haskey(d.nodes, name) "DBNDef already has a node named :$name"
+        DBNDef(merge(d.nodes, ($name=node,)), merge(d.deps, ($name=deps,)))
+    end
+end
+
+function mdp_dbn()
     DBNDef((s = nothing,
             a = nothing,
             sp = DistributionDBNNode(transition),
-            r = FunctionDBNNode(reward)
+            r = FunctionDBNNode(reward),
            ),
            (s = (),
             a = (),
             sp = (:s, :a),
-            r = (:s, :a, :sp)
+            r = (:s, :a, :sp),
            )
           )
 end
 
-function DBNStructure(::Type{M}) where M <: POMDP
+function pomdp_dbn()
     DBNDef((s = nothing,
-            a = nothing,
-            sp = DistributionDBNNode(transition),
-            o = DistributionDBNNode(observation),
-            r = FunctionDBNNode(reward)
-           ),
-           (s = (),
-            a = (),
-            sp = (:s, :a),
-            o = (:s, :a, :sp),
-            r = (:s, :a, :sp, :o)
-           )
+           a = nothing,
+           sp = DistributionDBNNode(transition),
+           o = DistributionDBNNode(observation),
+           r = FunctionDBNNode(reward),
+          ),
+          (s = (),
+           a = (),
+           sp = (:s, :a),
+           o = (:s, :a, :sp),
+           r = (:s, :a, :sp, :o),
           )
+         )
 end
+
+"""
+    DBNStructure(::Type{M}) where M <: Union{MDP, POMDP}
+
+Trait of an MDP/POMDP type for describing the structure of the dynamic Baysian network.
+
+# Example
+
+    struct MyPOMDP <: MDP{Int, Int} end
+    POMDPs.gen(::MyPOMDP, s, a, rng) = (sp=s+a+rand(rng, [1,2,3]), r=s^2)
+
+    # make a new node delta_s that is deterministically sp-s
+    POMDPs.DBNStructure(::Type{MyPOMDP}) = add_node(mdp_dbn(),
+                                                    DVNVar(:delta_s),
+                                                    FunctionDBNNode((s,sp)->sp-s),
+                                                    (:s, :sp))
+    gen(DBNOut(:delta_s), MyPOMDP(), 1, 1, Random.GLOBAL_RNG)
+"""
+function DBNStructure end
+
+DBNStructure(::Type{M}) where M <: MDP = mdp_dbn()
+DBNStructure(::Type{M}) where M <: POMDP = pomdp_dbn()
 
 DBNStructure(m) = DBNStructure(typeof(m))
 
@@ -53,7 +105,7 @@ end
     end
 end
 
-function implemented(g::typeof(gen), n::DistributionDBNNode, M::Type, Deps::TupleType, RNG::Type)
+function implemented(g::typeof(gen), n::DistributionDBNNode, M, Deps, RNG)
     return implemented(n.dist_func, Tuple{M, Deps.parameters...})
 end
 
@@ -69,9 +121,16 @@ end
     end
 end
 
-function implemented(g::typeof(gen), n::FunctionDBNNode, M::Type, Deps::TupleType, RNG::Type)
+function implemented(g::typeof(gen), n::FunctionDBNNode, M, Deps, RNG)
     return implemented(n.f, Tuple{M, Deps.parameters...})
 end
+
+struct ConstantDBNNode{T}
+    val::T
+end
+
+gen(n::ConstantDBNNode, args...) = n.val
+implemented(g::typeof(gen), n::ConstantDBNNode, M, Deps, RNG) = true
 
 """
 Create a list of node names sorted so that dependencies come before dependents.

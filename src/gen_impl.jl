@@ -22,7 +22,7 @@
     for var in filter(v->!(v in (:s, :a)), sorted_nodenames(dbn, symbols))
         sym = Meta.quot(var)
 
-        depargs = dbn.deps[var]
+        depargs = deps(dbn, var)
 
         varblock = quote
             if haskey(x, $sym) # should be constant at compile time
@@ -61,7 +61,7 @@ end
         if haskey(nt, x)
             return nt[x]
         else
-            return gen(DBNStructure(m).nodes[x], m, s, a, rng)
+            return gen(node(DBNStructure(m), x), m, s, a, rng)
         end
     end
 end
@@ -81,7 +81,7 @@ end
     end
 
     quote 
-        gen(DBNStructure(m).nodes[x], m, args...)
+        gen(node(DBNStructure(m), x), m, args...)
     end
 end
 
@@ -109,7 +109,7 @@ end
 function implemented(g::typeof(gen), Var::Type{D}, M::Type, Deps::TupleType, RNG::Type) where D <: DBNVar
     v = first(Var.parameters)
     dbn = DBNStructure(M)
-    return implemented(g, dbn.nodes[v], M, Deps, RNG)
+    return implemented(g, node(dbn, v), M, Deps, RNG)
 end
 
 function implemented(g::typeof(gen), Vars::Type{D}, M::Type, Deps::TupleType, RNG::Type) where D <: DBNTuple

@@ -60,9 +60,9 @@ end
     include("test_generative_backedges.jl")
 end
 
-# @testset "dbn_struct" begin
-#     include("test_dbn_struct.jl")
-# end
+@testset "dbn_struct" begin
+    include("test_dbn_struct.jl")
+end
 
 @testset "gendep" begin
     include("test_deprecated_generative.jl")
