@@ -31,13 +31,8 @@ POMDPs.gen(::MyMDP, s, a, rng) = (sp=s+a+rand(rng, [1,2,3]), r=s^2)
 
 # make a new node delta_s that is deterministically sp-s
 function POMDPs.DBNStructure(::Type{MyMDP})
-    mdp_dbn() |> dbn -> add_node(dbn,
-                                 DBNVar(:delta_s),
-                                 FunctionDBNNode((s,sp)->sp-s),
-                                 (:s, :sp)
-                                )
+    dbn = mdp_dbn() 
+    return add_node(dbn, DBNVar(:delta_s), FunctionDBNNode((m,s,sp)->sp-s), (:s, :sp))
 end
 
-@show DBNStructure(MyMDP)
-
-@test gen(DBNOut(:delta_s), MyMDP(), 1, 1, Random.GLOBAL_RNG) == 2
+@test gen(DBNOut(:delta_s), MyMDP(), 1, 1, Random.GLOBAL_RNG) in [2, 3, 4]

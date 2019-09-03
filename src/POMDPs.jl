@@ -92,6 +92,7 @@ export
     node,
     deps,
     nodenames,
+    name,
     add_node,
     pomdp_dbn,
     mdp_dbn,

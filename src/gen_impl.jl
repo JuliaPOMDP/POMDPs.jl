@@ -11,6 +11,14 @@
         return :($(old_generate[symbols])(m, s, a, rng))
     end
 
+    quote
+        dbn = DBNStructure(m)
+        genout(v, dbn, m, s, a, rng)
+    end
+end
+
+@generated function genout(v::DBNOut{symbols}, dbn::DBNDef, m, s, a, rng) where symbols
+    
     # use anything available from gen(m, s, a, rng)
     expr = quote
         x = gen(m, s, a, rng)
@@ -18,13 +26,12 @@
     end
 
     # add gen for any other variables
-    dbn = DBNStructure(m)
-    sorted = sorted_nodenames(dbn, symbols)
-    required = filter(v->!(node(dbn, v) isa InputDBNNode), sorted)
-    for var in required
-        sym = Meta.quot(var)
+    for (var, depargs) in sorted_deppairs(dbn, symbols)
+        if var in (:s, :a) # eventually should look for InputDBNNodes instead of being hardcoded
+            continue
+        end
 
-        depargs = deps(dbn, var)
+        sym = Meta.quot(var)
 
         varblock = quote
             if haskey(x, $sym) # should be constant at compile time
@@ -46,31 +53,6 @@
 
     return expr
 end
-
-# @generated function gen(::DBNVar{x}, m, s, a, rng) where x
-#     # this function is only @generated to deal with the deprecation of generate_ functions
-#     
-#     # deprecation of old generate_ functions
-#     if haskey(old_generate, x) && implemented_by_user(old_generate[x], Tuple{m, s, a, rng})
-#         @warn("""Using user-implemented function
-#                   $(old_generate[x])(::M, ::S, ::A, ::RNG)
-#               which is deprecated in POMDPs v0.8. Please implement this as
-#                   POMDPs.gen(::M, ::S, ::A, ::RNG) or
-#                   POMDPs.gen(::DBNVar{$x}, ::M, ::S, ::A, ::RNG)
-#               instead. See the POMDPs.gen documentation for more details.""", M=m, S=s, A=a, RNG=rng)
-#         return :($(old_generate[x])(m, s, a, rng))
-#     end
-# 
-#     quote
-#         nt = gen(m, s, a, rng)
-#         @assert nt isa NamedTuple "gen(m::Union{MDP,POMDP}, ...) must return a NamedTuple; got a $(typeof(nt))"
-#         if haskey(nt, x)
-#             return nt[x]
-#         else
-#             return gen(node(DBNStructure(m), x), m, s, a, rng)
-#         end
-#     end
-# end
 
 @generated function gen(::DBNVar{x}, m, args...) where x
     # this function is only @generated to deal with deprecation of gen functions

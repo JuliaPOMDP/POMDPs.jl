@@ -13,6 +13,12 @@ struct DBNVar{name} end
 DBNVar(name::Symbol) = DBNVar{name}()
 
 """
+Get the name of a DBNVar.
+"""
+name(::DBNVar{n}) where n = n
+name(::Type{DBNVar{n}}) where n = n
+
+"""
     DBNOut(x::Symbol)
     DBNOut{x::Symbol}()
     DBNOut(::Symbol, ::Symbol,...)
@@ -29,21 +35,25 @@ struct DBNOut{names} end
 DBNOut(name::Symbol) = DBNOut{name}()
 DBNOut(names...) = DBNOut{names}()
 
-struct DBNDef{N<:NamedTuple}
+struct DBNDef{N<:NamedTuple, D<:NamedTuple}
     nodes::N
-    deps::NamedTuple # this could be a parameter in the future
+    deps::D # values are tuples of DBNVars
 end
 
-# todo DBNDef structure
-
 node(d::DBNDef, name::Symbol) = d.nodes[name]
-deps(d::DBNDef, name::Symbol) = d.deps[name]
+depvars(d::DBNDef, name::Symbol) = d.deps[name]
+depnames(d::DBNDef, n::Symbol) = map(name, depvars(d, n))
 nodenames(d::DBNDef) = keys(d.nodes)
+depstype(DBN::Type{D}) where D <: DBNDef = DBN.parameters[2]
 @generated function add_node(d::DBNDef, n::DBNVar{name}, node, deps) where name
     quote 
         @assert !haskey(d.nodes, name) "DBNDef already has a node named :$name"
         DBNDef(merge(d.nodes, ($name=node,)), merge(d.deps, ($name=deps,)))
     end
+end
+
+function add_node(d::DBNDef, n::DBNVar, node, deps::NTuple{N,Symbol}) where N
+    return add_node(d, n, node, map(DBNVar, deps))
 end
 
 function mdp_dbn()
@@ -54,8 +64,8 @@ function mdp_dbn()
            ),
            (s = (),
             a = (),
-            sp = (:s, :a),
-            r = (:s, :a, :sp),
+            sp = map(DBNVar, (:s, :a)),
+            r = map(DBNVar, (:s, :a, :sp)),
            )
           )
 end
@@ -69,9 +79,9 @@ function pomdp_dbn()
            ),
            (s = (),
             a = (),
-            sp = (:s, :a),
-            o = (:s, :a, :sp),
-            r = (:s, :a, :sp, :o),
+            sp = map(DBNVar, (:s, :a)),
+            o = map(DBNVar, (:s, :a, :sp)),
+            r = map(DBNVar, (:s, :a, :sp, :o)),
            )
           )
 end
@@ -142,10 +152,22 @@ gen(n::ConstantDBNNode, args...) = n.val
 implemented(g::typeof(gen), n::ConstantDBNNode, M, Deps, RNG) = true
 
 """
-Create a list of node names sorted so that dependencies come before dependents.
+Create a list of name=>deps pairs sorted so that dependencies come before dependents.
 """
-function sorted_nodenames(dbn::DBNDef, symbols)
-    dag = SimpleDiGraph(length(dbn.nodes))
+function sorted_deppairs(dbn::Type{D}, symbols) where D <: DBNDef
+    depnames = Dict{Symbol, Vector{Symbol}}()
+    NT = depstype(dbn)
+    keys = fieldnames(NT)
+    for i in 1:length(keys)
+        depnames[keys[i]] = collect(map(name, NT.parameters[2].parameters[i].parameters))
+    end
+    return sorted_deppairs(depnames, symbols)
+end
+
+sorted_deppairs(dbn::Type{D}, symbol::Symbol) where D <: DBNDef = sorted_deppairs(dbn, tuple(symbol))
+
+function sorted_deppairs(depnames::Dict{Symbol, Vector{Symbol}}, symbols)
+    dag = SimpleDiGraph(length(depnames))
     labels = Symbol[]
     nodemap = Dict{Symbol, Int}()
     for sym in symbols
@@ -153,22 +175,20 @@ function sorted_nodenames(dbn::DBNDef, symbols)
             push!(labels, sym)
             nodemap[sym] = length(labels)
         end
-        add_dep_edges!(dag, nodemap, labels, dbn, sym)
+        add_dep_edges!(dag, nodemap, labels, depnames, sym)
     end
     sortednodes = topological_sort_by_dfs(dag)
-    return labels[filter(n -> n<=length(labels), sortednodes)]
+    sortednames = labels[filter(n -> n<=length(labels), sortednodes)]
+    return [n=>depnames[n] for n in sortednames]
 end 
 
-sorted_nodenames(dbn::DBNDef, symbol::Symbol) = sorted_nodenames(dbn, tuple(symbol))
-
-function add_dep_edges!(dag, nodemap, labels, dbn, sym)
-    deps = dbn.deps[sym]
-    for dep in deps
+function add_dep_edges!(dag, nodemap, labels, depnames, sym)
+    for dep in depnames[sym]
         if !haskey(nodemap, dep)
             push!(labels, dep)
             nodemap[dep] = length(labels)
         end
         add_edge!(dag, nodemap[dep], nodemap[sym])
-        add_dep_edges!(dag, nodemap, labels, dbn, dep)
+        add_dep_edges!(dag, nodemap, labels, depnames, dep)
     end
 end
