@@ -54,8 +54,8 @@ depstype(DBN::Type{D}) where D <: DBNDef = DBN.parameters[2]
     end
 end
 
-function add_node(d::DBNDef, n::DBNVar, node, deps::NTuple{N,Symbol}) where N
-    return add_node(d, n, node, map(DBNVar, deps))
+function add_node(d::DBNDef, n::Symbol, node, deps::NTuple{N,Symbol}) where N
+    return add_node(d, DBNVar(n), node, map(DBNVar, deps))
 end
 
 """
