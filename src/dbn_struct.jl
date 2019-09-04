@@ -107,7 +107,7 @@ Trait of an MDP/POMDP type for describing the structure of the dynamic Baysian n
     # make a new node, delta_s, that is deterministically equal to sp - s
     function POMDPs.DBNStructure(::Type{MyMDP})
         dbn = mdp_dbn()
-        return add_node(dbn, DBNVar(:delta_s), FunctionDBNNode((m,s,sp)->sp-s), (:s, :sp))
+        return add_node(dbn, :delta_s, FunctionDBNNode((m,s,sp)->sp-s), (:s, :sp))
     end
 
     gen(DBNOut(:delta_s), MyMDP(), 1, 1, Random.GLOBAL_RNG)

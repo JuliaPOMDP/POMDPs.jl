@@ -92,7 +92,8 @@ Print a warning if there are unmet requirements.
 macro warn_requirements(call::Expr)
     quote
         reqs = get_requirements($(esc(convert_call(call)))...)
-        if !check_requirements(reqs)
+        c = check_requirements(reqs)
+        if !ismissing(c) && c == false
             show_requirements(reqs)
         end
     end

@@ -16,15 +16,15 @@ end
 
 function show_checked_list(io::IO, cl::AbstractVector{T}) where T <: Tuple
     for item in cl
-        if first(item) == true
+        if ismissing(first(item))
+            printstyled(io, "  [?] $(format_method(item[2], item[3]))", color=:blue)
+            println(io)
+        elseif first(item) == true
             printstyled(io, "  [✔] $(format_method(item[2], item[3]))", color=:green)
             println(io)
-        elseif first(item) == false
-            printstyled(io, "  [X] $(format_method(item[2], item[3]))", color=:red)
-            println(io)
         else
-            @assert first(item) == missing
-            printstyled(io, "  [?] $(format_method(item[2], item[3]))", color=:blue)
+            @assert first(item) == false
+            printstyled(io, "  [X] $(format_method(item[2], item[3]))", color=:red)
             println(io)
         end
     end

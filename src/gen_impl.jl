@@ -104,11 +104,6 @@ function implemented(g::typeof(gen), Vars::Type{D}, M::Type, Deps::TupleType, RN
     if length(Deps.parameters) == 2 && implemented(g, Tuple{M, Deps.parameters..., RNG}) # gen(m, s, a, rng) is implemented
         return true # should this be true or missing?
     else
-        tpl = first(Vars.parameters)
-        if length(tpl) == 1
-            return implemented(g, DBNVar{first(tpl)}, M, Deps, RNG)
-        else
-            return missing # this is complicated because we need to know the types of everything in the dbn 
-        end
+        return missing # this is complicated because we need to know the types of everything in the dbn 
     end
 end
