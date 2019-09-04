@@ -46,12 +46,10 @@ depnames(d::DBNDef, n::Symbol) = map(name, depvars(d, n))
 nodenames(d::DBNDef) = keys(d.nodes)
 depstype(DBN::Type{D}) where D <: DBNDef = DBN.parameters[2]
 
-@generated function add_node(d::DBNDef, n::DBNVar{name}, node, deps) where name
-    # deps is a tuple of DBNVars
-    quote 
-        @assert !haskey(d.nodes, name) "DBNDef already has a node named :$name"
-        DBNDef(merge(d.nodes, ($name=node,)), merge(d.deps, ($name=deps,)))
-    end
+function add_node(d::DBNDef, n::DBNVar{name}, node, deps) where name
+    @assert !haskey(d.nodes, name) "DBNDef already has a node named :$name"
+    return DBNDef(merge(d.nodes, NamedTuple{tuple(name)}(tuple(node))),
+                  merge(d.deps, NamedTuple{tuple(name)}(tuple(deps))))
 end
 
 function add_node(d::DBNDef, n::Symbol, node, deps::NTuple{N,Symbol}) where N
