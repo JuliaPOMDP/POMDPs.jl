@@ -121,6 +121,12 @@ DBNStructure(m) = DBNStructure(typeof(m))
 
 struct InputDBNNode end # this does nothing for now
 
+"""
+DBN node defined by a function that maps the model and values from the parent nodes to a distribution
+
+# Example
+    DistributionDBNNode((m, s, a)->POMDPModelTools.Deterministic(s+a))    
+"""
 struct DistributionDBNNode{F}
     dist_func::F
 end
@@ -137,6 +143,13 @@ function implemented(g::typeof(gen), n::DistributionDBNNode, M, Deps, RNG)
     return implemented(n.dist_func, Tuple{M, Deps.parameters...})
 end
 
+
+"""
+DBN node defined by a function that determinisitically maps the model and values from the parent nodes to a new value.
+
+# Example
+    FunctionDBNNode((m, s, a)->s+a)
+"""
 struct FunctionDBNNode{F}
     f::F
 end
@@ -153,12 +166,23 @@ function implemented(g::typeof(gen), n::FunctionDBNNode, M, Deps, RNG)
     return implemented(n.f, Tuple{M, Deps.parameters...})
 end
 
+"""
+DBN node that always takes a deterministic constant value.
+"""
 struct ConstantDBNNode{T}
     val::T
 end
 
 gen(n::ConstantDBNNode, args...) = n.val
 implemented(g::typeof(gen), n::ConstantDBNNode, M, Deps, RNG) = true
+
+"""
+DBN node that can only have a generative model; `gen(::DBNVar{:x}, ...)` must be implemented for a node of this type.
+"""
+struct GenDBNNode end
+
+gen(::GenDBNNode, args...) = error("No `gen(::DBNVar, ...)` method implemented for a GenDBNNode (see stack trace for name)")
+implemented(g::typeof(gen), GenDBNNode, M, Deps, RNG) = false
 
 function sorted_deppairs(dbn::Type{D}, symbols) where D <: DBNDef
     depnames = Dict{Symbol, Vector{Symbol}}()

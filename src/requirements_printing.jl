@@ -17,7 +17,7 @@ end
 function show_checked_list(io::IO, cl::AbstractVector{T}) where T <: Tuple
     for item in cl
         if ismissing(first(item))
-            printstyled(io, "  [?] $(format_method(item[2], item[3]))", color=:blue)
+            printstyled(io, "  [?] $(format_method(item[2], item[3]))", color=:yellow)
             println(io)
         elseif first(item) == true
             printstyled(io, "  [✔] $(format_method(item[2], item[3]))", color=:green)

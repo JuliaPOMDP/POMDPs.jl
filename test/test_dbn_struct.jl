@@ -41,3 +41,9 @@ function POMDPs.DBNStructure(::Type{MyMDP})
 end
 
 @test gen(DBNOut(:delta_s), MyMDP(), 1, 1, Random.GLOBAL_RNG) in [2, 3, 4]
+
+struct DBND <: MDP{Int, Int} end
+POMDPs.DBNStructure(::Type{DBND}) = add_node(mdp_dbn(), :x, GenDBNNode(), (:s, :a))
+@test_throws ErrorException gen(DBNVar(:x), DBND(), 1, 1, Random.GLOBAL_RNG)
+POMDPs.gen(::DBNVar{:x}, ::DBND, s, a, rng) = s*a
+@test gen(DBNOut(:x), DBND(), 1, 1, Random.GLOBAL_RNG) == 1

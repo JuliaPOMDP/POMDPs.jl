@@ -90,6 +90,7 @@ export
     FunctionDBNNode,
     ConstantDBNNode,
     InputDBNNode,
+    GenDBNNode,
     node,
     depvars,
     depnames,
