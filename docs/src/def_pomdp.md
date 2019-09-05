@@ -27,8 +27,9 @@ Accordingly, the POMDPs.jl model API is grouped into three sections:
 
 ## What do I need to implement?
 
-Because of the wide variety or problems and solvers that POMDPs.jl interfaces with, the question of which functions from the interface need to be implemented does not have a short answer for all cases. In general, a problem will be defined by implementing a combination of functions from the generative, explicit, and common parts of the interface. Specifically, an explicit or generative definition will be needed for each output node in the [Dynamic Bayesian Network (DBN)](@ref Dynamic-baysian-networks) (the next state, reward, and observation for POMDPs, or the next state and reward for MDPs), along with functions to define some other properties of the problem.
+Because of the wide variety or problems and solvers that POMDPs.jl interfaces with, the question of which functions from the interface need to be implemented does not have a short answer for all cases. In general, a problem will be defined by implementing a combination of functions from the generative, explicit, and common parts of the interface.
 
+Specifically, an explicit or generative definition will be needed for each output node in the [Dynamic Bayesian Network (DBN)](@ref Dynamic-baysian-networks) (`:sp`, `:r`, and `:o` for POMDPs, or `:sp` and `:r` for MDPs), along with functions to define some other properties of the problem.
 
 !!! note
 
