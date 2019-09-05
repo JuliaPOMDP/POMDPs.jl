@@ -58,11 +58,12 @@ These functions return *distributions*.
 transition
 observation
 initialstate_distribution
+reward
 ```
 
 ### [Generative](@id generative_api)
 
-These functions should return *states*, *observations*, and *rewards*.
+These functions should return *states*, *observations*, and/or *rewards*.
 
 ```@docs
 gen
@@ -75,7 +76,6 @@ initialstate
 states
 actions
 observations
-reward
 isterminal
 discount
 n_states
