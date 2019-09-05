@@ -17,7 +17,7 @@
     end
 end
 
-@inline @generated function genout(v::DBNOut{symbols}, dbn::DBNDef, m, s, a, rng) where symbols
+@inline @generated function genout(v::DBNOut{symbols}, dbn::DBNStructure, m, s, a, rng) where symbols
     
     # use anything available from gen(m, s, a, rng)
     expr = quote

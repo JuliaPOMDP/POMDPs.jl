@@ -84,7 +84,7 @@ export
     # DBNs
     DBNVar,
     DBNOut,
-    DBNDef,
+    DBNStructure,
     DBNStructure,
     DistributionDBNNode,
     FunctionDBNNode,

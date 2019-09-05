@@ -35,24 +35,24 @@ struct DBNOut{names} end
 DBNOut(name::Symbol) = DBNOut{name}()
 DBNOut(names...) = DBNOut{names}()
 
-struct DBNDef{N<:NamedTuple, D<:NamedTuple}
+struct DBNStructure{N<:NamedTuple, D<:NamedTuple}
     nodes::N
     deps::D # values are tuples of DBNVars
 end
 
-node(d::DBNDef, name::Symbol) = d.nodes[name]
-depvars(d::DBNDef, name::Symbol) = d.deps[name]
-depnames(d::DBNDef, n::Symbol) = map(name, depvars(d, n))
-nodenames(d::DBNDef) = keys(d.nodes)
-depstype(DBN::Type{D}) where D <: DBNDef = DBN.parameters[2]
+node(d::DBNStructure, name::Symbol) = d.nodes[name]
+depvars(d::DBNStructure, name::Symbol) = d.deps[name]
+depnames(d::DBNStructure, n::Symbol) = map(name, depvars(d, n))
+nodenames(d::DBNStructure) = keys(d.nodes)
+depstype(DBN::Type{D}) where D <: DBNStructure = DBN.parameters[2]
 
-function add_node(d::DBNDef, n::DBNVar{name}, node, deps) where name
-    @assert !haskey(d.nodes, name) "DBNDef already has a node named :$name"
-    return DBNDef(merge(d.nodes, NamedTuple{tuple(name)}(tuple(node))),
-                  merge(d.deps, NamedTuple{tuple(name)}(tuple(deps))))
+function add_node(d::DBNStructure, n::DBNVar{name}, node, deps) where name
+    @assert !haskey(d.nodes, name) "DBNStructure already has a node named :$name"
+    return DBNStructure(merge(d.nodes, NamedTuple{tuple(name)}(tuple(node))),
+                        merge(d.deps, NamedTuple{tuple(name)}(tuple(deps))))
 end
 
-function add_node(d::DBNDef, n::Symbol, node, deps::NTuple{N,Symbol}) where N
+function add_node(d::DBNStructure, n::Symbol, node, deps::NTuple{N,Symbol}) where N
     return add_node(d, DBNVar(n), node, map(DBNVar, deps))
 end
 
@@ -63,7 +63,7 @@ function sorted_deppairs end # this is implemented below
 
 # standard DBNs
 function mdp_dbn()
-    DBNDef((s = InputDBNNode(),
+    DBNStructure((s = InputDBNNode(),
             a = InputDBNNode(),
             sp = DistributionDBNNode(transition),
             r = FunctionDBNNode(reward),
@@ -77,7 +77,7 @@ function mdp_dbn()
 end
 
 function pomdp_dbn()
-    DBNDef((s = InputDBNNode(),
+    DBNStructure((s = InputDBNNode(),
             a = InputDBNNode(),
             sp = DistributionDBNNode(transition),
             o = DistributionDBNNode(observation),
@@ -182,7 +182,7 @@ struct GenDBNNode end
 gen(::GenDBNNode, args...) = error("No `gen(::DBNVar, ...)` method implemented for a GenDBNNode (see stack trace for name)")
 implemented(g::typeof(gen), GenDBNNode, M, Deps, RNG) = false
 
-function sorted_deppairs(dbn::Type{D}, symbols) where D <: DBNDef
+function sorted_deppairs(dbn::Type{D}, symbols) where D <: DBNStructure
     depnames = Dict{Symbol, Vector{Symbol}}()
     NT = depstype(dbn)
     keys = fieldnames(NT)
@@ -192,7 +192,7 @@ function sorted_deppairs(dbn::Type{D}, symbols) where D <: DBNDef
     return sorted_deppairs(depnames, symbols)
 end
 
-sorted_deppairs(dbn::Type{D}, symbol::Symbol) where D <: DBNDef = sorted_deppairs(dbn, tuple(symbol))
+sorted_deppairs(dbn::Type{D}, symbol::Symbol) where D <: DBNStructure = sorted_deppairs(dbn, tuple(symbol))
 
 function sorted_deppairs(depnames::Dict{Symbol, Vector{Symbol}}, symbols)
     dag = SimpleDiGraph(length(depnames))
