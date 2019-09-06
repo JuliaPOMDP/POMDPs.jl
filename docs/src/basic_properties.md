@@ -14,10 +14,6 @@ The state, action and observation spaces are defined by the following functions:
 
 The object returned by these functions should implement part or all of the [interface for spaces](@ref space-interface). For discrete problems, a vector is appropriate.
 
-## Rewards
-
-Rewards for a problem are specified by defining a method of the [`reward`](@ref) function.
-
 ## Discount Factor
 
 [`discount`](@ref)`(pomdp)` should return a number between 0 and 1 to define the discount factor.

@@ -7,7 +7,7 @@ Since POMDPs.jl was designed with performance and flexibility as first prioritie
 - [QuickPOMDPs.jl](https://github.com/JuliaPOMDP/QuickPOMDPs.jl) provides structures for concisely defining simple POMDPs without object-oriented programming.
 - [POMDPExamples.jl](https://github.com/JuliaPOMDP/POMDPExamples.jl) provides tutorials for defining problems. 
 - [The Tabular(PO)MDP model](https://github.com/JuliaPOMDP/POMDPExamples.jl/blob/master/notebooks/Defining-a-tabular-POMDP.ipynb) from [POMDPModels.jl](https://github.com/JuliaPOMDP/POMDPModels.jl) allows users to define POMDPs with matrices for the transitions, observations and rewards.
-- [The `gen` function](@ref gen) is the easiest way to wrap a pre-existing simulator from another project or written in another programming language so that it can be used with POMDPs.jl solvers and simulators. See also [RLInterface.jl](https://github.com/JuliaPOMDP/RLInterface.jl) for an even higher level interface for simulators where the state is not accessible.
+- The [`gen`](@ref) function is the easiest way to wrap a pre-existing simulator from another project or written in another programming language so that it can be used with POMDPs.jl solvers and simulators. See also [RLInterface.jl](https://github.com/JuliaPOMDP/RLInterface.jl) for an even higher level interface for simulators where the state is not accessible.
 
 ## Overview
 
@@ -21,15 +21,17 @@ Custom POMDP problems are defined by implementing the functions specified by the
 There are two ways of specifying the state dynamics and observation behavior of a POMDP. The problem definition may include a mixture of *explicit* definitions of probability distributions, or *generative* definitions that simulate states and observations without explicitly defining the distributions. In scientific papers explicit definitions are often written as ``T(s' | s, a)`` for transitions and ``O(o | s, a, s')`` for observations, while a generative definition might be expressed as ``s', o, r = G(s, a)`` (or ``s', r = G(s,a)`` for an MDP).
 
 Accordingly, the POMDPs.jl model API is grouped into three sections:
-1. The [*explicit*](@ref explicit_api) interface containing *functions that return distributions*
-2. The [*generative*](@ref generative_api) interface containing *functions that return states and observations*
+1. The [*explicit*](@ref explicit_api) interface containing *functions that explicitly define distributions for DBN nodes.*
+2. The [*generative*](@ref generative_api) interface containing *functions that return sampled states and observations for DBN nodes.*
 3. [*Common*](@ref common_api) functions used in both.
 
 ## What do I need to implement?
 
 Because of the wide variety or problems and solvers that POMDPs.jl interfaces with, the question of which functions from the interface need to be implemented does not have a short answer for all cases. In general, a problem will be defined by implementing a combination of functions from the generative, explicit, and common parts of the interface.
 
-Specifically, an explicit or generative definition will be needed for each output node in the [Dynamic Bayesian Network (DBN)](@ref Dynamic-baysian-networks) (`:sp`, `:r`, and `:o` for POMDPs, or `:sp` and `:r` for MDPs), along with functions to define some other properties of the problem.
+Specifically, a problem writer will need to define
+- explicit or generative definitions for each node in the [Dynamic Bayesian Network (DBN)](@ref Dynamic-Bayesian-networks) (`:sp`, `:r`, and `:o` for POMDPs, or `:sp` and `:r` for MDPs)
+- functions to define some other properties of the problem.
 
 !!! note
 
@@ -42,11 +44,6 @@ In particular, 2 questions should be asked:
 
 If the answer to (1) is yes, then a generative definition should be used. Question (2) should be answered by reading about the solvers and trying to run them, or through the [requirements](@ref requirements) interface if it has been defined for the solver.
 
-The following heuristics are useful:
-- Explicit definitions are preferable because they allow the most solvers to be used, but they are more difficult to implement.
-- A definition of the action space through [`actions`] is almost always needed, but [`states`] and [`observations`] are only rarely required.
-- Continuous problems more often use generative definitions, but this is not always the case. Distributions over continuous spaces are straightforward to represent, and explicitly defined continuous space problems and generative discrete problems are common.
-
 !!! note
 
     If a particular function is required by a solver but seems very difficult to implement for a particular problem, one should consider carefully whether the algorithm is capable of solving that problem. For example, if a problem has a complex hybrid state space, it will be more difficult to define [`states`](@ref), but it is also true that solvers that require [`states`](@ref) such as SARSOP or IncrementalPruning, will usually not be able to solve such a problem, and solvers that can handle it, like ARDESPOT or MCVI, usually will not call [`states`](@ref).
@@ -55,9 +52,9 @@ The following heuristics are useful:
 
 The following pages provide more details on specific parts of the interface:
 
-- [Dynamic Bayesian networks](@ref)
+- [Dynamic Bayesian Networks](@ref)
 - [Explicit DBN node definitions](@ref explicit_doc)
 - [Generative DBN node definitions](@ref generative_doc)
 - [Basic Properties (common part of the api)](@ref basic)
-- [Spaces and distributions](@ref)
-- [Requirements](@ref)
+- [Spaces and Distributions](@ref)
+- [Requirements](@ref requirements)

@@ -7,7 +7,9 @@ The standard DBNs for MDPs and POMDPs are shown below:
 
 {TODO: Images}
 
-Note that these DBNs are slightly different from the ones traditionally used in the POMDP literature in that they have `:sp`→`:r` and `:o`→`:r` edges. Traditional POMPD algorithms will work with this DBN if ``R(s,a)`` is the expectation of ``R(s, a, s', o)`` over all ``s'`` and ``o``.
+!!! note
+
+    These DBNs are slightly different from the ones traditionally used in the POMDP literature in that they have `:sp`→`:r` and `:o`→`:r` edges. Traditional POMPD algorithms will work with this DBN if ``R(s,a)`` is the expectation of ``R(s, a, s', o)`` over all ``s'`` and ``o``.
 
 ## DBN structure representation
 
@@ -25,9 +27,9 @@ This set is not expected to handle all possible behavior, so new types are likel
 
 ## Defining behavior for nodes
 
-For any node in the DBN, the function [`gen`](@ref)`(::DBNVar{:nodename}, m, parent_values..., rng)` will be called to sample a value (see the docstring for more information). This function can always be overridden to provide a generative definition for a node.
+For any node in the DBN, the function [`gen`](@ref)`(::DBNVar{:nodename}, m, parent_values..., rng)` will be called to sample a value (see the docstring for more information). This method can always be implemented to provide a generative definition for a node.
 
-Some nodes can alternatively have an explicit implementation. For example, a `DistributionDBNNode` contains a function that is called with the (PO)MDP models and values sampled from the parent nodes to get a return a distribution nodes. The state transition node, `:sp`, is a particular case of this. If [`gen`](@ref)`(::GenVar{:sp}, m, s, a, rng)` is not defined by the problem writer, `rand(rng, transition(m, s, a))` will be called to generate values for `:sp`.
+Some nodes can alternatively have an explicit implementation. For example, a `DistributionDBNNode` contains a function that is called with the (PO)MDP models and values sampled from the parent nodes to return a distribution. The state transition node, `:sp`, is a particular case of this. If [`gen`](@ref)`(::GenVar{:sp}, m, s, a, rng)` is not defined by the problem writer, `rand(rng, transition(m, s, a))` will be called to generate values for `:sp`.
 
 ### Mixing generative and explicit node definitions for a POMDP
 
@@ -43,7 +45,7 @@ would be a suitable distribution for a POMDP that will be solved with particle f
 
 !!! note
 
-    It is usually best to avoid providing both a generative and explicit definition of **the same node** because it is easy to introduce inconsistency.
+    It is usually best to *avoid* providing both a generative and explicit definition of *the same node* because it is easy to introduce inconsistency.
 
 ## Customizing the DBN
 
