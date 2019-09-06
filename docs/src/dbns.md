@@ -7,7 +7,7 @@ The standard DBNs for MDPs and POMDPs are shown below:
 
 {TODO: Images}
 
-Note that these DBNs are slightly different from the ones traditionally used in the POMDP literature in that they have edges `:sp`→`:r` and `:o`→`:r` edges.
+Note that these DBNs are slightly different from the ones traditionally used in the POMDP literature in that they have `:sp`→`:r` and `:o`→`:r` edges. Traditional POMPD algorithms will work with this DBN if ``R(s,a)`` is the expectation of ``R(s, a, s', o)`` over all ``s'`` and ``o``.
 
 ## DBN structure representation
 
@@ -51,4 +51,4 @@ The DBN structure for a particular (PO)MDP problem `type` is defined with the [`
 
 If a specialized DBN structure is to be compatible with standard POMDP solvers, it should have the standard `:sp`, `:r`, and `:o` nodes.
 
-Currently (as of September, 2019), no solver has special behavior based on the DBN structure, but it is expected that packages will define new DBN structures for specialized cases like constrained POMDPs, mixed observability MDPs, or factored POMDPs.
+Currently (as of September, 2019), no solver has special behavior based on the DBN structure, but it is expected that packages will define new DBN structures for specialized cases like constrained POMDPs, mixed observability MDPs, or factored POMDPs. If you are considering creating a solver that relies on a specific DBN structure, please contact the developers so we can coordinate.

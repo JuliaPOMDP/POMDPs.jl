@@ -4,7 +4,7 @@
 
 A generative model for most (PO)MDPs can be completely defined with one function:
 ```julia
-function gen(m::YourPOMDPType, s, a, rng)
+function POMDPs.gen(m::YourPOMDPType, s, a, rng)
     # do dynamics/transition calculations here
     return (sp= #=new state=#, r= #=reward=#, o= #=observation=#)
 end
