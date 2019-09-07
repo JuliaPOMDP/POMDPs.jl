@@ -17,6 +17,9 @@
     end
 end
 
+"""
+Sample values for nodes specified in the first argument by sampling values for all intermediate nodes. 
+"""
 @inline @generated function genout(v::DBNOut{symbols}, dbn::DBNStructure, m, s, a, rng) where symbols
     
     # use anything available from gen(m, s, a, rng)

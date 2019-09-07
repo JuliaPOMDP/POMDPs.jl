@@ -49,7 +49,7 @@ The `NamedTuple` version of `gen` is the most convenient for problem writers to 
 - `rng`: a random number generator (Typically a `MersenneTwister`)
 
 # Return
-The function should return a `NamedTuple`. Typically, this `NamedTuple` will be `(sp=<next state>, r=<reward>)` for an `MDP` or `(sp=<next state>, o=<observation>, r=<reward>) for a `POMDP`.
+The function should return a [`NamedTuple`](https://docs.julialang.org/en/v1/base/base/#Core.NamedTuple). Typically, this `NamedTuple` will be `(sp=<next state>, r=<reward>)` for an `MDP` or `(sp=<next state>, o=<observation>, r=<reward>) for a `POMDP`.
 
 ---
 

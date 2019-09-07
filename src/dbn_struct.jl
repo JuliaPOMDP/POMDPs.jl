@@ -4,9 +4,9 @@
 
 Reference to a named node in the POMDP or MDP dynamic Bayesian network (DBN).
 
-Note that `gen(::DBNVar, m, depargs..., rng)` always takes an argument for each dependency, `gen(::DBNOut, m, s, a, rng)` only takes `s` and `a` arguments (the inputs to the entire DBN).
+Note that `gen(::DBNVar, m, depargs..., rng)` always takes an argument for each dependency whereas `gen(::DBNOut, m, s, a, rng)` only takes `s` and `a` arguments (the inputs to the entire DBN).
 
-`DBNVar` is a "value type". See the documentation of `Val` for more conceptual details about value types.
+`DBNVar` is a "value type". See [the documentation of `Val`](https://docs.julialang.org/en/v1/manual/types/index.html#%22Value-types%22-1) for more conceptual details about value types.
 """
 struct DBNVar{name} end
 
@@ -28,7 +28,7 @@ Reference to one or more named nodes in the POMDP or MDP dynamic Bayesian networ
 
 Note that `gen(::DBNOut, m, s, a, rng)` always takes `s` and `a` arguments (the inputs to the entire DBN) while `gen(::DBNVar, m, depargs..., rng)` takes a variable number of arguments (one for each dependency).
 
-`DBNOut` is a "value type". See the documentation of `Val` for more conceptual details about value types.
+`DBNOut` is a "value type". See [the documentation of `Val`](https://docs.julialang.org/en/v1/manual/types/index.html#%22Value-types%22-1) for more conceptual details about value types.
 """
 struct DBNOut{names} end
 
@@ -36,8 +36,10 @@ DBNOut(name::Symbol) = DBNOut{name}()
 DBNOut(names...) = DBNOut{names}()
 
 struct DBNStructure{N<:NamedTuple, D<:NamedTuple}
+    "Node implementations."
     nodes::N
-    deps::D # values are tuples of DBNVars
+    "Dependency tree. NamedTuple full of Tuples of DBNVars."
+    deps::D
 end
 
 node(d::DBNStructure, name::Symbol) = d.nodes[name]
@@ -57,40 +59,13 @@ function add_node(d::DBNStructure, n::Symbol, node, deps::NTuple{N,Symbol}) wher
 end
 
 """
+    sorted_deppairs(DBN::Type{D}, symbols) where D <: DBNStructure
+
 Create a list of name=>deps pairs sorted so that dependencies come before dependents.
+
+`symbols` is any iterable collection of `Symbol`s.
 """
 function sorted_deppairs end # this is implemented below
-
-# standard DBNs
-function mdp_dbn()
-    DBNStructure((s = InputDBNNode(),
-            a = InputDBNNode(),
-            sp = DistributionDBNNode(transition),
-            r = FunctionDBNNode(reward),
-           ),
-           (s = (),
-            a = (),
-            sp = map(DBNVar, (:s, :a)),
-            r = map(DBNVar, (:s, :a, :sp)),
-           )
-          )
-end
-
-function pomdp_dbn()
-    DBNStructure((s = InputDBNNode(),
-            a = InputDBNNode(),
-            sp = DistributionDBNNode(transition),
-            o = DistributionDBNNode(observation),
-            r = FunctionDBNNode(reward),
-           ),
-           (s = (),
-            a = (),
-            sp = map(DBNVar, (:s, :a)),
-            o = map(DBNVar, (:s, :a, :sp)),
-            r = map(DBNVar, (:s, :a, :sp, :o)),
-           )
-          )
-end
 
 """
     DBNStructure(::Type{M}) where M <: Union{MDP, POMDP}
@@ -182,12 +157,42 @@ struct GenDBNNode end
 gen(::GenDBNNode, args...) = error("No `gen(::DBNVar, ...)` method implemented for a GenDBNNode (see stack trace for name)")
 implemented(g::typeof(gen), GenDBNNode, M, Deps, RNG) = false
 
+# standard DBNs
+function mdp_dbn()
+    DBNStructure((s = InputDBNNode(),
+            a = InputDBNNode(),
+            sp = DistributionDBNNode(transition),
+            r = FunctionDBNNode(reward),
+           ),
+           (s = (),
+            a = (),
+            sp = map(DBNVar, (:s, :a)),
+            r = map(DBNVar, (:s, :a, :sp)),
+           )
+          )
+end
+
+function pomdp_dbn()
+    DBNStructure((s = InputDBNNode(),
+            a = InputDBNNode(),
+            sp = DistributionDBNNode(transition),
+            o = DistributionDBNNode(observation),
+            r = FunctionDBNNode(reward),
+           ),
+           (s = (),
+            a = (),
+            sp = map(DBNVar, (:s, :a)),
+            o = map(DBNVar, (:s, :a, :sp)),
+            r = map(DBNVar, (:s, :a, :sp, :o)),
+           )
+          )
+end
+
 function sorted_deppairs(dbn::Type{D}, symbols) where D <: DBNStructure
     depnames = Dict{Symbol, Vector{Symbol}}()
     NT = depstype(dbn)
-    keys = fieldnames(NT)
-    for i in 1:length(keys)
-        depnames[keys[i]] = collect(map(name, NT.parameters[2].parameters[i].parameters))
+    for key in fieldnames(NT)
+        depnames[key] = collect(map(name, fieldtype(NT, key).parameters))
     end
     return sorted_deppairs(depnames, symbols)
 end

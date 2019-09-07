@@ -9,7 +9,7 @@ The standard DBNs for MDPs and POMDPs are shown below:
 
 !!! note
 
-    These DBNs are slightly different from the ones traditionally used in the POMDP literature in that they have `:sp`→`:r` and `:o`→`:r` edges. Traditional POMPD algorithms will work with this DBN if ``R(s,a)`` is the expectation of ``R(s, a, s', o)`` over all ``s'`` and ``o``.
+    These DBNs are slightly different from the ones traditionally used in the POMDP literature in that they have `:sp`→`:r` and `:o`→`:r` edges. Traditional POMDP algorithms will work with this DBN if ``R(s,a)`` is the expectation of ``R(s, a, s', o)`` over all ``s'`` and ``o``.
 
 ## DBN structure representation
 

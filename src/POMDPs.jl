@@ -7,6 +7,7 @@ using Random
 import Base: rand
 import Statistics
 import Distributions: rand, pdf, mode, mean, support
+import NamedTupleTools
 import Pkg
 import LibGit2
 using LightGraphs

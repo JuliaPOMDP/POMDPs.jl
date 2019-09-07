@@ -1,16 +1,10 @@
 struct DW <: POMDP{Int, Bool, Int} end
-println("Warning expected:")
-@test_throws MethodError generate_s(DW(), 1, true, Random.GLOBAL_RNG)
-println("Warning expected:")
-@test_throws MethodError generate_sr(DW(), 1, true, Random.GLOBAL_RNG)
-println("Warning expected:")
-@test_throws MethodError generate_o(DW(), 1, true, 2, Random.GLOBAL_RNG)
-println("Warning expected:")
-@test_throws MethodError generate_so(DW(), 1, true, Random.GLOBAL_RNG)
-println("Warning expected:")
-@test_throws MethodError generate_sor(DW(), 1, true, Random.GLOBAL_RNG)
-println("Warning expected:")
-@test_throws MethodError generate_or(DW(), 1, true, 2, Random.GLOBAL_RNG)
+@test_deprecated @test_throws MethodError generate_s(DW(), 1, true, Random.GLOBAL_RNG)
+@test_deprecated @test_throws MethodError generate_sr(DW(), 1, true, Random.GLOBAL_RNG)
+@test_deprecated @test_throws MethodError generate_o(DW(), 1, true, 2, Random.GLOBAL_RNG)
+@test_deprecated @test_throws MethodError generate_so(DW(), 1, true, Random.GLOBAL_RNG)
+@test_deprecated @test_throws MethodError generate_sor(DW(), 1, true, Random.GLOBAL_RNG)
+@test_throws ErrorException generate_or(DW(), 1, true, 2, Random.GLOBAL_RNG)
 
 struct DB <: POMDP{Int, Bool, Bool} end
 

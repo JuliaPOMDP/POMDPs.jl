@@ -1,22 +1,20 @@
-@deprecate generate_s(args...) gen(DBNVar(:sp), args...)
-@deprecate generate_o(args...) gen(DBNVar(:o), args...)
+@deprecate generate_s(args...) gen(DBNOut(:sp), args...)
+@deprecate generate_o(args...) gen(DBNOut(:o), args...)
 @deprecate generate_sr(args...) gen(DBNOut(:sp,:r), args...)
 @deprecate generate_so(args...) gen(DBNOut(:sp,:o), args...)
-@deprecate generate_or(args...) gen(DBNOut(:o,:r), args...)
 @deprecate generate_sor(args...) gen(DBNOut(:sp,:o,:r), args...)
+generate_or(args...) = error("POMDPs.jl v0.8 no longer supports generate_or") # there is no equivalent for this in the new system, but AFAIK no one used it.
 
 const old_generate = Dict(:sp => generate_s,
                     :o => generate_o,
                     (:sp,:r) => generate_sr,
                     (:sp,:o) => generate_so,
-                    (:o,:r) => generate_or,
                     (:sp,:o,:r) => generate_sor)
 
 const new_dbnvars = Dict(generate_s => DBNVar{:sp},
                          generate_o => DBNVar{:o},
                          generate_sr => DBNOut{(:sp,:r)},
                          generate_so => DBNOut{(:sp,:o)},
-                         generate_or => DBNOut{(:o,:r)},
                          generate_sor => DBNOut{(:sp,:o,:r)})
 
 
