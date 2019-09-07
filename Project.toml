@@ -1,6 +1,6 @@
 name = "POMDPs"
 uuid = "a93abf59-7444-517b-a68a-c42f96afdd7d"
-version = "0.7.3"
+version = "0.8.0"
 
 [deps]
 BenchmarkTools = "6e4b80f9-dd63-53aa-95a3-0cdb28fa8baf"
