@@ -1,27 +1,3 @@
-add(solver_name::AbstractString, v::Bool=true) = error("""
-                                                        `POMDPs.add` has been removed.
-                                                        To add POMDPs packages, use `POMDPs.add_registry()` with standard `Pkg.add`
-                                                       """)
-
-add_all(;native_only=false, v::Bool=true) = error("""
-                                                    `POMDPs.add_all` has been removed.
-                                                    To add POMDPs packages, use `POMDPs.add_registry()` with standard `Pkg.add`
-                                                  """)
-remove_all() = error("""
-                     `POMDPs.remove_all` has been removed.
-                     To remove POMDPs packages, use `POMDPs.add_registry()` with standard `Pkg.rm`
-                     """)
-
-build() = error("""
-                `POMDPs.build` has been removed.
-                To build POMDPs packages, use `POMDPs.add_registry()` with standard `Pkg.build`
-                """)
-
-test_all(v::Bool=false) = error("""
-                                `POMDPs.test_all` has been removed.
-                                To test POMDPs packages, use `POMDPs.add_registry()` with standard `Pkg.test`
-                                """)
-
 """
     available()
 

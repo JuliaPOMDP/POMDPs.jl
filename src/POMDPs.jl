@@ -148,7 +148,6 @@ include("type_inferrence.jl")
 include("dbn_struct.jl")
 include("generative.jl")
 include("gen_impl.jl")
-include("constants.jl")
 include("utils.jl")
 include("deprecated.jl")
 
