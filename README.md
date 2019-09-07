@@ -27,25 +27,16 @@ To install POMDPs.jl, run the following from the Julia REPL:
 Pkg.add("POMDPs")
 ```
 
-To install supported JuliaPOMDP packages including various solvers, first run:
+To install supported JuliaPOMDP packages including various solvers, first add the JuliaPOMDP registry:
 ```julia
 using POMDPs
 POMDPs.add_registry()
 ```
 
-This installs the JuliaPOMDP registry so that the Julia package manager can find all the available solvers and support packages.
-
-To check available JuliaPOMDP packages, run:
-```julia
-using POMDPs
-POMDPs.available()
-```
-
-To install a particular solver (say `SARSOP.jl`), having installed the Registry, run:
+You can then list packages with `POMDPs.available()` and install a solver (say `SARSOP.jl`) with
 ```julia
 Pkg.add("SARSOP")
 ```
-
 
 ## Quick Start
 
