@@ -1,7 +1,10 @@
 @generated function gen(v::DBNOut{symbols}, m, s, a, rng) where symbols
 
     # deprecation of old generate_ functions
-    if haskey(old_generate, symbols) && implemented_by_user(old_generate[symbols], Tuple{m, s, a, rng})
+    if symbols isa Tuple && # if it is just one, it will be handled in the DBNVar version
+       haskey(old_generate, symbols) &&
+       implemented_by_user(old_generate[symbols], Tuple{m, s, a, rng})
+
         @warn("""Using user-implemented function
                   $(old_generate[symbols])(::M, ::S, ::A, ::RNG)
               which is deprecated in POMDPs v0.8. Please implement this as
@@ -66,7 +69,7 @@ end
                   $(old_generate[x])(::M, ::Argtypes...)
               which is deprecated in POMDPs v0.8. Please implement this as
                   POMDPs.gen(::M, ::Argtypes...) or
-                  POMDPs.gen(::DBNVar{$x}, ::M, ::Argtypes...)
+                  POMDPs.gen(::DBNVar{:$x}, ::M, ::Argtypes...)
               instead. See the POMDPs.gen documentation for more details.""", M=m, Argtypes=args)
         return :($(old_generate[x])(m, args...))
     end

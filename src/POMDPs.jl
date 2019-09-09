@@ -136,6 +136,7 @@ export
 
 include("requirements_internals.jl")
 include("requirements_printing.jl")
+include("errors.jl")
 include("pomdp.jl")
 include("solver.jl")
 include("simulator.jl")
