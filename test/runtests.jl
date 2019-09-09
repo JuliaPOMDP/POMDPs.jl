@@ -16,6 +16,10 @@ mutable struct A <: POMDP{Int,Bool,Bool} end
     @test_throws MethodError n_states(A())
     @test_throws MethodError stateindex(A(), 1)
 
+    @test !@implemented transition(::A, ::Int, ::Bool)
+    POMDPs.transition(::A, s, a) = [s+a]
+    @test @implemented transition(::A, ::Int, ::Bool)
+
     @test !@implemented discount(::A)
     POMDPs.discount(::A) = 0.95
     @test @implemented discount(::A)

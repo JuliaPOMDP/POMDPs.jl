@@ -100,6 +100,7 @@ export
     add_node,
     pomdp_dbn,
     mdp_dbn,
+    DistributionNotImplemented,
 
     # Requirements checking
     RequirementSet,
@@ -136,7 +137,6 @@ export
 
 include("requirements_internals.jl")
 include("requirements_printing.jl")
-include("errors.jl")
 include("pomdp.jl")
 include("solver.jl")
 include("simulator.jl")
@@ -147,6 +147,7 @@ include("space.jl")
 include("policy.jl")
 include("type_inferrence.jl")
 include("dbn_struct.jl")
+include("errors.jl")
 include("generative.jl")
 include("gen_impl.jl")
 include("utils.jl")

@@ -1,40 +1,40 @@
 struct DistributionNotImplemented <: Exception
     sym::Symbol
-    gen_firstarg::Union{DBNVar, DBNOut}
+    gen_firstarg::Type
     func::Function
     modeltype::Type
     dep_argtypes::NamedTuple
 end
 
-function Base.showerror(io, ex::DistributionNotImplemented)
+function Base.showerror(io::IO, ex::DistributionNotImplemented)
     # using hard break at 88 here
-    println(io, """
-        POMDPs.jl could not find an implementation for DDN Node :$(ex.sym). It appears
-        that this was called from gen($(ex.gen_firstarg), ...).  Consider the following
-        options:
+    println(io, """\n
 
-    """)
+        POMDPs.jl could not find an implementation for DDN Node :$(ex.sym). Consider the following
+        options:
+        """)
 
     argstring = string("::", ex.modeltype, string((", ::$T" for T in ex.dep_argtypes)...))
 
     i = 1
     if ex.gen_firstarg isa DBNOut
-        println(io, "$i) Implement POMDPs.gen($argstring, ::AbstractRNG) to return a NamedTuple with key :$(ex.sym).\n")
+        printstyled(io, "$i) Implement POMDPs.gen($argstring, ::AbstractRNG) to return a NamedTuple with key :$(ex.sym).\n\n", bold=true)
         gen_analysis(io, ex)
+        println(io)
         i += 1
     end
-    println(io, "$i) Implement POMDPs.gen(::DBNVar{:$(ex.sym)}, $argstring, ::AbstractRNG):\n")
-    showerror(io, MethodError(gen, (DBNVar{ex.sym}, ex.modeltype, ex.dep_argtypes..., AbstractRNG)))
+    printstyled(io, "$i) Implement POMDPs.gen(::DBNVar{:$(ex.sym)}, $argstring, ::AbstractRNG):\n\n",
+                bold=true)
+    showerror(io, MethodError(gen, Tuple{DBNVar{ex.sym}, ex.modeltype, ex.dep_argtypes..., AbstractRNG}))
     i += 1
-    println(io, "$i) Implement $(ex.func)($argstring):\n")
-    showerror(io, MethodError(transition, (ex.modeltype, ex.dep_argtypes...)))
+    printstyled(io, "\n\n$i) Implement $(ex.func)($argstring):\n\n", bold=true)
+    showerror(io, MethodError(transition, Tuple{ex.modeltype, ex.dep_argtypes...}))
 
-    println(io, "\nThis error message is designed to help POMDPs.jl problem implementers. If it was misleading or you believe there is an inconsistency, please file an issue: https://github.com/JuliaPOMDP/POMDPs.jl/issues/new")
+    println(io, "\n\nThis error message is designed to help POMDPs.jl problem implementers. If it was misleading or you believe there is an inconsistency, please file an issue: https://github.com/JuliaPOMDP/POMDPs.jl/issues/new")
 end
 
 function distribution_impl_error(sym, func, modeltype, dep_argtypes)
     st = stacktrace()
-    println("begin")
     acceptable = (:distribution_impl_error, nameof(func), nameof(gen))
     gen_firstarg = nothing # The first argument to the `gen` call that is furthest down in the stack trace
 
@@ -54,32 +54,32 @@ function distribution_impl_error(sym, func, modeltype, dep_argtypes)
 
         # if it is gen, check to see if it's the DBNVar version
         elseif sf.func === nameof(gen)
-            println("\n\n\n\n")
             sig = sf.linfo.def.sig
             if sig isa UnionAll &&
                 sig.body.parameters[1] == typeof(gen) &&
                 sig.body.parameters[2] <: Union{DBNVar, DBNOut}
                 # bingo!
-                gen_firstarg = sig.body.parameters[2]() # create an instance of the type
+                gen_firstarg = sig.body.parameters[2] # create an instance of the type
             end
         end
     end
 
     if gen_firstarg === nothing
-        throw(MethodError(transition, (modeltype, dep_argtypes...)))
+        throw(MethodError(transition, Tuple{modeltype, dep_argtypes...}))
     else
         throw(DistributionNotImplemented(:sp, gen_firstarg, func, modeltype, dep_argtypes))
     end
 end
 
 function gen_analysis(io, ex::DistributionNotImplemented)
-    argtypes = (ex.modeltype, ex.dep_argtypes..., AbstractRNG)
+    argtypes = Tuple{ex.modeltype, ex.dep_argtypes..., AbstractRNG}
     rts = Base.return_types(gen, argtypes)
     @assert length(rts) > 0 # there should always be the default NamedTuple() impl.
     if length(rts) == 1
         rt = first(rts)
         if rt == typeof(NamedTuple()) && !implemented(gen, argtypes)
             showerror(io, MethodError(gen, argtypes))
+            println(io)
         else
             println(io, "This method was implemented and the return type was inferred to be $rt. Is this type always a NamedTuple with key :$(ex.sym)?")
         end
@@ -89,4 +89,13 @@ function gen_analysis(io, ex::DistributionNotImplemented)
 end
 
 transition(m, s, a) = distribution_impl_error(:sp, transition, typeof(m), (s=typeof(s), a=typeof(a)))
-observation(m, a, sp) = distribution_impl_error(:sp, observation, typeof(m), (a=typeof(a), sp=typeof(sp)))
+function implemented(t::typeof(transition), TT::TupleType)
+    m = which(t, TT)
+    return m.module != POMDPs # see if this was implemented by a user elsewhere
+end
+
+observation(m, sp) = distribution_impl_error(:o, observation, typeof(m), (sp=typeof(sp),))
+function implemented(o::typeof(observation), TT::Type{Tuple{M, SP}}) where {M<:POMDP, SP}
+    m = which(o, TT)
+    return m.module != POMDPs
+end

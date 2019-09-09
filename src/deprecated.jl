@@ -1,5 +1,5 @@
 @deprecate generate_s(args...) gen(DBNOut(:sp), args...)
-@deprecate generate_o(args...) gen(DBNOut(:o), args...)
+@deprecate generate_o(args...) gen(DBNVar(:o), args...) # this one should be DBNVar because the arguments are not s and a
 @deprecate generate_sr(args...) gen(DBNOut(:sp,:r), args...)
 @deprecate generate_so(args...) gen(DBNOut(:sp,:o), args...)
 @deprecate generate_sor(args...) gen(DBNOut(:sp,:o,:r), args...)

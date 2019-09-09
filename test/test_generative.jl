@@ -3,18 +3,17 @@ import POMDPs: gen
 
 struct W <: POMDP{Int, Bool, Int} end
 @test_throws MethodError initialstate(W(), Random.GLOBAL_RNG)
-@test_throws MethodError gen(DBNVar(:sp), W(), 1, true, Random.GLOBAL_RNG)
-@test_throws MethodError gen(DBNOut(:sp,:r), W(), 1, true, Random.GLOBAL_RNG)
-@test_throws MethodError gen(DBNVar(:o), W(), 1, true, 2, Random.GLOBAL_RNG)
-@test_throws MethodError gen(DBNOut(:sp,:o), W(), 1, true, Random.GLOBAL_RNG)
-@test_throws MethodError gen(DBNOut(:sp,:o,:r), W(), 1, true, Random.GLOBAL_RNG)
-@test_throws MethodError gen(DBNOut(:o,:r), W(), 1, true, 2, Random.GLOBAL_RNG)
+@test_throws DistributionNotImplemented gen(DBNVar(:sp), W(), 1, true, Random.GLOBAL_RNG)
+@test_throws DistributionNotImplemented gen(DBNOut(:sp,:r), W(), 1, true, Random.GLOBAL_RNG)
+@test_throws DistributionNotImplemented gen(DBNVar(:o), W(), 1, true, 2, Random.GLOBAL_RNG)
+@test_throws DistributionNotImplemented gen(DBNOut(:sp,:o), W(), 1, true, Random.GLOBAL_RNG)
+@test_throws DistributionNotImplemented gen(DBNOut(:sp,:o,:r), W(), 1, true, Random.GLOBAL_RNG)
 POMDPs.gen(::W, ::Int, ::Bool, ::AbstractRNG) = nothing
 @test_throws AssertionError gen(DBNOut(:sp), W(), 1, true, Random.GLOBAL_RNG)
 @test_throws AssertionError gen(DBNOut(:sp,:r), W(), 1, true, Random.GLOBAL_RNG)
 POMDPs.gen(::W, ::Int, ::Bool, ::AbstractRNG) = (useless=nothing,)
-@test_throws MethodError gen(DBNVar(:sp), W(), 1, true, Random.GLOBAL_RNG)
-@test_throws MethodError gen(DBNOut(:sp,:r), W(), 1, true, Random.GLOBAL_RNG)
+@test_throws DistributionNotImplemented gen(DBNVar(:sp), W(), 1, true, Random.GLOBAL_RNG)
+@test_throws DistributionNotImplemented gen(DBNOut(:sp,:r), W(), 1, true, Random.GLOBAL_RNG)
 
 struct B <: POMDP{Int, Bool, Bool} end
 
@@ -23,7 +22,7 @@ transition(b::B, s::Int, a::Bool) = Int[s+a]
 @test @inferred gen(DBNVar(:sp), B(), 1, false, Random.GLOBAL_RNG) == 1
 
 @test mightbemissing(@implemented(gen(::DBNOut{(:sp,:o,:r)}, ::B, ::Int, ::Bool, ::MersenneTwister)))
-@test_throws MethodError gen(DBNOut(:sp,:o,:r), B(), 1, false, Random.GLOBAL_RNG)
+@test_throws DistributionNotImplemented gen(DBNOut(:sp,:o,:r), B(), 1, false, Random.GLOBAL_RNG)
 
 reward(b::B, s::Int, a::Bool, sp::Int) = -1.0
 gen(::DBNVar{:o}, b::B, s::Int, a::Bool, sp::Int, rng::AbstractRNG) = sp
@@ -55,8 +54,8 @@ POMDPs.reward(::GD, s, a) = s + a
 @test @inferred(gen(DBNVar(:r), GD(), 1, 1, 2, Random.GLOBAL_RNG)) == 2
 
 struct GE <: MDP{Int, Int} end
-@test_throws MethodError gen(DBNVar(:sp), GE(), 1, 1, Random.GLOBAL_RNG)
-@test_throws MethodError gen(DBNOut(:sp,:r), GE(), 1, 1, Random.GLOBAL_RNG)
+@test_throws DistributionNotImplemented gen(DBNVar(:sp), GE(), 1, 1, Random.GLOBAL_RNG)
+@test_throws DistributionNotImplemented gen(DBNOut(:sp,:r), GE(), 1, 1, Random.GLOBAL_RNG)
 POMDPs.gen(::GE, s, a, ::AbstractRNG) = (sp=s+a, r=s^2)
 @show gen(DBNOut(:sp), GE(), 1, 1, Random.GLOBAL_RNG)
 @test @inferred gen(DBNOut(:sp), GE(), 1, 1, Random.GLOBAL_RNG) == 2
