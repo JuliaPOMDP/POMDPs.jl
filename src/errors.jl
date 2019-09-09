@@ -40,10 +40,10 @@ function distribution_impl_error(sym, func, modeltype, dep_argtypes)
 
     for sf in stacktrace() # step up the stack trace
 
-        # if it is a macro from dbn_struct.jl or gen_impl.jl it is ok
+        # if it is a macro from ddn_struct.jl or gen_impl.jl it is ok
         if sf.func === Symbol("macro expansion")
             bn = basename(String(sf.file))
-            if !(bn in ["dbn_struct.jl", "gen_impl.jl"])
+            if !(bn in ["ddn_struct.jl", "gen_impl.jl"])
                 break
                 # the call stack includes a macro from some other package
             end

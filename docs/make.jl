@@ -19,7 +19,7 @@ makedocs(
 
         "Defining (PO)MDP Models" => [
             "def_pomdp.md",
-            "dbns.md",
+            "ddns.md",
             "basic_properties.md",
             "explicit.md",
             "generative.md",

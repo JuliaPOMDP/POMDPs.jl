@@ -98,8 +98,8 @@ export
     nodenames,
     name,
     add_node,
-    pomdp_dbn,
-    mdp_dbn,
+    pomdp_ddn,
+    mdp_ddn,
     DistributionNotImplemented,
 
     # Requirements checking
@@ -146,7 +146,7 @@ include("belief.jl")
 include("space.jl")
 include("policy.jl")
 include("type_inferrence.jl")
-include("dbn_struct.jl")
+include("ddn_struct.jl")
 include("errors.jl")
 include("generative.jl")
 include("gen_impl.jl")

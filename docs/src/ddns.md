@@ -21,7 +21,7 @@ Currently, there are four types of nodes:
 - [`DistributionDDNNode`](@ref) to define nodes with stochastic output.
 - [`FunctionDDNNode`](@ref) to define a node that is a deterministic function of other nodes.
 - [`ConstantDDNNode`](@ref) for a constant.
-- [`GenDDNNode`](@ref) for a node that has no implementation other than [`gen`](@ref) (see [Defining behavior for nodes](@ref) below).
+- [`GenericDDNNode`](@ref) for a node that has no implementation other than [`gen`](@ref) (see [Defining behavior for nodes](@ref) below).
 
 This set is not expected to handle all possible behavior, so new types are likely to be added in the future (and they should be requested when concrete needs are encountered).
 

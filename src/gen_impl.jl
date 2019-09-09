@@ -15,15 +15,15 @@
     end
 
     quote
-        dbn = DDNStructure(m)
-        genout(v, dbn, m, s, a, rng)
+        ddn = DDNStructure(m)
+        genout(v, ddn, m, s, a, rng)
     end
 end
 
 """
 Sample values for nodes specified in the first argument by sampling values for all intermediate nodes. 
 """
-@inline @generated function genout(v::DDNOut{symbols}, dbn::DDNStructure, m, s, a, rng) where symbols
+@inline @generated function genout(v::DDNOut{symbols}, ddn::DDNStructure, m, s, a, rng) where symbols
     
     # use anything available from gen(m, s, a, rng)
     expr = quote
@@ -32,7 +32,7 @@ Sample values for nodes specified in the first argument by sampling values for a
     end
 
     # add gen for any other variables
-    for (var, depargs) in sorted_deppairs(dbn, symbols)
+    for (var, depargs) in sorted_deppairs(ddn, symbols)
         if var in (:s, :a) # eventually should look for InputDDNNodes instead of being hardcoded
             continue
         end
@@ -102,14 +102,14 @@ end
 
 function implemented(g::typeof(gen), Var::Type{D}, M::Type, Deps::TupleType, RNG::Type) where D <: DDNNode
     v = first(Var.parameters)
-    dbn = DDNStructure(M)
-    return implemented(g, node(dbn, v), M, Deps, RNG)
+    ddn = DDNStructure(M)
+    return implemented(g, node(ddn, v), M, Deps, RNG)
 end
 
 function implemented(g::typeof(gen), Vars::Type{D}, M::Type, Deps::TupleType, RNG::Type) where D <: DDNOut
     if length(Deps.parameters) == 2 && implemented(g, Tuple{M, Deps.parameters..., RNG}) # gen(m, s, a, rng) is implemented
         return true # should this be true or missing?
     else
-        return missing # this is complicated because we need to know the types of everything in the dbn 
+        return missing # this is complicated because we need to know the types of everything in the ddn 
     end
 end

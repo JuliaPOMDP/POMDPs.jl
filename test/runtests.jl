@@ -64,8 +64,8 @@ end
     include("test_generative_backedges.jl")
 end
 
-@testset "dbn_struct" begin
-    include("test_dbn_struct.jl")
+@testset "ddn_struct" begin
+    include("test_ddn_struct.jl")
 end
 
 @testset "gendep" begin

@@ -114,7 +114,7 @@ DDNOut
 DistributionDDNNode
 FunctionDDNNode
 ConstantDDNNode
-GenDDNNode
+GenericDDNNode
 ```
 
 ## Belief Functions

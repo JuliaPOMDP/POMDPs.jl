@@ -79,16 +79,16 @@ Trait of an MDP/POMDP type for describing the structure of the dynamic Baysian n
 
     # make a new node, delta_s, that is deterministically equal to sp - s
     function POMDPs.DDNStructure(::Type{MyMDP})
-        dbn = mdp_dbn()
-        return add_node(dbn, :delta_s, FunctionDDNNode((m,s,sp)->sp-s), (:s, :sp))
+        ddn = mdp_ddn()
+        return add_node(ddn, :delta_s, FunctionDDNNode((m,s,sp)->sp-s), (:s, :sp))
     end
 
     gen(DDNOut(:delta_s), MyMDP(), 1, 1, Random.GLOBAL_RNG)
 """
 function DDNStructure end
 
-DDNStructure(::Type{M}) where M <: MDP = mdp_dbn()
-DDNStructure(::Type{M}) where M <: POMDP = pomdp_dbn()
+DDNStructure(::Type{M}) where M <: MDP = mdp_ddn()
+DDNStructure(::Type{M}) where M <: POMDP = pomdp_ddn()
 
 DDNStructure(m) = DDNStructure(typeof(m))
 
@@ -158,7 +158,7 @@ gen(::GenericDDNNode, args...) = error("No `gen(::DDNNode, ...)` method implemen
 implemented(g::typeof(gen), GenericDDNNode, M, Deps, RNG) = false
 
 # standard DDNs
-function mdp_dbn()
+function mdp_ddn()
     DDNStructure((s = InputDDNNode(),
             a = InputDDNNode(),
             sp = DistributionDDNNode(transition),
@@ -172,7 +172,7 @@ function mdp_dbn()
           )
 end
 
-function pomdp_dbn()
+function pomdp_ddn()
     DDNStructure((s = InputDDNNode(),
             a = InputDDNNode(),
             sp = DistributionDDNNode(transition),
@@ -188,16 +188,16 @@ function pomdp_dbn()
           )
 end
 
-function sorted_deppairs(dbn::Type{D}, symbols) where D <: DDNStructure
+function sorted_deppairs(ddn::Type{D}, symbols) where D <: DDNStructure
     depnames = Dict{Symbol, Vector{Symbol}}()
-    NT = depstype(dbn)
+    NT = depstype(ddn)
     for key in fieldnames(NT)
         depnames[key] = collect(map(name, fieldtype(NT, key).parameters))
     end
     return sorted_deppairs(depnames, symbols)
 end
 
-sorted_deppairs(dbn::Type{D}, symbol::Symbol) where D <: DDNStructure = sorted_deppairs(dbn, tuple(symbol))
+sorted_deppairs(ddn::Type{D}, symbol::Symbol) where D <: DDNStructure = sorted_deppairs(ddn, tuple(symbol))
 
 function sorted_deppairs(depnames::Dict{Symbol, Vector{Symbol}}, symbols)
     dag = SimpleDiGraph(length(depnames))

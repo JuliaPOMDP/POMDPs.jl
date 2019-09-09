@@ -11,7 +11,7 @@ const old_generate = Dict(:sp => generate_s,
                     (:sp,:o) => generate_so,
                     (:sp,:o,:r) => generate_sor)
 
-const new_dbnvars = Dict(generate_s => DDNNode{:sp},
+const new_ddnvars = Dict(generate_s => DDNNode{:sp},
                          generate_o => DDNNode{:o},
                          generate_sr => DDNOut{(:sp,:r)},
                          generate_so => DDNOut{(:sp,:o)},
@@ -29,5 +29,5 @@ function implemented(g::GenerateFunctions, TT::TupleType)
     if implemented_by_user(g, TT)
         return true
     end
-    return implemented(gen, Tuple{new_dbnvars[g], TT.parameters...})
+    return implemented(gen, Tuple{new_ddnvars[g], TT.parameters...})
 end
