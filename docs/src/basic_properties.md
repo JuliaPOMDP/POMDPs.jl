@@ -1,6 +1,6 @@
-# [Defining basic (PO)MDP properties](@id basic)
+# [Defining Basic (PO)MDP Properties](@id basic)
 
-In addition to the [dynamic Bayesian network (DBN)](@ref Dynamic-Bayesian-networks) that defines the state and observation dynamics, a POMDPs.jl problem definition will include definitions of various other properties. Each of these properties is defined by implementing a new method of an interface function for the problem.
+In addition to the [dynamic decision network (DDN)](@ref Dynamic-decision-networks) that defines the state and observation dynamics, a POMDPs.jl problem definition will include definitions of various other properties. Each of these properties is defined by implementing a new method of an interface function for the problem.
 
 To use most solvers, it is only necessary to implement a few of these functions.
 

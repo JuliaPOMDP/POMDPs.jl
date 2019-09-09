@@ -1,8 +1,8 @@
-@deprecate generate_s(args...) gen(DBNOut(:sp), args...)
-@deprecate generate_o(args...) gen(DBNVar(:o), args...) # this one should be DBNVar because the arguments are not s and a
-@deprecate generate_sr(args...) gen(DBNOut(:sp,:r), args...)
-@deprecate generate_so(args...) gen(DBNOut(:sp,:o), args...)
-@deprecate generate_sor(args...) gen(DBNOut(:sp,:o,:r), args...)
+@deprecate generate_s(args...) gen(DDNOut(:sp), args...)
+@deprecate generate_o(args...) gen(DDNNode(:o), args...) # this one should be DDNNode because the arguments are not s and a
+@deprecate generate_sr(args...) gen(DDNOut(:sp,:r), args...)
+@deprecate generate_so(args...) gen(DDNOut(:sp,:o), args...)
+@deprecate generate_sor(args...) gen(DDNOut(:sp,:o,:r), args...)
 generate_or(args...) = error("POMDPs.jl v0.8 no longer supports generate_or") # there is no equivalent for this in the new system, but AFAIK no one used it.
 
 const old_generate = Dict(:sp => generate_s,
@@ -11,11 +11,11 @@ const old_generate = Dict(:sp => generate_s,
                     (:sp,:o) => generate_so,
                     (:sp,:o,:r) => generate_sor)
 
-const new_dbnvars = Dict(generate_s => DBNVar{:sp},
-                         generate_o => DBNVar{:o},
-                         generate_sr => DBNOut{(:sp,:r)},
-                         generate_so => DBNOut{(:sp,:o)},
-                         generate_sor => DBNOut{(:sp,:o,:r)})
+const new_dbnvars = Dict(generate_s => DDNNode{:sp},
+                         generate_o => DDNNode{:o},
+                         generate_sr => DDNOut{(:sp,:r)},
+                         generate_so => DDNOut{(:sp,:o)},
+                         generate_sor => DDNOut{(:sp,:o,:r)})
 
 
 GenerateFunctions = Union{(typeof(f) for f in values(old_generate))...}

@@ -3,7 +3,6 @@ uuid = "a93abf59-7444-517b-a68a-c42f96afdd7d"
 version = "0.8.0"
 
 [deps]
-BenchmarkTools = "6e4b80f9-dd63-53aa-95a3-0cdb28fa8baf"
 Distributions = "31c24e10-a181-5473-b8eb-7969acd0382f"
 LibGit2 = "76f85450-5226-5b5a-8eaa-529ad045b433"
 LightGraphs = "093fc24a-ae57-5d10-9952-331d41423f4d"

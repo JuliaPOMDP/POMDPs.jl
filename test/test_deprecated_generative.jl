@@ -13,7 +13,7 @@ POMDPs.transition(b::DB, s::Int, a::Bool) = Int[s+a]
 @test generate_s(DB(), 1, false, Random.GLOBAL_RNG) == 1
 
 @test mightbemissing(!@implemented generate_sor(::DB, ::Int, ::Bool, ::MersenneTwister))
-# don't run this test because it will compile gen(::DBNVar{:o},...) and I don't want to deal with the backedges
+# don't run this test because it will compile gen(::DDNNode{:o},...) and I don't want to deal with the backedges
 # @test_throws MethodError generate_sor(DB(), 1, false, Random.GLOBAL_RNG)
 
 POMDPs.reward(b::DB, s::Int, a::Bool, sp::Int) = -1.0
@@ -27,10 +27,10 @@ POMDPs.generate_o(b::DB, s::Int, a::Bool, sp::Int, rng::AbstractRNG) = sp
 # to exercise deprecation warning
 struct DC <: POMDP{Nothing, Nothing, Nothing} end
 POMDPs.generate_s(c::DC, s::Nothing, a::Nothing, rng::AbstractRNG) = nothing
-@test gen(DBNVar(:sp), DC(), nothing, nothing, Random.GLOBAL_RNG) == nothing
-@test gen(DBNOut(:sp), DC(), nothing, nothing, Random.GLOBAL_RNG) == nothing
+@test gen(DDNNode(:sp), DC(), nothing, nothing, Random.GLOBAL_RNG) == nothing
+@test gen(DDNOut(:sp), DC(), nothing, nothing, Random.GLOBAL_RNG) == nothing
 
-# test whether implemented gets DBNOut versions
+# test whether implemented gets DDNOut versions
 struct DD <: MDP{Nothing, Nothing} end
 POMDPs.generate_sr(m::DD, s, a, rng) = nothing
-@test @implemented gen(::DBNOut{(:sp, :r)}, ::DD, ::Nothing, ::Nothing, ::MersenneTwister)
+@test @implemented gen(::DDNOut{(:sp, :r)}, ::DD, ::Nothing, ::Nothing, ::MersenneTwister)

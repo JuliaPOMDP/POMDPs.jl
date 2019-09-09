@@ -17,15 +17,15 @@ function Base.showerror(io::IO, ex::DistributionNotImplemented)
     argstring = string("::", ex.modeltype, string((", ::$T" for T in ex.dep_argtypes)...))
 
     i = 1
-    if ex.gen_firstarg isa DBNOut
+    if ex.gen_firstarg isa DDNOut
         printstyled(io, "$i) Implement POMDPs.gen($argstring, ::AbstractRNG) to return a NamedTuple with key :$(ex.sym).\n\n", bold=true)
         gen_analysis(io, ex)
         println(io)
         i += 1
     end
-    printstyled(io, "$i) Implement POMDPs.gen(::DBNVar{:$(ex.sym)}, $argstring, ::AbstractRNG):\n\n",
+    printstyled(io, "$i) Implement POMDPs.gen(::DDNNode{:$(ex.sym)}, $argstring, ::AbstractRNG):\n\n",
                 bold=true)
-    showerror(io, MethodError(gen, Tuple{DBNVar{ex.sym}, ex.modeltype, ex.dep_argtypes..., AbstractRNG}))
+    showerror(io, MethodError(gen, Tuple{DDNNode{ex.sym}, ex.modeltype, ex.dep_argtypes..., AbstractRNG}))
     i += 1
     printstyled(io, "\n\n$i) Implement $(ex.func)($argstring):\n\n", bold=true)
     showerror(io, MethodError(transition, Tuple{ex.modeltype, ex.dep_argtypes...}))
@@ -52,12 +52,12 @@ function distribution_impl_error(sym, func, modeltype, dep_argtypes)
         elseif !(sf.func in acceptable)
             break
 
-        # if it is gen, check to see if it's the DBNVar version
+        # if it is gen, check to see if it's the DDNNode version
         elseif sf.func === nameof(gen)
             sig = sf.linfo.def.sig
             if sig isa UnionAll &&
                 sig.body.parameters[1] == typeof(gen) &&
-                sig.body.parameters[2] <: Union{DBNVar, DBNOut}
+                sig.body.parameters[2] <: Union{DDNNode, DDNOut}
                 # bingo!
                 gen_firstarg = sig.body.parameters[2] # create an instance of the type
             end

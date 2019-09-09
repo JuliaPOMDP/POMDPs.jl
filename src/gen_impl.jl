@@ -1,7 +1,7 @@
-@generated function gen(v::DBNOut{symbols}, m, s, a, rng) where symbols
+@generated function gen(v::DDNOut{symbols}, m, s, a, rng) where symbols
 
     # deprecation of old generate_ functions
-    if symbols isa Tuple && # if it is just one, it will be handled in the DBNVar version
+    if symbols isa Tuple && # if it is just one, it will be handled in the DDNNode version
        haskey(old_generate, symbols) &&
        implemented_by_user(old_generate[symbols], Tuple{m, s, a, rng})
 
@@ -9,13 +9,13 @@
                   $(old_generate[symbols])(::M, ::S, ::A, ::RNG)
               which is deprecated in POMDPs v0.8. Please implement this as
                   POMDPs.gen(::M, ::S, ::A, ::RNG) or
-                  POMDPs.gen(::DBNOut{$symbols}, ::M, ::S, ::A, ::RNG)
+                  POMDPs.gen(::DDNOut{$symbols}, ::M, ::S, ::A, ::RNG)
               instead. See the POMDPs.gen documentation for more details.""", M=m, S=s, A=a, RNG=rng)
         return :($(old_generate[symbols])(m, s, a, rng))
     end
 
     quote
-        dbn = DBNStructure(m)
+        dbn = DDNStructure(m)
         genout(v, dbn, m, s, a, rng)
     end
 end
@@ -23,7 +23,7 @@ end
 """
 Sample values for nodes specified in the first argument by sampling values for all intermediate nodes. 
 """
-@inline @generated function genout(v::DBNOut{symbols}, dbn::DBNStructure, m, s, a, rng) where symbols
+@inline @generated function genout(v::DDNOut{symbols}, dbn::DDNStructure, m, s, a, rng) where symbols
     
     # use anything available from gen(m, s, a, rng)
     expr = quote
@@ -33,7 +33,7 @@ Sample values for nodes specified in the first argument by sampling values for a
 
     # add gen for any other variables
     for (var, depargs) in sorted_deppairs(dbn, symbols)
-        if var in (:s, :a) # eventually should look for InputDBNNodes instead of being hardcoded
+        if var in (:s, :a) # eventually should look for InputDDNNodes instead of being hardcoded
             continue
         end
 
@@ -43,7 +43,7 @@ Sample values for nodes specified in the first argument by sampling values for a
             if haskey(x, $sym) # should be constant at compile time
                 $var = x[$sym]
             else
-                $var = gen(DBNVar{$sym}(), m, $(depargs...), rng)
+                $var = gen(DDNNode{$sym}(), m, $(depargs...), rng)
             end
         end
         append!(expr.args, varblock.args)
@@ -60,7 +60,7 @@ Sample values for nodes specified in the first argument by sampling values for a
     return expr
 end
 
-@generated function gen(::DBNVar{x}, m, args...) where x
+@generated function gen(::DDNNode{x}, m, args...) where x
     # this function is only @generated to deal with deprecation of gen functions
 
     # deprecation of old generate_ functions
@@ -69,13 +69,13 @@ end
                   $(old_generate[x])(::M, ::Argtypes...)
               which is deprecated in POMDPs v0.8. Please implement this as
                   POMDPs.gen(::M, ::Argtypes...) or
-                  POMDPs.gen(::DBNVar{:$x}, ::M, ::Argtypes...)
+                  POMDPs.gen(::DDNNode{:$x}, ::M, ::Argtypes...)
               instead. See the POMDPs.gen documentation for more details.""", M=m, Argtypes=args)
         return :($(old_generate[x])(m, args...))
     end
 
     quote 
-        gen(node(DBNStructure(m), x), m, args...)
+        gen(node(DDNStructure(m), x), m, args...)
     end
 end
 
@@ -90,7 +90,7 @@ function implemented(g::typeof(gen), TT::TupleType)
     if v <: Union{MDP, POMDP}
         return false # already checked above for implementation in another module
     else
-        @assert v <: Union{DBNVar, DBNOut}
+        @assert v <: Union{DDNNode, DDNOut}
         vp = first(v.parameters)
         if haskey(old_generate, vp) && implemented_by_user(old_generate[vp], Tuple{TT.parameters[2:end]...}) # old generate function is implemented
             return true
@@ -100,13 +100,13 @@ function implemented(g::typeof(gen), TT::TupleType)
     end
 end
 
-function implemented(g::typeof(gen), Var::Type{D}, M::Type, Deps::TupleType, RNG::Type) where D <: DBNVar
+function implemented(g::typeof(gen), Var::Type{D}, M::Type, Deps::TupleType, RNG::Type) where D <: DDNNode
     v = first(Var.parameters)
-    dbn = DBNStructure(M)
+    dbn = DDNStructure(M)
     return implemented(g, node(dbn, v), M, Deps, RNG)
 end
 
-function implemented(g::typeof(gen), Vars::Type{D}, M::Type, Deps::TupleType, RNG::Type) where D <: DBNOut
+function implemented(g::typeof(gen), Vars::Type{D}, M::Type, Deps::TupleType, RNG::Type) where D <: DDNOut
     if length(Deps.parameters) == 2 && implemented(g, Tuple{M, Deps.parameters..., RNG}) # gen(m, s, a, rng) is implemented
         return true # should this be true or missing?
     else

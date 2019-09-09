@@ -105,16 +105,16 @@ support
 sampletype
 ```
 
-## Dynamic Bayesian networks
+## Dynamic decision networks
 
 ```@docs
-DBNStructure
-DBNVar
-DBNOut
-DistributionDBNNode
-FunctionDBNNode
-ConstantDBNNode
-GenDBNNode
+DDNStructure
+DDNNode
+DDNOut
+DistributionDDNNode
+FunctionDDNNode
+ConstantDDNNode
+GenDDNNode
 ```
 
 ## Belief Functions

@@ -21,8 +21,8 @@ Custom POMDP problems are defined by implementing the functions specified by the
 There are two ways of specifying the state dynamics and observation behavior of a POMDP. The problem definition may include a mixture of *explicit* definitions of probability distributions, or *generative* definitions that simulate states and observations without explicitly defining the distributions. In scientific papers explicit definitions are often written as ``T(s' | s, a)`` for transitions and ``O(o | s, a, s')`` for observations, while a generative definition might be expressed as ``s', o, r = G(s, a)`` (or ``s', r = G(s,a)`` for an MDP).
 
 Accordingly, the POMDPs.jl model API is grouped into three sections:
-1. The [*explicit*](@ref explicit_api) interface containing *functions that explicitly define distributions for DBN nodes.*
-2. The [*generative*](@ref generative_api) interface containing *functions that return sampled states and observations for DBN nodes.*
+1. The [*explicit*](@ref explicit_api) interface containing *functions that explicitly define distributions for DDN nodes.*
+2. The [*generative*](@ref generative_api) interface containing *functions that return sampled states and observations for DDN nodes.*
 3. [*Common*](@ref common_api) functions used in both.
 
 ## What do I need to implement?
@@ -30,12 +30,12 @@ Accordingly, the POMDPs.jl model API is grouped into three sections:
 Because of the wide variety or problems and solvers that POMDPs.jl interfaces with, the question of which functions from the interface need to be implemented does not have a short answer for all cases. In general, a problem will be defined by implementing a combination of functions from the generative, explicit, and common parts of the interface.
 
 Specifically, a problem writer will need to define
-- explicit or generative definitions for each node in the [Dynamic Bayesian Network (DBN)](@ref Dynamic-Bayesian-networks) (`:sp`, `:r`, and `:o` for POMDPs, or `:sp` and `:r` for MDPs)
+- explicit or generative definitions for each node in the [Dynamic decision Network (DDN)](@ref Dynamic-decision-networks) (`:sp`, `:r`, and `:o` for POMDPs, or `:sp` and `:r` for MDPs)
 - functions to define some other properties of the problem.
 
 !!! note
 
-    Since an explicit definition for a DBN node contains all of the information required for a generative definition, POMDPs.jl will automatically synthesize the generative functions for that node at runtime if an explicit model is available. Thus, there is never a need for both generative and explicit definitions of a node, and it is usually best to avoid redundant definitions because it is easy for them to become inconsistent.
+    Since an explicit definition for a DDN node contains all of the information required for a generative definition, POMDPs.jl will automatically synthesize the generative functions for that node at runtime if an explicit model is available. Thus, there is never a need for both generative and explicit definitions of a node, and it is usually best to avoid redundant definitions because it is easy for them to become inconsistent.
 
 The precise answer for which functions need to be implemented depends on two factors: problem complexity and which solver will be used.
 In particular, 2 questions should be asked:
@@ -52,9 +52,9 @@ If the answer to (1) is yes, then a generative definition should be used. Questi
 
 The following pages provide more details on specific parts of the interface:
 
-- [Dynamic Bayesian Networks](@ref)
-- [Explicit DBN node definitions](@ref explicit_doc)
-- [Generative DBN node definitions](@ref generative_doc)
+- [Dynamic decision Networks](@ref)
+- [Explicit DDN node definitions](@ref explicit_doc)
+- [Generative DDN node definitions](@ref generative_doc)
 - [Basic Properties (common part of the api)](@ref basic)
 - [Spaces and Distributions](@ref)
 - [Requirements](@ref requirements)
