@@ -7,11 +7,9 @@ struct DistributionNotImplemented <: Exception
 end
 
 function Base.showerror(io::IO, ex::DistributionNotImplemented)
-    # using hard break at 88 here
     println(io, """\n
 
-        POMDPs.jl could not find an implementation for DDN Node :$(ex.sym). Consider the following
-        options:
+        POMDPs.jl could not find an implementation for DDN Node :$(ex.sym). Consider the following options:
         """)
 
     argstring = string("::", ex.modeltype, string((", ::$T" for T in ex.dep_argtypes)...))
@@ -39,7 +37,7 @@ function distribution_impl_error(sym, func, modeltype, dep_argtypes)
     gen_firstarg = nothing # The first argument to the `gen` call that is furthest down in the stack trace
 
     for sf in stacktrace() # step up the stack trace
-        #
+
         # if it is a macro from ddn_struct.jl or gen_impl.jl it is ok
         if sf.func === Symbol("macro expansion")
             bn = basename(String(sf.file))
@@ -81,7 +79,7 @@ function gen_analysis(io, ex::DistributionNotImplemented)
             Base.show_method_candidates(io, MethodError(gen, argtypes))
             println(io)
         else
-            println(io, "This method was implemented and the return type was inferred to be $rt. Is this type always a NamedTuple with key :$(ex.sym)?")
+            println(io, "\nThis method was implemented and the return type was inferred to be $rt. Is this type always a NamedTuple with key :$(ex.sym)?")
         end
     else
         println(io, "(POMDPs.jl could not determine if this method was implemented correctly. [Base.return_types(gen, argtypes) = $(rts)])")
