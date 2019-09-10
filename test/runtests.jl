@@ -92,8 +92,8 @@ struct CV <: POMDP{Vector{Float64},Vector{Float64},Vector{Float64}} end
     @test convert_o(Vector{Float32}, [2.0, 3.0], CV()) == Float32[2.0, 3.0]
 end
 
+struct EA <: POMDP{Int, Int, Int} end
 @testset "error" begin
-    struct EA <: POMDP{Int, Int, Int} end
     @test_throws MethodError transition(EA(), 1, 2)
     @test_throws DistributionNotImplemented gen(DDNOut(:sp), EA(), 1, 2, Random.GLOBAL_RNG)
 end
