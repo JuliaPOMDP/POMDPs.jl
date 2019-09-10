@@ -11,7 +11,7 @@ The standard POMDPs.jl DDN models are shown below:
 
 !!! note
 
-    These DDNs are slightly different from the ones traditionally used in the POMDP literature in that they have `:sp`→`:r` and `:o`→`:r` edges. Traditional POMDP algorithms will work with this DDN if ``R(s,a)`` is the expectation of ``R(s, a, s', o)`` over all ``s'`` and ``o``.
+    In order to provide additional flexibility, these DDNs have `:s`→`:o`, `:sp`→`:r` and `:o`→`:r` edges that are typically absent from the DDNs traditionally used in the (PO)MDP literature. Traditional (PO)MDP algorithms are compatible with these DDNs because only ``R(s,a)``, the expectation of ``R(s, a, s', o)`` over all ``s'`` and ``o`` is needed to make optimal decisions.
 
 ## DDN structure representation
 
