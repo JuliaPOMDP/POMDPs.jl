@@ -12,6 +12,8 @@ ddn = DDNStructure(DDNB)
 ns = Set(nodenames(ddn))
 @test all(v in ns for v in [:s, :a, :r, :sp, :o])
 
+@test Set(nodenames(ddn)) == Set(nodenames(typeof(ddn)))
+
 ddn = DDNStructure(DDNB)
 @test node(ddn, :sp) == DistributionDDNNode(transition)
 @test Set(depvars(ddn, :sp)) == Set((DDNNode(:s), DDNNode(:a)))

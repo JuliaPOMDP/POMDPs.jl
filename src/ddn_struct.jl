@@ -46,7 +46,8 @@ node(d::DDNStructure, name::Symbol) = d.nodes[name]
 depvars(d::DDNStructure, name::Symbol) = d.deps[name]
 depnames(d::DDNStructure, n::Symbol) = map(name, depvars(d, n))
 nodenames(d::DDNStructure) = keys(d.nodes)
-depstype(DDN::Type{D}) where D <: DDNStructure = DDN.parameters[2]
+nodenames(DDN::Type{D}) where {D <: DDNStructure} = fieldnames(DDN.parameters[1])
+depstype(DDN::Type{D}) where {D <: DDNStructure} = DDN.parameters[2]
 
 function add_node(d::DDNStructure, n::DDNNode{name}, node, deps) where name
     @assert !haskey(d.nodes, name) "DDNStructure already has a node named :$name"

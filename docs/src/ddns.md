@@ -3,9 +3,11 @@
 Part of the conceptual definition of a POMDP or MDP is a dynamic decision network (DDN) that defines which random variables are dependent on each other.
 Usually, problem writers will not have to interact directly with the DDN, but it is a helpful concept for understanding, and it can be customized for special problem types.
 
-The standard DDNs for MDPs and POMDPs are shown below:
+The standard POMDPs.jl DDN models are shown below:
 
-{TODO: Images}
+| Standard MDP DDN | Standard POMDP DDN |
+|:---:|:---:|
+|![MDP DDN](figures/mdp_ddn.svg) | ![POMDP DDN](figures/pomdp_ddn.svg) |
 
 !!! note
 
