@@ -17,33 +17,33 @@ function Base.showerror(io::IO, ex::DistributionNotImplemented)
     argstring = string("::", ex.modeltype, string((", ::$T" for T in ex.dep_argtypes)...))
 
     i = 1
-    if ex.gen_firstarg isa DDNOut
-        printstyled(io, "$i) Implement POMDPs.gen($argstring, ::AbstractRNG) to return a NamedTuple with key :$(ex.sym).\n\n", bold=true)
+    if ex.gen_firstarg <: DDNOut
+        printstyled(io, "$i) Implement POMDPs.gen($argstring, ::AbstractRNG) to return a NamedTuple with key :$(ex.sym).\n", bold=true)
         gen_analysis(io, ex)
         println(io)
         i += 1
     end
-    printstyled(io, "$i) Implement POMDPs.gen(::DDNNode{:$(ex.sym)}, $argstring, ::AbstractRNG):\n\n",
+    printstyled(io, "$i) Implement POMDPs.gen(::DDNNode{:$(ex.sym)}, $argstring, ::AbstractRNG).\n",
                 bold=true)
-    showerror(io, MethodError(gen, Tuple{DDNNode{ex.sym}, ex.modeltype, ex.dep_argtypes..., AbstractRNG}))
+    Base.show_method_candidates(io, MethodError(gen, Tuple{DDNNode{ex.sym}, ex.modeltype, ex.dep_argtypes..., AbstractRNG})) # this is not exported - it may break
     i += 1
-    printstyled(io, "\n\n$i) Implement $(ex.func)($argstring):\n\n", bold=true)
-    showerror(io, MethodError(transition, Tuple{ex.modeltype, ex.dep_argtypes...}))
+    printstyled(io, "\n\n$i) Implement $(ex.func)($argstring).\n", bold=true)
+    Base.show_method_candidates(io, MethodError(transition, Tuple{ex.modeltype, ex.dep_argtypes...}))
 
-    println(io, "\n\nThis error message is designed to help POMDPs.jl problem implementers. If it was misleading or you believe there is an inconsistency, please file an issue: https://github.com/JuliaPOMDP/POMDPs.jl/issues/new")
+    println(io, "\n\nThis error message uses heuristics to make recommendations for POMDPs.jl problem implementers. If it was misleading or you believe there is an inconsistency, please file an issue: https://github.com/JuliaPOMDP/POMDPs.jl/issues/new")
 end
 
 function distribution_impl_error(sym, func, modeltype, dep_argtypes)
     st = stacktrace()
-    acceptable = (:distribution_impl_error, nameof(func), nameof(gen))
+    acceptable = (:distribution_impl_error, nameof(func), nameof(gen), nameof(genout))
     gen_firstarg = nothing # The first argument to the `gen` call that is furthest down in the stack trace
 
     for sf in stacktrace() # step up the stack trace
-
+        #
         # if it is a macro from ddn_struct.jl or gen_impl.jl it is ok
         if sf.func === Symbol("macro expansion")
             bn = basename(String(sf.file))
-            if !(bn in ["ddn_struct.jl", "gen_impl.jl"])
+            if !(bn in ["ddn_struct.jl", "gen_impl.jl", "none"])
                 break
                 # the call stack includes a macro from some other package
             end
@@ -59,7 +59,7 @@ function distribution_impl_error(sym, func, modeltype, dep_argtypes)
                 sig.body.parameters[1] == typeof(gen) &&
                 sig.body.parameters[2] <: Union{DDNNode, DDNOut}
                 # bingo!
-                gen_firstarg = sig.body.parameters[2] # create an instance of the type
+                gen_firstarg = sig.body.parameters[2]
             end
         end
     end
@@ -78,7 +78,7 @@ function gen_analysis(io, ex::DistributionNotImplemented)
     if length(rts) == 1
         rt = first(rts)
         if rt == typeof(NamedTuple()) && !implemented(gen, argtypes)
-            showerror(io, MethodError(gen, argtypes))
+            Base.show_method_candidates(io, MethodError(gen, argtypes))
             println(io)
         else
             println(io, "This method was implemented and the return type was inferred to be $rt. Is this type always a NamedTuple with key :$(ex.sym)?")
