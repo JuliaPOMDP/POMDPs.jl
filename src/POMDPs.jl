@@ -96,6 +96,7 @@ export
     depvars,
     depnames,
     nodenames,
+    outputnames,
     name,
     add_node,
     pomdp_ddn,

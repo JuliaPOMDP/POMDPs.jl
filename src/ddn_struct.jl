@@ -45,9 +45,13 @@ end
 node(d::DDNStructure, name::Symbol) = d.nodes[name]
 depvars(d::DDNStructure, name::Symbol) = d.deps[name]
 depnames(d::DDNStructure, n::Symbol) = map(name, depvars(d, n))
+
 nodenames(d::DDNStructure) = keys(d.nodes)
 nodenames(DDN::Type{D}) where {D <: DDNStructure} = fieldnames(DDN.parameters[1])
-depstype(DDN::Type{D}) where {D <: DDNStructure} = DDN.parameters[2]
+outputnames(d::DDNStructure) = outputnames(typeof(d)) # XXX Port to 0.8
+function outputnames(::Type{D}) where D <: DDNStructure
+    tuple(Iterators.filter(sym->!(sym in (:s, :a)), nodenames(D))...)
+end
 
 function add_node(d::DDNStructure, n::DDNNode{name}, node, deps) where name
     @assert !haskey(d.nodes, name) "DDNStructure already has a node named :$name"
@@ -58,6 +62,8 @@ end
 function add_node(d::DDNStructure, n::Symbol, node, deps::NTuple{N,Symbol}) where N
     return add_node(d, DDNNode(n), node, map(DDNNode, deps))
 end
+
+depstype(DDN::Type{D}) where {D <: DDNStructure} = DDN.parameters[2]
 
 """
     sorted_deppairs(DDN::Type{D}, symbols) where D <: DDNStructure
