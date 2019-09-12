@@ -9,6 +9,7 @@ import Statistics
 import Distributions: rand, pdf, mode, mean, support
 import Pkg
 import LibGit2
+import Base.Iterators
 
 export 
     # Abstract type
@@ -100,6 +101,13 @@ export
     @req,
     @subreq,
 
+    # future
+    DDNOut,
+    DDNNode,
+    gen,
+    nodenames,
+    DDNStructure,
+    outputnames,
 
     # Deprecated
     state_index,
@@ -128,5 +136,6 @@ include("generative_impl.jl")
 include("type_inferrence.jl")
 include("constants.jl")
 include("utils.jl")
+include("future.jl")
 
 end
