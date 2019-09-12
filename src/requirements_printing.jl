@@ -1,7 +1,7 @@
 function show_heading(io::IO, requirer)
     print(io, "INFO: POMDPs.jl requirements for ")
     printstyled(io, handle_method(requirer), color=:blue)
-    println(io, " and dependencies. ([✔] = implemented correctly; [X] = missing)")
+    println(io, " and dependencies. ([✔] = implemented correctly; [X] = not implemented; [?] = could not determine)")
 end
 
 function show_requirer(io::IO, r::AbstractRequirementSet)
@@ -16,10 +16,14 @@ end
 
 function show_checked_list(io::IO, cl::AbstractVector{T}) where T <: Tuple
     for item in cl
-        if first(item)
+        if ismissing(first(item))
+            printstyled(io, "  [?] $(format_method(item[2], item[3]))", color=:yellow)
+            println(io)
+        elseif first(item) == true
             printstyled(io, "  [✔] $(format_method(item[2], item[3]))", color=:green)
             println(io)
         else
+            @assert first(item) == false
             printstyled(io, "  [X] $(format_method(item[2], item[3]))", color=:red)
             println(io)
         end
@@ -54,7 +58,18 @@ function format_method(f::Function, argtypes::TupleType; module_names=false, col
             elseif isa(t, UnionAll)
                 push!(mless_typenames, string(t))
             else
-                push!(mless_typenames, t.name.name)
+                str = string(t.name.name)
+                if !isempty(t.parameters)
+                    ps = map(t.parameters) do p
+                        if p isa Symbol
+                            return Meta.quot(p)
+                        else
+                            return p
+                        end
+                    end
+                    str = string(str, "{$(ps...)}")
+                end
+                push!(mless_typenames, str)
             end
         end
         typenames = mless_typenames
@@ -68,4 +83,17 @@ function format_method(f::Function, argtypes::TupleType; module_names=false, col
         end
     end
     str = string(str, ")")
+end
+
+logger_context(::AbstractLogger) = IOContext()
+logger_context(l::ConsoleLogger) = IOContext(l.stream)
+logger_context(l::SimpleLogger) = IOContext(l.stream)
+logger_context() = logger_context(current_logger())
+
+"""
+Return a String with the req checked if it is implemented.
+"""
+function schecked(req::Req; kwargs...)
+    checked_list = [(implemented(req), req...)]
+    sprint(show_checked_list, checked_list; kwargs...)
 end

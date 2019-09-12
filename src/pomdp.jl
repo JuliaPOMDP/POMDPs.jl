@@ -83,7 +83,6 @@ function observation end
 Return the observation distribution for the a-s' tuple (action and next state)
 """
 observation(problem::POMDP, a, sp) = observation(problem, sp)
-# @impl_dep observation(::P,::A,::S) where {P<:POMDP,S,A} observation(::P,::S)
 @impl_dep observation(::P,::A,::S) where {P<:POMDP,S,A} observation(::P,::S)
 
 """
@@ -100,23 +99,24 @@ observation(problem::POMDP, s, a, sp) = observation(problem, a, sp)
 
 Return the immediate reward for the s-a pair.
 
-For some problems, it is easier to express `reward(m, s, a, sp)` than
-`reward(m, s, a)`, but some solvers, e.g. SARSOP, can only use
-`reward(m, s, a)`. Both can be implemented for a problem, but when
-`reward(m, s, a)` is implemented, it should be consistent with
-`reward(m, s, a, sp)`, that is, it should be the expected value over all
-destination states.
-"""
-function reward end
-
-"""
     reward(m::POMDP, s, a, sp)
     reward(m::MDP, s, a, sp)
 
 Return the immediate reward for the s-a-s' triple
+
+    reward(m::POMDP, s, a, sp, o)
+
+Return the immediate reward for the s-a-s'-o quad
+
+For some problems, it is easier to express `reward(m, s, a, sp)` or `reward(m, s, a, sp, o)`, than `reward(m, s, a)`, but some solvers, e.g. SARSOP, can only use `reward(m, s, a)`. Both can be implemented for a problem, but when `reward(m, s, a)` is implemented, it should be consistent with `reward(m, s, a, sp[, o])`, that is, it should be the expected value over all destination states and observations.
 """
-reward(problem::Union{POMDP,MDP}, s, a, sp) = reward(problem, s, a)
+function reward end
+
+reward(m::Union{POMDP,MDP}, s, a, sp) = reward(m, s, a)
 @impl_dep reward(::P,::S,::A,::S) where {P<:Union{POMDP,MDP},S,A} reward(::P,::S,::A)
+
+reward(m::Union{POMDP,MDP}, s, a, sp, o) = reward(m, s, a, sp)
+@impl_dep reward(::P,::S,::A,::S,::O) where {P<:Union{POMDP,MDP},S,A,O} reward(::P,::S,::A,::S)
 
 """
     isterminal(m::Union{MDP,POMDP}, s)

@@ -7,8 +7,11 @@ using Random
 import Base: rand
 import Statistics
 import Distributions: rand, pdf, mode, mean, support
+import NamedTupleTools
 import Pkg
 import LibGit2
+using LightGraphs
+using Logging
 
 export 
     # Abstract type
@@ -31,20 +34,14 @@ export
     isterminal,
 
     # Generative model functions
-    generate_s,
-    generate_o,
-    generate_sr,
-    generate_so,
-    generate_or,
-    generate_sor,
+    gen,
     initialstate,
-    
+
     # Discrete Functions
     length,
     stateindex,
     actionindex,
     obsindex,
-    weight,
     
     # Common Functions
     rand,
@@ -85,6 +82,26 @@ export
     actiontype,
     obstype,
 
+    # DDNs
+    DDNNode,
+    DDNOut,
+    DDNStructure,
+    DDNStructure,
+    DistributionDDNNode,
+    FunctionDDNNode,
+    ConstantDDNNode,
+    InputDDNNode,
+    GenericDDNNode,
+    node,
+    depvars,
+    depnames,
+    nodenames,
+    name,
+    add_node,
+    pomdp_ddn,
+    mdp_ddn,
+    DistributionNotImplemented,
+
     # Requirements checking
     RequirementSet,
     check_requirements,
@@ -100,8 +117,13 @@ export
     @req,
     @subreq,
 
-
     # Deprecated
+    generate_s,
+    generate_o,
+    generate_sr,
+    generate_so,
+    generate_or,
+    generate_sor,
     state_index,
     action_index,
     obs_index,
@@ -123,9 +145,12 @@ include("distribution.jl")
 include("belief.jl")
 include("space.jl")
 include("policy.jl")
-include("generative.jl")
-include("generative_impl.jl")
 include("type_inferrence.jl")
+include("ddn_struct.jl")
+include("errors.jl")
+include("generative.jl")
+include("gen_impl.jl")
 include("utils.jl")
+include("deprecated.jl")
 
 end

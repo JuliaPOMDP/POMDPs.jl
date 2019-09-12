@@ -1,5 +1,5 @@
 [deps]
+Distributions = "31c24e10-a181-5473-b8eb-7969acd0382f"
 Documenter = "e30172f5-a6a5-5a46-863b-614d45cd2de4"
-
-[compat]
-Documenter = "~0.21"
+LightGraphs = "093fc24a-ae57-5d10-9952-331d41423f4d"
+NamedTupleTools = "d9ec5142-1e00-5aa0-9d6a-321866360f50"

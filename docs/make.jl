@@ -1,3 +1,5 @@
+push!(LOAD_PATH, "../src/")
+
 using Documenter, POMDPs
 
 makedocs(
@@ -17,10 +19,12 @@ makedocs(
 
         "Defining (PO)MDP Models" => [
             "def_pomdp.md",
+            "ddns.md",
+            "basic_properties.md",
             "explicit.md",
             "generative.md",
+            "interfaces.md",
             "requirements.md",
-            "interfaces.md"
            ],
 
 

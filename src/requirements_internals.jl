@@ -57,7 +57,7 @@ function pomdp_requirements(name::Union{Expr,String}, block::Expr)
     return newblock
 end
 
-const CheckedList = Vector{Tuple{Bool, Function, TupleType}}
+const CheckedList = Vector{Tuple{Union{Bool,Missing}, Function, TupleType}}
 
 
 """
@@ -116,9 +116,7 @@ function recursively_show(io::IO,
         if !(fp in reported)
             push!(reported, fp)
             exists = implemented(first(fp), last(fp))
-            if !exists
-                allthere = false
-            end
+            allthere = exists & allthere
             push!(checked, (exists, first(fp), last(fp)))
         end
     end
@@ -140,7 +138,7 @@ function recursively_show(io::IO,
 
     for dep in r.deps
         depcomplete, depexception = recursively_show(io, dep, analyzed, reported)
-        allthere = allthere && depcomplete
+        allthere = allthere & depcomplete
         if first_exception == nothing && depexception != nothing
             first_exception = depexception
         end
@@ -169,19 +167,12 @@ function recursively_check(r::RequirementSet, analyzed::Set)
     push!(analyzed, r.requirer)
 
     allthere = r.exception == nothing
-    if allthere
-        for fp in r.reqs
-            if !implemented(first(fp), last(fp))
-                allthere = false
-                break
-            end
-        end
+    for fp in r.reqs
+        allthere = allthere & implemented(first(fp), last(fp))
     end
 
-    if allthere
-        for dep in r.deps
-            allthere = allthere && recursively_check(dep, analyzed)
-        end
+    for dep in r.deps
+        allthere = allthere & recursively_check(dep, analyzed)
     end
 
     return allthere

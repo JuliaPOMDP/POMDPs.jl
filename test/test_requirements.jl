@@ -31,6 +31,7 @@ module MyModule
         a = first(actions(p))
         t_dist = transition(p, s, a)
         @req rand(::AbstractRNG, ::typeof(t_dist))
+        @req gen(::DDNOut{:o}, ::PType, ::S, ::A, ::MersenneTwister)
     end
 
     function POMDPs.solve(s::CoolSolver, problem::POMDP{S,A,O}) where {S,A,O}
@@ -82,11 +83,12 @@ struct SimpleDistribution
 end
 POMDPs.transition(p::SimplePOMDP, s::Float64, ::Bool) = SimpleDistribution(states(p), [0.2, 0.2, 0.6])
 
-@test solve(CoolSolver(), SimplePOMDP()) == false
+@test (solve(CoolSolver(), SimplePOMDP()) & false) == false
 
 POMDPs.observations(p::SimplePOMDP) = [1,2,3]
 
 Random.rand(rng::AbstractRNG, d::SimpleDistribution) = sample(rng, d.ss, WeightVec(d.b))
+POMDPs.gen(::DDNOut{:o}, m::SimplePOMDP, s, a, rng) = 1
 
 println("There should be no warnings or requirements output below this point!\n")
 
