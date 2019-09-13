@@ -34,6 +34,7 @@ struct DDNOut{names} end
 
 DDNOut(name::Symbol) = DDNOut{name}()
 DDNOut(names...) = DDNOut{names}()
+DDNOut(names::Tuple) = DDNOut{names}()
 
 struct DDNStructure{N<:NamedTuple, D<:NamedTuple}
     "Node implementations."

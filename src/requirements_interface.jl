@@ -1,4 +1,3 @@
-
 """
     implemented(function, Tuple{Arg1Type, Arg2Type})
 
@@ -191,7 +190,7 @@ function show_requirements(r::AbstractRequirementSet)
 
     allthere, first_exception = recursively_show(buf, r, analyzed, reported)
 
-    if !allthere
+    if ismissing(allthere) || !allthere
         println("Note: Missing methods are often due to incorrect importing. You must explicitly import POMDPs functions to add new methods.")
         println()
     end
