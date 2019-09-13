@@ -31,3 +31,8 @@ function implemented(g::GenerateFunctions, TT::TupleType)
     end
     return implemented(gen, Tuple{new_ddnvars[g], TT.parameters...})
 end
+
+@deprecate sampletype Random.gentype
+@deprecate n_states(m) length(states(m))
+@deprecate n_actions(m) length(actions(m))
+@deprecate n_observations(m) length(observations(m))

@@ -13,7 +13,7 @@ mightbemissing(x) = ismissing(x) || x
 mutable struct A <: POMDP{Int,Bool,Bool} end
 @testset "implement" begin
 
-    @test_throws MethodError n_states(A())
+    @test_throws MethodError length(states(A()))
     @test_throws MethodError stateindex(A(), 1)
 
     @test !@implemented transition(::A, ::Int, ::Bool)
@@ -35,17 +35,6 @@ mutable struct A <: POMDP{Int,Bool,Bool} end
     POMDPs.observation(::A,::Bool,::Int) = [true, false]
     @test @implemented observation(::A,::Int,::Bool,::Int)
     @test @implemented observation(::A,::Bool,::Int)
-end
-
-mutable struct D end
-POMDPs.sampletype(::Type{D}) = Int
-struct E end
-@testset "sampletype" begin
-    @test @implemented sampletype(::D)
-    @test sampletype(D()) == Int
-
-    @test_throws MethodError sampletype(E)
-    @test_throws MethodError sampletype(E())
 end
 
 @testset "infer" begin

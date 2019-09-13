@@ -18,11 +18,6 @@ export
     POMDP,
     MDP,
 
-    # Discrete Functions
-    n_states,
-    n_actions,
-    n_observations,
-    
     # Model functions
     discount,
     states,
@@ -50,7 +45,6 @@ export
     mean,
     dimensions,
     support,
-    sampletype,
     initialstate_distribution,
 
     # Solver types
@@ -125,17 +119,11 @@ export
     generate_so,
     generate_or,
     generate_sor,
-    state_index,
-    action_index,
-    obs_index,
-    state_type,
-    action_type,
-    obs_type,
-    initial_state,
-    initial_state_distribution,
-    iterator
-
-
+    sampletype,
+    n_states,
+    n_actions,
+    n_observations
+ 
 include("requirements_internals.jl")
 include("requirements_printing.jl")
 include("pomdp.jl")

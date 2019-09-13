@@ -10,7 +10,6 @@ The following functions may be called on a space object (Click on a function to 
 
 - [`rand`](@ref)
 - [`dimensions`](@ref)
-- [`sampletype`](@ref)
 
 ## Distributions
 
@@ -18,9 +17,10 @@ A distribution object represents a probability distribution.
 
 The following functions may be called on a distribution object (Click on a function to read its documentation):
 
-- [`rand`](@ref)
+- [`rand`](@ref)`(rng, d)` [^1]
 - [`support`](@ref)
-- [`sampletype`](@ref)
 - [`pdf`](@ref)
 - [`mode`](@ref)
 - [`mean`](@ref)
+
+[^1] `rand(rng::AbstractRNG, d)` where `d` is a distribution object is the only method of [`rand`](@ref) that is officially part of the POMDPs.jl interface, so it is the only required method for new distributions. However, users may wish to [hook into the official julia rand interface](https://docs.julialang.org/en/v1/stdlib/Random/index.html#Generating-values-from-a-collection-1) to enable more flexible `rand` calls.

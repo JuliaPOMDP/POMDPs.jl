@@ -102,7 +102,6 @@ mode
 mean
 dimensions
 support
-sampletype
 ```
 
 ## Dynamic decision networks
