@@ -13,6 +13,12 @@ Often, but not always, the belief will represent a probability distribution.
 In this case, the functions in the [distribution interface](@ref Distributions) should be implemented if possible.
 Implementing these functions will make the belief usable with many of the policies and planners in the POMDPs.jl ecosystem, and will make it easy for others to convert between beliefs and to interpret what a belief means.
 
+### Histories associated with a belief
+
+If a complete or partial record of the action-observation history leading up to a belief is available, it is often helpful to give access to this by implementing the [`history`](@ref) or [`currentobs`](@ref) functions (see the docstrings for more details).
+This is especially useful if a problem-writer wants to implement a belief- or observation-dependent action space.
+Belief type implementers need only implement `history`, and `currentobs` will automatically be provided, though sometimes it is more convenient to implement `currentobs` directly.
+
 ## Defining an Updater
 
 To create an updater, one should define a subtype of the `Updater` abstract type and implement two methods, one to create the initial belief from the problem's initial state distribution and one to perform a belief update:

@@ -118,6 +118,8 @@ GenericDDNNode
 ```@docs
 update
 initialize_belief
+history
+currentobs
 ```
 
 ## Policy and Solver Functions

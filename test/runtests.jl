@@ -86,3 +86,9 @@ struct EA <: POMDP{Int, Int, Int} end
     @test_throws MethodError transition(EA(), 1, 2)
     @test_throws DistributionNotImplemented gen(DDNOut(:sp), EA(), 1, 2, Random.GLOBAL_RNG)
 end
+
+@testset "history" begin
+    POMDPs.history(i::Int) = [(o=i,)]
+    @test history(4)[end][:o] == 4
+    @test currentobs(4) == 4
+end

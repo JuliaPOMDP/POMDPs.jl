@@ -55,6 +55,8 @@ export
     Updater,
     update,
     initialize_belief,
+    history,
+    currentobs,
 
     # Policy
     Policy,
