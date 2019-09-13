@@ -108,6 +108,8 @@ export
     nodenames,
     DDNStructure,
     outputnames,
+    history,
+    currentobs,
 
     # Deprecated
     state_index,

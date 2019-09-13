@@ -44,3 +44,24 @@ end
 DDNStructure(::Type{M}) where M <: MDP = DDNStructureV7{(:s,:a,:sp,:r)}()
 DDNStructure(::Type{M}) where M <: POMDP = DDNStructureV7{(:s,:a,:sp,:o,:r)}()
 DDNStructure(m::Union{MDP,POMDP}) = DDNStructure(typeof(m))
+
+"""
+    history(b)
+
+Return the action-observation history associated with belief `b`.
+
+The history should be an `AbstractVector` full of `NamedTuples` with keys `:a` and `:o`, i.e. `history(b)[end][:a]` should be the last action taken leading up to `b`, and `history(b)[end][:o]` should be the last observation received.
+
+It is acceptable to return only part of the history if that is all that is available, but it should always end with the current observation. For example, it would be acceptable to return a structure containing only the last three observations in a length 3 `Vector{NamedTuple{(:o,),Tuple{O}}`.
+"""
+function history end
+
+"""
+    currentobs(b)
+
+Return the latest observation associated with belief `b`.
+
+If a solver or updater implements `history(b)` for a belief type, `currentobs` has a default implementation.
+"""
+currentobs(b) = history(b)[end].o
+@impl_dep currentobs(::B) where B history(::B)
