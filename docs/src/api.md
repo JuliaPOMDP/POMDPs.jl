@@ -82,9 +82,6 @@ actions
 observations
 isterminal
 discount
-n_states
-n_actions
-n_observations
 stateindex
 actionindex
 obsindex
