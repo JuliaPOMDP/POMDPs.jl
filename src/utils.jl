@@ -16,7 +16,7 @@ end
 
 Adds the JuliaPOMDP registry
 """
-function add_registry(;url=POMDP_REGISTRY)
+function add_registry(;url="https://github.com/JuliaPOMDP/Registry")
     depot = Pkg.depots1()
     # clone to temp dir first
     tmp = mktempdir()

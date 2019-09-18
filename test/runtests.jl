@@ -92,3 +92,5 @@ end
     @test history(4)[end][:o] == 4
     @test currentobs(4) == 4
 end
+
+POMDPs.add_registry()
