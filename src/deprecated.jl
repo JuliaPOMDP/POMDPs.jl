@@ -36,3 +36,15 @@ end
 @deprecate n_states(m) length(states(m))
 @deprecate n_actions(m) length(actions(m))
 @deprecate n_observations(m) length(observations(m))
+
+"""
+The version 0.7 DDNStructure just has the nodenames
+"""
+struct DDNStructureV7{nodenames} end
+
+nodenames(d::DDNStructureV7) = nodenames(typeof(d))
+nodenames(::Type{D}) where D <: DDNStructureV7 = D.parameters[1]
+outputnames(d::DDNStructureV7) = outputnames(typeof(d))
+function outputnames(::Type{D}) where D <: DDNStructureV7
+    tuple(Iterators.filter(sym->!(sym in (:s, :a)), nodenames(D))...)
+end
