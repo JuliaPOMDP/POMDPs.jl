@@ -10,7 +10,7 @@ Note that `gen(::DDNNode, m, depargs..., rng)` always takes an argument for each
 """
 struct DDNNode{name} end
 
-DDNNode(name::Symbol) = DDNNode{name}()
+@pure DDNNode(name::Symbol) = DDNNode{name}()
 
 """
 Get the name of a DDNNode.
@@ -32,9 +32,9 @@ Note that `gen(::DDNOut, m, s, a, rng)` always takes `s` and `a` arguments (the 
 """
 struct DDNOut{names} end
 
-DDNOut(name::Symbol) = DDNOut{name}()
-DDNOut(names...) = DDNOut{names}()
-DDNOut(names::Tuple) = DDNOut{names}()
+@pure DDNOut(name::Symbol) = DDNOut{name}()
+@pure DDNOut(names...) = DDNOut{names}()
+@pure DDNOut(names::Tuple) = DDNOut{names}()
 
 struct DDNStructure{N<:NamedTuple, D<:NamedTuple}
     "Node implementations."

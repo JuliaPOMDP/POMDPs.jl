@@ -4,6 +4,7 @@ Provides a basic interface for defining and solving MDPs/POMDPs
 module POMDPs
 
 using Random
+using Base: @pure
 import Base: rand
 import Statistics
 import Distributions: rand, pdf, mode, mean, support
