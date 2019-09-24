@@ -17,7 +17,7 @@ solver = QMDPSolver() # from QMDP
 policy = solve(solver, pomdp)
 
 #evaluate the policy
-belief_updater = updater(policy) # the default QMPD belief updater (discrete Bayesian filter)
+belief_updater = updater(policy) # the default QMDP belief updater (discrete Bayesian filter)
 init_dist = initialstate_distribution(pomdp) # from POMDPModels
 hr = HistoryRecorder(max_steps=100) # from POMDPSimulators
 hist = simulate(hr, pomdp, policy, belief_updater, init_dist) # run 100 step simulation

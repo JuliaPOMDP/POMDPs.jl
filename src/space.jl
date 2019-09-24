@@ -27,28 +27,26 @@ states(problem::Union{POMDP,MDP}, s) = states(problem)
 @impl_dep states(::P,::S) where {P<:Union{POMDP,MDP},S} states(::P)
 
 """
-    actions(problem::POMDP)
-    actions(problem::MDP)
+    actions(m::Union{MDP,POMDP})
 
-Returns the entire action space of a POMDP.
+Returns the entire action space of a (PO)MDP.
+
+---
+    actions(m::Union{MDP,POMDP}, s)
+
+Return the actions that can be taken from state `s`.
+
+---
+    actions(m::POMDP, b)
+
+Return the actions that can be taken from belief `b`.
+
+To implement an observation-dependent action space, use `currentobs(b)` to get the observation associated with belief `b` within the implementation of `actions(m, b)`.
 """
 function actions end
 
-"""
-    actions{S,A,O}(problem::POMDP{S,A,O}, state::S)
-    actions{S,A}(problem::MDP{S,A}, state::S)
-
-Return the action space accessible from the given state.
-"""
 actions(problem::Union{MDP,POMDP}, state) = actions(problem)
 @impl_dep actions(::P,::S) where {P<:Union{POMDP,MDP},S} actions(::P)
-
-"""
-    actions(problem::POMDP, belief)
-
-Return the action space accessible from the states with nonzero belief.
-"""
-actions(problem::POMDP, belief) = actions(problem)
 
 """
     observations(problem::POMDP)

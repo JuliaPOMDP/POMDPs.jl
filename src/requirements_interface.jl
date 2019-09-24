@@ -1,10 +1,10 @@
-
 """
     implemented(function, Tuple{Arg1Type, Arg2Type})
 
 Check whether there is an implementation available that will return a suitable value.
 """
 implemented(f::Function, TT::TupleType) = hasmethod(f, TT)
+implemented(req::Req) = implemented(first(req), last(req))
 
 """
     @implemented function(::Arg1Type, ::Arg2Type)
@@ -91,7 +91,8 @@ Print a warning if there are unmet requirements.
 macro warn_requirements(call::Expr)
     quote
         reqs = get_requirements($(esc(convert_call(call)))...)
-        if !check_requirements(reqs)
+        c = check_requirements(reqs)
+        if !ismissing(c) && c == false
             show_requirements(reqs)
         end
     end
@@ -189,7 +190,7 @@ function show_requirements(r::AbstractRequirementSet)
 
     allthere, first_exception = recursively_show(buf, r, analyzed, reported)
 
-    if !allthere
+    if ismissing(allthere) || !allthere
         println("Note: Missing methods are often due to incorrect importing. You must explicitly import POMDPs functions to add new methods.")
         println()
     end

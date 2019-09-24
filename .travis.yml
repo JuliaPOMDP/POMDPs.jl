@@ -1,9 +1,9 @@
 language: julia
 
 julia:
-  - 0.7
   - 1.0
   - 1.1
+  - 1.2
 
 os:
   - linux

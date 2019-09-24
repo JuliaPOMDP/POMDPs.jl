@@ -58,19 +58,19 @@ These functions return *distributions*.
 transition
 observation
 initialstate_distribution
+reward
 ```
 
 ### [Generative](@id generative_api)
 
-These functions should return *states*, *observations*, and *rewards*.
+These functions should return *states*, *observations*, and/or *rewards*.
+
+!!! note
+
+    `gen` in POMDPs.jl v0.8 corresponds to the `generate_` functions in previous versions
 
 ```@docs
-generate_s
-generate_o
-generate_sr
-generate_so
-generate_or
-generate_sor
+gen
 initialstate
 ```
 
@@ -80,12 +80,8 @@ initialstate
 states
 actions
 observations
-reward
 isterminal
 discount
-n_states
-n_actions
-n_observations
 stateindex
 actionindex
 obsindex
@@ -103,7 +99,18 @@ mode
 mean
 dimensions
 support
-sampletype
+```
+
+## Dynamic decision networks
+
+```@docs
+DDNStructure
+DDNNode
+DDNOut
+DistributionDDNNode
+FunctionDDNNode
+ConstantDDNNode
+GenericDDNNode
 ```
 
 ## Belief Functions
@@ -111,6 +118,8 @@ sampletype
 ```@docs
 update
 initialize_belief
+history
+currentobs
 ```
 
 ## Policy and Solver Functions

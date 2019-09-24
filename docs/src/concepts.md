@@ -33,7 +33,7 @@ textbook such as \[1\]. In POMDPs.jl an MDP is represented by a concrete
 subtype of the [`MDP`](@ref) abstract type and a set of methods that
 define each of its components. S and A are defined by implementing
 [`states`](@ref) and [`actions`](@ref) for your specific [`MDP`](@ref)
-subtype. R is by implementing [`reward`](@ref), and T is defined by implementing [`transition`](@ref) if the [*explicit*](@ref defining_pomdps) interface is used or [`generate_s`](@ref) if the [*generative*](@ref defining_pomdps) interface is used.
+subtype. R is by implementing [`reward`](@ref), and T is defined by implementing [`transition`](@ref) if the [*explicit*](@ref defining_pomdps) interface is used or [`gen`](@ref) if the [*generative*](@ref defining_pomdps) interface is used.
 
 A POMDP is a more general sequential decision making problem in which
 the agent is not sure what state they are in. The state is only
@@ -44,10 +44,10 @@ of receiving each observation at a transition. In POMDPs.jl, a POMDP is
 represented by a concrete subtype of the [`POMDP`](@ref) abstract type,
 `Z` may be defined by the [`observations`](@ref) function (though an
 explicit definition is often not required), and `O` is defined by
-implementing [`observation`](@ref) if the [*explicit*](@ref defining_pomdps) interface is used or [`generate_o`](@ref) if the [*generative*](@ref defining_pomdps) interface is used.
+implementing [`observation`](@ref) if the [*explicit*](@ref defining_pomdps) interface is used or [`gen`](@ref) if the [*generative*](@ref defining_pomdps) interface is used.
 
-POMDPs.jl also contains functions for defining optional problem behavior
-such as a [discount factor](@ref discount) or a set of [terminal states](@ref isterminal).
+POMDPs.jl can also be extended to accommodate POMDP-like problem classes with expanded [dynamic decision networks](@ref Dynamic-Decision-Networks), such as constrained or factored POMDPs, and it contains functions for defining optional problem behavior
+such as a [discount factor](@ref Discount-Factor) or a set of [terminal states](@ref Terminal-States).
 
 More information can be found in the [Defining POMDPs](@ref defining_pomdps) section.
 

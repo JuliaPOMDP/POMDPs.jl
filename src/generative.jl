@@ -1,59 +1,119 @@
-# generative model interface functions
+"""
+    gen(...)
+
+Sample from generative model of a POMDP or MDP.
+
+There are 3 versions:
+- For problem-writers, the most convenient version to implement is gen(m::Union{MDP,POMDP}, s, a, rng::AbstractRNG), which returns a `NamedTuple`.
+- Solvers and simulators should use the version with a `DDNOut` argument.
+- Defining behavior for and sampling from individual nodes of the dynamic decision network can be accomplished using the version with a `DDNNode` argument.
+
+See below for detailed documentation for each type.
+
+---
+
+    gen(t::DDNOut{X}, m::Union{MDP,POMDP}, s, a, rng::AbstractRNG) where X
+
+Sample values from several nodes in the dynamic decision network. 
+
+An implementation of this method is automatically provided by POMDPs.jl. Solvers and simulators should use this version. Problem writers may implement it directly in special cases (see the POMDPs.jl documentation for more information).
+
+# Arguments
+- `t::DDNOut`: which DDN nodes the function should sample from.
+- `m`: an `MDP` or `POMDP` model
+- `s`: the current state
+- `a`: the action
+- `rng`: a random number generator (Typically a `MersenneTwister`)
+
+# Return
+If the `DDNOut` parameter, `X`, is a symbol, return a value sample from the corresponding node. If `X` is a tuple of symbols, return a `Tuple` of values sampled from the specified nodes.
+
+# Examples
+Let `m` be an `MDP` or `POMDP`, `s` be a state of `m`, `a` be an action of `m`, and `rng` be an `AbstractRNG`.
+- `gen(DDNOut(:sp, :r), m, s, a, rng)` returns a `Tuple` containing the next state and reward.
+- `gen(DDNOut(:sp, :o, :r), m, s, a, rng)` returns a `Tuple` containing the next state, observation, and reward.
+- `gen(DDNOut(:sp), m, s, a, rng)` returns the next state.
+
+---
+
+    gen(m::Union{MDP,POMDP}, s, a, rng::AbstractRNG)
+
+Convenience function for implementing the entire MDP/POMDP generative model in one function by returning a `NamedTuple`.
+
+The `NamedTuple` version of `gen` is the most convenient for problem writers to implement. However, it should *never* be used directly by solvers or simulators. Instead solvers and simulators should use the version with a `DDNOut` first argument. 
+
+# Arguments
+- `m`: an `MDP` or `POMDP` model
+- `s`: the current state
+- `a`: the action
+- `rng`: a random number generator (Typically a `MersenneTwister`)
+
+# Return
+The function should return a [`NamedTuple`](https://docs.julialang.org/en/v1/base/base/#Core.NamedTuple). Typically, this `NamedTuple` will be `(sp=<next state>, r=<reward>)` for an `MDP` or `(sp=<next state>, o=<observation>, r=<reward>) for a `POMDP`.
+
+---
+
+    gen(v::DDNNode{name}, m::Union{MDP,POMDP}, depargs..., rng::AbstractRNG)
+
+Sample a value from a node in the dynamic decision network. 
+
+These functions will be used within gen(::DDNOut, ...) to sample values for all outputs and their dependencies. They may be implemented directly by a problem-writer if they wish to implement a generative model for a particular node in the dynamic decision network, and may be called in solvers to sample a value for a particular node.
+
+# Arguments
+- `v::DDNNode{name}`: which DDN node the function should sample from.
+- `depargs`: values for all the dependent nodes. Dependencies are determined by `deps(DDNStructure(m), name)`.
+- `rng`: a random number generator (Typically a `MersenneTwister`)
+
+# Return
+A sampled value from the specified node.
+
+# Examples
+Let `m` be a `POMDP`, `s` and `sp` be states of `m`, `a` be an action of `m`, and `rng` be an `AbstractRNG`.
+- `gen(DDNNode(:sp), m, s, a, rng)` returns the next state.
+- `gen(DDNNode(:o), m, s, a, sp, rng)` returns the observation given the previous state, action, and new state.
+"""
+function gen end
 
 """
-    generate_s{S,A}(p::Union{POMDP{S,A},MDP{S,A}}, s::S, a::A, rng::AbstractRNG)
+    initialstate(m::Union{POMDP,MDP}, rng::AbstractRNG)
 
-Return the next state given current state `s` and action taken `a`.
-"""
-function generate_s end
+Return a sampled initial state for the problem `m`.
 
-"""
-    generate_o{S,A,O}(p::POMDP{S,A,O}, s::S, a::A, sp::S, rng::AbstractRNG)
-
-Return the next observation given current state `s`, action taken `a` and next state `sp`.
-
-Usually the observation would only depend on the next state `sp`.
-
-    generate_o{S,A,O}(p::POMDP{S,A,O}, s::S, rng::AbstractRNG)
-
-Return the observation from the current state. This should be used to generate initial observations.
-"""
-function generate_o end
-
-"""
-    generate_sr{S}(p::Union{POMDP{S},MDP{S}}, s, a, rng::AbstractRNG)
-
-Return the next state `sp` and reward for taking action `a` in current state `s`.
-"""
-function generate_sr end
-
-"""
-    generate_so{S,A,O}(p::POMDP{S,A,O}, s::S, a::A, rng::AbstractRNG)
-
-Return the next state `sp` and observation `o`.
-"""
-function generate_so end
-
-"""
-    generate_or{S,A,O}(p::POMDP{S,A,O}, s::S, a::A, sp::S, rng::AbstractRNG)
-
-Return the observation `o` and reward for taking action `a` in current state `s` reaching state `sp`.
-"""
-function generate_or end
-
-"""
-    generate_sor{S,A,O}(p::POMDP{S,A,O}, s::S, a::A, rng::AbstractRNG)
-
-Return the next state `sp`, observation `o` and reward for taking action `a` in current state `s`.
-"""
-function generate_sor end
-
-"""
-    initialstate{S}(p::Union{POMDP{S},MDP{S}}, rng::AbstractRNG)
-
-Return the initial state for the problem `p`.
-
-Usually the initial state is sampled from an initial state distribution.
+Usually the initial state is sampled from an initial state distribution. The random number generator `rng` should be used to draw this sample (e.g. use `rand(rng)` instead of `rand()`).
 """
 function initialstate end
-@deprecate initial_state initialstate
+
+function implemented(f::typeof(initialstate), TT::Type)
+    if !hasmethod(f, TT)
+        return false
+    end
+    m = which(f, TT)
+    if m.module == POMDPs && !implemented(initialstate_distribution, Tuple{TT.parameters[1]})
+        return false
+    else
+        return true
+    end
+end
+
+@generated function initialstate(p::Union{POMDP,MDP}, rng::AbstractRNG)
+    impl = quote
+        d = initialstate_distribution(p)
+        return rand(rng, d)
+    end
+
+    if implemented(initialstate_distribution, Tuple{p})
+        return impl
+    else
+        req = @req initialstate_distribution(::p)
+        reqs = [(implemented(req...), req...)]
+        this = @req(initialstate(::p, ::rng))
+        return quote
+            try
+                $impl # trick to get the compiler to insert the right backedges
+            catch
+                # TODO failed_synth_warning($this, $reqs)
+                throw(MethodError(initialstate, (p, rng)))
+            end
+        end
+    end
+end
