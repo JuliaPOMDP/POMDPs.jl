@@ -9,6 +9,7 @@ A space object should contain the information needed to define the set of all po
 The following functions may be called on a space object (Click on a function to read its documentation):
 
 - [`rand`](@ref)
+- [`length`](@ref)
 - [`dimensions`](@ref)
 
 ## Distributions
