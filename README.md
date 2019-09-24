@@ -16,7 +16,7 @@ Our goal is to provide a common programming vocabulary for:
 2. Writing solver software.
 3. Running simulations efficiently.
 
-There are [nested interfaces for expressing and interacting with (PO)MDPs](http://juliapomdp.github.io/POMDPs.jl/latest/def_pomdp): When the *[explicit](http://juliapomdp.github.io/POMDPs.jl/latest/explicit)* interface is used, the transition and observation probabilities are explicitly defined using api [functions](http://juliapomdp.github.io/POMDPs.jl/latest/explicit/#functional-form-explicit-pomdp); when the *[generative](http://juliapomdp.github.io/POMDPs.jl/latest/generative)* interface is used, only a single step simulator (e.g. (s', o, r) = G(s,a)) needs to be defined. Problems may also be defined with probability [tables](http://juliapomdp.github.io/POMDPs.jl/latest/explicit/#tabular-form-explicit-pomdp), or with the simplified [QuickPOMDPs interfaces](https://github.com/JuliaPOMDP/QuickPOMDPs.jl).
+There are [nested interfaces for expressing and interacting with (PO)MDPs](http://juliapomdp.github.io/POMDPs.jl/stable/def_pomdp): When the *[explicit](http://juliapomdp.github.io/POMDPs.jl/stable/explicit)* interface is used, the transition and observation probabilities are explicitly defined using api [functions](http://juliapomdp.github.io/POMDPs.jl/stable/explicit/#functional-form-explicit-pomdp); when the *[generative](http://juliapomdp.github.io/POMDPs.jl/stable/generative)* interface is used, only a single step simulator (e.g. (s', o, r) = G(s,a)) needs to be defined. Problems may also be defined with probability [tables](http://juliapomdp.github.io/POMDPs.jl/stable/explicit/#tabular-form-explicit-pomdp), or with the simplified [QuickPOMDPs interfaces](https://github.com/JuliaPOMDP/QuickPOMDPs.jl).
 
 **Python** can be used to define and solve MDPs and POMDPs via the QuickPOMDPs or tabular interfaces and [pyjulia](https://github.com/JuliaPy/pyjulia) (Example: [tiger.py](https://github.com/JuliaPOMDP/QuickPOMDPs.jl/blob/master/examples/tiger.py)).
 
@@ -41,7 +41,7 @@ Pkg.add("SARSOP")
 
 ## Quick Start
 
-To run a simple simulation of the classic [Tiger POMDP](https://www.cs.rutgers.edu/~mlittman/papers/aij98-pomdp.pdf) using a policy created by the QMDP solver, you can use the following code (Note that this uses the simplified [QuickPOMDPs interface](https://github.com/JuliaPOMDP/QuickPOMDPs.jl); the [main interface](https://juliapomdp.github.io/POMDPs.jl/latest/def_pomdp/) has much more expressive power):
+To run a simple simulation of the classic [Tiger POMDP](https://www.cs.rutgers.edu/~mlittman/papers/aij98-pomdp.pdf) using a policy created by the QMDP solver, you can use the following code (Note that this uses the simplified [QuickPOMDPs interface](https://github.com/JuliaPOMDP/QuickPOMDPs.jl); the [main interface](https://juliapomdp.github.io/POMDPs.jl/stable/def_pomdp/) has much more expressive power):
 
 ```julia
 using POMDPs, QuickPOMDPs, POMDPSimulators, QMDP
@@ -102,10 +102,10 @@ Several tutorials are hosted in the [POMDPExamples repository](https://github.co
 
 ## Documentation
 
-Detailed documentation can be found [here](http://juliapomdp.github.io/POMDPs.jl/latest/).
+Detailed documentation can be found [here](http://juliapomdp.github.io/POMDPs.jl/stable/).
 
-[![Docs](https://img.shields.io/badge/docs-latest-blue.svg)](https://JuliaPOMDP.github.io/POMDPs.jl/latest)
 [![Docs](https://img.shields.io/badge/docs-stable-blue.svg)](https://JuliaPOMDP.github.io/POMDPs.jl/stable)
+[![Docs](https://img.shields.io/badge/docs-latest-blue.svg)](https://JuliaPOMDP.github.io/POMDPs.jl/latest)
 
 
 ## Supported Packages
