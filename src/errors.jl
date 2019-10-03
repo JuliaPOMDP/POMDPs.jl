@@ -26,7 +26,7 @@ function Base.showerror(io::IO, ex::DistributionNotImplemented)
     Base.show_method_candidates(io, MethodError(gen, Tuple{DDNNode{ex.sym}, ex.modeltype, ex.dep_argtypes..., AbstractRNG})) # this is not exported - it may break
     i += 1
     printstyled(io, "\n\n$i) Implement $(ex.func)($argstring).\n", bold=true)
-    Base.show_method_candidates(io, MethodError(transition, Tuple{ex.modeltype, ex.dep_argtypes...}))
+    Base.show_method_candidates(io, MethodError(ex.func, Tuple{ex.modeltype, ex.dep_argtypes...}))
 
     println(io, "\n\nThis error message uses heuristics to make recommendations for POMDPs.jl problem implementers. If it was misleading or you believe there is an inconsistency, please file an issue: https://github.com/JuliaPOMDP/POMDPs.jl/issues/new")
 end
