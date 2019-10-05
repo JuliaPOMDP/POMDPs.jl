@@ -63,9 +63,9 @@ function distribution_impl_error(sym, func, modeltype, dep_argtypes)
     end
 
     if gen_firstarg === nothing
-        throw(MethodError(transition, Tuple{modeltype, dep_argtypes...}))
+        throw(MethodError(func, Tuple{modeltype, dep_argtypes...}))
     else
-        throw(DistributionNotImplemented(:sp, gen_firstarg, func, modeltype, dep_argtypes))
+        throw(DistributionNotImplemented(sym, gen_firstarg, func, modeltype, dep_argtypes))
     end
 end
 
