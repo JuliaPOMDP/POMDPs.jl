@@ -3,6 +3,7 @@ import POMDPs: gen
 
 struct W <: POMDP{Int, Bool, Int} end
 @test_throws MethodError initialstate(W(), Random.GLOBAL_RNG)
+@test_throws MethodError initialobs(W(), 1, Random.GLOBAL_RNG)
 @test_throws DistributionNotImplemented gen(DDNNode(:sp), W(), 1, true, Random.GLOBAL_RNG)
 @test_throws DistributionNotImplemented gen(DDNOut(:sp,:r), W(), 1, true, Random.GLOBAL_RNG)
 @test_throws DistributionNotImplemented gen(DDNNode(:o), W(), 1, true, 2, Random.GLOBAL_RNG)
@@ -35,6 +36,8 @@ gen(::DDNNode{:o}, b::B, s::Int, a::Bool, sp::Int, rng::AbstractRNG) = sp
 
 initialstate_distribution(b::B) = Int[1,2,3]
 @test initialstate(B(), Random.GLOBAL_RNG) in initialstate_distribution(B())
+POMDPs.observation(b::B, s::Int) = Bool[s]
+@test initialobs(B(), 1, Random.GLOBAL_RNG) == 1
 
 mutable struct C <: POMDP{Nothing, Nothing, Nothing} end
 gen(::DDNNode{:sp}, c::C, s::Nothing, a::Nothing, rng::AbstractRNG) = nothing
