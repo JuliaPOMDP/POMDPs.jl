@@ -23,10 +23,10 @@ function Base.showerror(io::IO, ex::DistributionNotImplemented)
     end
     printstyled(io, "$i) Implement POMDPs.gen(::DDNNode{:$(ex.sym)}, $argstring, ::AbstractRNG).\n",
                 bold=true)
-    Base.show_method_candidates(io, MethodError(gen, Tuple{DDNNode{ex.sym}, ex.modeltype, ex.dep_argtypes..., AbstractRNG})) # this is not exported - it may break
+    try_show_method_candidates(io, MethodError(gen, Tuple{DDNNode{ex.sym}, ex.modeltype, ex.dep_argtypes..., AbstractRNG}))
     i += 1
     printstyled(io, "\n\n$i) Implement $(ex.func)($argstring).\n", bold=true)
-    Base.show_method_candidates(io, MethodError(ex.func, Tuple{ex.modeltype, ex.dep_argtypes...}))
+    try_show_method_candidates(io, MethodError(ex.func, Tuple{ex.modeltype, ex.dep_argtypes...}))
 
     println(io, "\n\nThis error message uses heuristics to make recommendations for POMDPs.jl problem implementers. If it was misleading or you believe there is an inconsistency, please file an issue: https://github.com/JuliaPOMDP/POMDPs.jl/issues/new")
 end
@@ -76,13 +76,21 @@ function gen_analysis(io, ex::DistributionNotImplemented)
     if length(rts) == 1
         rt = first(rts)
         if rt == typeof(NamedTuple()) && !implemented(gen, argtypes)
-            Base.show_method_candidates(io, MethodError(gen, argtypes))
+            try_show_method_candidates(io, MethodError(gen, argtypes))
             println(io)
         else
             println(io, "\nThis method was implemented and the return type was inferred to be $rt. Is this type always a NamedTuple with key :$(ex.sym)?")
         end
     else
         println(io, "(POMDPs.jl could not determine if this method was implemented correctly. [Base.return_types(gen, argtypes) = $(rts)])")
+    end
+end
+
+function try_show_method_candidates(io, args...)
+    try
+        Base.show_method_candidates(io, args...)
+    catch ex
+        @debug("Unable to show method candidates:\n$(sprint(showerror, ex))")
     end
 end
 
