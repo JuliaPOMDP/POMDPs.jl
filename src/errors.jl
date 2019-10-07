@@ -88,7 +88,7 @@ end
 
 function try_show_method_candidates(io, args...)
     try
-        Base.show_method_candidates(io, args...)
+        Base.show_method_candidates(io, args...) # this isn't exported, so it might break
     catch ex
         @debug("Unable to show method candidates:\n$(sprint(showerror, ex))")
     end
