@@ -3,7 +3,7 @@ struct DistributionNotImplemented <: Exception
     gen_firstarg::Type
     func::Function
     modeltype::Type
-    dep_argtypes::Union{AbstractVector, Core.SimpleVector}
+    dep_argtypes::AbstractVector
 end
 
 function Base.showerror(io::IO, ex::DistributionNotImplemented)
@@ -62,7 +62,7 @@ function distribution_impl_error(sym, func, modeltype, dep_argtypes)
                     sig.body.parameters[2] <: Union{DDNNode, DDNOut}
                     # bingo!
                     gen_firstarg = sig.body.parameters[2]
-                    dep_argtypes = sig.body.parameters[3:end-1]
+                    dep_argtypes = [sig.body.parameters[3:end-1]...]
                 end
             end
         end
@@ -82,7 +82,7 @@ function gen_analysis(io, sym::Symbol, modeltype::Type, dep_argtypes)
     argtypes = Tuple{modeltype, dep_argtypes..., AbstractRNG}
     rts = Base.return_types(gen, argtypes)
     if length(rts) <= 0 # there should always be the default NamedTuple() impl.
-        @debug("Error analyzing the return types for gen.", argtypes=argtypes, rts=rts)
+        @debug("Error analyzing the return types for gen. Please submit an issue at https://github.com/JuliaPOMDP/POMDPs.jl/issues/new", argtypes=argtypes, rts=rts)
     elseif length(rts) == 1
         rt = first(rts)
         if rt == typeof(NamedTuple()) && !implemented(gen, argtypes)
@@ -100,7 +100,7 @@ function try_show_method_candidates(io, args...)
     try
         Base.show_method_candidates(io, args...) # this isn't exported, so it might break
     catch ex
-        @debug("Unable to show method candidates:\n$(sprint(showerror, ex))")
+        @debug("Unable to show method candidates. Please submit an issue at https://github.com/JuliaPOMDP/POMDPs.jl/issues/new.\n$(sprint(showerror, ex))")
     end
 end
 

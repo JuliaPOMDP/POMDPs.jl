@@ -80,6 +80,5 @@ struct GE <: MDP{Int, Int} end
 @test_throws DistributionNotImplemented gen(DDNNode(:sp), GE(), 1, 1, Random.GLOBAL_RNG)
 @test_throws DistributionNotImplemented gen(DDNOut(:sp,:r), GE(), 1, 1, Random.GLOBAL_RNG)
 POMDPs.gen(::GE, s, a, ::AbstractRNG) = (sp=s+a, r=s^2)
-@show gen(DDNOut(:sp), GE(), 1, 1, Random.GLOBAL_RNG)
 @test @inferred gen(DDNOut(:sp), GE(), 1, 1, Random.GLOBAL_RNG) == 2
 @test @inferred gen(DDNOut(:sp,:r), GE(), 1, 1, Random.GLOBAL_RNG) == (2, 1)

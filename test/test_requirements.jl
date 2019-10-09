@@ -90,6 +90,4 @@ POMDPs.observations(p::SimplePOMDP) = [1,2,3]
 Random.rand(rng::AbstractRNG, d::SimpleDistribution) = sample(rng, d.ss, WeightVec(d.b))
 POMDPs.gen(::DDNOut{:o}, m::SimplePOMDP, s, a, rng) = 1
 
-println("There should be no warnings or requirements output below this point!\n")
-
 @test solve(CoolSolver(), SimplePOMDP())
