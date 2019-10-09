@@ -72,6 +72,7 @@ These functions should return *states*, *observations*, and/or *rewards*.
 ```@docs
 gen
 initialstate
+initialobs
 ```
 
 ### [Common](@id common_api)

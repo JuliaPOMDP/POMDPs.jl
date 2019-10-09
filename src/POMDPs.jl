@@ -32,6 +32,7 @@ export
     # Generative model functions
     gen,
     initialstate,
+    initialobs,
 
     # Discrete Functions
     length,
