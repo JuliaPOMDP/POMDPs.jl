@@ -1,6 +1,6 @@
 name = "POMDPs"
 uuid = "a93abf59-7444-517b-a68a-c42f96afdd7d"
-version = "0.8.0"
+version = "0.8.1"
 
 [deps]
 Distributions = "31c24e10-a181-5473-b8eb-7969acd0382f"
