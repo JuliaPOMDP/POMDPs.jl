@@ -64,6 +64,10 @@ end
 
 reqs = nothing # to check the hygeine of the macro
 println("There should be a warning about no @reqs here:")
+# 27 minutes has been spent trying to suppress this warning and automate a test for it. If you work more on it, please update this counter. The following things have been tried
+# - @test_logs (:warn, "No") @POMDP_requirements ...
+# - @capture_err @POMDP_requirements ... # From Suppressor.jl
+# - @capture_out @POMDP_requirements ... # From Suppressor.jl
 @POMDP_requirements "Warn none" begin
     1+1
 end
@@ -89,7 +93,5 @@ POMDPs.observations(p::SimplePOMDP) = [1,2,3]
 
 Random.rand(rng::AbstractRNG, d::SimpleDistribution) = sample(rng, d.ss, WeightVec(d.b))
 POMDPs.gen(::DDNOut{:o}, m::SimplePOMDP, s, a, rng) = 1
-
-println("There should be no warnings or requirements output below this point!\n")
 
 @test solve(CoolSolver(), SimplePOMDP())

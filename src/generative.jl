@@ -101,18 +101,58 @@ end
         return rand(rng, d)
     end
 
+    # it is technically illegal to call this within the generated function
     if implemented(initialstate_distribution, Tuple{p})
         return impl
     else
-        req = @req initialstate_distribution(::p)
-        reqs = [(implemented(req...), req...)]
-        this = @req(initialstate(::p, ::rng))
         return quote
             try
                 $impl # trick to get the compiler to insert the right backedges
             catch
-                # TODO failed_synth_warning($this, $reqs)
                 throw(MethodError(initialstate, (p, rng)))
+            end
+        end
+    end
+end
+
+"""
+    initialobs(m::POMDP, s, rng::AbstractRNG)
+
+Return a sampled initial observation for the problem `m` and state `s`.
+
+This function is only used in cases where the policy expects an initial observation rather than an initial belief, e.g. in a reinforcement learning setting. It is not used in a standard POMDP simulation.
+
+By default, it will fall back to `observation(m, s)`. The random number generator `rng` should be used to draw this sample (e.g. use `rand(rng)` instead of `rand()`).
+"""
+function initialobs end
+
+function implemented(f::typeof(initialobs), TT::Type)
+    if !hasmethod(f, TT)
+        return false
+    end
+    m = which(f, TT)
+    if m.module == POMDPs && !implemented(observation, Tuple{TT.parameters[1:2]...})
+        return false
+    else
+        return true
+    end
+end
+
+@generated function initialobs(m::POMDP, s, rng::AbstractRNG)
+    impl = quote
+        d = observation(m, s)
+        return rand(rng, d)
+    end
+
+    # it is technically illegal to call this within the generated function
+    if implemented(observation, Tuple{m, s})
+        return impl
+    else
+        return quote
+            try
+                $impl # trick to get the compiler to insert the right backedges
+            catch
+                throw(MethodError(initialobs, (m, s, rng)))
             end
         end
     end

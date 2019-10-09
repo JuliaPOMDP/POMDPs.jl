@@ -19,6 +19,8 @@ The *generative* interface consists of two functions:
 The generative interface is typically used when it is easier to return sampled states and observations rather than explicit distributions as in the [Explicit interface](@ref explicit_doc).
 This type of model is often referred to as a "black-box" model.
 
+In some special cases (e.g. reinforcement learning with [RLInterface.jl](https://github.com/JuliaPOMDP/RLInterface.jl)), an initial observation is needed before any actions are taken. In this case, the [`initialobs`](@ref) function will be used.
+
 ## The [`gen`](@ref) function
 
 The [`gen`](@ref) function has three versions differentiated by the type of the first argument.
