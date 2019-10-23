@@ -95,7 +95,7 @@ function implemented(f::typeof(initialstate), TT::Type)
     end
 end
 
-@generated function initialstate(p::Union{POMDP,MDP}, rng::AbstractRNG)
+@generated function initialstate(p::Union{POMDP,MDP}, rng)
     impl = quote
         d = initialstate_distribution(p)
         return rand(rng, d)
@@ -138,7 +138,7 @@ function implemented(f::typeof(initialobs), TT::Type)
     end
 end
 
-@generated function initialobs(m::POMDP, s, rng::AbstractRNG)
+@generated function initialobs(m::POMDP, s, rng)
     impl = quote
         d = observation(m, s)
         return rand(rng, d)
