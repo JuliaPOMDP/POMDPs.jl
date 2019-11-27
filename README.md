@@ -35,6 +35,9 @@ using POMDPs
 POMDPs.add_registry()
 ```
 
+!!! note
+    JuliaPro
+
 You can then list packages with `POMDPs.available()` and install a solver (say `SARSOP.jl`) with
 ```julia
 Pkg.add("SARSOP")
