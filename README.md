@@ -34,9 +34,7 @@ To install supported JuliaPOMDP packages including various solvers, first add th
 using POMDPs
 POMDPs.add_registry()
 ```
-
-!!! note
-    JuliaPro
+([JuliaPro](https://juliacomputing.com/products/juliapro) users must also run `edit(normpath(Sys.BINDIR,"..","etc","julia","startup.jl"))`, comment out the line `ENV["DISABLE_FALLBACK"] = "true"`, save the file, and restart JuliaPro as described in [this issue](https://github.com/JuliaPOMDP/POMDPs.jl/issues/249))
 
 You can then list packages with `POMDPs.available()` and install a solver (say `SARSOP.jl`) with
 ```julia
