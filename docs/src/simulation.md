@@ -79,7 +79,7 @@ The main simulation loop is shown below. Note again that the [`isterminal`](@ref
 r_total = 0.0
 disc = 1.0
 while !isterminal(mdp, s)
-    a = action(policy, b)
+    a = action(policy, s)
     s, r = gen(DDNOut(:sp,:r), mdp, s, a, rng)
     r_total += d*r
     d *= discount(mdp)
