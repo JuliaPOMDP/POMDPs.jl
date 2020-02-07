@@ -24,4 +24,6 @@ The following functions may be called on a distribution object (Click on a funct
 - [`mode`](@ref)
 - [`mean`](@ref)
 
+You can find some useful pre-made distribution objects in [Distributions.jl](https://github.com/JuliaStats/Distributions.jl) or [POMDPModelTools.jl](https://juliapomdp.github.io/POMDPModelTools.jl/latest/distributions.html).
+
 [^1] `rand(rng::AbstractRNG, d)` where `d` is a distribution object is the only method of [`rand`](@ref) that is officially part of the POMDPs.jl interface, so it is the only required method for new distributions. However, users may wish to [hook into the official julia rand interface](https://docs.julialang.org/en/v1/stdlib/Random/index.html#Generating-values-from-a-collection-1) to enable more flexible `rand` calls.
