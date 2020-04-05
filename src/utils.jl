@@ -10,40 +10,45 @@ function available()
     end
 end
 
-
 """
     add_registry()
 
 Adds the JuliaPOMDP registry
 """
-function add_registry(;url="https://github.com/JuliaPOMDP/Registry")
-    depot = Pkg.depots1()
-    # clone to temp dir first
-    tmp = mktempdir()
-    Base.shred!(LibGit2.CachedCredentials()) do creds
-        LibGit2.with(Pkg.GitTools.clone(url, tmp; header = "registry from $(repr(url))", credentials = creds)) do repo
+function add_registry(;kwargs...)
+    if !isempty(kwargs)
+        error("POMDPs.add_registry no longer accepts keyword arguments")
+    end
+    if VERSION >= v"1.4.0"
+        Pkg.pkg"registry add https://github.com/JuliaPOMDP/Registry"
+    else
+        depot = Pkg.depots1()
+        # clone to temp dir first
+        tmp = mktempdir()
+        Base.shred!(LibGit2.CachedCredentials()) do creds
+            LibGit2.with(Pkg.GitTools.clone(url, tmp; header = "registry from $(repr(url))", credentials = creds)) do repo
+            end
+        end
+        # verify that the clone looks like a registry
+        if !isfile(joinpath(tmp, "Registry.toml"))
+            Pkg.Types.pkgerror("no `Registry.toml` file in cloned registry")
+        end
+        
+        registry = read_registry(joinpath(tmp, "Registry.toml"))
+        verify_registry(registry)
+        
+        # copy to depot
+        regpath = joinpath(depot, "registries", registry["name"])
+        ispath(dirname(regpath)) || mkpath(dirname(regpath))
+        if Pkg.Types.isdir_windows_workaround(regpath)
+            existing_registry = read_registry(joinpath(regpath, "Registry.toml"))
+            @assert registry["uuid"] == existing_registry["uuid"]
+            @info("registry `$(registry["name"])` already exists in `$(Base.contractuser(dirname(regpath)))`")
+        else
+            cp(tmp, regpath)
+            Pkg.Types.printpkgstyle(stdout, :Added, "registry `$(registry["name"])` to `$(Base.contractuser(dirname(regpath)))`")
         end
     end
-    # verify that the clone looks like a registry
-    if !isfile(joinpath(tmp, "Registry.toml"))
-        Pkg.Types.pkgerror("no `Registry.toml` file in cloned registry")
-    end
-    
-    registry = read_registry(joinpath(tmp, "Registry.toml"))
-    verify_registry(registry)
-    
-    # copy to depot
-    regpath = joinpath(depot, "registries", registry["name"])
-    ispath(dirname(regpath)) || mkpath(dirname(regpath))
-    if Pkg.Types.isdir_windows_workaround(regpath)
-        existing_registry = read_registry(joinpath(regpath, "Registry.toml"))
-        @assert registry["uuid"] == existing_registry["uuid"]
-        @info("registry `$(registry["name"])` already exists in `$(Base.contractuser(dirname(regpath)))`")
-    else
-        cp(tmp, regpath)
-        Pkg.Types.printpkgstyle(stdout, :Added, "registry `$(registry["name"])` to `$(Base.contractuser(dirname(regpath)))`")
-    end
-    
 end
 
 function read_registry(regfile)
