@@ -22,6 +22,7 @@ function add_registry(;kwargs...)
     if VERSION >= v"1.4.0"
         Pkg.pkg"registry add https://github.com/JuliaPOMDP/Registry"
     else
+        url = "https://github.com/JuliaPOMDP/Registry"
         depot = Pkg.depots1()
         # clone to temp dir first
         tmp = mktempdir()
