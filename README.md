@@ -42,7 +42,7 @@ using Pkg; pkg"add SARSOP"
 
 ## Quick Start
 
-To run a simple simulation of the classic [Tiger POMDP](https://www.cs.rutgers.edu/~mlittman/papers/aij98-pomdp.pdf) using a policy created by the QMDP solver, you can use the following code (Note that this uses the simplified [Discrete Explicit interface from QuickPOMDPs.jl](https://github.com/JuliaPOMDP/QuickPOMDPs.jl); the [main interface](https://juliapomdp.github.io/POMDPs.jl/stable/def_pomdp/) and the [Quick Interface](https://github.com/JuliaPOMDP/QuickPOMDPs.jl) have much more expressive power):
+To run a simple simulation of the classic [Tiger POMDP](https://www.cs.rutgers.edu/~mlittman/papers/aij98-pomdp.pdf) using a policy created by the QMDP solver, you can use the following code:
 
 ```julia
 using POMDPs, QuickPOMDPs, POMDPModelTools, POMDPSimulators, QMDP
