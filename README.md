@@ -42,54 +42,55 @@ using Pkg; pkg"add SARSOP"
 
 ## Quick Start
 
-To run a simple simulation of the classic [Tiger POMDP](https://www.cs.rutgers.edu/~mlittman/papers/aij98-pomdp.pdf) using a policy created by the QMDP solver, you can use the following code (Note that this uses the simplified [Discrete Explicit interface from QuickPOMDPs.jl](https://github.com/JuliaPOMDP/QuickPOMDPs.jl); the [main interface](https://juliapomdp.github.io/POMDPs.jl/stable/def_pomdp/) and the [Quick Interface](https://github.com/JuliaPOMDP/QuickPOMDPs.jl) have much more expressive power):
+To run a simple simulation of the classic [Tiger POMDP](https://www.cs.rutgers.edu/~mlittman/papers/aij98-pomdp.pdf) using a policy created by the QMDP solver, you can use the following code (note that POMDPs.jl is not limited to discrete problems with explicitly-defined distributions like this):
 
 ```julia
-using POMDPs, QuickPOMDPs, POMDPSimulators, QMDP
+using POMDPs, QuickPOMDPs, POMDPModelTools, POMDPSimulators, QMDP
 
-S = [:left, :right]
-A = [:left, :right, :listen]
-O = [:left, :right]
-γ = 0.95
+m = QuickPOMDP(
+    states = [:left, :right],
+    actions = [:left, :right, :listen],
+    observations = [:left, :right],
+    initialstate_distribution = Uniform([:left, :right]),
+    discount = 0.95,
 
-function T(s, a, sp)
-    if a == :listen
-        return s == sp
-    else # a door is opened
-        return 0.5 #reset
-    end
-end
-
-function Z(a, sp, o)
-    if a == :listen
-        if o == sp
-            return 0.85
-        else
-            return 0.15
+    transition = function (s, a)
+        if a == :listen
+            return Deterministic(s) # tiger stays behind the same door
+        else # a door is opened
+            return Uniform([:left, :right]) # reset
         end
-    else
-        return 0.5
-    end
-end
+    end,
 
-function R(s, a)
-    if a == :listen  
-        return -1.0
-    elseif s == a # the tiger was found
-        return -100.0
-    else # the tiger was escaped
-        return 10.0
-    end
-end
+    observation = function (s, a, sp)
+        if a == :listen
+            if sp == :left
+                return SparseCat([:left, :right], [0.85, 0.15]) # sparse categorical distribution
+            else
+                return SparseCat([:right, :left], [0.85, 0.15])
+            end
+        else
+            return Uniform([:left, :right])
+        end
+    end,
 
-m = DiscreteExplicitPOMDP(S,A,O,T,Z,R,γ)
+    reward = function (s, a, sp, o...) # QMDP needs R(s,a,sp), but simulations use R(s,a,sp,o)
+        if a == :listen  
+            return -1.0
+        elseif s == a # the tiger was found
+            return -100.0
+        else # the tiger was escaped
+            return 10.0
+        end
+    end
+)
 
 solver = QMDPSolver()
 policy = solve(solver, m)
 
 rsum = 0.0
 for (s,b,a,o,r) in stepthrough(m, policy, "s,b,a,o,r", max_steps=10)
-    println("s: $s, b: $([pdf(b,s) for s in S]), a: $a, o: $o")
+    println("s: $s, b: $([pdf(b,s) for s in states(m)]), a: $a, o: $o")
     global rsum += r
 end
 println("Undiscounted reward was $rsum.")
