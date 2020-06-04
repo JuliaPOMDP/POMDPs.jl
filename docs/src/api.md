@@ -70,6 +70,7 @@ These functions should return *states*, *observations*, and/or *rewards*.
     `gen` in POMDPs.jl v0.8 corresponds to the `generate_` functions in previous versions
 
 ```@docs
+@gen
 gen
 initialstate
 initialobs
