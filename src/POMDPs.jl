@@ -31,6 +31,7 @@ export
 
     # Generative model functions
     gen,
+    @gen,
     initialstate,
     initialobs,
 

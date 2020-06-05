@@ -3,36 +3,14 @@
 
 Sample from generative model of a POMDP or MDP.
 
-There are 3 versions:
-- For problem-writers, the most convenient version to implement is gen(m::Union{MDP,POMDP}, s, a, rng::AbstractRNG), which returns a `NamedTuple`.
-- Solvers and simulators should use the version with a `DDNOut` argument.
+In most cases solver and simulator writers should use the `@gen` macro. Problem writers may wish to implement one or more new methods of the function for their problem.
+
+There are three versions of the function:
+- The most convenient version to implement is gen(m::Union{MDP,POMDP}, s, a, rng::AbstractRNG), which returns a `NamedTuple`.
 - Defining behavior for and sampling from individual nodes of the dynamic decision network can be accomplished using the version with a `DDNNode` argument.
+- A version with a `DDNOut` argument is provided by the compiler to sample multiple nodes at once.
 
 See below for detailed documentation for each type.
-
----
-
-    gen(t::DDNOut{X}, m::Union{MDP,POMDP}, s, a, rng::AbstractRNG) where X
-
-Sample values from several nodes in the dynamic decision network. 
-
-An implementation of this method is automatically provided by POMDPs.jl. Solvers and simulators should use this version. Problem writers may implement it directly in special cases (see the POMDPs.jl documentation for more information).
-
-# Arguments
-- `t::DDNOut`: which DDN nodes the function should sample from.
-- `m`: an `MDP` or `POMDP` model
-- `s`: the current state
-- `a`: the action
-- `rng`: a random number generator (Typically a `MersenneTwister`)
-
-# Return
-If the `DDNOut` parameter, `X`, is a symbol, return a value sample from the corresponding node. If `X` is a tuple of symbols, return a `Tuple` of values sampled from the specified nodes.
-
-# Examples
-Let `m` be an `MDP` or `POMDP`, `s` be a state of `m`, `a` be an action of `m`, and `rng` be an `AbstractRNG`.
-- `gen(DDNOut(:sp, :r), m, s, a, rng)` returns a `Tuple` containing the next state and reward.
-- `gen(DDNOut(:sp, :o, :r), m, s, a, rng)` returns a `Tuple` containing the next state, observation, and reward.
-- `gen(DDNOut(:sp), m, s, a, rng)` returns the next state.
 
 ---
 
@@ -71,6 +49,30 @@ A sampled value from the specified node.
 Let `m` be a `POMDP`, `s` and `sp` be states of `m`, `a` be an action of `m`, and `rng` be an `AbstractRNG`.
 - `gen(DDNNode(:sp), m, s, a, rng)` returns the next state.
 - `gen(DDNNode(:o), m, s, a, sp, rng)` returns the observation given the previous state, action, and new state.
+
+---
+
+    gen(t::DDNOut{X}, m::Union{MDP,POMDP}, s, a, rng::AbstractRNG) where X
+
+Sample values from several nodes in the dynamic decision network. X is a symbol or tuple of symbols indicating which nodes to output.
+
+An implementation of this method is automatically provided by POMDPs.jl. Solvers and simulators should use this version. Problem writers may implement it directly in special cases (see the POMDPs.jl documentation for more information).
+
+# Arguments
+- `t::DDNOut`: which DDN nodes the function should sample from.
+- `m`: an `MDP` or `POMDP` model
+- `s`: the current state
+- `a`: the action
+- `rng`: a random number generator (Typically a `MersenneTwister`)
+
+# Return
+If the `DDNOut` parameter, `X`, is a symbol, return a value sample from the corresponding node. If `X` is a tuple of symbols, return a `Tuple` of values sampled from the specified nodes.
+
+# Examples
+Let `m` be an `MDP` or `POMDP`, `s` be a state of `m`, `a` be an action of `m`, and `rng` be an `AbstractRNG`.
+- `gen(DDNOut(:sp, :r), m, s, a, rng)` returns a `Tuple` containing the next state and reward.
+- `gen(DDNOut(:sp, :o, :r), m, s, a, rng)` returns a `Tuple` containing the next state, observation, and reward.
+- `gen(DDNOut(:sp), m, s, a, rng)` returns the next state.
 """
 function gen end
 
@@ -155,5 +157,33 @@ end
                 throw(MethodError(initialobs, (m, s, rng)))
             end
         end
+    end
+end
+
+"""
+    @gen(X)(m, s, a, rng)
+
+Call the generative model for a (PO)MDP `m`; Sample values from several nodes in the dynamic decision network. X is one or more symbols indicating which nodes to output.
+
+Solvers and simulators should usually call this rather than the `gen` function. Problem writers should implement methods of the `gen` function.
+
+# Arguments
+- `m`: an `MDP` or `POMDP` model
+- `s`: the current state
+- `a`: the action
+- `rng`: a random number generator (Typically a `MersenneTwister`)
+
+# Return
+If `X`, is a symbol, return a value sample from the corresponding node. If `X` is several symbols, return a `Tuple` of values sampled from the specified nodes.
+
+# Examples
+Let `m` be an `MDP` or `POMDP`, `s` be a state of `m`, `a` be an action of `m`, and `rng` be an `AbstractRNG`.
+- `@gen(:sp, :r)(m, s, a, rng)` returns a `Tuple` containing the next state and reward.
+- `@gen(:sp, :o, :r)(m, s, a, rng)` returns a `Tuple` containing the next state, observation, and reward.
+- `@gen(:sp)(m, s, a, rng)` returns the next state.
+"""
+macro gen(symbols...)
+    quote
+        (args...) -> gen(DDNOut($(symbols...)), args...)
     end
 end
