@@ -23,7 +23,11 @@ In some special cases (e.g. reinforcement learning with [RLInterface.jl](https:/
 
 ## The [`gen`](@ref) function and [`@gen`](@ref) macro
 
-In most cases solvers and simulators should use the [`@gen`](@ref) macro, while problem-writers should implement new methods of the [`gen`](@ref) function.
+In most cases solvers and simulators should use the [`@gen`](@ref) macro, while problem-writers should implement new methods of the [`gen`](@ref) function. For example
+```julia
+sp, o, r = @gen(:sp,:o,:r)(m, s, a, rng)
+```
+calls the generative model for POMDP `m` at state `s` and action `a`, and stores the next state, observation, and reward in variables `sp`, `o`, and `r`. `rng` is a [random number generator](@ref Random-number-generators).
 
 The [`gen`](@ref) function has three versions differentiated by the type of the first argument.
 
