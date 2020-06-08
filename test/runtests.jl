@@ -57,10 +57,6 @@ end
     include("test_ddn_struct.jl")
 end
 
-@testset "gendep" begin
-    include("test_deprecated_generative.jl")
-end
-
 struct CI <: POMDP{Int,Int,Int} end
 struct CV <: POMDP{Vector{Float64},Vector{Float64},Vector{Float64}} end
 

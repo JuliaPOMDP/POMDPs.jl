@@ -1,23 +1,6 @@
-@generated function gen(v::DDNOut{symbols}, m, s, a, rng) where symbols
-
-    # deprecation of old generate_ functions
-    if symbols isa Tuple && # if it is just one, it will be handled in the DDNNode version
-       haskey(old_generate, symbols) &&
-       implemented_by_user(old_generate[symbols], Tuple{m, s, a, rng})
-
-        @warn("""Using user-implemented function
-                  $(old_generate[symbols])(::M, ::S, ::A, ::RNG)
-              which is deprecated in POMDPs v0.8. Please implement this as
-                  POMDPs.gen(::M, ::S, ::A, ::RNG) or
-                  POMDPs.gen(::DDNOut{$symbols}, ::M, ::S, ::A, ::RNG)
-              instead. See the POMDPs.gen documentation for more details.""", M=m, S=s, A=a, RNG=rng)
-        return :($(old_generate[symbols])(m, s, a, rng))
-    end
-
-    quote
-        ddn = DDNStructure(m)
-        genout(v, ddn, m, s, a, rng)
-    end
+function gen(v::DDNOut{symbols}, m, s, a, rng) where symbols
+    ddn = DDNStructure(m)
+    genout(v, ddn, m, s, a, rng)
 end
 
 """
@@ -60,23 +43,8 @@ Sample values for nodes specified in the first argument by sampling values for a
     return expr
 end
 
-@generated function gen(::DDNNode{x}, m, args...) where x
-    # this function is only @generated to deal with deprecation of gen functions
-
-    # deprecation of old generate_ functions
-    if haskey(old_generate, x) && implemented_by_user(old_generate[x], Tuple{m, args...})
-        @warn("""Using user-implemented function
-                  $(old_generate[x])(::M, ::Argtypes...)
-              which is deprecated in POMDPs v0.8. Please implement this as
-                  POMDPs.gen(::M, ::Argtypes...) or
-                  POMDPs.gen(::DDNNode{:$x}, ::M, ::Argtypes...)
-              instead. See the POMDPs.gen documentation for more details.""", M=m, Argtypes=args)
-        return :($(old_generate[x])(m, args...))
-    end
-
-    quote 
-        gen(node(DDNStructure(m), x), m, args...)
-    end
+function gen(::DDNNode{x}, m, args...) where x
+    gen(node(DDNStructure(m), x), m, args...)
 end
 
 gen(m::Union{MDP, POMDP}, s, a, rng) = NamedTuple()
@@ -92,10 +60,6 @@ function implemented(g::typeof(gen), TT::TupleType)
     else
         @assert v <: Union{DDNNode, DDNOut}
         vp = first(v.parameters)
-        if haskey(old_generate, vp) && implemented_by_user(old_generate[vp], Tuple{TT.parameters[2:end]...}) # old generate function is implemented
-            return true
-        end
-
         return implemented(g, v, TT.parameters[2], Tuple{TT.parameters[3:end-1]...}, TT.parameters[end])
     end
 end

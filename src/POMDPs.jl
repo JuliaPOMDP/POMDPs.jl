@@ -114,20 +114,8 @@ export
     @show_requirements,
     @warn_requirements,
     @req,
-    @subreq,
+    @subreq
 
-    # Deprecated
-    generate_s,
-    generate_o,
-    generate_sr,
-    generate_so,
-    generate_or,
-    generate_sor,
-    sampletype,
-    n_states,
-    n_actions,
-    n_observations
- 
 include("requirements_internals.jl")
 include("requirements_printing.jl")
 include("pomdp.jl")
