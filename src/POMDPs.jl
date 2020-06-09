@@ -33,6 +33,7 @@ export
     @gen,
     initialstate,
     initialobs,
+    DDNOut,
 
     # Discrete Functions
     length,
@@ -71,8 +72,6 @@ export
     simulate,
 
     # Utilities
-    implemented,
-    @implemented,
     convert_s,
     convert_a,
     convert_o,
@@ -80,28 +79,12 @@ export
     actiontype,
     obstype,
 
-    # DDNs
-    DDNNode,
-    DDNOut,
-    DDNStructure,
-    DDNStructure,
-    DistributionDDNNode,
-    FunctionDDNNode,
-    ConstantDDNNode,
-    InputDDNNode,
-    GenericDDNNode,
-    node,
-    depvars,
-    depnames,
-    nodenames,
-    outputnames,
-    name,
-    add_node,
-    pomdp_ddn,
-    mdp_ddn,
+    # Errors
     DistributionNotImplemented,
 
     # Requirements checking
+    implemented,
+    @implemented,
     RequirementSet,
     check_requirements,
     show_requirements,
@@ -127,7 +110,6 @@ include("belief.jl")
 include("space.jl")
 include("policy.jl")
 include("type_inferrence.jl")
-include("ddn_struct.jl")
 include("errors.jl")
 include("generative.jl")
 include("gen_impl.jl")

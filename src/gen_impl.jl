@@ -1,22 +1,32 @@
-function gen(v::DDNOut{symbols}, m, s, a, rng) where symbols
-    ddn = DDNStructure(m)
-    genout(v, ddn, m, s, a, rng)
-end
+gen(m::Union{MDP,POMDP}, s, a, rng) = NamedTuple()
 
 """
-Sample values for nodes specified in the first argument by sampling values for all intermediate nodes. 
+    DDNOut(x::Symbol)
+    DDNOut{x::Symbol}()
+    DDNOut(::Symbol, ::Symbol,...)
+    DDNOut{x::NTuple{N, Symbol}}()
+
+Reference to one or more named nodes in the POMDP or MDP dynamic decision network (DDN).
+
+`DDNOut` is a "value type". See [the documentation of `Val`](https://docs.julialang.org/en/v1/manual/types/index.html#%22Value-types%22-1) for more conceptual details about value types.
 """
-@inline @generated function genout(v::DDNOut{symbols}, ddn::DDNStructure, m, s, a, rng) where symbols
-    
+struct DDNOut{names} end
+
+DDNOut(name::Symbol) = DDNOut{name}()
+DDNOut(names...) = DDNOut{names}()
+DDNOut(names::Tuple) = DDNOut{names}()
+
+@generated function gen(v::DDNOut{symbols}, m::Union{MDP,POMDP}, s, a, rng) where symbols
+
     # use anything available from gen(m, s, a, rng)
     expr = quote
         x = gen(m, s, a, rng)
         @assert x isa NamedTuple "gen(m::Union{MDP,POMDP}, ...) must return a NamedTuple; got a $(typeof(x))"
     end
-
+    
     # add gen for any other variables
-    for (var, depargs) in sorted_deppairs(ddn, symbols)
-        if var in (:s, :a) # eventually should look for InputDDNNodes instead of being hardcoded
+    for (var, depargs) in sorted_deppairs(m, symbols)
+        if var in (:s, :a) # input nodes
             continue
         end
 
@@ -26,7 +36,7 @@ Sample values for nodes specified in the first argument by sampling values for a
             if haskey(x, $sym) # should be constant at compile time
                 $var = x[$sym]
             else
-                $var = gen(DDNNode{$sym}(), m, $(depargs...), rng)
+                $var = $(node_expr(Val(var), depargs))
             end
         end
         append!(expr.args, varblock.args)
@@ -43,11 +53,60 @@ Sample values for nodes specified in the first argument by sampling values for a
     return expr
 end
 
-function gen(::DDNNode{x}, m, args...) where x
-    gen(node(DDNStructure(m), x), m, args...)
+function sorted_deppairs(m::Type{<:MDP}, symbols)
+    deps = Dict(:s => Symbol[],
+                :a => Symbol[],
+                :sp => [:s, :a],
+                :r => [:s, :a, :sp],
+                :info => Symbol[]
+               )
+    return sorted_deppairs(deps, symbols)
 end
 
-gen(m::Union{MDP, POMDP}, s, a, rng) = NamedTuple()
+function sorted_deppairs(m::Type{<:POMDP}, symbols)
+    deps = Dict(:s => Symbol[],
+                :a => Symbol[],
+                :sp => [:s, :a],
+                :o => [:s, :a, :sp],
+                :r => [:s, :a, :sp, :o],
+                :info => Symbol[]
+               )
+    return sorted_deppairs(deps, symbols)
+end
+
+function sorted_deppairs(depnames::Dict{Symbol, Vector{Symbol}}, symbols)
+    dag = SimpleDiGraph(length(depnames))
+    labels = Symbol[]
+    nodemap = Dict{Symbol, Int}()
+    for sym in symbols
+        if !haskey(nodemap, sym)
+            push!(labels, sym)
+            nodemap[sym] = length(labels)
+        end
+        add_dep_edges!(dag, nodemap, labels, depnames, sym)
+    end
+    sortednodes = topological_sort_by_dfs(dag)
+    sortednames = labels[filter(n -> n<=length(labels), sortednodes)]
+    return [n=>depnames[n] for n in sortednames]
+end 
+
+sorted_deppairs(dn::Dict{Symbol, Vector{Symbol}}, sym::Symbol) = sorted_deppairs(dn, tuple(sym))
+
+function add_dep_edges!(dag, nodemap, labels, depnames, sym)
+    for dep in depnames[sym]
+        if !haskey(nodemap, dep)
+            push!(labels, dep)
+            nodemap[dep] = length(labels)
+        end
+        add_edge!(dag, nodemap[dep], nodemap[sym])
+        add_dep_edges!(dag, nodemap, labels, depnames, dep)
+    end
+end
+
+node_expr(::Val{:sp}, depargs) = :(rand(rng, transition(m, $(depargs...))))
+node_expr(::Val{:o}, depargs) = :(rand(rng, observation(m, $(depargs...))))
+node_expr(::Val{:r}, depargs) = :(reward(m, $(depargs...)))
+node_expr(::Val{:info}, depargs) = :(nothing)
 
 function implemented(g::typeof(gen), TT::TupleType)
     m = which(g, TT)
@@ -58,19 +117,13 @@ function implemented(g::typeof(gen), TT::TupleType)
     if v <: Union{MDP, POMDP}
         return false # already checked above for implementation in another module
     else
-        @assert v <: Union{DDNNode, DDNOut}
+        @assert v <: DDNOut
         vp = first(v.parameters)
         return implemented(g, v, TT.parameters[2], Tuple{TT.parameters[3:end-1]...}, TT.parameters[end])
     end
 end
 
-function implemented(g::typeof(gen), Var::Type{D}, M::Type, Deps::TupleType, RNG::Type) where D <: DDNNode
-    v = first(Var.parameters)
-    ddn = DDNStructure(M)
-    return implemented(g, node(ddn, v), M, Deps, RNG)
-end
-
-function implemented(g::typeof(gen), Vars::Type{D}, M::Type, Deps::TupleType, RNG::Type) where D <: DDNOut
+function implemented(g::typeof(gen), Vars::Type{<:DDNOut}, M::Type, Deps::TupleType, RNG::Type)
     if length(Deps.parameters) == 2 && implemented(g, Tuple{M, Deps.parameters..., RNG}) # gen(m, s, a, rng) is implemented
         return true # should this be true or missing?
     else

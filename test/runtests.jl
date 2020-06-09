@@ -53,10 +53,6 @@ end
     include("test_generative_backedges.jl")
 end
 
-@testset "ddn_struct" begin
-    include("test_ddn_struct.jl")
-end
-
 struct CI <: POMDP{Int,Int,Int} end
 struct CV <: POMDP{Vector{Float64},Vector{Float64},Vector{Float64}} end
 
