@@ -53,4 +53,15 @@ POMDPs.add_registry()
     @test !@implemented transition(::EA, ::Int, ::Int)
     POMDPs.transition(::EA, ::Int, ::Int) = [0]
     @test @implemented transition(::EA, ::Int, ::Int)
+
+    @POMDP_require solve(a::Int, b::Int) begin
+        @req transition(::EA, ::Int, ::Int)
+    end
+    @POMDP_requirements Int begin end
+    @requirements_info Int
+    a = 1
+    b = 2
+    @get_requirements solve(a, b)
+    @show_requirements solve(a, b)
+    @warn_requirements solve(a, b)
 end

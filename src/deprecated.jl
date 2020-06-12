@@ -35,14 +35,54 @@ macro implemented(ex)
     end
 end
 
-# @deprecate_requirements_macro(POMDP_require)
-# @deprecate_requirements_macro(POMDP_requirements)
-# @deprecate_requirements_macro(requirements_info)
-# @deprecate_requirements_macro(get_requirements)
-# @deprecate_requirements_macro(show_requirements)
-# @deprecate_requirements_macro(warn_requirements)
-# @deprecate_requirements_macro(req)
-# @deprecate_requirements_macro(subreq)
+macro POMDP_require(args...)
+    @warn("POMDPs.@POMDP_require is deprecated, use POMDPLinter.@POMDP_require instead.", maxlog=1)
+    POMDPLinter.pomdp_require(args...)
+end
+
+macro POMDP_requirements(args...)
+    @warn("POMDPs.@POMDP_requirements is deprecated, use POMDPLinter.@POMDP_requirements instead.", maxlog=1)
+    POMDPLinter.pomdp_requirements(args...)
+end
+
+macro requirements_info(exprs...)
+    @warn("POMDPs.@requirements_info is deprecated, use POMDPLinter.@requirements_info instead.", maxlog=1)
+    quote
+        requirements_info($([esc(ex) for ex in exprs]...))
+    end
+end
+
+macro get_requirements(call)
+    @warn("POMDPs.@get_requirements is deprecated, use POMDPLinter.@get_requirements instead.", maxlog=1)
+    return quote get_requirements($(esc(POMDPLinter.convert_call(call)))...) end
+end
+
+macro show_requirements(call)
+    @warn("POMDPs.@show_requirements is deprecated, use POMDPLinter.@show_requirements instead.", maxlog=1)
+    quote
+        reqs = get_requirements($(esc(POMDPLinter.convert_call(call)))...)
+        show_requirements(reqs)
+    end
+end
+
+macro warn_requirements(call)
+    @warn("POMDPs.@warn_requirements is deprecated, use POMDPLinter.@warn_requirements instead.", maxlog=1)
+    quote
+        reqs = get_requirements($(esc(POMDPLinter.convert_call(call)))...)
+        c = check_requirements(reqs)
+        if !ismissing(c) && c == false
+            show_requirements(reqs)
+        end
+    end
+end
+
+macro req(args...)
+    error("POMDPs.@req no longer exists. Please use POMDPLinter.@req")
+end
+
+macro subreq(args...)
+    error("POMDPs.@subreq no longer exists. Please use POMDPLinter.@subreq")
+end
 
 # in future versions, these will go in POMDPLinter
 function POMDPLinter.implemented(t::typeof(transition), TT::Type{<:Tuple})
