@@ -99,13 +99,4 @@ function try_show_method_candidates(io, args...)
 end
 
 transition(m, s, a) = distribution_impl_error(:sp, transition, typeof(m), [typeof(s), typeof(a)])
-function implemented(t::typeof(transition), TT::TupleType)
-    m = which(t, TT)
-    return m.module != POMDPs # see if this was implemented by a user elsewhere
-end
-
 observation(m, sp) = distribution_impl_error(:o, observation, typeof(m), [typeof(sp)])
-function implemented(o::typeof(observation), TT::Type{Tuple{M, SP}}) where {M<:POMDP, SP}
-    m = which(o, TT)
-    return m.module != POMDPs
-end

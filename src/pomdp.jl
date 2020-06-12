@@ -60,7 +60,7 @@ function observation end
 Return the observation distribution for the a-s' tuple (action and next state)
 """
 observation(problem::POMDP, a, sp) = observation(problem, sp)
-@impl_dep observation(::P,::A,::S) where {P<:POMDP,S,A} observation(::P,::S)
+POMDPLinter.@impl_dep observation(::P,::A,::S) where {P<:POMDP,S,A} observation(::P,::S)
 
 """
     observation(problem::POMDP, state, action, statep)
@@ -68,7 +68,7 @@ observation(problem::POMDP, a, sp) = observation(problem, sp)
 Return the observation distribution for the s-a-s' tuple (state, action, and next state)
 """
 observation(problem::POMDP, s, a, sp) = observation(problem, a, sp)
-@impl_dep observation(::P,::S,::A,::S) where {P<:POMDP,S,A} observation(::P,::A,::S)
+POMDPLinter.@impl_dep observation(::P,::S,::A,::S) where {P<:POMDP,S,A} observation(::P,::A,::S)
 
 """
     reward(m::POMDP, s, a)
@@ -90,10 +90,10 @@ For some problems, it is easier to express `reward(m, s, a, sp)` or `reward(m, s
 function reward end
 
 reward(m::Union{POMDP,MDP}, s, a, sp) = reward(m, s, a)
-@impl_dep reward(::P,::S,::A,::S) where {P<:Union{POMDP,MDP},S,A} reward(::P,::S,::A)
+POMDPLinter.@impl_dep reward(::P,::S,::A,::S) where {P<:Union{POMDP,MDP},S,A} reward(::P,::S,::A)
 
 reward(m::Union{POMDP,MDP}, s, a, sp, o) = reward(m, s, a, sp)
-@impl_dep reward(::P,::S,::A,::S,::O) where {P<:Union{POMDP,MDP},S,A,O} reward(::P,::S,::A,::S)
+POMDPLinter.@impl_dep reward(::P,::S,::A,::S,::O) where {P<:Union{POMDP,MDP},S,A,O} reward(::P,::S,::A,::S)
 
 """
     isterminal(m::Union{MDP,POMDP}, s)

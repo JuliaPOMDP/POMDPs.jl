@@ -7,11 +7,7 @@ end
 Base.rand(rng::AbstractRNG, d::Deterministic) = d.x
 
 struct W <: POMDP{Int, Bool, Int} end
-@test !@implemented initialstate(::W, ::typeof(Random.GLOBAL_RNG))
-@test !@implemented initialstate(::W, ::typeof(Random.GLOBAL_RNG), ::Nothing) # wrong number args
 @test_throws MethodError initialstate(W(), Random.GLOBAL_RNG)
-@test !@implemented initialobs(::W, ::Int, ::typeof(Random.GLOBAL_RNG))
-@test !@implemented initialobs(::W, ::Int, ::typeof(Random.GLOBAL_RNG), ::Nothing) # wrong number args
 @test_throws MethodError initialobs(W(), 1, Random.GLOBAL_RNG)
 @test_throws DistributionNotImplemented gen(DDNOut(:sp), W(), 1, true, Random.GLOBAL_RNG)
 try
@@ -53,10 +49,8 @@ end
 struct B <: POMDP{Int, Bool, Bool} end
 
 transition(b::B, s::Int, a::Bool) = Deterministic(s+a)
-@test mightbemissing(implemented(gen, Tuple{DDNOut{:sp}, B, Int, Bool, MersenneTwister}))
 @test @inferred(gen(DDNOut(:sp), B(), 1, false, Random.GLOBAL_RNG)) == 1
 
-@test mightbemissing(@implemented(gen(::DDNOut{(:sp,:o,:r)}, ::B, ::Int, ::Bool, ::MersenneTwister)))
 @test_throws DistributionNotImplemented gen(DDNOut(:sp,:o,:r), B(), 1, false, Random.GLOBAL_RNG)
 
 reward(b::B, s::Int, a::Bool, sp::Int) = -1.0
@@ -64,23 +58,18 @@ observation(b::B, s::Int, a::Bool, sp::Int) = Deterministic(sp)
 @test @inferred(gen(DDNOut(:sp,:r), B(), 1, false, Random.GLOBAL_RNG)) == (1, -1.0)
 @test @inferred(@gen(:sp,:r)(B(), 1, false, Random.GLOBAL_RNG)) == (1, -1.0)
 
-@test mightbemissing(@implemented(gen(::DDNOut{(:sp,:o)}, b::B, s::Int, a::Bool, rng::MersenneTwister)))
-@test mightbemissing(@implemented gen(::DDNOut{(:sp,:o,:r)}, b::B, s::Int, a::Bool, rng::MersenneTwister))
 @test @inferred(gen(DDNOut(:sp,:o,:r), B(), 1, true, Random.GLOBAL_RNG)) == (2, 2, -1.0)
 @test @inferred(@gen(:sp,:o,:r)(B(), 1, true, Random.GLOBAL_RNG)) == (2, 2, -1.0)
 
 initialstate_distribution(b::B) = Int[1,2,3]
-@test @implemented initialstate(::B, ::MersenneTwister)
 @test initialstate(B(), Random.GLOBAL_RNG) in initialstate_distribution(B())
 POMDPs.observation(b::B, s::Int) = Bool[s]
-@test @implemented initialobs(::B, ::Int, ::MersenneTwister)
 @test initialobs(B(), 1, Random.GLOBAL_RNG) == 1
 
 mutable struct C <: POMDP{Nothing, Nothing, Nothing} end
 transition(c::C, s::Nothing, a::Nothing) = Deterministic(nothing)
 observation(c::C, s::Nothing, a::Nothing, sp::Nothing) = Deterministic(nothing)
 reward(c::C, s::Nothing, a::Nothing) = 0.0
-@test mightbemissing(@implemented gen(::DDNOut{(:sp,:o,:r)}, ::C, ::Nothing, ::Nothing, ::MersenneTwister))
 @test @inferred(gen(DDNOut(:sp,:o,:r), C(), nothing, nothing, Random.GLOBAL_RNG)) == (nothing, nothing, 0.0)
 @test @inferred(@gen(:sp,:o,:r)(C(), nothing, nothing, Random.GLOBAL_RNG)) == (nothing, nothing, 0.0)
 

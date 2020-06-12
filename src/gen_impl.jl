@@ -108,7 +108,7 @@ node_expr(::Val{:o}, depargs) = :(rand(rng, observation(m, $(depargs...))))
 node_expr(::Val{:r}, depargs) = :(reward(m, $(depargs...)))
 node_expr(::Val{:info}, depargs) = :(nothing)
 
-function implemented(g::typeof(gen), TT::TupleType)
+function implemented(g::typeof(gen), TT::Type{<:Tuple})
     m = which(g, TT)
     if m.module != POMDPs # implemented by a user elsewhere
         return true
@@ -123,7 +123,7 @@ function implemented(g::typeof(gen), TT::TupleType)
     end
 end
 
-function implemented(g::typeof(gen), Vars::Type{<:DDNOut}, M::Type, Deps::TupleType, RNG::Type)
+function implemented(g::typeof(gen), Vars::Type{<:DDNOut}, M::Type, Deps::Type{<:Tuple}, RNG::Type)
     if length(Deps.parameters) == 2 && implemented(g, Tuple{M, Deps.parameters..., RNG}) # gen(m, s, a, rng) is implemented
         return true # should this be true or missing?
     else
