@@ -77,11 +77,11 @@ macro warn_requirements(call)
 end
 
 macro req(args...)
-    error("POMDPs.@req no longer exists. Please use POMDPLinter.@req")
+    :(error("POMDPs.@req no longer exists. Please use POMDPLinter.@req"))
 end
 
 macro subreq(args...)
-    error("POMDPs.@subreq no longer exists. Please use POMDPLinter.@subreq")
+    :(error("POMDPs.@subreq no longer exists. Please use POMDPLinter.@subreq"))
 end
 
 # in future versions, these will go in POMDPLinter

@@ -64,4 +64,7 @@ POMDPs.add_registry()
     @get_requirements solve(a, b)
     @show_requirements solve(a, b)
     @warn_requirements solve(a, b)
+
+    @test_throws ErrorException @req
+    @test_throws ErrorException @subreq
 end
