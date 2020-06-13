@@ -45,12 +45,12 @@ Usually the initial state is sampled from an initial state distribution. The ran
 """
 function initialstate end
 
-function implemented(f::typeof(initialstate), TT::Type)
+function POMDPLinter.implemented(f::typeof(initialstate), TT::Type)
     if !hasmethod(f, TT)
         return false
     end
     m = which(f, TT)
-    if m.module == POMDPs && !implemented(initialstate_distribution, Tuple{TT.parameters[1]})
+    if m.module == POMDPs && !POMDPLinter.implemented(initialstate_distribution, Tuple{TT.parameters[1]})
         return false
     else
         return true
@@ -64,7 +64,7 @@ end
     end
 
     # it is technically illegal to call this within the generated function
-    if implemented(initialstate_distribution, Tuple{p})
+    if POMDPLinter.implemented(initialstate_distribution, Tuple{p})
         return impl
     else
         return quote
@@ -88,12 +88,12 @@ By default, it will fall back to `observation(m, s)`. The random number generato
 """
 function initialobs end
 
-function implemented(f::typeof(initialobs), TT::Type)
+function POMDPLinter.implemented(f::typeof(initialobs), TT::Type)
     if !hasmethod(f, TT)
         return false
     end
     m = which(f, TT)
-    if m.module == POMDPs && !implemented(observation, Tuple{TT.parameters[1:2]...})
+    if m.module == POMDPs && !POMDPLinter.implemented(observation, Tuple{TT.parameters[1:2]...})
         return false
     else
         return true
@@ -107,7 +107,7 @@ end
     end
 
     # it is technically illegal to call this within the generated function
-    if implemented(observation, Tuple{m, s})
+    if POMDPLinter.implemented(observation, Tuple{m, s})
         return impl
     else
         return quote

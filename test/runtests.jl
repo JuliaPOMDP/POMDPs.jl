@@ -3,46 +3,8 @@ using Test
 using POMDPs
 using Random
 
-POMDPs.logger_context(::Test.TestLogger) = IOContext(stderr)
-
-mightbemissing(x) = ismissing(x) || x
-
-# using Logging
-# global_logger(ConsoleLogger(stderr, Logging.Debug))
-
-mutable struct A <: POMDP{Int,Bool,Bool} end
-@testset "implement" begin
-
-    @test_throws MethodError length(states(A()))
-    @test_throws MethodError stateindex(A(), 1)
-
-    @test !@implemented transition(::A, ::Int, ::Bool)
-    POMDPs.transition(::A, s, a) = [s+a]
-    @test @implemented transition(::A, ::Int, ::Bool)
-
-    @test !@implemented discount(::A)
-    POMDPs.discount(::A) = 0.95
-    @test @implemented discount(::A)
-
-    @test !@implemented reward(::A,::Int,::Bool,::Int)
-    @test !@implemented reward(::A,::Int,::Bool)
-    POMDPs.reward(::A,::Int,::Bool) = -1.0
-    @test @implemented reward(::A,::Int,::Bool,::Int)
-    @test @implemented reward(::A,::Int,::Bool)
-
-    @test !@implemented observation(::A,::Int,::Bool,::Int)
-    @test !@implemented observation(::A,::Bool,::Int)
-    POMDPs.observation(::A,::Bool,::Int) = [true, false]
-    @test @implemented observation(::A,::Int,::Bool,::Int)
-    @test @implemented observation(::A,::Bool,::Int)
-end
-
 @testset "infer" begin
     include("test_inferrence.jl")
-end
-
-@testset "require" begin
-    include("test_requirements.jl")
 end
 
 @testset "generative" begin
@@ -86,3 +48,23 @@ end
 end
 
 POMDPs.add_registry()
+
+@testset "deprecated" begin
+    @test !@implemented transition(::EA, ::Int, ::Int)
+    POMDPs.transition(::EA, ::Int, ::Int) = [0]
+    @test @implemented transition(::EA, ::Int, ::Int)
+
+    @POMDP_require solve(a::Int, b::Int) begin
+        @req transition(::EA, ::Int, ::Int)
+    end
+    @POMDP_requirements Int begin end
+    @requirements_info Int
+    a = 1
+    b = 2
+    @get_requirements solve(a, b)
+    @show_requirements solve(a, b)
+    @warn_requirements solve(a, b)
+
+    @test_throws ErrorException @req
+    @test_throws ErrorException @subreq
+end

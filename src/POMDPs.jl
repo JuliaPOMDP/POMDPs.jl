@@ -4,14 +4,15 @@ Provides a basic interface for defining and solving MDPs/POMDPs
 module POMDPs
 
 using Random
-using Base: @pure
 import Base: rand
 import Statistics
 import Distributions: rand, pdf, mode, mean, support
 import NamedTupleTools
 import Pkg
 using LightGraphs
-using Logging
+
+# For Deprecated
+import POMDPLinter
 
 export 
     # Abstract type
@@ -82,7 +83,7 @@ export
     # Errors
     DistributionNotImplemented,
 
-    # Requirements checking
+    # Deprecated
     implemented,
     @implemented,
     RequirementSet,
@@ -99,12 +100,9 @@ export
     @req,
     @subreq
 
-include("requirements_internals.jl")
-include("requirements_printing.jl")
 include("pomdp.jl")
 include("solver.jl")
 include("simulator.jl")
-include("requirements_interface.jl")
 include("distribution.jl")
 include("belief.jl")
 include("space.jl")

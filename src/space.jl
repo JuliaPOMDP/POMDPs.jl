@@ -24,7 +24,7 @@ function states end
 Returns a subset of the state space reachable from `state`. 
 """
 states(problem::Union{POMDP,MDP}, s) = states(problem)
-@impl_dep states(::P,::S) where {P<:Union{POMDP,MDP},S} states(::P)
+POMDPLinter.@impl_dep states(::P,::S) where {P<:Union{POMDP,MDP},S} states(::P)
 
 """
     actions(m::Union{MDP,POMDP})
@@ -46,7 +46,7 @@ To implement an observation-dependent action space, use `currentobs(b)` to get t
 function actions end
 
 actions(problem::Union{MDP,POMDP}, state) = actions(problem)
-@impl_dep actions(::P,::S) where {P<:Union{POMDP,MDP},S} actions(::P)
+POMDPLinter.@impl_dep actions(::P,::S) where {P<:Union{POMDP,MDP},S} actions(::P)
 
 """
     observations(problem::POMDP)
@@ -61,4 +61,4 @@ function observations end
 Return the observation space accessible from the given state and returns it.
 """
 observations(problem::POMDP, state) = observations(problem)
-@impl_dep observations(::P,::S) where {P<:POMDP,S} observations(::P)
+POMDPLinter.@impl_dep observations(::P,::S) where {P<:POMDP,S} observations(::P)
