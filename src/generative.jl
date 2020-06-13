@@ -161,7 +161,8 @@ end
 end
 
 """
-    @gen(X)(m, s, a, rng)
+    @gen(X)(m, s, a)
+    @gen(X)(m, s, a, rng::AbstractRNG)
 
 Call the generative model for a (PO)MDP `m`; Sample values from several nodes in the dynamic decision network. X is one or more symbols indicating which nodes to output.
 
@@ -184,6 +185,7 @@ Let `m` be an `MDP` or `POMDP`, `s` be a state of `m`, `a` be an action of `m`, 
 """
 macro gen(symbols...)
     quote
-        (args...) -> gen(DDNOut($(symbols...)), args...)
+        # this should be an anonymous function, but there is a bug
+        f(m, s, a, rng=Random.GLOBAL_RNG) = gen(DDNOut($(symbols...)), m, s, a, rng)
     end
 end
