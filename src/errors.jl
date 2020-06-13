@@ -31,7 +31,7 @@ end
 
 function distribution_impl_error(sym, func, modeltype, dep_argtypes)
     st = stacktrace()
-    acceptable = (:distribution_impl_error, nameof(func), nameof(gen))
+    acceptable = (:distribution_impl_error, nameof(func), nameof(gen_nodes))
     gen_firstarg = nothing # The first argument to the `gen` call that is furthest down in the stack trace
 
     try
@@ -49,11 +49,11 @@ function distribution_impl_error(sym, func, modeltype, dep_argtypes)
             elseif !(sf.func in acceptable)
                 break
 
-            # if it is gen, check to see if it's the DDNNode version
-            elseif sf.func === nameof(gen)
+            # if it is gen_nodes, check to see if it's the DDNNode version
+            elseif sf.func === nameof(gen_nodes)
                 sig = sf.linfo.def.sig
                 if sig isa UnionAll &&
-                    sig.body.parameters[1] == typeof(gen) &&
+                    sig.body.parameters[1] == typeof(gen_nodes) &&
                     sig.body.parameters[2] <: DDNOut
                     # bingo!
                     gen_firstarg = sig.body.parameters[2]

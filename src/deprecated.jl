@@ -95,3 +95,13 @@ function POMDPLinter.implemented(o::typeof(observation), TT::Type{Tuple{M, SP}})
     m = which(o, TT)
     return m.module != POMDPs
 end
+
+function gen(o::DDNOut{symbols}, m::Union{MDP,POMDP}, s, a, rng) where symbols
+    if symbols isa Symbol
+        @warn("gen(DDNOut(:$symbols), m, s, a, rng) is deprecated, use @gen(:$symbols)(m, s, a, rng) instead.", maxlog=1)
+    else
+        symbolstring = join([":$s" for s in symbols], ", ")
+        @warn("gen(DDNOut($symbolstring), m, s, a, rng) is deprecated, use @gen($symbolstring)(m, s, a, rng) instead.", maxlog=1)
+    end
+    return gen_nodes(o, m, s, a, rng)
+end
