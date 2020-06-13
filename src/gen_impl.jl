@@ -16,7 +16,7 @@ DDNOut(name::Symbol) = DDNOut{name}()
 DDNOut(names...) = DDNOut{names}()
 DDNOut(names::Tuple) = DDNOut{names}()
 
-@generated function gen(v::DDNOut{symbols}, m::Union{MDP,POMDP}, s, a, rng) where symbols
+@generated function gen_nodes(v::DDNOut{symbols}, m::Union{MDP,POMDP}, s, a, rng) where symbols
 
     # use anything available from gen(m, s, a, rng)
     expr = quote
