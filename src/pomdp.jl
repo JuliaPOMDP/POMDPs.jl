@@ -105,12 +105,21 @@ If a state is terminal, no actions will be taken in it and no additional rewards
 isterminal(problem::Union{POMDP,MDP}, state) = false
 
 """
-    initialstate_distribution(pomdp::POMDP)
-    initialstate_distribution(mdp::MDP)
+    initialstate(m::Union{POMDP,MDP})
 
-Return a distribution of the initial state of the pomdp or mdp.
+Return a distribution of initial states for (PO)MDP `m`.
 """
-function initialstate_distribution end
+function initialstate end
+
+"""
+    initialobs(m::POMDP, s)
+
+Return a distribution of initial observations for POMDP `m` and state `s`.
+
+This function is only used in cases where the policy expects an initial observation rather than an initial belief, e.g. in a reinforcement learning setting. It is not used in a standard POMDP simulation.
+"""
+function initialobs end
+
 
 """
     stateindex(problem::POMDP, s)

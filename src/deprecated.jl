@@ -105,3 +105,7 @@ function gen(o::DDNOut{symbols}, m::Union{MDP,POMDP}, s, a, rng) where symbols
     end
     return gen_nodes(o, m, s, a, rng)
 end
+
+@deprecate initialstate(m, rng) rand(rng, initialstate(m))
+@deprecate initialstate_distribution initialstate
+@deprecate initialobs(m, rng) rand(rng, initialobs(m))
