@@ -28,14 +28,13 @@ export
     observation,
     reward,
     isterminal,
+    initialstate,
+    initialobs,
 
     # Generative model functions
     gen,
     @gen,
-    initialstate,
-    initialobs,
-    DDNOut,
-
+    
     # Discrete Functions
     length,
     stateindex,
@@ -49,7 +48,6 @@ export
     mean,
     dimensions,
     support,
-    initialstate_distribution,
 
     # Solver types
     Solver,
@@ -80,9 +78,6 @@ export
     actiontype,
     obstype,
 
-    # Errors
-    DistributionNotImplemented,
-
     # Deprecated
     implemented,
     @implemented,
@@ -98,7 +93,10 @@ export
     @show_requirements,
     @warn_requirements,
     @req,
-    @subreq
+    @subreq,
+    initialstate_distribution,
+    DDNOut
+
 
 include("pomdp.jl")
 include("solver.jl")
@@ -108,7 +106,6 @@ include("belief.jl")
 include("space.jl")
 include("policy.jl")
 include("type_inferrence.jl")
-include("errors.jl")
 include("generative.jl")
 include("gen_impl.jl")
 include("utils.jl")
