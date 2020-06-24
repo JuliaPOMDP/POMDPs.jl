@@ -91,7 +91,7 @@ function gen(o::DDNOut{symbols}, m::Union{MDP,POMDP}, s, a, rng) where symbols
         symbolstring = join([":$s" for s in symbols], ", ")
         @warn("gen(DDNOut($symbolstring), m, s, a, rng) is deprecated, use @gen($symbolstring)(m, s, a, rng) instead.", maxlog=1)
     end
-    return genout(Val(symbols), m, s, a, rng)
+    return genout(DDNOut(symbols), m, s, a, rng)
 end
 
 @deprecate initialstate(m, rng) rand(rng, initialstate(m))

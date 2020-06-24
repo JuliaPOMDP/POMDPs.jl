@@ -34,7 +34,7 @@ export
     # Generative model functions
     gen,
     @gen,
-    DDNOut
+    DDNOut,
     
     # Discrete Functions
     length,
@@ -95,7 +95,7 @@ export
     @warn_requirements,
     @req,
     @subreq,
-    initialstate_distribution,
+    initialstate_distribution
 
 
 include("pomdp.jl")
