@@ -84,18 +84,6 @@ macro subreq(args...)
     :(error("POMDPs.@subreq no longer exists. Please use POMDPLinter.@subreq"))
 end
 
-# in future versions, these will go in POMDPLinter
-function POMDPLinter.implemented(t::typeof(transition), TT::Type{<:Tuple})
-    m = which(t, TT)
-    return m.module != POMDPs # see if this was implemented by a user elsewhere
-end
-
-# in future versions, these will go in POMDPLinter
-function POMDPLinter.implemented(o::typeof(observation), TT::Type{Tuple{M, SP}}) where {M<:POMDP, SP}
-    m = which(o, TT)
-    return m.module != POMDPs
-end
-
 function gen(o::DDNOut{symbols}, m::Union{MDP,POMDP}, s, a, rng) where symbols
     if symbols isa Symbol
         @warn("gen(DDNOut(:$symbols), m, s, a, rng) is deprecated, use @gen(:$symbols)(m, s, a, rng) instead.", maxlog=1)
@@ -105,6 +93,10 @@ function gen(o::DDNOut{symbols}, m::Union{MDP,POMDP}, s, a, rng) where symbols
     end
     return genout(Val(symbols), m, s, a, rng)
 end
+
+@deprecate initialstate(m, rng) rand(rng, initialstate(m))
+@deprecate initialstate_distribution initialstate
+@deprecate initialobs(m, s, rng) rand(rng, initialobs(m, s))
 
 """
     DDNOut(x::Symbol)

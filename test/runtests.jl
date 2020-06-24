@@ -36,10 +36,6 @@ struct CV <: POMDP{Vector{Float64},Vector{Float64},Vector{Float64}} end
 end
 
 struct EA <: POMDP{Int, Int, Int} end
-@testset "error" begin
-    @test_throws MethodError transition(EA(), 1, 2)
-    @test_throws DistributionNotImplemented @gen(:sp)(EA(), 1, 2, Random.GLOBAL_RNG)
-end
 
 @testset "history" begin
     POMDPs.history(i::Int) = [(o=i,)]
@@ -69,5 +65,9 @@ POMDPs.add_registry()
     @test_throws ErrorException @subreq
 
     @test gen(DDNOut(:sp), EA(), 1, 1, MersenneTwister(3)) == 0
-    @test_throws DistributionNotImplemented @gen(:sp,:o)(EA(), 1, true, MersenneTwister(4))
+    @test_throws MethodError @gen(:sp,:o)(EA(), 1, true, MersenneTwister(4))
+
+    POMDPs.initialstate(::EA) = [1,2,3]
+    @test initialstate_distribution(EA()) == initialstate(EA())
+    @test initialstate(EA(), Random.GLOBAL_RNG) in initialstate(EA())
 end
