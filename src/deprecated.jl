@@ -103,5 +103,21 @@ function gen(o::DDNOut{symbols}, m::Union{MDP,POMDP}, s, a, rng) where symbols
         symbolstring = join([":$s" for s in symbols], ", ")
         @warn("gen(DDNOut($symbolstring), m, s, a, rng) is deprecated, use @gen($symbolstring)(m, s, a, rng) instead.", maxlog=1)
     end
-    return gen_nodes(o, m, s, a, rng)
+    return genout(Val(symbols), m, s, a, rng)
 end
+
+"""
+    DDNOut(x::Symbol)
+    DDNOut{x::Symbol}()
+    DDNOut(::Symbol, ::Symbol,...)
+    DDNOut{x::NTuple{N, Symbol}}()
+
+Reference to one or more named nodes in the POMDP or MDP dynamic decision network (DDN).
+
+`DDNOut` is a "value type". See [the documentation of `Val`](https://docs.julialang.org/en/v1/manual/types/index.html#%22Value-types%22-1) for more conceptual details about value types.
+"""
+struct DDNOut{names} end
+
+DDNOut(name::Symbol) = DDNOut{name}()
+DDNOut(names...) = DDNOut{names}()
+DDNOut(names::Tuple) = DDNOut{names}()
