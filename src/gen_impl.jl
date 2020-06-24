@@ -1,6 +1,22 @@
 gen(m::Union{MDP,POMDP}, s, a, rng) = NamedTuple()
 
-@generated function genout(v::Val{symbols}, m::Union{MDP,POMDP}, s, a, rng) where symbols
+"""
+    DDNOut(x::Symbol)
+    DDNOut{x::Symbol}()
+    DDNOut(::Symbol, ::Symbol,...)
+    DDNOut{x::NTuple{N, Symbol}}()
+
+Reference to one or more named nodes in the POMDP or MDP dynamic decision network (DDN).
+
+`DDNOut` is a "value type". See [the documentation of `Val`](https://docs.julialang.org/en/v1/manual/types/index.html#%22Value-types%22-1) for more conceptual details about value types.
+"""
+struct DDNOut{names} end
+
+DDNOut(name::Symbol) = DDNOut{name}()
+DDNOut(names...) = DDNOut{names}()
+DDNOut(names::Tuple) = DDNOut{names}()
+
+@generated function genout(v::DDNOut{symbols}, m::Union{MDP,POMDP}, s, a, rng) where symbols
 
     # use anything available from gen(m, s, a, rng)
     expr = quote
@@ -91,26 +107,3 @@ node_expr(::Val{:sp}, depargs) = :(rand(rng, transition(m, $(depargs...))))
 node_expr(::Val{:o}, depargs) = :(rand(rng, observation(m, $(depargs...))))
 node_expr(::Val{:r}, depargs) = :(reward(m, $(depargs...)))
 node_expr(::Val{:info}, depargs) = :(nothing)
-
-function implemented(g::typeof(gen), TT::Type{<:Tuple})
-    m = which(g, TT)
-    if m.module != POMDPs # implemented by a user elsewhere
-        return true
-    end
-    v = first(TT.parameters)
-    if v <: Union{MDP, POMDP}
-        return false # already checked above for implementation in another module
-    else
-        @assert v <: DDNOut
-        vp = first(v.parameters)
-        return implemented(g, v, TT.parameters[2], Tuple{TT.parameters[3:end-1]...}, TT.parameters[end])
-    end
-end
-
-function implemented(g::typeof(gen), Vars::Type{<:DDNOut}, M::Type, Deps::Type{<:Tuple}, RNG::Type)
-    if length(Deps.parameters) == 2 && implemented(g, Tuple{M, Deps.parameters..., RNG}) # gen(m, s, a, rng) is implemented
-        return true # should this be true or missing?
-    else
-        return missing # this is complicated because we need to know the types of everything in the ddn 
-    end
-end
