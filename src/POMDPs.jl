@@ -47,7 +47,6 @@ export
     pdf,
     mode,
     mean,
-    dimensions,
     support,
 
     # Solver types
@@ -95,7 +94,8 @@ export
     @warn_requirements,
     @req,
     @subreq,
-    initialstate_distribution
+    initialstate_distribution,
+    dimensions
 
 
 include("pomdp.jl")

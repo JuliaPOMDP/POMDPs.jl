@@ -16,36 +16,27 @@ Custom POMDP problems are defined by implementing the functions specified by the
 
 !!! note
 
-    The main generative and explicit interfaces use an object-oriented programming paradigm and require familiarity with Julia. For users new to Julia, [QuickPOMDPs](https://github.com/JuliaPOMDP/QuickPOMDPs.jl) usually requires less knowledge of the language and no object-oriented programming.
+    The main POMDPs.jl interface uses an object-oriented programming paradigm and require familiarity with Julia. For users new to Julia, [QuickPOMDPs](https://github.com/JuliaPOMDP/QuickPOMDPs.jl) usually requires less knowledge of the language and no object-oriented programming.
 
-There are two ways of specifying the state dynamics and observation behavior of a POMDP. The problem definition may include a mixture of *explicit* definitions of probability distributions, or *generative* definitions that simulate states and observations without explicitly defining the distributions. In scientific papers explicit definitions are often written as ``T(s' | s, a)`` for transitions and ``O(o | s, a, s')`` for observations, while a generative definition might be expressed as ``s', o, r = G(s, a)`` (or ``s', r = G(s,a)`` for an MDP).
-
-Accordingly, the POMDPs.jl model API is grouped into three sections:
-1. The [*explicit*](@ref explicit_api) interface containing *functions that explicitly define distributions for DDN nodes.*
-2. The [*generative*](@ref generative_api) interface containing *functions that return sampled states and observations for DDN nodes.*
-3. [*Common*](@ref common_api) functions used in both.
+In this guide, the interface is divided into two sections: functions that define static properties of the problem, and functions that describe the dynamics - how the states, observations and rewards change over time. There are two ways of specifying the dynamic behavior of a POMDP. The problem definition may include a mixture of *explicit* definitions of probability distributions, or *generative* definitions that simulate states and observations without explicitly defining the distributions. In scientific papers explicit definitions are often written as ``T(s' | s, a)`` for transitions and ``O(o | s, a, s')`` for observations, while a generative definition might be expressed as ``s', o, r = G(s, a)`` (or ``s', r = G(s,a)`` for an MDP).
 
 ## What do I need to implement?
 
-Because of the wide variety or problems and solvers that POMDPs.jl interfaces with, the question of which functions from the interface need to be implemented does not have a short answer for all cases. In general, a problem will be defined by implementing a combination of functions from the generative, explicit, and common parts of the interface.
+Because of the wide variety or problems and solvers that POMDPs.jl interfaces with, the question of which functions from the interface need to be implemented does not have a short answer for all cases. In general, a problem will be defined by implementing a combination of functions.
 
 Specifically, a problem writer will need to define
 - Explicit or generative definitions for 
-    - the state transition model ([DDN](@ref Dynamic-Decision-Networks) node `:sp`),
-    - the reward function ([DDN](@ref Dynamic-Decision-Networks) node `:r`), and
-    - the observation model ([DDN](@ref Dynamic-Decision-Networks) node `:o`, for POMDPs only).
+    - the state transition model,
+    - the reward function, and
+    - the observation model.
 - Functions to define some other properties of the problem such as the state, action, and observation spaces, which states are terminal, etc.
-
-!!! note
-
-    Since an explicit definition for a DDN node contains all of the information required for a generative definition, POMDPs.jl will automatically synthesize the generative functions for that node at runtime if an explicit model is available. Thus, there is never a need for both generative and explicit definitions of a node, and it is usually best to avoid redundant definitions because it is easy for them to become inconsistent.
 
 The precise answer for which functions need to be implemented depends on two factors: problem complexity and which solver will be used.
 In particular, 2 questions should be asked:
 1. Is it difficult or impossible to specify a probability distribution explicitly?
 2. What solvers will be used to solve this, and what are their requirements?
 
-If the answer to (1) is yes, then a generative definition should be used. Question (2) should be answered by reading about the solvers and trying to run them, or through the [requirements](@ref requirements) interface if it has been defined for the solver.
+If the answer to (1) is yes, then a generative definition should be used. Question (2) should be answered by reading about the solvers and trying to run them. Some solvers have specified their requirements using the [POMDPLinter package](https://github.com/JuliaPOMDP/POMDPLinter.jl), however, these requirements are written separately from the solver code, and often the best way is to write a simple prototype problem and running the solver until all `MethodError`s have been fixed.
 
 !!! note
 
@@ -55,9 +46,6 @@ If the answer to (1) is yes, then a generative definition should be used. Questi
 
 The following pages provide more details on specific parts of the interface:
 
-- [Dynamic Decision Networks](@ref)
-- [Explicit DDN node definitions](@ref explicit_doc)
-- [Generative DDN node definitions](@ref generative_doc)
-- [Basic Properties (common part of the api)](@ref basic)
+- [Static Properties](@ref static)
 - [Spaces and Distributions](@ref)
-- [Requirements](@ref requirements)
+- [Dynamics](@ref dynamics)

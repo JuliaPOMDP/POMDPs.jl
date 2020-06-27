@@ -3,28 +3,12 @@
 ######################
 
 """
-    dimensions(s::Any)
-
-Returns the number of dimensions in space `s`.
-"""
-function dimensions end
-
-"""
     states(problem::POMDP)
     states(problem::MDP)
     
 Returns the complete state space of a POMDP. 
 """
 function states end
-
-"""
-    states{S,A,O}(problem::POMDP{S,A,O}, state::S)
-    states{S,A}(problem::MDP{S,A}, state::S)
-    
-Returns a subset of the state space reachable from `state`. 
-"""
-states(problem::Union{POMDP,MDP}, s) = states(problem)
-POMDPLinter.@impl_dep states(::P,::S) where {P<:Union{POMDP,MDP},S} states(::P)
 
 """
     actions(m::Union{MDP,POMDP})

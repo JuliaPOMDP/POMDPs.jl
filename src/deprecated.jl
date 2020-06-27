@@ -97,3 +97,5 @@ end
 @deprecate initialstate(m, rng) rand(rng, initialstate(m))
 @deprecate initialstate_distribution initialstate
 @deprecate initialobs(m, s, rng) rand(rng, initialobs(m, s))
+
+dimensions(s::Any) = error("dimensions is no longer part of the POMDPs.jl interface.")
