@@ -18,6 +18,11 @@ The list of solver and support packages is maintained at the [POMDPs.jl Readme](
 
 ## Documentation Outline
 
+Documentation comes in four forms:
+1. How-to examples are available in the [POMDPExamples package](https://github.com/JuliaPOMDP/POMDPExamples.jl).
+2. An explanatory guide is available in the sections outlined below.
+3. Reference docstrings for the entire interface are available in the [API Documentation](@ref) section.
+
 When updating these documents, make sure this is synced with [docs/make.jl](https://github.com/JuliaPOMDP/POMDPs.jl/blob/master/docs/make.jl)!!
 
 ### Basics

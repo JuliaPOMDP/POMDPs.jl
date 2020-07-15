@@ -1,5 +1,16 @@
 # Defining a Solver
 
+TODO:
+[ ] talk about Solver, Policy, solve, and action
+[ ] talk about offline vs online solvers
+[ ] talk about using POMDPModelTools and POMDPPolicies
+
+## Online and Offline Solvers
+
+
+
+
+
 In this section, we will walk through an implementation of the
 [QMDP](http://www-anw.cs.umass.edu/~barto/courses/cs687/Cassandra-etal-POMDP.pdf) algorithm. QMDP is the fully
 observable approximation of a POMDP policy, and relies on the Q-values to determine actions.
@@ -238,7 +249,7 @@ That's all you need to define a solver and evaluate its performance!
 
 ## Defining Requirements
 
-If you share your solver, in order to make it easy to use, specifying requirements as described [here](@ref specifying_requirements) is highly recommended.
+You may wish to specify requirements for your solver to make it easier to use using the [POMDPLinter package](https://github.com/JuliaPOMDP/POMDPLinter.jl).
 
 \[1\] *Decision Making Under Uncertainty: Theory and Application* by
 Mykel J. Kochenderfer, MIT Press, 2015

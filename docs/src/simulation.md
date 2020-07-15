@@ -19,8 +19,8 @@ In general, POMDP simulations take up to 5 inputs (see also the [`simulate`](@re
 The last three of these inputs are optional. If they are not explicitly provided, they should be inferred using the following POMDPs.jl functions:
 
 - `up = `[`updater`](@ref)`(policy)`
-- `isd = `[`initialstate_distribution`](@ref)`(pomdp)`
-- `s = `[`initialstate`](@ref)`(pomdp, rng)`
+- `isd = `[`initialstate`](@ref)`(pomdp)`
+- `s = `rand(rng, [`initialstate`](@ref)`(pomdp))`
 
 In addition, a random number generator `rng` is assumed to be available.
 

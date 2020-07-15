@@ -46,7 +46,7 @@ represented by a concrete subtype of the [`POMDP`](@ref) abstract type,
 explicit definition is often not required), and `O` is defined by
 implementing [`observation`](@ref) if the [*explicit*](@ref defining_pomdps) interface is used or [`gen`](@ref) if the [*generative*](@ref defining_pomdps) interface is used.
 
-POMDPs.jl can also be extended to accommodate POMDP-like problem classes with expanded [dynamic decision networks](@ref Dynamic-Decision-Networks), such as constrained or factored POMDPs, and it contains functions for defining optional problem behavior
+POMDPs.jl contains additional functions for defining optional problem behavior
 such as a [discount factor](@ref Discount-Factor) or a set of [terminal states](@ref Terminal-States).
 
 More information can be found in the [Defining POMDPs](@ref defining_pomdps) section.
