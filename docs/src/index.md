@@ -40,7 +40,7 @@ Pages = [ "def_pomdp.md", "static.md", "interfaces.md", "dynamics.md"]
 ### Writing Solvers and Updaters
 
 ```@contents
-Pages = [ "def_solver.md", "def_updater.md" ]
+Pages = [ "def_solver.md", "offline_solver.md", "online_solver.md", "def_updater.md" ]
 ```
 
 ### Analyzing Results

@@ -27,6 +27,8 @@ makedocs(
 
         "Writing Solvers" => [
             "def_solver.md",
+            "offline_solver.md",
+            "online_solver.md"
            ],
 
         "Writing Belief Updaters" => [
