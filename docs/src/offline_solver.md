@@ -37,14 +37,13 @@ The solve function calculates the best greedy action for each state and saves it
 
 ```jldoctest offline; output=false
 function POMDPs.solve(::GreedyOfflineSolver, m::MDP)
-    ss = states(m)
-    as = actions(m)
+
     best_actions = Dict{statetype(m), actiontype(m)}()
 
-    for s in ss
+    for s in states(m)
         if !isterminal(m, s)
             best = -Inf
-            for a in as
+            for a in actions(m)
                 td = transition(m, s, a)
                 r = 0.0
                 for sp in support(td)
@@ -92,13 +91,12 @@ Again, because a POMDP, may have [`reward`](@ref)`(m, s, a, sp, o)` instead of [
 import POMDPPolicies
 
 function POMDPs.solve(::GreedyOfflineSolver, m::POMDP)
-    ss = states(m)
-    as = actions(m)
+
     alphas = Vector{Float64}[]
 
-    for a in as
-        alpha = zeros(length(ss))
-        for s in ss
+    for a in actions(m)
+        alpha = zeros(length(states(m)))
+        for s in states(m)
             if !isterminal(m, s)
                 r = 0.0
                 td = transition(m, s, a)
@@ -115,7 +113,7 @@ function POMDPs.solve(::GreedyOfflineSolver, m::POMDP)
         push!(alphas, alpha)
     end
     
-    return POMDPPolicies.AlphaVectorPolicy(m, alphas, collect(as))
+    return POMDPPolicies.AlphaVectorPolicy(m, alphas, collect(actions(m)))
 end
 
 # output
