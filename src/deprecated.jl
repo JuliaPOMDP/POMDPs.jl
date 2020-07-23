@@ -96,6 +96,18 @@ end
 
 @deprecate initialstate(m, rng) rand(rng, initialstate(m))
 @deprecate initialstate_distribution initialstate
+
+# for the case when initialstate is called, but initialstate_distribution is implemented
+function initialstate(m::Union{MDP,POMDP})
+    method = which(initialstate_distribution, Tuple{typeof(m)})
+    if method.module == POMDPs # ignore the @deprecated definition to avoid infinite recurse
+        throw(MethodError(initialstate, (m,)))
+    else
+        @warn("Falling back to using deprecated function initialstate_distribution(::$(typeof(m))). Please implement this as initialstate(::$(typeof(m))) instead.", maxlog=1)
+        return initialstate_distribution(m)
+    end
+end
+
 @deprecate initialobs(m, s, rng) rand(rng, initialobs(m, s))
 
 dimensions(s::Any) = error("dimensions is no longer part of the POMDPs.jl interface.")

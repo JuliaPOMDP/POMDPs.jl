@@ -11,6 +11,12 @@
 
 This package provides a core interface for working with [Markov decision processes (MDPs)](https://en.wikipedia.org/wiki/Markov_decision_process) and [partially observable Markov decision processes (POMDPs)](https://en.wikipedia.org/wiki/Partially_observable_Markov_decision_process). For examples, please see [POMDPExamples](https://github.com/JuliaPOMDP/POMDPExamples.jl), [QuickPOMDPs](https://github.com/JuliaPOMDP/QuickPOMDPs.jl), and the [Gallery](https://github.com/JuliaPOMDP/POMDPGallery.jl).
 
+---
+
+**NOTE**: We are currently in the process of upgrading solvers to work with POMDPs v0.9. This process is expected to take several weeks. For compatibility with all solvers, please install POMDPs v0.8 with `pkg"add POMDPs@v0.8"`.
+
+---
+
 Our goal is to provide a common programming vocabulary for:
 
 1. Expressing problems as MDPs and POMDPs. 

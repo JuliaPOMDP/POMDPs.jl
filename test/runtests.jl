@@ -36,6 +36,7 @@ struct CV <: POMDP{Vector{Float64},Vector{Float64},Vector{Float64}} end
 end
 
 struct EA <: POMDP{Int, Int, Int} end
+struct EB <: POMDP{Int, Int, Int} end
 
 @testset "history" begin
     POMDPs.history(i::Int) = [(o=i,)]
@@ -68,6 +69,10 @@ POMDPs.add_registry()
     @test_throws MethodError @gen(:sp,:o)(EA(), 1, true, MersenneTwister(4))
 
     POMDPs.initialstate(::EA) = [1,2,3]
-    @test initialstate_distribution(EA()) == initialstate(EA())
-    @test initialstate(EA(), Random.GLOBAL_RNG) in initialstate(EA())
+    @test (@test_deprecated initialstate_distribution(EA())) == initialstate(EA())
+    @test (@test_deprecated initialstate(EA(), Random.GLOBAL_RNG)) in initialstate(EA())
+
+    @test_throws MethodError initialstate(EB())
+    POMDPs.initialstate_distribution(m::EB) = [1]
+    @test initialstate(EB()) == [1]
 end
