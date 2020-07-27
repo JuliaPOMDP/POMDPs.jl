@@ -2,7 +2,7 @@
 
 Defining a solver involves creating or using four pieces of code:
 
-1. A new subtype of [`Solver`](@ref) that holds the parameters and configuration options for the solver.
+1. A subtype of [`Solver`](@ref) that holds the parameters and configuration options for the solver.
 2. A subtype of [`Policy`](@ref) that holds all of the data needed to choose actions online.
 3. A method of [`solve`](@ref) that takes the solver and a (PO)MDP as arguments, performs all of the offline computations for solving the problem, and returns the policy.
 4. A method of [`action`](@ref) that takes in the policy and a state or belief and returns an action.
