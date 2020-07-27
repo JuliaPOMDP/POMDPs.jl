@@ -1,50 +1,115 @@
-@deprecate generate_s(args...) gen(DDNOut(:sp), args...)
-@deprecate generate_o(args...) gen(DDNNode(:o), args...) # this one should be DDNNode because the arguments are not s and a
-@deprecate generate_sr(args...) gen(DDNOut(:sp,:r), args...)
-@deprecate generate_so(args...) gen(DDNOut(:sp,:o), args...)
-@deprecate generate_sor(args...) gen(DDNOut(:sp,:o,:r), args...)
-generate_or(args...) = error("POMDPs.jl v0.8 no longer supports generate_or") # there is no equivalent for this in the new system, but AFAIK no one used it.
-
-const old_generate = Dict(:sp => generate_s,
-                    :o => generate_o,
-                    (:sp,:r) => generate_sr,
-                    (:sp,:o) => generate_so,
-                    (:sp,:o,:r) => generate_sor)
-
-const new_ddnvars = Dict(generate_s => DDNNode{:sp},
-                         generate_o => DDNNode{:o},
-                         generate_sr => DDNOut{(:sp,:r)},
-                         generate_so => DDNOut{(:sp,:o)},
-                         generate_sor => DDNOut{(:sp,:o,:r)})
+@deprecate implemented POMDPLinter.implemented
+@deprecate RequirementSet POMDPLinter.RequirementSet
+@deprecate check_requirements POMDPLinter.check_requirements
+@deprecate show_requirements POMDPLinter.show_requirements
+@deprecate get_requirements POMDPLinter.get_requirements
+@deprecate requirements_info POMDPLinter.requirements_info
 
 
-GenerateFunctions = Union{(typeof(f) for f in values(old_generate))...}
-
-function implemented_by_user(g::GenerateFunctions, TT::TupleType)
-    m = which(g, TT)
-    return m.module != POMDPs
-end
-
-function implemented(g::GenerateFunctions, TT::TupleType)
-    if implemented_by_user(g, TT)
-        return true
+macro implemented(ex)
+    @warn("POMDPs.@implemented is deprecated, use POMDPLinter.@implemented instead.", maxlog=1)
+    tplex = POMDPLinter.convert_req(ex)
+    return quote
+        POMDPLinter.implemented($(esc(tplex))...)
     end
-    return implemented(gen, Tuple{new_ddnvars[g], TT.parameters...})
 end
 
-@deprecate sampletype Random.gentype
-@deprecate n_states(m) length(states(m))
-@deprecate n_actions(m) length(actions(m))
-@deprecate n_observations(m) length(observations(m))
+macro POMDP_require(args...)
+    @warn("POMDPs.@POMDP_require is deprecated, use POMDPLinter.@POMDP_require instead.", maxlog=1)
+    POMDPLinter.pomdp_require(args...)
+end
+
+macro POMDP_requirements(args...)
+    @warn("POMDPs.@POMDP_requirements is deprecated, use POMDPLinter.@POMDP_requirements instead.", maxlog=1)
+    POMDPLinter.pomdp_requirements(args...)
+end
+
+macro requirements_info(exprs...)
+    @warn("POMDPs.@requirements_info is deprecated, use POMDPLinter.@requirements_info instead.", maxlog=1)
+    quote
+        requirements_info($([esc(ex) for ex in exprs]...))
+    end
+end
+
+macro get_requirements(call)
+    @warn("POMDPs.@get_requirements is deprecated, use POMDPLinter.@get_requirements instead.", maxlog=1)
+    return quote get_requirements($(esc(POMDPLinter.convert_call(call)))...) end
+end
+
+macro show_requirements(call)
+    @warn("POMDPs.@show_requirements is deprecated, use POMDPLinter.@show_requirements instead.", maxlog=1)
+    quote
+        reqs = get_requirements($(esc(POMDPLinter.convert_call(call)))...)
+        show_requirements(reqs)
+    end
+end
+
+macro warn_requirements(call)
+    @warn("POMDPs.@warn_requirements is deprecated, use POMDPLinter.@warn_requirements instead.", maxlog=1)
+    quote
+        reqs = get_requirements($(esc(POMDPLinter.convert_call(call)))...)
+        c = check_requirements(reqs)
+        if !ismissing(c) && c == false
+            show_requirements(reqs)
+        end
+    end
+end
+
+macro req(args...)
+    :(error("POMDPs.@req no longer exists. Please use POMDPLinter.@req"))
+end
+
+macro subreq(args...)
+    :(error("POMDPs.@subreq no longer exists. Please use POMDPLinter.@subreq"))
+end
+
+function gen(o::DDNOut{symbols}, m::Union{MDP,POMDP}, s, a, rng) where symbols
+    if symbols isa Symbol
+        @warn("gen(DDNOut(:$symbols), m, s, a, rng) is deprecated, use @gen(:$symbols)(m, s, a, rng) instead.", maxlog=1)
+    else
+        symbolstring = join([":$s" for s in symbols], ", ")
+        @warn("gen(DDNOut($symbolstring), m, s, a, rng) is deprecated, use @gen($symbolstring)(m, s, a, rng) instead.", maxlog=1)
+    end
+    return genout(DDNOut(symbols), m, s, a, rng)
+end
+
+@deprecate initialstate(m, rng) rand(rng, initialstate(m))
+@deprecate initialstate_distribution initialstate
+
+# for the case when initialstate is called, but initialstate_distribution is implemented
+function initialstate(m::Union{MDP,POMDP})
+    method = which(initialstate_distribution, Tuple{typeof(m)})
+    if method.module == POMDPs # ignore the @deprecated definition to avoid infinite recurse
+        throw(MethodError(initialstate, (m,)))
+    else
+        @warn("Falling back to using deprecated function initialstate_distribution(::$(typeof(m))). Please implement this as initialstate(::$(typeof(m))) instead.", maxlog=1)
+        return initialstate_distribution(m)
+    end
+end
+
+@deprecate initialobs(m, s, rng) rand(rng, initialobs(m, s))
+
+dimensions(s::Any) = error("dimensions is no longer part of the POMDPs.jl interface.")
 
 """
-The version 0.7 DDNStructure just has the nodenames
-"""
-struct DDNStructureV7{nodenames} end
+    available()
 
-nodenames(d::DDNStructureV7) = nodenames(typeof(d))
-nodenames(::Type{D}) where D <: DDNStructureV7 = D.parameters[1]
-outputnames(d::DDNStructureV7) = outputnames(typeof(d))
-function outputnames(::Type{D}) where D <: DDNStructureV7
-    tuple(Iterators.filter(sym->!(sym in (:s, :a)), nodenames(D))...)
+Prints all the available packages in the JuliaPOMDP registry
+"""
+function available()
+    @warn("POMDPs.available() is deprecated. Please see the POMDPs.jl README for a list of packages.")
+    reg_dict = read_registry(joinpath(Pkg.depots1(), "registries", "JuliaPOMDP", "Registry.toml"))
+    for (uuid, pkginfo) in reg_dict["packages"]
+        println(pkginfo["name"])
+    end
+end
+
+function read_registry(regfile)
+    registry = Pkg.TOML.parsefile(regfile)
+    return registry
+end
+
+function add_registry(;kwargs...)
+    @warn("""POMDPs.add_registry() is deprecated. Use Pkg.pkg"registry add https://github.com/JuliaPOMDP/Registry" instead.""")
+    Pkg.pkg"registry add https://github.com/JuliaPOMDP/Registry"
 end

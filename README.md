@@ -11,13 +11,19 @@
 
 This package provides a core interface for working with [Markov decision processes (MDPs)](https://en.wikipedia.org/wiki/Markov_decision_process) and [partially observable Markov decision processes (POMDPs)](https://en.wikipedia.org/wiki/Partially_observable_Markov_decision_process). For examples, please see [POMDPExamples](https://github.com/JuliaPOMDP/POMDPExamples.jl), [QuickPOMDPs](https://github.com/JuliaPOMDP/QuickPOMDPs.jl), and the [Gallery](https://github.com/JuliaPOMDP/POMDPGallery.jl).
 
+---
+
+**NOTE**: We are currently in the process of upgrading solvers to work with POMDPs v0.9. This process is expected to take several weeks. For compatibility with all solvers, please install POMDPs v0.8 with `pkg"add POMDPs@v0.8"`.
+
+---
+
 Our goal is to provide a common programming vocabulary for:
 
 1. Expressing problems as MDPs and POMDPs. 
 2. Writing solver software.
 3. Running simulations efficiently.
 
-There are [nested interfaces for expressing and interacting with (PO)MDPs](http://juliapomdp.github.io/POMDPs.jl/stable/def_pomdp): When the *[explicit](http://juliapomdp.github.io/POMDPs.jl/stable/explicit)* interface is used, the transition and observation probabilities are explicitly defined using api [functions](http://juliapomdp.github.io/POMDPs.jl/stable/explicit/#functional-form-explicit-pomdp); when the *[generative](http://juliapomdp.github.io/POMDPs.jl/stable/generative)* interface is used, only a single step simulator (e.g. (s', o, r) = G(s,a)) needs to be defined. Problems may also be defined with probability [tables](http://juliapomdp.github.io/POMDPs.jl/stable/explicit/#tabular-form-explicit-pomdp), or with the simplified [QuickPOMDPs interfaces](https://github.com/JuliaPOMDP/QuickPOMDPs.jl).
+There are [several ways to define and interact with (PO)MDPs](http://juliapomdp.github.io/POMDPs.jl/stable/def_pomdp): transition and observation distributions and rewards can be defined with explicit probability distributions or implicitly with a function that samples from the distribution, or all of the dynamics can be defined in a single step simulator function: (s', o, r) = G(s,a). Problems may also be defined with probability [tables](https://github.com/JuliaPOMDP/POMDPExamples.jl/blob/master/notebooks/Defining-a-tabular-POMDP.ipynb), and the [QuickPOMDPs interfaces](https://github.com/JuliaPOMDP/QuickPOMDPs.jl) make defining simple problems easier.
 
 **Python** can be used to define and solve MDPs and POMDPs via the QuickPOMDPs or tabular interfaces and [pyjulia](https://github.com/JuliaPy/pyjulia) (Example: [tiger.py](https://github.com/JuliaPOMDP/QuickPOMDPs.jl/blob/master/examples/tiger.py)).
 

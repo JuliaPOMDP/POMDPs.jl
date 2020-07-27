@@ -19,18 +19,19 @@ makedocs(
 
         "Defining (PO)MDP Models" => [
             "def_pomdp.md",
-            "ddns.md",
-            "basic_properties.md",
-            "explicit.md",
-            "generative.md",
+            "static.md",
             "interfaces.md",
-            "requirements.md",
+            "dynamics.md",
            ],
 
 
-        "Writing Solvers and Updaters" => [
+        "Writing Solvers" => [
             "def_solver.md",
-            "specifying_requirements.md",
+            "offline_solver.md",
+            "online_solver.md"
+           ],
+
+        "Writing Belief Updaters" => [
             "def_updater.md"
            ],
 

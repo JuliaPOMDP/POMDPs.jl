@@ -21,27 +21,31 @@ Abstract base type for a fully observable Markov decision process.
 abstract type MDP{S,A} end
 
 """
-    discount(problem::POMDP)
-    discount(problem::MDP)
+    discount(m::POMDP)
+    discount(m::MDP)
 
 Return the discount factor for the problem.
 """
 function discount end
 
 """
-    transition(problem::POMDP, state, action)
-    transition(problem::MDP, state, action)
+    transition(m::POMDP, state, action)
+    transition(m::MDP, state, action)
 
-Return the transition distribution from the current state-action pair
+Return the transition distribution from the current state-action pair.
+
+If it is difficult to define the probability density or mass function explicitly, consider using `POMDPModelTools.ImplicitDistribution` to define a generative model.
 """
 function transition end
 
 """
-    observation(problem::POMDP, statep)
-    observation(problem::POMDP, action, statep)
-    observation(problem::POMDP, state, action, statep)
+    observation(m::POMDP, statep)
+    observation(m::POMDP, action, statep)
+    observation(m::POMDP, state, action, statep)
 
 Return the observation distribution. You need only define the method with the fewest arguments needed to determine the observation distribution.
+
+If it is difficult to define the probability density or mass function explicitly, consider using `POMDPModelTools.ImplicitDistribution` to define a generative model.
 
 # Example
 ```julia
@@ -54,21 +58,11 @@ observation(p::MyPOMDP, sp::Int) = SparseCat([sp-1, sp, sp+1], [0.1, 0.8, 0.1])
 """
 function observation end
 
-"""
-    observation(problem::POMDP, action, statep)
-
-Return the observation distribution for the a-s' tuple (action and next state)
-"""
 observation(problem::POMDP, a, sp) = observation(problem, sp)
-@impl_dep observation(::P,::A,::S) where {P<:POMDP,S,A} observation(::P,::S)
+POMDPLinter.@impl_dep observation(::P,::A,::S) where {P<:POMDP,S,A} observation(::P,::S)
 
-"""
-    observation(problem::POMDP, state, action, statep)
-
-Return the observation distribution for the s-a-s' tuple (state, action, and next state)
-"""
 observation(problem::POMDP, s, a, sp) = observation(problem, a, sp)
-@impl_dep observation(::P,::S,::A,::S) where {P<:POMDP,S,A} observation(::P,::A,::S)
+POMDPLinter.@impl_dep observation(::P,::S,::A,::S) where {P<:POMDP,S,A} observation(::P,::A,::S)
 
 """
     reward(m::POMDP, s, a)
@@ -90,10 +84,10 @@ For some problems, it is easier to express `reward(m, s, a, sp)` or `reward(m, s
 function reward end
 
 reward(m::Union{POMDP,MDP}, s, a, sp) = reward(m, s, a)
-@impl_dep reward(::P,::S,::A,::S) where {P<:Union{POMDP,MDP},S,A} reward(::P,::S,::A)
+POMDPLinter.@impl_dep reward(::P,::S,::A,::S) where {P<:Union{POMDP,MDP},S,A} reward(::P,::S,::A)
 
 reward(m::Union{POMDP,MDP}, s, a, sp, o) = reward(m, s, a, sp)
-@impl_dep reward(::P,::S,::A,::S,::O) where {P<:Union{POMDP,MDP},S,A,O} reward(::P,::S,::A,::S)
+POMDPLinter.@impl_dep reward(::P,::S,::A,::S,::O) where {P<:Union{POMDP,MDP},S,A,O} reward(::P,::S,::A,::S)
 
 """
     isterminal(m::Union{MDP,POMDP}, s)
@@ -105,12 +99,25 @@ If a state is terminal, no actions will be taken in it and no additional rewards
 isterminal(problem::Union{POMDP,MDP}, state) = false
 
 """
-    initialstate_distribution(pomdp::POMDP)
-    initialstate_distribution(mdp::MDP)
+    initialstate(m::Union{POMDP,MDP})
 
-Return a distribution of the initial state of the pomdp or mdp.
+Return a distribution of initial states for (PO)MDP `m`.
+
+If it is difficult to define the probability density or mass function explicitly, consider using `POMDPModelTools.ImplicitDistribution` to define a model for sampling.
 """
-function initialstate_distribution end
+function initialstate end
+
+"""
+    initialobs(m::POMDP, s)
+
+Return a distribution of initial observations for POMDP `m` and state `s`.
+
+If it is difficult to define the probability density or mass function explicitly, consider using `POMDPModelTools.ImplicitDistribution` to define a model for sampling.
+
+This function is only used in cases where the policy expects an initial observation rather than an initial belief, e.g. in a reinforcement learning setting. It is not used in a standard POMDP simulation.
+"""
+function initialobs end
+
 
 """
     stateindex(problem::POMDP, s)

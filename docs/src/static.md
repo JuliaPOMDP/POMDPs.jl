@@ -1,6 +1,6 @@
-# [Defining Basic (PO)MDP Properties](@id basic)
+# [Defining Static (PO)MDP Properties](@id static)
 
-In addition to the [dynamic decision network (DDN)](@ref Dynamic-decision-networks) that defines the state and observation dynamics, a POMDPs.jl problem definition will include definitions of various other properties. Each of these properties is defined by implementing a new method of an interface function for the problem.
+The definition of a (PO)MDP includes several static properties, which are defined with the functions listed in this section. This section is an overview, with links to the docstrings for detailed usage information.
 
 To use most solvers, it is only necessary to implement a few of these functions.
 
@@ -17,6 +17,12 @@ The object returned by these functions should implement part or all of the [inte
 It is often important to limit the action space based on the current state, belief, or observation. 
 This can be accomplished with the [`actions`](@ref)`(m, s)` or [`actions`](@ref)`(m, b)` function.
 See [Histories associated with a belief](@ref) and the [`history`](@ref) and [`currentobs`](@ref) docstrings for more information.
+
+## Initial Distributions
+
+[`initialstate`](@ref)`(pomdp)` should return the distribution of the initial state, either as an explicit distribution (e.g. a `POMDPModelTools.SparseCat`) that conforms to the [distribution interface](@ref Distributions) or with a `POMDPModelTools.ImplicitDistribution` to easily specify a function to sample from the space.
+
+[`initialobs`](@ref)`(pomdp, state)` is used to return the distribution of the initial observation in occasional cases where the policy expects an initial observation rather than an initial belief, e.g. in a reinforcement learning setting. It is not used in a standard POMDP simulation.
 
 ## Discount Factor
 
@@ -35,7 +41,13 @@ For discrete problems, some solvers rely on a fast method for finding the index 
 - [`actionindex`](@ref)`(pomdp, a)`
 - [`obsindex`](@ref)`(pomdp, o)`
 
-Note that the converse mapping (from indices to states) is not part of the POMDPs interface. A solver will typically create a vector containing all the states to define it.
+!!! note
+
+    The converse mapping (from indices to states) is not part of the POMDPs interface. A solver will typically create a vector containing all the states to define it.
+
+!!! note
+
+    There is no requirement that the object returned by the [space functions](@ref Spaces) above respect the same ordering as the `index` functions. The `index` functions are the *sole definition* of ordering of the states. The `POMDPModelTools` package contains convenience functions for constructing a list of states that respects the ordering specified by the `index` functions. For example, `POMDPModelTools.ordered_states` returns an `AbstractVector` of the states in the order specified by `stateindex`.
 
 ## Conversion to vector types
 

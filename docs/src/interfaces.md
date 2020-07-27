@@ -9,8 +9,7 @@ A space object should contain the information needed to define the set of all po
 The following functions may be called on a space object (Click on a function to read its documentation):
 
 - [`rand`](@ref)
-- [`length`](@ref)
-- [`dimensions`](@ref)
+- [`iterate`](https://docs.julialang.org/en/v1/manual/interfaces/#man-interface-iteration-1) and [the rest of the iteration interface](https://docs.julialang.org/en/v1/manual/interfaces/#man-interface-iteration-1) for discrete spaces.
 
 ## Distributions
 
@@ -18,7 +17,7 @@ A distribution object represents a probability distribution.
 
 The following functions may be called on a distribution object (Click on a function to read its documentation):
 
-- [`rand`](@ref)`(rng, d)` [^1]
+- [`rand`](@ref)`([rng,] d)` [^1]
 - [`support`](@ref)
 - [`pdf`](@ref)
 - [`mode`](@ref)
@@ -26,4 +25,4 @@ The following functions may be called on a distribution object (Click on a funct
 
 You can find some useful pre-made distribution objects in [Distributions.jl](https://github.com/JuliaStats/Distributions.jl) or [POMDPModelTools.jl](https://juliapomdp.github.io/POMDPModelTools.jl/latest/distributions.html).
 
-[^1] `rand(rng::AbstractRNG, d)` where `d` is a distribution object is the only method of [`rand`](@ref) that is officially part of the POMDPs.jl interface, so it is the only required method for new distributions. However, users may wish to [hook into the official julia rand interface](https://docs.julialang.org/en/v1/stdlib/Random/index.html#Generating-values-from-a-collection-1) to enable more flexible `rand` calls.
+[^1]: Distributions should support both `rand(rng::AbstractRNG, d)` and `rand(d)`. The recommended way to do this is by implmenting `Base.rand(rng::AbstractRNG, s::Random.SamplerTrivial{<:YourDistribution})` from the [julia rand interface](https://docs.julialang.org/en/v1/stdlib/Random/index.html#Generating-values-from-a-collection-1).

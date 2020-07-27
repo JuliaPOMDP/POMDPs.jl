@@ -1,39 +1,32 @@
-@generated function gen(v::DDNOut{symbols}, m, s, a, rng) where symbols
-
-    # deprecation of old generate_ functions
-    if symbols isa Tuple && # if it is just one, it will be handled in the DDNNode version
-       haskey(old_generate, symbols) &&
-       implemented_by_user(old_generate[symbols], Tuple{m, s, a, rng})
-
-        @warn("""Using user-implemented function
-                  $(old_generate[symbols])(::M, ::S, ::A, ::RNG)
-              which is deprecated in POMDPs v0.8. Please implement this as
-                  POMDPs.gen(::M, ::S, ::A, ::RNG) or
-                  POMDPs.gen(::DDNOut{$symbols}, ::M, ::S, ::A, ::RNG)
-              instead. See the POMDPs.gen documentation for more details.""", M=m, S=s, A=a, RNG=rng)
-        return :($(old_generate[symbols])(m, s, a, rng))
-    end
-
-    quote
-        ddn = DDNStructure(m)
-        genout(v, ddn, m, s, a, rng)
-    end
-end
+gen(m::Union{MDP,POMDP}, s, a, rng) = NamedTuple()
 
 """
-Sample values for nodes specified in the first argument by sampling values for all intermediate nodes. 
+    DDNOut(x::Symbol)
+    DDNOut{x::Symbol}()
+    DDNOut(::Symbol, ::Symbol,...)
+    DDNOut{x::NTuple{N, Symbol}}()
+
+Reference to one or more named nodes in the POMDP or MDP dynamic decision network (DDN).
+
+`DDNOut` is a "value type". See [the documentation of `Val`](https://docs.julialang.org/en/v1/manual/types/index.html#%22Value-types%22-1) for more conceptual details about value types.
 """
-@inline @generated function genout(v::DDNOut{symbols}, ddn::DDNStructure, m, s, a, rng) where symbols
-    
+struct DDNOut{names} end
+
+DDNOut(name::Symbol) = DDNOut{name}()
+DDNOut(names...) = DDNOut{names}()
+DDNOut(names::Tuple) = DDNOut{names}()
+
+@generated function genout(v::DDNOut{symbols}, m::Union{MDP,POMDP}, s, a, rng) where symbols
+
     # use anything available from gen(m, s, a, rng)
     expr = quote
         x = gen(m, s, a, rng)
         @assert x isa NamedTuple "gen(m::Union{MDP,POMDP}, ...) must return a NamedTuple; got a $(typeof(x))"
     end
-
+    
     # add gen for any other variables
-    for (var, depargs) in sorted_deppairs(ddn, symbols)
-        if var in (:s, :a) # eventually should look for InputDDNNodes instead of being hardcoded
+    for (var, depargs) in sorted_deppairs(m, symbols)
+        if var in (:s, :a) # input nodes
             continue
         end
 
@@ -43,7 +36,7 @@ Sample values for nodes specified in the first argument by sampling values for a
             if haskey(x, $sym) # should be constant at compile time
                 $var = x[$sym]
             else
-                $var = gen(DDNNode{$sym}(), m, $(depargs...), rng)
+                $var = $(node_expr(Val(var), depargs))
             end
         end
         append!(expr.args, varblock.args)
@@ -60,56 +53,57 @@ Sample values for nodes specified in the first argument by sampling values for a
     return expr
 end
 
-@generated function gen(::DDNNode{x}, m, args...) where x
-    # this function is only @generated to deal with deprecation of gen functions
-
-    # deprecation of old generate_ functions
-    if haskey(old_generate, x) && implemented_by_user(old_generate[x], Tuple{m, args...})
-        @warn("""Using user-implemented function
-                  $(old_generate[x])(::M, ::Argtypes...)
-              which is deprecated in POMDPs v0.8. Please implement this as
-                  POMDPs.gen(::M, ::Argtypes...) or
-                  POMDPs.gen(::DDNNode{:$x}, ::M, ::Argtypes...)
-              instead. See the POMDPs.gen documentation for more details.""", M=m, Argtypes=args)
-        return :($(old_generate[x])(m, args...))
-    end
-
-    quote 
-        gen(node(DDNStructure(m), x), m, args...)
-    end
+function sorted_deppairs(m::Type{<:MDP}, symbols)
+    deps = Dict(:s => Symbol[],
+                :a => Symbol[],
+                :sp => [:s, :a],
+                :r => [:s, :a, :sp],
+                :info => Symbol[]
+               )
+    return sorted_deppairs(deps, symbols)
 end
 
-gen(m::Union{MDP, POMDP}, s, a, rng) = NamedTuple()
+function sorted_deppairs(m::Type{<:POMDP}, symbols)
+    deps = Dict(:s => Symbol[],
+                :a => Symbol[],
+                :sp => [:s, :a],
+                :o => [:s, :a, :sp],
+                :r => [:s, :a, :sp, :o],
+                :info => Symbol[]
+               )
+    return sorted_deppairs(deps, symbols)
+end
 
-function implemented(g::typeof(gen), TT::TupleType)
-    m = which(g, TT)
-    if m.module != POMDPs # implemented by a user elsewhere
-        return true
-    end
-    v = first(TT.parameters)
-    if v <: Union{MDP, POMDP}
-        return false # already checked above for implementation in another module
-    else
-        @assert v <: Union{DDNNode, DDNOut}
-        vp = first(v.parameters)
-        if haskey(old_generate, vp) && implemented_by_user(old_generate[vp], Tuple{TT.parameters[2:end]...}) # old generate function is implemented
-            return true
+function sorted_deppairs(depnames::Dict{Symbol, Vector{Symbol}}, symbols)
+    dag = SimpleDiGraph(length(depnames))
+    labels = Symbol[]
+    nodemap = Dict{Symbol, Int}()
+    for sym in symbols
+        if !haskey(nodemap, sym)
+            push!(labels, sym)
+            nodemap[sym] = length(labels)
         end
+        add_dep_edges!(dag, nodemap, labels, depnames, sym)
+    end
+    sortednodes = topological_sort_by_dfs(dag)
+    sortednames = labels[filter(n -> n<=length(labels), sortednodes)]
+    return [n=>depnames[n] for n in sortednames]
+end 
 
-        return implemented(g, v, TT.parameters[2], Tuple{TT.parameters[3:end-1]...}, TT.parameters[end])
+sorted_deppairs(dn::Dict{Symbol, Vector{Symbol}}, sym::Symbol) = sorted_deppairs(dn, tuple(sym))
+
+function add_dep_edges!(dag, nodemap, labels, depnames, sym)
+    for dep in depnames[sym]
+        if !haskey(nodemap, dep)
+            push!(labels, dep)
+            nodemap[dep] = length(labels)
+        end
+        add_edge!(dag, nodemap[dep], nodemap[sym])
+        add_dep_edges!(dag, nodemap, labels, depnames, dep)
     end
 end
 
-function implemented(g::typeof(gen), Var::Type{D}, M::Type, Deps::TupleType, RNG::Type) where D <: DDNNode
-    v = first(Var.parameters)
-    ddn = DDNStructure(M)
-    return implemented(g, node(ddn, v), M, Deps, RNG)
-end
-
-function implemented(g::typeof(gen), Vars::Type{D}, M::Type, Deps::TupleType, RNG::Type) where D <: DDNOut
-    if length(Deps.parameters) == 2 && implemented(g, Tuple{M, Deps.parameters..., RNG}) # gen(m, s, a, rng) is implemented
-        return true # should this be true or missing?
-    else
-        return missing # this is complicated because we need to know the types of everything in the ddn 
-    end
-end
+node_expr(::Val{:sp}, depargs) = :(rand(rng, transition(m, $(depargs...))))
+node_expr(::Val{:o}, depargs) = :(rand(rng, observation(m, $(depargs...))))
+node_expr(::Val{:r}, depargs) = :(reward(m, $(depargs...)))
+node_expr(::Val{:info}, depargs) = :(nothing)

@@ -4,15 +4,15 @@ Provides a basic interface for defining and solving MDPs/POMDPs
 module POMDPs
 
 using Random
-using Base: @pure
 import Base: rand
 import Statistics
 import Distributions: rand, pdf, mode, mean, support
 import NamedTupleTools
 import Pkg
-import LibGit2
 using LightGraphs
-using Logging
+
+# For Deprecated
+import POMDPLinter
 
 export 
     # Abstract type
@@ -28,13 +28,14 @@ export
     observation,
     reward,
     isterminal,
+    initialstate,
+    initialobs,
 
     # Generative model functions
     gen,
     @gen,
-    initialstate,
-    initialobs,
-
+    DDNOut,
+    
     # Discrete Functions
     length,
     stateindex,
@@ -46,9 +47,7 @@ export
     pdf,
     mode,
     mean,
-    dimensions,
     support,
-    initialstate_distribution,
 
     # Solver types
     Solver,
@@ -72,8 +71,6 @@ export
     simulate,
 
     # Utilities
-    implemented,
-    @implemented,
     convert_s,
     convert_a,
     convert_o,
@@ -81,28 +78,9 @@ export
     actiontype,
     obstype,
 
-    # DDNs
-    DDNNode,
-    DDNOut,
-    DDNStructure,
-    DDNStructure,
-    DistributionDDNNode,
-    FunctionDDNNode,
-    ConstantDDNNode,
-    InputDDNNode,
-    GenericDDNNode,
-    node,
-    depvars,
-    depnames,
-    nodenames,
-    outputnames,
-    name,
-    add_node,
-    pomdp_ddn,
-    mdp_ddn,
-    DistributionNotImplemented,
-
-    # Requirements checking
+    # Deprecated
+    implemented,
+    @implemented,
     RequirementSet,
     check_requirements,
     show_requirements,
@@ -116,35 +94,20 @@ export
     @warn_requirements,
     @req,
     @subreq,
+    initialstate_distribution,
+    dimensions
 
-    # Deprecated
-    generate_s,
-    generate_o,
-    generate_sr,
-    generate_so,
-    generate_or,
-    generate_sor,
-    sampletype,
-    n_states,
-    n_actions,
-    n_observations
- 
-include("requirements_internals.jl")
-include("requirements_printing.jl")
+
 include("pomdp.jl")
 include("solver.jl")
 include("simulator.jl")
-include("requirements_interface.jl")
 include("distribution.jl")
 include("belief.jl")
 include("space.jl")
 include("policy.jl")
 include("type_inferrence.jl")
-include("ddn_struct.jl")
-include("errors.jl")
 include("generative.jl")
 include("gen_impl.jl")
-include("utils.jl")
 include("deprecated.jl")
 
 end

@@ -3,46 +3,8 @@ using Test
 using POMDPs
 using Random
 
-POMDPs.logger_context(::Test.TestLogger) = IOContext(stderr)
-
-mightbemissing(x) = ismissing(x) || x
-
-# using Logging
-# global_logger(ConsoleLogger(stderr, Logging.Debug))
-
-mutable struct A <: POMDP{Int,Bool,Bool} end
-@testset "implement" begin
-
-    @test_throws MethodError length(states(A()))
-    @test_throws MethodError stateindex(A(), 1)
-
-    @test !@implemented transition(::A, ::Int, ::Bool)
-    POMDPs.transition(::A, s, a) = [s+a]
-    @test @implemented transition(::A, ::Int, ::Bool)
-
-    @test !@implemented discount(::A)
-    POMDPs.discount(::A) = 0.95
-    @test @implemented discount(::A)
-
-    @test !@implemented reward(::A,::Int,::Bool,::Int)
-    @test !@implemented reward(::A,::Int,::Bool)
-    POMDPs.reward(::A,::Int,::Bool) = -1.0
-    @test @implemented reward(::A,::Int,::Bool,::Int)
-    @test @implemented reward(::A,::Int,::Bool)
-
-    @test !@implemented observation(::A,::Int,::Bool,::Int)
-    @test !@implemented observation(::A,::Bool,::Int)
-    POMDPs.observation(::A,::Bool,::Int) = [true, false]
-    @test @implemented observation(::A,::Int,::Bool,::Int)
-    @test @implemented observation(::A,::Bool,::Int)
-end
-
 @testset "infer" begin
     include("test_inferrence.jl")
-end
-
-@testset "require" begin
-    include("test_requirements.jl")
 end
 
 @testset "generative" begin
@@ -51,14 +13,6 @@ end
 
 @testset "genback" begin
     include("test_generative_backedges.jl")
-end
-
-@testset "ddn_struct" begin
-    include("test_ddn_struct.jl")
-end
-
-@testset "gendep" begin
-    include("test_deprecated_generative.jl")
 end
 
 struct CI <: POMDP{Int,Int,Int} end
@@ -82,10 +36,7 @@ struct CV <: POMDP{Vector{Float64},Vector{Float64},Vector{Float64}} end
 end
 
 struct EA <: POMDP{Int, Int, Int} end
-@testset "error" begin
-    @test_throws MethodError transition(EA(), 1, 2)
-    @test_throws DistributionNotImplemented gen(DDNOut(:sp), EA(), 1, 2, Random.GLOBAL_RNG)
-end
+struct EB <: POMDP{Int, Int, Int} end
 
 @testset "history" begin
     POMDPs.history(i::Int) = [(o=i,)]
@@ -93,4 +44,36 @@ end
     @test currentobs(4) == 4
 end
 
-POMDPs.add_registry()
+@testset "deprecated" begin
+    
+    POMDPs.add_registry()
+    
+    @test !@implemented transition(::EA, ::Int, ::Int)
+    POMDPs.transition(::EA, ::Int, ::Int) = [0]
+    @test @implemented transition(::EA, ::Int, ::Int)
+
+    @POMDP_require solve(a::Int, b::Int) begin
+        @req transition(::EA, ::Int, ::Int)
+    end
+    @POMDP_requirements Int begin end
+    @requirements_info Int
+    a = 1
+    b = 2
+    @get_requirements solve(a, b)
+    @show_requirements solve(a, b)
+    @warn_requirements solve(a, b)
+
+    @test_throws ErrorException @req
+    @test_throws ErrorException @subreq
+
+    @test gen(DDNOut(:sp), EA(), 1, 1, MersenneTwister(3)) == 0
+    @test_throws MethodError @gen(:sp,:o)(EA(), 1, true, MersenneTwister(4))
+
+    POMDPs.initialstate(::EA) = [1,2,3]
+    @test (@test_deprecated initialstate_distribution(EA())) == initialstate(EA())
+    @test (@test_deprecated initialstate(EA(), Random.GLOBAL_RNG)) in initialstate(EA())
+
+    @test_throws MethodError initialstate(EB())
+    POMDPs.initialstate_distribution(m::EB) = [1]
+    @test initialstate(EB()) == [1]
+end
