@@ -44,9 +44,10 @@ struct EB <: POMDP{Int, Int, Int} end
     @test currentobs(4) == 4
 end
 
-POMDPs.add_registry()
-
 @testset "deprecated" begin
+    
+    POMDPs.add_registry()
+    
     @test !@implemented transition(::EA, ::Int, ::Int)
     POMDPs.transition(::EA, ::Int, ::Int) = [0]
     @test @implemented transition(::EA, ::Int, ::Int)
