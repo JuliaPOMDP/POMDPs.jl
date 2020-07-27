@@ -5,27 +5,6 @@
 @deprecate get_requirements POMDPLinter.get_requirements
 @deprecate requirements_info POMDPLinter.requirements_info
 
-# Tried for 2 hours 
-
-# macro deprecate_requirements_macro(name)
-#     newmacro = Symbol("@$(string(name))")
-#     return nothing
-#     quote
-#          macro $name(args...)
-#             @warn("POMDPs.@$name is deprecated, use POMDPLinter.@$name instead.", maxlog=1)
-#             only(args)
-#         end
-#    end
-# end
-
-# for name in [:implemented]
-#     @eval macro $name(arg)
-#               macroname = $name
-#               newmacro = Symbol("@$macroname")
-#               @warn("POMDPs.@$macroname is deprecated, use POMDPLinter.@$macroname instead.", maxlog=1)
-#               return :(POMDPLinter.$newmacro($(esc(arg))))
-#           end
-# end
 
 macro implemented(ex)
     @warn("POMDPs.@implemented is deprecated, use POMDPLinter.@implemented instead.", maxlog=1)
@@ -111,3 +90,26 @@ end
 @deprecate initialobs(m, s, rng) rand(rng, initialobs(m, s))
 
 dimensions(s::Any) = error("dimensions is no longer part of the POMDPs.jl interface.")
+
+"""
+    available()
+
+Prints all the available packages in the JuliaPOMDP registry
+"""
+function available()
+    @warn("POMDPs.available() is deprecated. Please see the POMDPs.jl README for a list of packages.")
+    reg_dict = read_registry(joinpath(Pkg.depots1(), "registries", "JuliaPOMDP", "Registry.toml"))
+    for (uuid, pkginfo) in reg_dict["packages"]
+        println(pkginfo["name"])
+    end
+end
+
+function read_registry(regfile)
+    registry = Pkg.TOML.parsefile(regfile)
+    return registry
+end
+
+function add_registry(;kwargs...)
+    @warn("""POMDPs.add_registry() is deprecated. Use Pkg.pkg"registry add https://github.com/JuliaPOMDP/Registry" instead.""")
+    Pkg.pkg"registry add https://github.com/JuliaPOMDP/Registry"
+end
