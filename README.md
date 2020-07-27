@@ -23,7 +23,7 @@ Our goal is to provide a common programming vocabulary for:
 2. Writing solver software.
 3. Running simulations efficiently.
 
-There are [several ways to define and interact with (PO)MDPs](http://juliapomdp.github.io/POMDPs.jl/stable/def_pomdp): transition and observation distributions and rewards can be defined with explicit probabiliyt distributions or implicitly with a function that samples from the distribution, or all of the dynamics can be defined in a single step simulator function: (s', o, r) = G(s,a). Problems may also be defined with probability [tables](https://github.com/JuliaPOMDP/POMDPExamples.jl/blob/master/notebooks/Defining-a-tabular-POMDP.ipynb), and the [QuickPOMDPs interfaces](https://github.com/JuliaPOMDP/QuickPOMDPs.jl) make defining simple problems easier.
+There are [several ways to define and interact with (PO)MDPs](http://juliapomdp.github.io/POMDPs.jl/stable/def_pomdp): transition and observation distributions and rewards can be defined with explicit probability distributions or implicitly with a function that samples from the distribution, or all of the dynamics can be defined in a single step simulator function: (s', o, r) = G(s,a). Problems may also be defined with probability [tables](https://github.com/JuliaPOMDP/POMDPExamples.jl/blob/master/notebooks/Defining-a-tabular-POMDP.ipynb), and the [QuickPOMDPs interfaces](https://github.com/JuliaPOMDP/QuickPOMDPs.jl) make defining simple problems easier.
 
 **Python** can be used to define and solve MDPs and POMDPs via the QuickPOMDPs or tabular interfaces and [pyjulia](https://github.com/JuliaPy/pyjulia) (Example: [tiger.py](https://github.com/JuliaPOMDP/QuickPOMDPs.jl/blob/master/examples/tiger.py)).
 
