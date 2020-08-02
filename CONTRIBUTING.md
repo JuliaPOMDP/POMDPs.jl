@@ -1,4 +1,4 @@
-# Contributing to POMDPs
+# Contributing to POMDPs.jl and the JuliaPOMDP ecosystem
 
 The JuliaPOMDP project enthusiastically welcomes contributions from all community members and users. As outlined in our [code of conduct](/CODE_OF_CONDUCT.md), we are seeking to build a diverse community of contributors. In particular, we encourage new users with **all levels of software development experience** to contribute and are happy to address your questions.
 
