@@ -94,7 +94,7 @@ POMDPLinter.@impl_dep reward(::P,::S,::A,::S,::O) where {P<:Union{POMDP,MDP},S,A
 
 Check if state `s` is terminal.
 
-If a state is terminal, no actions will be taken in it and no additional rewards will be accumulated. Thus, the value at such a state is, by definition, zero.
+If a state is terminal, no actions will be taken in it and no additional rewards will be accumulated. Thus, the value function at such a state is, by definition, zero.
 """
 isterminal(problem::Union{POMDP,MDP}, state) = false
 
