@@ -54,6 +54,10 @@ If your contribution involves creating a new repository
 
 (These instructions are meant to be an overview. Community members will guide you through the details.)
 
+## Code Principles
+
+The JuliaPOMDP community values performance, clarity, and flexibility in the code that we produce. Fortunately, Julia is designed to make this easy. In general, the principles discussed in the [Julia style guide](https://docs.julialang.org/en/v1/manual/style-guide/) should be used, but in some cases these may be broken to maintain consistency with existing code.
+
 ## Documentation Principles
 
 Improving documentation is one of the best ways to contribute to the JuliaPOMDP project, but creating useful documentation requires careful thought. A few important principles and guidelines that we seek to follow are outlined below:
