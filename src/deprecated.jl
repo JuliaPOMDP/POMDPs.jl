@@ -65,10 +65,12 @@ end
 
 function gen(o::DDNOut{symbols}, m::Union{MDP,POMDP}, s, a, rng) where symbols
     if symbols isa Symbol
-        @warn("gen(DDNOut(:$symbols), m, s, a, rng) is deprecated, use @gen(:$symbols)(m, s, a, rng) instead.", maxlog=1)
+        Base.depwarn("gen(DDNOut(:$symbols), m, s, a, rng) is deprecated, use @gen(:$symbols)(m, s, a, rng) instead.", :gen)
+        # @warn("gen(DDNOut(:$symbols), m, s, a, rng) is deprecated, use @gen(:$symbols)(m, s, a, rng) instead.", maxlog=1)
     else
         symbolstring = join([":$s" for s in symbols], ", ")
-        @warn("gen(DDNOut($symbolstring), m, s, a, rng) is deprecated, use @gen($symbolstring)(m, s, a, rng) instead.", maxlog=1)
+        Base.depwarn("gen(DDNOut($symbolstring), m, s, a, rng) is deprecated, use @gen($symbolstring)(m, s, a, rng) instead.", :gen)
+        # @warn("gen(DDNOut($symbolstring), m, s, a, rng) is deprecated, use @gen($symbolstring)(m, s, a, rng) instead.", maxlog=1)
     end
     return genout(DDNOut(symbols), m, s, a, rng)
 end
@@ -82,7 +84,7 @@ function initialstate(m::Union{MDP,POMDP})
     if method.module == POMDPs # ignore the @deprecated definition to avoid infinite recurse
         throw(MethodError(initialstate, (m,)))
     else
-        @warn("Falling back to using deprecated function initialstate_distribution(::$(typeof(m))). Please implement this as initialstate(::$(typeof(m))) instead.", maxlog=1)
+        Base.depwarn("Falling back to using deprecated function initialstate_distribution(::$(typeof(m))). Please implement this as initialstate(::$(typeof(m))) instead.", :initialstate)
         return initialstate_distribution(m)
     end
 end
@@ -97,7 +99,7 @@ dimensions(s::Any) = error("dimensions is no longer part of the POMDPs.jl interf
 Prints all the available packages in the JuliaPOMDP registry
 """
 function available()
-    @warn("POMDPs.available() is deprecated. Please see the POMDPs.jl README for a list of packages.")
+    Base.depwarn("POMDPs.available() is deprecated. Please see the POMDPs.jl README for a list of packages.", :available)
     reg_dict = read_registry(joinpath(Pkg.depots1(), "registries", "JuliaPOMDP", "Registry.toml"))
     for (uuid, pkginfo) in reg_dict["packages"]
         println(pkginfo["name"])
@@ -110,6 +112,6 @@ function read_registry(regfile)
 end
 
 function add_registry(;kwargs...)
-    @warn("""POMDPs.add_registry() is deprecated. Use Pkg.pkg"registry add https://github.com/JuliaPOMDP/Registry" instead.""")
+    Base.depwarn("""POMDPs.add_registry() is deprecated. Use Pkg.pkg"registry add https://github.com/JuliaPOMDP/Registry" instead.""", :add_registry)
     Pkg.pkg"registry add https://github.com/JuliaPOMDP/Registry"
 end
