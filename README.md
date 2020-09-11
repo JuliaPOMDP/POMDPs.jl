@@ -51,7 +51,7 @@ m = QuickPOMDP(
     states = [:left, :right],
     actions = [:left, :right, :listen],
     observations = [:left, :right],
-    initialstate_distribution = Uniform([:left, :right]),
+    initialstate = Uniform([:left, :right]),
     discount = 0.95,
 
     transition = function (s, a)
