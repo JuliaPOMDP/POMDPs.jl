@@ -112,6 +112,6 @@ function read_registry(regfile)
 end
 
 function add_registry(;kwargs...)
-    Base.depwarn("""POMDPs.add_registry() is deprecated. Use Pkg.pkg"registry add https://github.com/JuliaPOMDP/Registry" instead.""", :add_registry)
+    Base.depwarn("""POMDPs.add_registry() is deprecated. The JuliaPOMDP Registry is no longer needed to download most solvers. If the registry is needed, use Pkg.pkg"registry add https://github.com/JuliaPOMDP/Registry" instead.""", :add_registry)
     Pkg.pkg"registry add https://github.com/JuliaPOMDP/Registry"
 end

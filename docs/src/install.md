@@ -7,18 +7,9 @@ import Pkg
 Pkg.add("POMDPs") # installs the POMDPs.jl package
 ```
 
-Once you have POMDPs.jl installed, you can install any package that is part of the JuliaPOMDP community by running:
+Some auxiliary packages and older versions of solvers may be found in the JuliaPOMDP registry. To install this registry, run:
 ```julia
-using POMDPs, Pkg
-POMDPs.add_registry()
-Pkg.add("SARSOP") # installs the SARSOP solver
+using Pkg; pkg"registry add https://github.com/JuliaPOMDP/Registry"
 ```
 
-The code above will download and install all dependencies automatically. All JuliaPOMDP packages have been tested on
-Linux and OS X, and most have been tested on Windows.
-
-To get a list of all the available packages run:
-```julia
-POMDPs.available() # prints a list of all the available packages that can be installed with POMDPs.add
-```
-
+Note: to use this registry, [JuliaPro](https://juliacomputing.com/products/juliapro) users must also run `edit(normpath(Sys.BINDIR,"..","etc","julia","startup.jl"))`, comment out the line `ENV["DISABLE_FALLBACK"] = "true"`, save the file, and restart JuliaPro as described in [this issue](https://github.com/JuliaPOMDP/POMDPs.jl/issues/249).
