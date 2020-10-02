@@ -24,10 +24,12 @@ There are [several ways to define and interact with (PO)MDPs](http://juliapomdp.
 For help, please post to the [Google group](https://groups.google.com/forum/#!forum/pomdps-users), or on [gitter](https://gitter.im/JuliaPOMDP). We welcome contributions from anyone! See [CONTRIBUTING.md](/CONTRIBUTING.md) for information about contributing. Check [releases](https://github.com/JuliaPOMDP/POMDPs.jl/releases) for information on changes. POMDPs.jl and all packages in the JuliaPOMDP project are fully supported on Linux and OS X. Windows is supported for all native solvers\*, and most non-native solvers should work, but may require additional configuration.
 
 ## Installation
-To install POMDPs.jl, run the following in the Julia REPL: 
+In the Julia REPL, run: 
 ```julia
 using Pkg; pkg"add POMDPs"
 ```
+
+Some auxiliary packages and older versions of solvers may be found in the JuliaPOMDP registry. To install this registry, see the [installation instructions](https://juliapomdp.github.io/POMDPs.jl/stable/install/).
 
 To install supported JuliaPOMDP packages including various solvers, first add the JuliaPOMDP registry:
 ```julia
