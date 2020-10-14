@@ -40,34 +40,34 @@ To run a simple simulation of the classic [Tiger POMDP](https://www.cs.rutgers.e
 using POMDPs, QuickPOMDPs, POMDPModelTools, POMDPSimulators, QMDP
 
 m = QuickPOMDP(
-    states = [:left, :right],
-    actions = [:left, :right, :listen],
-    observations = [:left, :right],
-    initialstate = Uniform([:left, :right]),
+    states = ["left", "right"],
+    actions = ["left", "right", "listen"],
+    observations = ["left", "right"],
+    initialstate = Uniform(["left", "right"]),
     discount = 0.95,
 
     transition = function (s, a)
-        if a == :listen
+        if a == "listen"
             return Deterministic(s) # tiger stays behind the same door
         else # a door is opened
-            return Uniform([:left, :right]) # reset
+            return Uniform(["left", "right"]) # reset
         end
     end,
 
     observation = function (s, a, sp)
-        if a == :listen
-            if sp == :left
-                return SparseCat([:left, :right], [0.85, 0.15]) # sparse categorical distribution
+        if a == "listen"
+            if sp == "left"
+                return SparseCat(["left", "right"], [0.85, 0.15]) # sparse categorical distribution
             else
-                return SparseCat([:right, :left], [0.85, 0.15])
+                return SparseCat(["right", "left"], [0.85, 0.15])
             end
         else
-            return Uniform([:left, :right])
+            return Uniform(["left", "right"])
         end
     end,
 
-    reward = function (s, a, sp, o...) # QMDP needs R(s,a,sp), but simulations use R(s,a,sp,o)
-        if a == :listen  
+    reward = function (s, a)
+        if a == "listen"
             return -1.0
         elseif s == a # the tiger was found
             return -100.0
