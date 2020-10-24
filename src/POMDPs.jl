@@ -11,6 +11,8 @@ import NamedTupleTools
 import Pkg
 using LightGraphs
 
+import CommonRLInterface
+
 # For Deprecated
 import POMDPLinter
 
@@ -108,6 +110,7 @@ include("policy.jl")
 include("type_inferrence.jl")
 include("generative.jl")
 include("gen_impl.jl")
+include("common_rl.jl")
 include("deprecated.jl")
 
 end

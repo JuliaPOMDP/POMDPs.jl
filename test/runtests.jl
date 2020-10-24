@@ -2,6 +2,7 @@ using Test
 
 using POMDPs
 using Random
+using CommonRLInterface
 
 @testset "infer" begin
     include("test_inferrence.jl")
@@ -13,6 +14,10 @@ end
 
 @testset "genback" begin
     include("test_generative_backedges.jl")
+end
+
+@testset "common RL" begin
+    include("test_common_rl.jl")
 end
 
 struct CI <: POMDP{Int,Int,Int} end
