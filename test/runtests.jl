@@ -3,6 +3,17 @@ using Test
 using POMDPs
 using Random
 
+"""
+Like @inferred, except ignored in julia v1.0
+"""
+macro inferred_except_1_0(expr)
+    if VERSION >= v"1.1"
+        return :(@inferred($expr))
+    else
+        return expr
+    end
+end
+
 @testset "infer" begin
     include("test_inferrence.jl")
 end
@@ -46,7 +57,9 @@ end
 
 @testset "deprecated" begin
     
-    POMDPs.add_registry()
+    if VERSION >= v"1.1"
+        POMDPs.add_registry()
+    end
     
     @test !@implemented transition(::EA, ::Int, ::Int)
     POMDPs.transition(::EA, ::Int, ::Int) = [0]

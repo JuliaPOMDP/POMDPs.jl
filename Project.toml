@@ -1,6 +1,6 @@
 name = "POMDPs"
 uuid = "a93abf59-7444-517b-a68a-c42f96afdd7d"
-version = "0.9.1"
+version = "0.9.2"
 
 [deps]
 Distributions = "31c24e10-a181-5473-b8eb-7969acd0382f"
@@ -16,7 +16,7 @@ Distributions = "0.17, 0.18, 0.19, 0.20, 0.21, 0.22, 0.23, 0.24"
 LightGraphs = "1"
 NamedTupleTools = "0.10, 0.11, 0.12, 0.13"
 POMDPLinter = "0.1"
-julia = "1.1"
+julia = "1"
 
 [extras]
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
