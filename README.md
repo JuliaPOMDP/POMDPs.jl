@@ -12,16 +12,19 @@
 This package provides a core interface for working with [Markov decision processes (MDPs)](https://en.wikipedia.org/wiki/Markov_decision_process) and [partially observable Markov decision processes (POMDPs)](https://en.wikipedia.org/wiki/Partially_observable_Markov_decision_process). For examples, please see [POMDPExamples](https://github.com/JuliaPOMDP/POMDPExamples.jl), [QuickPOMDPs](https://github.com/JuliaPOMDP/QuickPOMDPs.jl), and the [Gallery](https://github.com/JuliaPOMDP/POMDPGallery.jl).
 
 Our goal is to provide a common programming vocabulary for:
-
 1. Expressing problems as MDPs and POMDPs. 
 2. Writing solver software.
 3. Running simulations efficiently.
 
-There are [several ways to define and interact with (PO)MDPs](http://juliapomdp.github.io/POMDPs.jl/stable/def_pomdp): transition and observation distributions and rewards can be defined with explicit probability distributions or implicitly with a function that samples from the distribution, or all of the dynamics can be defined in a single [generative model](https://en.wikipedia.org/wiki/Markov_decision_process#Simulator_models) function: (s', o, r) = G(s,a). Problems may also be defined with probability [tables](https://github.com/JuliaPOMDP/POMDPExamples.jl/blob/master/notebooks/Defining-a-tabular-POMDP.ipynb), and the [QuickPOMDPs interfaces](https://github.com/JuliaPOMDP/QuickPOMDPs.jl) make defining simple problems easier.
+There are [several ways to define (PO)MDPs](http://juliapomdp.github.io/POMDPs.jl/stable/def_pomdp):
+- Transition and observation distributions and rewards can be defined separately with explicit or [implicitly sampled](https://juliapomdp.github.io/POMDPModelTools.jl/stable/distributions/#Implicit) distributions.
+- All of the dynamics can be defined in a single [generative model](https://en.wikipedia.org/wiki/Markov_decision_process#Simulator_models) function: (s', o, r) = G(s,a).
+- Problems may be defined with probability [tables](https://github.com/JuliaPOMDP/POMDPExamples.jl/blob/master/notebooks/Defining-a-tabular-POMDP.ipynb).
+- The [QuickPOMDPs interfaces](https://github.com/JuliaPOMDP/QuickPOMDPs.jl) make defining simple problems easier.
 
 **Python** can be used to define and solve MDPs and POMDPs via the QuickPOMDPs or tabular interfaces and [pyjulia](https://github.com/JuliaPy/pyjulia) (Example: [tiger.py](https://github.com/JuliaPOMDP/QuickPOMDPs.jl/blob/master/examples/tiger.py)).
 
-For help, please post in [GitHub Discussions tab](https://github.com/JuliaPOMDP/POMDPs.jl/discussions). We welcome contributions from anyone! See [CONTRIBUTING.md](/CONTRIBUTING.md) for information about contributing. Check [releases](https://github.com/JuliaPOMDP/POMDPs.jl/releases) for information on changes. POMDPs.jl and all packages in the JuliaPOMDP project are fully supported on Linux and OS X. Windows is supported for all native solvers\*, and most non-native solvers should work, but may require additional configuration.
+For help, please post in [GitHub Discussions tab](https://github.com/JuliaPOMDP/POMDPs.jl/discussions). We welcome contributions from anyone! See [CONTRIBUTING.md](/CONTRIBUTING.md) for information about contributing.
 
 ## Installation
 
@@ -104,7 +107,7 @@ Detailed documentation can be found [here](http://juliapomdp.github.io/POMDPs.jl
 
 ## Supported Packages
 
-Many packages use the POMDPs.jl interface, including MDP and POMDP solvers, support tools, and extensions to the POMDPs.jl interface. 
+Many packages use the POMDPs.jl interface, including MDP and POMDP solvers, support tools, and extensions to the POMDPs.jl interface. POMDPs.jl and all packages in the JuliaPOMDP project are fully supported on Linux and OS X. Windows is supported for all native solvers\*, and most non-native solvers should work, but may require additional configuration.
 
 #### Tools:
 
