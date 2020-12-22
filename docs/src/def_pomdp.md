@@ -14,10 +14,6 @@ Since POMDPs.jl was designed with performance and flexibility as first prioritie
 The expressive nature of POMDPs.jl gives problem writers the flexibility to write their problem in many forms.
 Custom POMDP problems are defined by implementing the functions specified by the POMDPs API.
 
-!!! note
-
-    The main POMDPs.jl interface uses an object-oriented programming paradigm and require familiarity with Julia. For users new to Julia, [QuickPOMDPs](https://github.com/JuliaPOMDP/QuickPOMDPs.jl) usually requires less knowledge of the language and no object-oriented programming.
-
 In this guide, the interface is divided into two sections: functions that define static properties of the problem, and functions that describe the dynamics - how the states, observations and rewards change over time. There are two ways of specifying the dynamic behavior of a POMDP. The problem definition may include a mixture of *explicit* definitions of probability distributions, or *generative* definitions that simulate states and observations without explicitly defining the distributions. In scientific papers explicit definitions are often written as ``T(s' | s, a)`` for transitions and ``O(o | s, a, s')`` for observations, while a generative definition might be expressed as ``s', o, r = G(s, a)`` (or ``s', r = G(s,a)`` for an MDP).
 
 ## What do I need to implement?
