@@ -37,22 +37,20 @@ r_total = 0.0
 d = 1.0
 while !isterminal(pomdp, s)
     a = action(policy, b)
-    s, o, r = gen(DDNOut(:sp,:o,:r), pomdp, s, a, rng)
+    s, o, r = @gen(:sp,:o,:r)(pomdp, s, a, rng)
     r_total += d*r
     d *= discount(pomdp)
     b = update(up, b, a, o)
 end
 ```
 
-In terms of the explicit interface, [`gen`](@ref) above can be expressed as:
+In terms of the explicit interface, the [`@gen`](@ref) macro above expands to the equivalent of:
 
 ```julia
-function gen(::DDNOut{(:sp,:o,:r)}, pomdp, s, a, rng)
     sp = rand(rng, transition(pomdp, s, a))
     o = rand(rng, observation(pomdp, s, a, sp))
-    r = reward(pomdp, s, a, sp)
-    return sp, o, r
-end
+    r = reward(pomdp, s, a, sp, o)
+    s = sp
 ```
 
 ## MDP Simulation
@@ -80,18 +78,16 @@ r_total = 0.0
 disc = 1.0
 while !isterminal(mdp, s)
     a = action(policy, s)
-    s, r = gen(DDNOut(:sp,:r), mdp, s, a, rng)
+    s, r = @gen(:sp,:r)(mdp, s, a, rng)
     r_total += d*r
     d *= discount(mdp)
 end
 ```
 
-In terms of the explicit interface, [`gen`](@ref) above can be expressed as:
+In terms of the explicit interface, the [`@gen`](@ref) macro above expands to the equivalent of:
 
 ```julia
-function gen(::DDNOut{(:sp,:r)}, mdp, s, a, rng)
     sp = rand(rng, transition(pomdp, s, a))
     r = reward(pomdp, s, a, sp)
-    return sp, r
-end
+    s = sp
 ```
