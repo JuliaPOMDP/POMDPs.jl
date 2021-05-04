@@ -39,7 +39,7 @@ Some auxiliary packages and older versions of solvers may be found in the JuliaP
 
 ## Quick Start
 
-To run a simple simulation of the classic [Tiger POMDP](https://www.cs.rutgers.edu/~mlittman/papers/aij98-pomdp.pdf) using a policy created by the QMDP solver, you can use the following code (note that POMDPs.jl is not limited to discrete problems with explicitly-defined distributions like this):
+To run a simple simulation of the classic [Tiger POMDP](https://people.csail.mit.edu/lpk/papers/aij98-pomdp.pdf) using a policy created by the QMDP solver, you can use the following code (note that POMDPs.jl is not limited to discrete problems with explicitly-defined distributions like this):
 
 ```julia
 using POMDPs, QuickPOMDPs, POMDPModelTools, POMDPSimulators, QMDP
