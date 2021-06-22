@@ -14,13 +14,17 @@ The POMDPs.jl DDN models are shown below:
 
 The task of defining the dynamics of a (PO)MDP consists of defining a model for each of the nodes in the DDN. Models for each node can either be implemented separately through the [`transition`](@ref), [`observation`](@ref), and [`reward`](@ref) functions, or together with the [`gen`](@ref) function. 
 
-## Separate explicit or generative definition
+## Separate definitions (explicit or generative)
 
 - [`transition`](@ref)`(pomdp, s, a)` defines the state transition probability distribution for state `s` and action `a`. This defines an explicit model for the `:sp` DDN node.
 - [`observation`](@ref)`(pomdp, [s,] a, sp)` defines the observation distribution given that action `a` was taken and the state is now `sp` (The observation can optionally depend on `s` - see docstring). This defines an explicit model for the `:o` DDN node.
 - [`reward`](@ref)`(pomdp, s, a[, sp[, o]])` defines the reward, which is a deterministic function of the state and action (and optionally `sp` and `o` - see docstring). This defines an explicit model for the `:r` DDN node.
 
 [`transition`](@ref) and [`observation`](@ref) should return distribution objects that implement part or all of the [distribution interface](@ref Distributions). Some predefined distributions can be found in [Distributions.jl](https://github.com/JuliaStats/Distributions.jl) or [POMDPModelTools.jl](https://github.com/JuliaPOMDP/POMDPModelTools.jl), or custom types that represent distributions appropriate for the problem may be created.
+
+!!! tip
+
+    To define a *generative* model for one of these components, use an [POMDPModelTools.jl ImplicitDistribution object](https://juliapomdp.github.io/POMDPModelTools.jl/stable/distributions/#Implicit)
 
 !!! note 
 
