@@ -2,8 +2,6 @@
 *A Julia interface for defining, solving and simulating partially observable Markov decision processes and their fully
 observable counterparts.*
 
-**XXX TESTING DOCUMENTER**
-
 ## Package Features
 
 - General interface that can handle problems with discrete and continuous state/action/observation spaces
