@@ -35,8 +35,6 @@ POMDPs.jl and associated solver packages can be installed using [Julia's package
 using Pkg; Pkg.add("POMDPs"); Pkg.add("QMDP")
 ```
 
-Some auxiliary packages and older versions of solvers may be found in the JuliaPOMDP registry. To install this registry, see the [installation instructions](https://juliapomdp.github.io/POMDPs.jl/stable/install/).
-
 ## Quick Start
 
 To run a simple simulation of the classic [Tiger POMDP](https://people.csail.mit.edu/lpk/papers/aij98-pomdp.pdf) using a policy created by the QMDP solver, you can use the following code (note that POMDPs.jl is not limited to discrete problems with explicitly-defined distributions like this):
