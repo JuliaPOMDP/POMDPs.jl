@@ -26,7 +26,7 @@ POMDPs.jl integrates with other ecosystems:
 - The [POMDPModelTools package](https://github.com/JuliaPOMDP/POMDPModelTools.jl) provides [two-way integration](https://juliapomdp.github.io/POMDPModelTools.jl/stable/common_rl/#CommonRLInterface-Integration) with [CommonRLInterface](https://github.com/JuliaReinforcementLearning/CommonRLInterface.jl) and therefore with the [JuliaReinforcementLearning packages](https://github.com/JuliaReinforcementLearning/ReinforcementLearning.jl).
 - Python can be used to define and solve MDPs and POMDPs via the QuickPOMDPs or tabular interfaces and [pyjulia](https://github.com/JuliaPy/pyjulia) (Example: [tiger.py](https://github.com/JuliaPOMDP/QuickPOMDPs.jl/blob/master/examples/tiger.py)).
 
-For help, please post in [GitHub Discussions tab](https://github.com/JuliaPOMDP/POMDPs.jl/discussions). We welcome contributions from anyone! See [CONTRIBUTING.md](/CONTRIBUTING.md) for information about contributing.
+For a detailed introduction, check out our [Julia Academy course]! For help, please post in [GitHub Discussions tab](https://github.com/JuliaPOMDP/POMDPs.jl/discussions). We welcome contributions from anyone! See [CONTRIBUTING.md](/CONTRIBUTING.md) for information about contributing.
 
 ## Installation
 
@@ -93,16 +93,14 @@ println("Undiscounted reward was $rsum.")
 
 For more examples with visualization see [POMDPGallery.jl](https://github.com/JuliaPOMDP/POMDPGallery.jl).
 
-## Tutorials
+## Documentation and Tutorials
 
-Several tutorials are hosted in the [POMDPExamples repository](https://github.com/JuliaPOMDP/POMDPExamples.jl).
-
-## Documentation
-
-Detailed documentation can be found [here](http://juliapomdp.github.io/POMDPs.jl/stable/).
+In addition to the above-mentioned [Julia Academy course](https://juliaacademy.com/p/decision-making-under-uncertainty-with-pomdps-jl), detailed documentation can be found [here](http://juliapomdp.github.io/POMDPs.jl/stable/).
 
 [![Docs](https://img.shields.io/badge/docs-stable-blue.svg)](https://JuliaPOMDP.github.io/POMDPs.jl/stable)
 [![Docs](https://img.shields.io/badge/docs-latest-blue.svg)](https://JuliaPOMDP.github.io/POMDPs.jl/latest)
+
+Several tutorials are hosted in the [POMDPExamples repository](https://github.com/JuliaPOMDP/POMDPExamples.jl).
 
 
 ## Supported Packages
