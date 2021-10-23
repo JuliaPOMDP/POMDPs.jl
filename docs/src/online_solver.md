@@ -2,7 +2,7 @@
 
 In this example, we will define a simple [online solver](@ref Online-and-Offline-Solvers) that works for both POMDPs and MDPs. In order to focus on the code structure, we will not create an algorithm that finds an optimal policy, but rather a *greedy policy*, that is, one that optimizes the expected immediate reward. For information on using this solver in a simulation, see [Running Simulations](@ref).
 
-In order to handle the widest range of problems, we will use [`@gen`](@ref) to generate Mone Carlo samples to estimate the reward even if only a simulator is available. We begin by creating the necessary types and the solve function. The only solver parameter is the number of samples used to estimate the reward at each step.
+In order to handle the widest range of problems, we will use [`@gen`](@ref) to generate Mone Carlo samples to estimate the reward even if only a simulator is available. We begin by creating the necessary types and the solve function. The only solver parameter is the number of samples used to estimate the reward at each step, and the [`solve`](@ref) function does nothing more than create a planner with the appropriate (PO)MDP problem definition.
 
 ```jldoctest online; output=false
 using POMDPs
