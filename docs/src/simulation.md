@@ -13,13 +13,13 @@ In general, POMDP simulations take up to 5 inputs (see also the [`simulate`](@re
 - `pomdp::POMDP`: pomdp model object (see [POMDPs and MDPs](@ref))
 - `policy::Policy`: policy (see [Solvers and Policies](@ref))
 - `up::Updater`: belief updater (see [Beliefs and Updaters](@ref))
-- `isd`: initial state distribution
+- `b0`: initial belief (this may be )
 - `s`: initial state
 
 The last three of these inputs are optional. If they are not explicitly provided, they should be inferred using the following POMDPs.jl functions:
 
 - `up = `[`updater`](@ref)`(policy)`
-- `isd = `[`initialstate`](@ref)`(pomdp)`
+- `b0` = `[`initialstate`](@ref)`(pomdp)`
 - `s = `rand([`initialstate`](@ref)`(pomdp))`
 
 ### Simulation Loop
@@ -29,7 +29,7 @@ The main simulation loop is shown below. Note that the [`isterminal`](@ref) chec
 Before the loop begins, [`initialize_belief`](@ref) is called to create the [belief](@ref Beliefs-and-Updaters) based on the initial state distribution - this is especially important when the belief is solver specific, such as the finite-state-machine used by MCVI. 
 
 ```julia
-b = initialize_belief(up, isd)
+b = initialize_belief(up, b0)
 
 r_total = 0.0
 d = 1.0
