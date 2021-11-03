@@ -24,31 +24,26 @@ The code components of the POMDPs.jl ecosystem relevant to problems and solvers 
 An MDP is a mathematical framework for sequential decision making under
 uncertainty, and where all of the uncertainty arises from outcomes that
 are partially random and partially under the control of a decision
-maker. Mathematically, an MDP is a tuple (S,A,T,R), where S is the state
-space, A is the action space, T is a transition function defining the
+maker. Mathematically, an MDP is a tuple ``(S,A,T,R,\gamma)``, where ``S`` is the state
+space, ``A`` is the action space, ``T`` is a transition function defining the
 probability of transitioning to each state given the state and action at
-the previous time, and R is a reward function mapping every possible
-transition (s,a,s') to a real reward value. For more information see a
+the previous time, and ``R`` is a reward function mapping every possible
+transition ``(s,a,s')`` to a real reward value. Finally, ``\gamma`` is a discount factor that defines the relative weighting of current and future rewards.
+For more information see a
 textbook such as \[1\]. In POMDPs.jl an MDP is represented by a concrete
 subtype of the [`MDP`](@ref) abstract type and a set of methods that
-define each of its components. S and A are defined by implementing
-[`states`](@ref) and [`actions`](@ref) for your specific [`MDP`](@ref)
-subtype. R is by implementing [`reward`](@ref), and T is defined by implementing [`transition`](@ref) if the [*explicit*](@ref defining_pomdps) interface is used or [`gen`](@ref) if the [*generative*](@ref defining_pomdps) interface is used.
+define each of its components as described in the [problem definition section](@ref defining_pomdps).
 
 A POMDP is a more general sequential decision making problem in which
 the agent is not sure what state they are in. The state is only
 partially observable by the decision making agent. Mathematically, a
-POMDP is a tuple (S,A,T,R,O,Z) where S, A, T, and R are the same as with
-MDPs, Z is the agent's observation space, and O defines the probability
+POMDP is a tuple ``(S,A,T,R,O,Z,\gamma)`` where ``S``, ``A``, ``T``, ``R``, and ``\gamma`` have the same meaning as in an MDP, ``Z`` is the agent's observation space, and ``O`` defines the probability
 of receiving each observation at a transition. In POMDPs.jl, a POMDP is
 represented by a concrete subtype of the [`POMDP`](@ref) abstract type,
-`Z` may be defined by the [`observations`](@ref) function (though an
-explicit definition is often not required), and `O` is defined by
-implementing [`observation`](@ref) if the [*explicit*](@ref defining_pomdps) interface is used or [`gen`](@ref) if the [*generative*](@ref defining_pomdps) interface is used.
+and the methods described in the [problem definition section](@ref defining_pomdps).
 
 POMDPs.jl contains additional functions for defining optional problem behavior
-such as a [discount factor](@ref Discount-Factor) or a set of [terminal states](@ref Terminal-States).
-
+such as an [initial state distribution](@ref initialstate) or [terminal states](@ref Terminal-States).
 More information can be found in the [Defining POMDPs](@ref defining_pomdps) section.
 
 ## Beliefs and Updaters

@@ -1,5 +1,93 @@
 # [Defining POMDPs and MDPs](@id defining_pomdps)
 
+As described in the [Concepts and Architecture](@ref) section, an MDP is defined by the state space, action space, transition distributions, reward function, and discount factor, ``(S,A,T,R,\gamma)``. A POMDP also includes the observation space, and observation probability distributions, for a definition of ``(S,A,T,R,O,Z,\gamma)``. A problem definition in POMDPs.jl consists of an implicit or explicit definition of each of these elements. For this discussion, we will use the `QuickPOMDPs.jl` package, since it is the easiest way to define a simple (PO)MDP, though there are also several [Other ways to define a (PO)MDP](@ref).
+
+## A Running Example: The Tiger POMDP
+
+As a running example, we will use the classic Tiger POMDP\[1\]. In the tiger POMDP, the agent is tasked with escaping from a room. There are two doors leading out of the room. Behind one of the doors is a tiger, and behind the other is sweet, sweet freedom. If the agent opens the door and finds the tiger, it gets eaten (and receives a reward of -100). If the agent opens the other door, it escapes and receives a reward of 10. The agent can also listen. Listening gives a noisy measurement of which door the tiger is hiding behind. Listening gives the agent the correct location of the tiger 85% of the time. The agent receives a reward of -1 for listening.
+
+```
+using QuickPOMDPs: QuickPOMDP
+using POMDPModelTools: Deterministic, Uniform, SparseCat
+
+m = QuickPOMDP(
+    states = ["left", "right"],
+    actions = ["left", "right", "listen"],
+    observations = ["left", "right"],
+    discount = 0.95,
+
+    transition = function (s, a)
+        if a == "listen"
+            return Deterministic(s) # tiger stays behind the same door
+        else # a door is opened
+            return Uniform(["left", "right"]) # reset
+        end
+    end,
+
+    observation = function (s, a, sp)
+        if a == "listen"
+            if sp == "left"
+                return SparseCat(["left", "right"], [0.85, 0.15]) # sparse categorical distribution
+            else
+                return SparseCat(["right", "left"], [0.85, 0.15])
+            end
+        else
+            return Uniform(["left", "right"])
+        end
+    end,
+
+    reward = function (s, a)
+        if a == "listen"
+            return -1.0
+        elseif s == a # the tiger was found
+            return -100.0
+        else # the tiger was escaped
+            return 10.0
+        end
+    end,
+
+    initialstate = Uniform(["left", "right"]),
+)
+```
+
+## Representing ``S``, ``A``, and ``O``
+
+The state spac
+
+In POMDPs.jl, a state, action, or observation can be represented by any Julia object, for example an integer, a floating point number, a string or `Symbol`, or a vector. The simplest way to state, action, and observation spaces can be represented by any iterable object, e.g. `[1,2,3]`, but, in many cases, the 
+
+!!! warn
+    
+    Objects representing states, actions, and observations should not be altered once they are created, since they may be used as dictionary keys or stored in histories. Hence it is usually best to use immutable objects.
+
+
+## Representing ``T`` and ``O``
+
+### Commonly-used distributions
+
+## Representing ``R``
+
+## Representing ``\gamma``
+
+## Optional Components: Initial state distributions and terminal states
+
+## Other ways to define a (PO)MDP
+
+TODO:
+- Object-Oriented
+- Tabular
+- Using a single generative function
+
+\[1\] L. Pack Kaelbling, M. L. Littman, A. R. Cassandra, "Planning and Action in Partially Observable Domain", Artificial Intelligence, 1998.
+
+S and A are defined by implementing
+[`states`](@ref) and [`actions`](@ref) for your specific [`MDP`](@ref)
+subtype. R is by implementing [`reward`](@ref), and T is defined by implementing [`transition`](@ref) if the [*explicit*](@ref defining_pomdps) interface is used or [`gen`](@ref) if the [*generative*](@ref defining_pomdps) interface is used.
+`Z` may be defined by the [`observations`](@ref) function (though an
+explicit definition is often not required), and `O` is defined by
+implementing [`observation`](@ref) if the [*explicit*](@ref defining_pomdps) interface is used or [`gen`](@ref) if the [*generative*](@ref defining_pomdps) interface is used.
+
+
 ## Consider starting with one of these packages
 
 Since POMDPs.jl was designed with performance and flexibility as first priorities, the interface is larger than needed to express most simple problems. For this reason, several packages and tools have been created to help users implement problems quickly. It is often easiest for new users to start with one of these.
@@ -45,3 +133,5 @@ The following pages provide more details on specific parts of the interface:
 - [Static Properties](@ref static)
 - [Spaces and Distributions](@ref)
 - [Dynamics](@ref dynamics)
+
+
