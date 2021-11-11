@@ -1,12 +1,18 @@
 # [Defining POMDPs and MDPs](@id defining_pomdps)
 
-As described in the [Concepts and Architecture](@ref) section, an MDP is defined by the state space, action space, transition distributions, reward function, and discount factor, ``(S,A,T,R,\gamma)``. A POMDP also includes the observation space, and observation probability distributions, for a definition of ``(S,A,T,R,O,Z,\gamma)``. A problem definition in POMDPs.jl consists of an implicit or explicit definition of each of these elements. For this discussion, we will use the `QuickPOMDPs.jl` package, since it is the easiest way to define a simple (PO)MDP, though there are also several [Other ways to define a (PO)MDP](@ref).
+As described in the [Concepts and Architecture](@ref) section, an MDP is defined by the state space, action space, transition distributions, reward function, and discount factor, ``(S,A,T,R,\gamma)``. A POMDP also includes the observation space, and observation probability distributions, for a definition of ``(S,A,T,R,O,Z,\gamma)``. A problem definition in POMDPs.jl consists of an implicit or explicit definition of each of these elements.
 
-## A Running Example: The Tiger POMDP
+It is possible to define a (PO)MDP with a more traditional [object-oriented approach](@ref TODO) in which the user defines a new type to represent the (PO)MDP and methods of the [POMDPs.jl interface functions](@ref api), however, the [QuickPOMDPs package](https://github.com/JuliaPOMDP/QuickPOMDPs.jl) provides a more concise way to get started, using keyword arguments to a special constructor instead of defining new types and methods. Since the important concepts are the same for the object oriented approach and the QuickPOMDP approach, we will use the latter for this discussion.
 
-As a running example, we will use the classic Tiger POMDP\[1\]. In the tiger POMDP, the agent is tasked with escaping from a room. There are two doors leading out of the room. Behind one of the doors is a tiger, and behind the other is sweet, sweet freedom. If the agent opens the door and finds the tiger, it gets eaten (and receives a reward of -100). If the agent opens the other door, it escapes and receives a reward of 10. The agent can also listen. Listening gives a noisy measurement of which door the tiger is hiding behind. Listening gives the agent the correct location of the tiger 85% of the time. The agent receives a reward of -1 for listening.
+## Running Examples
 
-```
+We will use two examples to introduce the concepts. The complete implementation of each example is shown first followed by a guide to each part. We recommend reading the guide and referring back up to the examples as needed.
+
+### [A Basic Example: The Tiger POMDP](@id tiger)
+
+The first example is the classic Tiger POMDP\[1\]. In the tiger POMDP, the agent is tasked with escaping from a room. There are two doors leading out of the room. Behind one of the doors is a tiger, and behind the other is sweet, sweet freedom. If the agent opens the door and finds the tiger, it gets eaten (and receives a reward of -100). If the agent opens the other door, it escapes and receives a reward of 10. The agent can also listen. Listening gives a noisy measurement of which door the tiger is hiding behind. Listening gives the agent the correct location of the tiger 85% of the time. The agent receives a reward of -1 for listening.
+
+```jldoctest tiger; output=false, filter=r"QuickPOMDP.*"
 using QuickPOMDPs: QuickPOMDP
 using POMDPModelTools: Deterministic, Uniform, SparseCat
 
@@ -47,21 +53,112 @@ m = QuickPOMDP(
     end,
 
     initialstate = Uniform(["left", "right"]),
-)
+);
+
+# output
+QuickPOMDP
 ```
 
-## Representing ``S``, ``A``, and ``O``
+XXX TODO: focus on the tiger example, and then have light-dark later
 
-The state spac
+### [A more advanced example: Light-Dark](@id lightdark)
 
-In POMDPs.jl, a state, action, or observation can be represented by any Julia object, for example an integer, a floating point number, a string or `Symbol`, or a vector. The simplest way to state, action, and observation spaces can be represented by any iterable object, e.g. `[1,2,3]`, but, in many cases, the 
+The second example is the slightly more complex [1-D Light Dark problem](https://arxiv.org/pdf/1709.06196v6.pdf). It is more complex because the observation space is continuous and there is a terminal state. A state in this problem is an integer, and the agent can choose how to move deterministically ``(s′ = s+a)`` from the action space ``A = \{−10,−1,0,1,−10\}``.  The goal is to reach the origin. If action 0 is taken at the origin, a reward of 100 is given and the problem terminates; If action 0 is taken at another location, a penalty of −100 is given. There is a cost of −1 at each step before termination. The agent receives a more accurate observation in the “light” region around ``s = 10``. Specifically, observations are continuous ``(O = \mathbb{R})`` and normally distributed with standard deviation ``\sigma = |s −10|``.
+
+```jldoctest lightdark; output=false, filter=r"QuickPOMDP.*"
+import QuickPOMDPs: QuickPOMDP
+import POMDPModelTools: Deterministic, Uniform
+import Distributions: Normal
+
+r = 60
+light_loc = 10
+
+simple_lightdark = QuickPOMDP(
+    states = -r:r+1,                  # r+1 is a terminal state
+    actions = [-10, -1, 0, 1, 10],
+    discount = 0.95,
+    isterminal = s -> s==r+1,
+    obstype = Float64,
+
+    transition = function (s, a)
+        if a == 0
+            return Deterministic(r+1)
+        else
+            return Deterministic(clamp(s+a, -r, r))
+        end
+    end,
+
+    observation = (a, sp) -> Normal(sp, abs(sp - light_loc) + 0.0001),
+
+    reward = function (s, a)
+        if a == 0
+            return s == 0 ? 100 : -100
+        else
+            return -1.0
+        end
+    end,
+
+    initialstate = Uniform(div(-r,2):div(r,2))
+);
+
+# output
+QuickPOMDP
+```
+
+## [Representing ``S``, ``A``, and ``Z``](@id space_representation)
+
+In POMDPs.jl, a state, action, or observation can be represented by any Julia object, for example an integer, a floating point number, a string or `Symbol`, or a vector. For example, in the tiger problem, the states are `String`s, and in the light dark problem, the states and actions are integers, and the observations are floating point numbers.
 
 !!! warn
     
-    Objects representing states, actions, and observations should not be altered once they are created, since they may be used as dictionary keys or stored in histories. Hence it is usually best to use immutable objects.
+    Objects representing individual states, actions, and observations should not be altered once they are created, since they may be used as dictionary keys or stored in histories. Hence it is usually best to use immutable objects such as integers or [`StaticArray`s](https://github.com/JuliaArrays/StaticArrays.jl).
 
+The state, action, and observation spaces are defined with the `states`, `actions`, and `observations` Quick(PO)MDP keyword arguments. The simplest way to define these spaces is with a `Vector` of states, e.g. `states = ["left", "right"]` in the tiger problem. More complicated spaces, such as vector spaces and other continuous, uncountable, or hybrid sets can be defined with custom objects that adhere to the [space interface](@ref space-interface). However it should be noted that, for many solvers, *an explicit enumeration of the state and observation spaces is not needed*. Instead, it is sufficient to specify the state or observation *type* using the `statetype` or `obstype` arguments, e.g. `obstype = Float64` in the light dark problem.
+
+!!! tip
+
+    If you are having a difficult time representing the state or observation space, it is likely that you will not be able to use a solver that requires an explicit representation. It is usually best to omit that space from the definition and try solvers to see if they work.
+
+### [State- or belief-dependent action spaces](@id state-dep-action)
+
+In some problems, the set of allowable actions depends on the state or belief. This can be implemented by providing a function of the state or belief to the `actions` argument, e.g. if you can only take the action `1` in state `1`, but can take actions `2` and `3`, in an MDP, you might use
+```jldoctest ; output=false, filter=r".* \(generic function.*\)"
+actions = function (s)
+    if s == 1
+        return [1,2,3]
+    else
+        return [2,3]
+    end
+end
+
+# output
+#1 (generic function with 1 method)
+```
+
+Similarly, in a POMDP, you may wish to only allow action `1` if the belief `b` assigns a nonzero probability to state `1`. This can be accomplished with
+```jldoctest ; output=false
+actions = function (b)
+    if pdf(b, 1) > 0.0
+        return [1,2,3]
+    else
+        return [2,3]
+    end
+end
+
+# output
+#1 (generic function with 1 method)
+```
 
 ## Representing ``T`` and ``O``
+
+The transition and observation observation distributions are specified through *functions that return distributions*. A distribution object implements parts of the [distribution interface](@ref Distributions), most importantly a [`rand`](@ref) function that provides a way to sample the distribution and a [`pdf`](@ref) function that evaluates the probability mass or density of a given outcome. In most simple cases, you will be able to use a pre-defined distribution like the ones listed below or the ones in the [Distributions.jl package](https://github.com/JuliaStats/Distributions.jl), but occasionally you will define your own for more complex problems.
+
+The `transition` function takes in a state `s` and action `a` and returns a distribution object that defines the distribution of next states given that the current state is `s` and the action is `a`, that is ``T(s' | s, a)``. Similarly the `observation` function takes in the action `a` and the next state `sp` and returns a distribution object defining ``O(z | a, s')``.
+
+
+
+!!! note
+    It is also possible to define the `observation` function in terms of the previous state `s`, along with `a`, and `sp`. This is necessary, for example, when the observation is a measurement of change in state, e.g. `sp - s`. However some solvers may use the `a, sp` method (and hence cannot solve problems where the observation is conditioned on ``s`` and ``s'``). Since providing an `a, sp` method *automatically* defines the `s, a, sp` method, problem writers should usually define only the `a, sp` method, and only define the `s, a, sp` method if it is necessary. Except for special performance cases, problem writers should *never* need to define both methods.
 
 ### Commonly-used distributions
 
@@ -70,6 +167,7 @@ In POMDPs.jl, a state, action, or observation can be represented by any Julia ob
 ## Representing ``\gamma``
 
 ## Optional Components: Initial state distributions and terminal states
+
 
 ## Other ways to define a (PO)MDP
 
