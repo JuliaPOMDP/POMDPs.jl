@@ -6,6 +6,9 @@ It is possible to define a (PO)MDP with a more traditional [object-oriented appr
 
 This guide has two parts: First, it explains a very simple example (the Tiger POMDP), then uses a more complex example to illustrate the broader capabilities of the interface.
 
+!!! note
+    This guide assumes that you are comfortable programming in Julia, especially familiar with various ways of defining [*anonymous functions*](https://docs.julialang.org/en/v1/manual/functions/#man-anonymous-functions). Users should consult the [Julia documentation](https://docs.julialang.org) to learn more about programming in Julia.
+
 ## [A Basic Example: The Tiger POMDP](@id tiger)
 
 In the first section of this guide, we will explain a QuickPOMDP implementation of a very simple problem: the classic Tiger POMDP\[1\]. In the tiger POMDP, the agent is tasked with escaping from a room. There are two doors leading out of the room. Behind one of the doors is a tiger, and behind the other is sweet, sweet freedom. If the agent opens the door and finds the tiger, it gets eaten (and receives a reward of -100). If the agent opens the other door, it escapes and receives a reward of 10. The agent can also listen. Listening gives a noisy measurement of which door the tiger is hiding behind. Listening gives the agent the correct location of the tiger 85% of the time. The agent receives a reward of -1 for listening. The complete implementation looks like this:
@@ -81,49 +84,45 @@ The example above shows a complete implementation of a very simple discrete-spac
 
 ### [A more complex example: Partially-observable Mountain Car](@id po-mountaincar)
 
-The second example is the slightly more complex [1-D Light Dark problem](https://arxiv.org/pdf/1709.06196v6.pdf). It is more complex because the observation space is continuous and there is a terminal state. A state in this problem is an integer, and the agent can choose how to move deterministically ``(s′ = s+a)`` from the action space ``A = \{−10,−1,0,1,−10\}``.  The goal is to reach the origin. If action 0 is taken at the origin, a reward of 100 is given and the problem terminates; If action 0 is taken at another location, a penalty of −100 is given. There is a cost of −1 at each step before termination. The agent receives a more accurate observation in the “light” region around ``s = 10``. Specifically, observations are continuous ``(O = \mathbb{R})`` and normally distributed with standard deviation ``\sigma = |s −10|``.
-
 ```jldoctest lightdark; output=false, filter=r"QuickPOMDP.*"
 import QuickPOMDPs: QuickPOMDP
-import POMDPModelTools: Deterministic, Uniform
+import POMDPModelTools: ImplicitDistribution
 import Distributions: Normal
 
-r = 60
-light_loc = 10
-
-simple_lightdark = QuickPOMDP(
-    states = -r:r+1,                  # r+1 is a terminal state
-    actions = [-10, -1, 0, 1, 10],
-    discount = 0.95,
-    isterminal = s -> s==r+1,
+m = QuickPOMDP(
+    actions = [-1., 0., 1.],
     obstype = Float64,
+    discount = 0.95,
 
-    transition = function (s, a)
-        if a == 0
-            return Deterministic(r+1)
-        else
-            return Deterministic(clamp(s+a, -r, r))
+    transition = function (s, a)        
+        ImplicitDistribution() do rng
+            x, v = s
+            vp = v + a*0.001 + cos(3*x)*-0.0025 + 0.0002*randn(rng)
+            vp = clamp(vp, -0.07, 0.07)
+            xp = x + vp
+            return (xp, vp)
         end
     end,
 
-    observation = (a, sp) -> Normal(sp, abs(sp - light_loc) + 0.0001),
+    observation = (a, sp) -> Normal(sp[1], 0.15),
 
-    reward = function (s, a)
-        if a == 0
-            return s == 0 ? 100 : -100
+    reward = function (s, a, sp)
+        if sp[1] > 0.5
+            return 100.0
         else
             return -1.0
         end
     end,
 
-    initialstate = Uniform(div(-r,2):div(r,2))
-);
+    initialstate = ImplicitDistribution(rng -> (-0.2*rand(rng), 0.0)),
+    isterminal = s -> s[1] > 0.5
+)
 
 # output
 QuickPOMDP
 ```
 
-## [Representing ``S``, ``A``, and ``Z``](@id space_representation)
+### [State, action, and observation spaces](@id space_representation)
 
 In POMDPs.jl, a state, action, or observation can be represented by any Julia object, for example an integer, a floating point number, a string or `Symbol`, or a vector. For example, in the tiger problem, the states are `String`s, and in the light dark problem, the states and actions are integers, and the observations are floating point numbers.
 
@@ -137,7 +136,7 @@ The state, action, and observation spaces are defined with the `states`, `action
 
     If you are having a difficult time representing the state or observation space, it is likely that you will not be able to use a solver that requires an explicit representation. It is usually best to omit that space from the definition and try solvers to see if they work.
 
-### [State- or belief-dependent action spaces](@id state-dep-action)
+#### [State- or belief-dependent action spaces](@id state-dep-action)
 
 In some problems, the set of allowable actions depends on the state or belief. This can be implemented by providing a function of the state or belief to the `actions` argument, e.g. if you can only take the action `1` in state `1`, but can take actions `2` and `3`, in an MDP, you might use
 ```jldoctest ; output=false, filter=r".* \(generic function.*\)"
@@ -193,61 +192,3 @@ TODO:
 - Object-Oriented
 - Tabular
 - Using a single generative function
-
-\[1\] L. Pack Kaelbling, M. L. Littman, A. R. Cassandra, "Planning and Action in Partially Observable Domain", Artificial Intelligence, 1998.
-
-S and A are defined by implementing
-[`states`](@ref) and [`actions`](@ref) for your specific [`MDP`](@ref)
-subtype. R is by implementing [`reward`](@ref), and T is defined by implementing [`transition`](@ref) if the [*explicit*](@ref defining_pomdps) interface is used or [`gen`](@ref) if the [*generative*](@ref defining_pomdps) interface is used.
-`Z` may be defined by the [`observations`](@ref) function (though an
-explicit definition is often not required), and `O` is defined by
-implementing [`observation`](@ref) if the [*explicit*](@ref defining_pomdps) interface is used or [`gen`](@ref) if the [*generative*](@ref defining_pomdps) interface is used.
-
-
-## Consider starting with one of these packages
-
-Since POMDPs.jl was designed with performance and flexibility as first priorities, the interface is larger than needed to express most simple problems. For this reason, several packages and tools have been created to help users implement problems quickly. It is often easiest for new users to start with one of these.
-
-- [QuickPOMDPs.jl](https://github.com/JuliaPOMDP/QuickPOMDPs.jl) provides structures for concisely defining simple POMDPs without object-oriented programming.
-- [POMDPExamples.jl](https://github.com/JuliaPOMDP/POMDPExamples.jl) provides tutorials for defining problems. 
-- [The Tabular(PO)MDP model](https://github.com/JuliaPOMDP/POMDPExamples.jl/blob/master/notebooks/Defining-a-tabular-POMDP.ipynb) from [POMDPModels.jl](https://github.com/JuliaPOMDP/POMDPModels.jl) allows users to define POMDPs with matrices for the transitions, observations and rewards.
-- The [`gen`](@ref) function is the easiest way to wrap a pre-existing simulator from another project or written in another programming language so that it can be used with POMDPs.jl solvers and simulators.
-
-## Overview
-
-The expressive nature of POMDPs.jl gives problem writers the flexibility to write their problem in many forms.
-Custom POMDP problems are defined by implementing the functions specified by the POMDPs API.
-
-In this guide, the interface is divided into two sections: functions that define static properties of the problem, and functions that describe the dynamics - how the states, observations and rewards change over time. There are two ways of specifying the dynamic behavior of a POMDP. The problem definition may include a mixture of *explicit* definitions of probability distributions, or *generative* definitions that simulate states and observations without explicitly defining the distributions. In scientific papers explicit definitions are often written as ``T(s' | s, a)`` for transitions and ``O(o | s, a, s')`` for observations, while a generative definition might be expressed as ``s', o, r = G(s, a)`` (or ``s', r = G(s,a)`` for an MDP).
-
-## What do I need to implement?
-
-Because of the wide variety or problems and solvers that POMDPs.jl interfaces with, the question of which functions from the interface need to be implemented does not have a short answer for all cases. In general, a problem will be defined by implementing a combination of functions.
-
-Specifically, a problem writer will need to define
-- Explicit or generative definitions for 
-    - the state transition model,
-    - the reward function, and
-    - the observation model.
-- Functions to define some other properties of the problem such as the state, action, and observation spaces, which states are terminal, etc.
-
-The precise answer for which functions need to be implemented depends on two factors: problem complexity and which solver will be used.
-In particular, 2 questions should be asked:
-1. Is it difficult or impossible to specify a probability distribution explicitly?
-2. What solvers will be used to solve this, and what are their requirements?
-
-If the answer to (1) is yes, then a generative definition should be used. Question (2) should be answered by reading about the solvers and trying to run them. Some solvers have specified their requirements using the [POMDPLinter package](https://github.com/JuliaPOMDP/POMDPLinter.jl), however, these requirements are written separately from the solver code, and often the best way is to write a simple prototype problem and running the solver until all `MethodError`s have been fixed.
-
-!!! note
-
-    If a particular function is required by a solver but seems very difficult to implement for a particular problem, one should consider carefully whether the algorithm is capable of solving that problem. For example, if a problem has a complex hybrid state space, it will be more difficult to define [`states`](@ref), but it is also true that solvers that require [`states`](@ref) such as SARSOP or IncrementalPruning, will usually not be able to solve such a problem, and solvers that can handle it, like ARDESPOT or MCVI, usually will not call [`states`](@ref).
-
-## Outline
-
-The following pages provide more details on specific parts of the interface:
-
-- [Static Properties](@ref static)
-- [Spaces and Distributions](@ref)
-- [Dynamics](@ref dynamics)
-
-
