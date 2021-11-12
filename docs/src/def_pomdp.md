@@ -2,15 +2,13 @@
 
 As described in the [Concepts and Architecture](@ref) section, an MDP is defined by the state space, action space, transition distributions, reward function, and discount factor, ``(S,A,T,R,\gamma)``. A POMDP also includes the observation space, and observation probability distributions, for a definition of ``(S,A,T,R,O,Z,\gamma)``. A problem definition in POMDPs.jl consists of an implicit or explicit definition of each of these elements.
 
-It is possible to define a (PO)MDP with a more traditional [object-oriented approach](@ref TODO) in which the user defines a new type to represent the (PO)MDP and methods of the [POMDPs.jl interface functions](@ref api), however, the [QuickPOMDPs package](https://github.com/JuliaPOMDP/QuickPOMDPs.jl) provides a more concise way to get started, using keyword arguments to a special constructor instead of defining new types and methods. Since the important concepts are the same for the object oriented approach and the QuickPOMDP approach, we will use the latter for this discussion.
+It is possible to define a (PO)MDP with a more traditional [object-oriented approach](@ref TODO) in which the user defines a new type to represent the (PO)MDP and methods of [interface functions](@ref api) to define the tuple elements. However, the [QuickPOMDPs package](https://github.com/JuliaPOMDP/QuickPOMDPs.jl) provides a more concise way to get started, using keyword arguments instead of new types and methods. Since the important concepts are the same for the object oriented approach and the QuickPOMDP approach, we will use the latter for this discussion.
 
-## Running Examples
+This guide has two parts: First, it explains a very simple example (the Tiger POMDP), then uses a more complex example to illustrate the broader capabilities of the interface.
 
-We will use two examples to introduce the concepts. The complete implementation of each example is shown first followed by a guide to each part. We recommend reading the guide and referring back up to the examples as needed.
+## [A Basic Example: The Tiger POMDP](@id tiger)
 
-### [A Basic Example: The Tiger POMDP](@id tiger)
-
-The first example is the classic Tiger POMDP\[1\]. In the tiger POMDP, the agent is tasked with escaping from a room. There are two doors leading out of the room. Behind one of the doors is a tiger, and behind the other is sweet, sweet freedom. If the agent opens the door and finds the tiger, it gets eaten (and receives a reward of -100). If the agent opens the other door, it escapes and receives a reward of 10. The agent can also listen. Listening gives a noisy measurement of which door the tiger is hiding behind. Listening gives the agent the correct location of the tiger 85% of the time. The agent receives a reward of -1 for listening.
+In the first section of this guide, we will explain a QuickPOMDP implementation of a very simple problem: the classic Tiger POMDP\[1\]. In the tiger POMDP, the agent is tasked with escaping from a room. There are two doors leading out of the room. Behind one of the doors is a tiger, and behind the other is sweet, sweet freedom. If the agent opens the door and finds the tiger, it gets eaten (and receives a reward of -100). If the agent opens the other door, it escapes and receives a reward of 10. The agent can also listen. Listening gives a noisy measurement of which door the tiger is hiding behind. Listening gives the agent the correct location of the tiger 85% of the time. The agent receives a reward of -1 for listening. The complete implementation looks like this:
 
 ```jldoctest tiger; output=false, filter=r"QuickPOMDP.*"
 using QuickPOMDPs: QuickPOMDP
@@ -30,10 +28,10 @@ m = QuickPOMDP(
         end
     end,
 
-    observation = function (s, a, sp)
+    observation = function (a, sp)
         if a == "listen"
             if sp == "left"
-                return SparseCat(["left", "right"], [0.85, 0.15]) # sparse categorical distribution
+                return SparseCat(["left", "right"], [0.85, 0.15]) # sparse categorical
             else
                 return SparseCat(["right", "left"], [0.85, 0.15])
             end
@@ -59,9 +57,29 @@ m = QuickPOMDP(
 QuickPOMDP
 ```
 
-XXX TODO: focus on the tiger example, and then have light-dark later
+The next sections explain how each of the elements of the POMDP tuple are defined in this implementation:
 
-### [A more advanced example: Light-Dark](@id lightdark)
+#### State, action and observation spaces
+
+In this example, each state, action, and observation is a `String`. The state, action and observation spaces (``S``, ``A``, and ``O``), are defined with the `states`, `actions` and `observations` keyword arguments. In this case, they are simply `Vector`s containing all the elements in the space.
+
+#### Transition and observation distributions
+
+The `transition` and `observation` keyword arguments are used to define the transition distribution, ``T``, and observation distribution, ``Z``, respectively. These models are defined using functions that return [*distribution objects* (more info below)](@ref TODO). The transition function takes state and action arguments and returns a distribution of the resulting next state. The observation function takes in an action and the resulting next state and returns the distribution of the observation emitted at this state.
+
+#### Reward function
+
+The `reward` keyword argument defines ``R``. It is a function that takes in a state and action and returns a number.
+
+#### Discount and initial state distribution
+
+The discount factor, ``\gamma``, is defined with the `discount` keyword, and is simply a number between 0 and 1. The initial state distribution, `b_0`, is defined with the `initialstate` argument, and is a [distribution object](@ref TODO).
+
+The example above shows a complete implementation of a very simple discrete-space POMDP. However, POMDPs.jl is capable of concisely expressing much more complex models with continuous and hybrid spaces. The guide below introduces a more complex example to fully explain the ways that a POMDP can be defined.
+
+## Guide to Defining POMDPs
+
+### [A more complex example: Partially-observable Mountain Car](@id po-mountaincar)
 
 The second example is the slightly more complex [1-D Light Dark problem](https://arxiv.org/pdf/1709.06196v6.pdf). It is more complex because the observation space is continuous and there is a terminal state. A state in this problem is an integer, and the agent can choose how to move deterministically ``(s′ = s+a)`` from the action space ``A = \{−10,−1,0,1,−10\}``.  The goal is to reach the origin. If action 0 is taken at the origin, a reward of 100 is given and the problem terminates; If action 0 is taken at another location, a penalty of −100 is given. There is a cost of −1 at each step before termination. The agent receives a more accurate observation in the “light” region around ``s = 10``. Specifically, observations are continuous ``(O = \mathbb{R})`` and normally distributed with standard deviation ``\sigma = |s −10|``.
 
