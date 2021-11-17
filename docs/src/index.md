@@ -35,6 +35,7 @@ Pages = ["install.md", "get_started.md", "concepts.md"]
 
 ```@contents
 Pages = [ "def_pomdp.md", "static.md", "interfaces.md", "dynamics.md"]
+Depth = 3
 ```
 
 ### Writing Solvers and Updaters
