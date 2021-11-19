@@ -43,7 +43,7 @@ represented by a concrete subtype of the [`POMDP`](@ref) abstract type,
 and the methods described in the [problem definition section](@ref defining_pomdps).
 
 POMDPs.jl contains additional functions for defining optional problem behavior
-such as an [initial state distribution](@ref initialstate) or [terminal states](@ref Terminal-States).
+such as an [initial state distribution](@ref Initial-state-distribution) or [terminal states](@ref Terminal-states).
 More information can be found in the [Defining POMDPs](@ref defining_pomdps) section.
 
 ## Beliefs and Updaters

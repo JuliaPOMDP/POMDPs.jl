@@ -18,12 +18,13 @@ The list of solver and support packages is maintained at the [POMDPs.jl Readme](
 
 ## Documentation Outline
 
-Documentation comes in four forms:
-1. How-to examples are available in the [POMDPExamples package](https://github.com/JuliaPOMDP/POMDPExamples.jl) and in pages in this document with "Example" in the title.
-2. An explanatory guide is available in the sections outlined below.
+Documentation comes in three forms:
+1. An explanatory guide is available in the sections outlined below.
+2. How-to examples are available in the [POMDPExamples package](https://github.com/JuliaPOMDP/POMDPExamples.jl) and in pages in this document with "Example" in the title.
 3. Reference docstrings for the entire interface are available in the [API Documentation](@ref) section.
 
-When updating these documents, make sure this is synced with [docs/make.jl](https://github.com/JuliaPOMDP/POMDPs.jl/blob/master/docs/make.jl)!!
+!!! note
+    When updating these documents, make sure this is synced with [docs/make.jl](https://github.com/JuliaPOMDP/POMDPs.jl/blob/master/docs/make.jl)!!
 
 ### Basics
 
@@ -34,7 +35,7 @@ Pages = ["install.md", "get_started.md", "concepts.md"]
 ### Defining POMDP Models
 
 ```@contents
-Pages = [ "def_pomdp.md", "static.md", "interfaces.md", "dynamics.md"]
+Pages = [ "def_pomdp.md", "interfaces.md"]
 Depth = 3
 ```
 

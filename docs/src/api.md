@@ -59,6 +59,14 @@ convert_a
 convert_o
 ```
 
+### Type Inference
+
+```@docs
+statetype
+actiontype
+obstype
+```
+
 ### Distributions and Spaces
 
 ```@docs
@@ -92,22 +100,4 @@ value
 ```@docs
 Simulator
 simulate
-```
-
-## Other
-
-The following functions are not part of the API for specifying and solving POMDPs, but are included in the package.
-
-### Type Inference
-
-```@docs
-statetype
-actiontype
-obstype
-```
-
-### Utility Tools
-
-```@docs
-add_registry
 ```

@@ -19,11 +19,8 @@ makedocs(
 
         "Defining (PO)MDP Models" => [
             "def_pomdp.md",
-            "static.md",
             "interfaces.md",
-            "dynamics.md",
            ],
-
 
         "Writing Solvers" => [
             "def_solver.md",

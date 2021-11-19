@@ -2,7 +2,7 @@
 
 As described in the [Concepts and Architecture](@ref) section, an MDP is defined by the state space, action space, transition distributions, reward function, and discount factor, ``(S,A,T,R,\gamma)``. A POMDP also includes the observation space, and observation probability distributions, for a definition of ``(S,A,T,R,O,Z,\gamma)``. A problem definition in POMDPs.jl consists of an implicit or explicit definition of each of these elements.
 
-It is possible to define a (PO)MDP with a more traditional [object-oriented approach](@ref TODO) in which the user defines a new type to represent the (PO)MDP and methods of [interface functions](@ref api) to define the tuple elements. However, the [QuickPOMDPs package](https://github.com/JuliaPOMDP/QuickPOMDPs.jl) provides a more concise way to get started, using keyword arguments instead of new types and methods. Essentially each keyword argument defines a corresponding [POMDPs api function](@ref api). Since the important concepts are the same for the object oriented approach and the QuickPOMDP approach, we will use the latter for this discussion.
+It is possible to define a (PO)MDP with a more traditional [object-oriented approach](@ref Object-oriented) in which the user defines a new type to represent the (PO)MDP and methods of [interface functions](@ref API-Documentation) to define the tuple elements. However, the [QuickPOMDPs package](https://github.com/JuliaPOMDP/QuickPOMDPs.jl) provides a more concise way to get started, using keyword arguments instead of new types and methods. Essentially each keyword argument defines a corresponding [POMDPs api function](@ref API-Documentation). Since the important concepts are the same for the object oriented approach and the QuickPOMDP approach, we will use the latter for this discussion.
 
 This guide has three parts: First, it explains a very simple example (the Tiger POMDP), then uses a more complex example to illustrate the broader capabilities of the interface. Finally, some alternative ways of defining (PO)MDPs are discussed.
 
@@ -68,7 +68,7 @@ In this example, each state, action, and observation is a `String`. The state, a
 
 #### Transition and observation distributions
 
-The `transition` and `observation` keyword arguments are used to define the transition distribution, ``T``, and observation distribution, ``Z``, respectively. These models are defined using functions that return [*distribution objects* (more info below)](@ref TODO). The transition function takes state and action arguments and returns a distribution of the resulting next state. The observation function takes in an action and the resulting next state (`sp`, short for "s prime") and returns the distribution of the observation emitted at this state.
+The `transition` and `observation` keyword arguments are used to define the transition distribution, ``T``, and observation distribution, ``Z``, respectively. These models are defined using functions that return [*distribution objects* (more info below)](@ref Commonly-used-distributions). The transition function takes state and action arguments and returns a distribution of the resulting next state. The observation function takes in an action and the resulting next state (`sp`, short for "s prime") and returns the distribution of the observation emitted at this state.
 
 #### Reward function
 
@@ -76,7 +76,7 @@ The `reward` keyword argument defines ``R``. It is a function that takes in a st
 
 #### Discount and initial state distribution
 
-The discount factor, ``\gamma``, is defined with the `discount` keyword, and is simply a number between 0 and 1. The initial state distribution, `b_0`, is defined with the `initialstate` argument, and is a [distribution object](@ref TODO).
+The discount factor, ``\gamma``, is defined with the `discount` keyword, and is simply a number between 0 and 1. The initial state distribution, `b_0`, is defined with the `initialstate` argument, and is a [distribution object](@ref Commonly-used-distributions).
 
 The example above shows a complete implementation of a very simple discrete-space POMDP. However, POMDPs.jl is capable of concisely expressing much more complex models with continuous and hybrid spaces. The guide below introduces a more complex example to fully explain the ways that a POMDP can be defined.
 
@@ -84,7 +84,7 @@ The example above shows a complete implementation of a very simple discrete-spac
 
 ### [A more complex example: A partially-observable mountain car](@id po-mountaincar)
 
-TODO: description
+[Mountain car](https://en.wikipedia.org/wiki/Mountain_car_problem) is a classic problem in reinforcement learning. A car starts in a valley between two hills, and must reach the goal at the top of the hill to the right ([see wikipedia for image](https://en.wikipedia.org/wiki/Mountain_car_problem)). The actions are left and right acceleration and neutral and the state consists of the car's position and velocity. In this partially-observable version, there is a small amount of acceleration noise and observations are normally-distributed noisy measurements of the position. This problem can be implemented as follows:
 
 ```jldoctest mountaincar; output=false, filter=r"QuickPOMDP.*"
 import QuickPOMDPs: QuickPOMDP
@@ -124,9 +124,11 @@ mountaincar = QuickPOMDP(
 QuickPOMDP
 ```
 
+The following sections provide a detailed guide to defining the components of a POMDP using this example and the [tiger pomdp](@ref tiger) further above.
+
 ### [State, action, and observation spaces](@id space_representation)
 
-In POMDPs.jl, a state, action, or observation can be represented by any Julia object, for example an integer, a floating point number, a string or `Symbol`, or a vector. For example, in the tiger problem, the states are `String`s, and in the [mountaincar problem](@ref po-mountaincar), the state is a `Tuple` of two floating point numbers, and the actions and observations are floating point numbers. These types are usually inferred from the space or initial state distribution definitions.
+In POMDPs.jl, a state, action, or observation can be represented by any Julia object, for example an integer, a floating point number, a string or `Symbol`, or a vector. For example, in the tiger problem, the states are `String`s, and in the mountaincar problem, the state is a `Tuple` of two floating point numbers, and the actions and observations are floating point numbers. These types are usually inferred from the space or initial state distribution definitions.
 
 !!! warn
     
@@ -272,7 +274,7 @@ The `discount` keyword argument is simply a number between 0 and 1 used to disco
 
 #### Initial state distribution
 
-The `initialstate` argument should be a distribution object (see [above](@ref commonly-used distributions)) that defines the initial state distribution (and initial belief for POMDPs).
+The `initialstate` argument should be a distribution object (see [above](@ref Commonly-used-distributions)) that defines the initial state distribution (and initial belief for POMDPs).
 
 #### Terminal states
 
@@ -286,17 +288,18 @@ Besides the Quick(PO)MDP approach above, there are several alternative ways to d
 
 ### Object-oriented
 
-First, it is possible to create your own (PO)MDP types and implement the components of the POMDP directly as methods of [POMDPs.jl interface functions](@ref api). This approach can be thought of as the "low-level" way to define a POMDP, and the QuickPOMDP as merely a syntactic convenience. There are a few things that make this object-oriented approach more cumbersome than the QuickPOMDP approach, but the structure is similar. For example, the [tiger](@ref tiger) QuickPOMDP shown above can be implemented as follows:
+First, it is possible to create your own (PO)MDP types and implement the components of the POMDP directly as methods of [POMDPs.jl interface functions](@ref API-Documentation). This approach can be thought of as the "low-level" way to define a POMDP, and the QuickPOMDP as merely a syntactic convenience. There are a few things that make this object-oriented approach more cumbersome than the QuickPOMDP approach, but the structure is similar. For example, the [tiger](@ref tiger) QuickPOMDP shown above can be implemented as follows:
 
 ```jldoctest; output=false
 import POMDPs
+using POMDPs: POMDP
 using POMDPModelTools: Deterministic, Uniform, SparseCat
 
 struct TigerPOMDP <: POMDP{String, String, String}
     p_correct::Float64
     indices::Dict{String, Int}
 
-    TigerPOMDP(p_correct = 0.85) = new TigerPOMDP(p_correct, Dict("left"=>1, "right"=>2, "listen"=>3))
+    TigerPOMDP(p_correct=0.85) = new(p_correct, Dict("left"=>1, "right"=>2, "listen"=>3))
 end
 
 POMDPs.states(m::TigerPOMDP) = ["left", "right"]
@@ -315,7 +318,7 @@ function POMDPs.transition(m::TigerPOMDP, s, a)
     end
 end
 
-function POMDPs.observation (m::TigerPOMDP, a, sp)
+function POMDPs.observation(m::TigerPOMDP, a, sp)
     if a == "listen"
         if sp == "left"
             return SparseCat(["left", "right"], [m.p_correct, 1.0-m.p_correct])
@@ -337,7 +340,7 @@ function POMDPs.reward(m::TigerPOMDP, s, a)
     end
 end
 
-POMDPs.initialstate(m::TigerPOMDP) = Uniform(["left", "right"]),
+POMDPs.initialstate(m::TigerPOMDP) = Uniform(["left", "right"])
 # output
 ```
 
@@ -348,7 +351,7 @@ It is easy to see that the new methods are similar to the keyword arguments in t
 In some cases, you may wish to use a simulator that generates the next state, observation, and/or reward (``s'``, ``o``, and ``r``) simultaneously. This is sometimes called a "generative model".
 
 For example if you are working on an autonomous driving POMDP, the car may travel for one or more seconds in between POMDP decision steps during which it may accumulate reward and observation measurements. In this case it might be very difficult to create a reward or observation function based on ``s``, ``a``, and ``s'``. For such situations, `gen` function is an alternative to `transition`, `observation`, and `reward`. `gen` should take in state, action, and random number generator arguments and return a [`NamedTuple`](https://docs.julialang.org/en/v1/manual/types/#Named-Tuple-Types) with keys `sp` (for "s-prime", the next state), `o`, and `r`. The [mountaincar example above](@ref po-mountaincar) can be implemented with `gen` as follows:
-```jldoctest
+```jldoctest; output=false, filter=r"QuickPOMDP.*"
 using QuickPOMDPs: QuickPOMDP
 using POMDPModelTools: ImplicitDistribution
 
@@ -369,15 +372,17 @@ mountaincar = QuickPOMDP(
         end
         o = xp + 0.15*randn(rng)
         return (sp=(xp, vp), o=o, r=r)
-    end
+    end,
 
     initialstate = ImplicitDistribution(rng -> (-0.2*rand(rng), 0.0)),
     isterminal = s -> s[1] > 0.5
 )
+# output
+QuickPOMDP
 ```
 
 !!! tip
-    `gen` is not tied to the QuickPOMDP approach; it can also be used in the 
+    `gen` is not tied to the QuickPOMDP approach; it can also be used in the object-oriented paradigm.
 
 !!! tip
     It is possible to mix and match `gen` with `transtion`, `observation`, and `reward`. For example, if the `gen` function returns a `NamedTuple` with `sp` and `r` keys, POMDPs.jl will try to use `gen` to generate states and rewards and the `observation` function to generate observations.
@@ -386,3 +391,41 @@ mountaincar = QuickPOMDP(
     Implementing `gen` instead of `transition`, `observation`, and `reward` will limit which solvers you can use; for example, it is impossible to use a solver that requires an explicit transition distribution
 
 ### Tabular
+
+Finally, it is sometimes convenient to define (PO)MDPs with tables that define the transition and observation probabilities and rewards. In this case, the states, actions, and observations must simply be integers.
+
+The code below is a tabular implementation of the [tiger example](@ref tiger) with the states, actions, and observations mapped to the following integers:
+
+|integer | state, action, or observation
+|--------|--------
+|1       | "left"
+|2       | "right"
+|3       | "listen"
+
+```jldoctest tabular; output=false, filter=r"TabularPOMDP.*"
+using POMDPModels: TabularPOMDP
+
+T = zeros(2,3,2)
+T[:,:,1] = [1. 0.5 0.5; 
+            0. 0.5 0.5]
+T[:,:,2] = [0. 0.5 0.5; 
+            1. 0.5 0.5]
+
+O = zeros(2,3,2)
+O[:,:,1] = [0.85 0.5 0.5; 
+            0.15 0.5 0.5]
+O[:,:,2] = [0.15 0.5 0.5; 
+            0.85 0.5 0.5]
+
+R = [-1. -100. 10.; 
+     -1. 10. -100.]
+
+m = TabularPOMDP(T, R, O, 0.95)
+# output
+TabularPOMDP([1.0 0.5 0.5; 0.0 0.5 0.5]
+
+[0.0 0.5 0.5; 1.0 0.5 0.5], [-1.0 -100.0 10.0; -1.0 10.0 -100.0], [0.85 0.5 0.5; 0.15 0.5 0.5]
+
+[0.15 0.5 0.5; 0.85 0.5 0.5], 0.95)
+```
+Here `T` is a ``|S| \times |A| \times |S|`` array representing the transition probabilities, with `T[sp, a, s]` `` = T(s' | s, a)``. Similarly, `O` is an ``|O| \times |A| \times |S|`` encoding the observation distribution with `O[o, a, sp]` `` = Z(o | a, s')``, and `R` is a ``|S| \times |A|`` matrix that encodes the reward function. 0.95 is the discount factor.
