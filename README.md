@@ -12,15 +12,9 @@
 This package provides a core interface for working with [Markov decision processes (MDPs)](https://en.wikipedia.org/wiki/Markov_decision_process) and [partially observable Markov decision processes (POMDPs)](https://en.wikipedia.org/wiki/Partially_observable_Markov_decision_process). For examples, please see [POMDPExamples](https://github.com/JuliaPOMDP/POMDPExamples.jl), [QuickPOMDPs](https://github.com/JuliaPOMDP/QuickPOMDPs.jl), and the [Gallery](https://github.com/JuliaPOMDP/POMDPGallery.jl).
 
 Our goal is to provide a common programming vocabulary for:
-1. Expressing problems as MDPs and POMDPs. 
+1. [Expressing problems as MDPs and POMDPs](http://juliapomdp.github.io/POMDPs.jl/stable/def_pomdp). 
 2. Writing solver software.
 3. Running simulations efficiently.
-
-There are [several ways to define (PO)MDPs](http://juliapomdp.github.io/POMDPs.jl/stable/def_pomdp):
-- Transition and observation distributions and rewards can be defined separately with explicit or [implicitly sampled](https://juliapomdp.github.io/POMDPModelTools.jl/stable/distributions/#Implicit) distributions.
-- All of the dynamics can be defined in a single [generative model](https://en.wikipedia.org/wiki/Markov_decision_process#Simulator_models) function: (s', o, r) = G(s,a).
-- Problems may be defined with probability [tables](https://github.com/JuliaPOMDP/POMDPExamples.jl/blob/master/notebooks/Defining-a-tabular-POMDP.ipynb).
-- The [QuickPOMDPs interfaces](https://github.com/JuliaPOMDP/QuickPOMDPs.jl) make defining simple problems easier.
 
 POMDPs.jl integrates with other ecosystems:
 - The [POMDPModelTools package](https://github.com/JuliaPOMDP/POMDPModelTools.jl) provides [two-way integration](https://juliapomdp.github.io/POMDPModelTools.jl/stable/common_rl/#CommonRLInterface-Integration) with [CommonRLInterface](https://github.com/JuliaReinforcementLearning/CommonRLInterface.jl) and therefore with the [JuliaReinforcementLearning packages](https://github.com/JuliaReinforcementLearning/ReinforcementLearning.jl).
