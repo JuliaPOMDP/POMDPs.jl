@@ -228,7 +228,7 @@ rand(rng, d)
 Here, `rng` is the random number generator. When `rand(rng, d)` is called, the sampling function, `rng -> (-0.2*rand(rng), 0.0)`, is called to generate a state.  The sampling function uses `rng` to generate a random number between 0 and 1 (`rand(rng)`), multiplies it by -0.2 to get the position, and creates a tuple with the position and a velocity of `0.0` and returns an initial state that might be, for instance `(-0.11, 0.0)`. Any time that a solver, belief updater, or simulator needs an initial state for the problem, it will be sampled in this way.
 
 !!! note
-    The random number generator is a subtype of `AbstractRNG`. It is important to use this random number generator for all calls to `rand` in the sample function for reproducible results. Moreover some solvers use specialized random number generators that allow them to reduce variance.
+    The random number generator is a subtype of `AbstractRNG`. It is important to use this random number generator for all calls to `rand` in the sample function for reproducible results. Moreover some solvers use specialized random number generators that allow them to reduce variance. See also the [What if I don't use the `rng` argument?](@ref) FAQ.
 
 It is also common to use Julia's [`do` block syntax](https://docs.julialang.org/en/v1/manual/functions/#Do-Block-Syntax-for-Function-Arguments) to define more complex sampling functions. For instance the transition function in the mountaincar example returns an ImplicitDistribution with a sampling function that (1) generates a new noisy velocity through a `randn` call, then (2) clamps the velocity, and finally (3) integrates the position with Euler's method:
 ```julia
