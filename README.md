@@ -9,7 +9,7 @@
 [![Gitter](https://badges.gitter.im/JuliaPOMDP/Lobby.svg)](https://gitter.im/JuliaPOMDP/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 [![Slack](https://img.shields.io/badge/Chat%20on%20Slack-with%20%23pomdp--bridged-ff69b4)](https://slackinvite.julialang.org)
 
-This package provides a core interface for working with [Markov decision processes (MDPs)](https://en.wikipedia.org/wiki/Markov_decision_process) and [partially observable Markov decision processes (POMDPs)](https://en.wikipedia.org/wiki/Partially_observable_Markov_decision_process). For examples, please see [POMDPExamples](https://github.com/JuliaPOMDP/POMDPExamples.jl), [QuickPOMDPs](https://github.com/JuliaPOMDP/QuickPOMDPs.jl), and the [Gallery](https://github.com/JuliaPOMDP/POMDPGallery.jl).
+This package provides a core interface for working with [Markov decision processes (MDPs)](https://en.wikipedia.org/wiki/Markov_decision_process) and [partially observable Markov decision processes (POMDPs)](https://en.wikipedia.org/wiki/Partially_observable_Markov_decision_process).
 
 Our goal is to provide a common programming vocabulary for:
 1. [Expressing problems as MDPs and POMDPs](http://juliapomdp.github.io/POMDPs.jl/stable/def_pomdp). 
@@ -79,13 +79,13 @@ policy = solve(solver, m)
 
 rsum = 0.0
 for (s,b,a,o,r) in stepthrough(m, policy, "s,b,a,o,r", max_steps=10)
-    println("s: $s, b: $([pdf(b,s) for s in states(m)]), a: $a, o: $o")
+    println("s: $s, b: $([s=>pdf(b,s) for s in states(m)]), a: $a, o: $o")
     global rsum += r
 end
 println("Undiscounted reward was $rsum.")
 ```
 
-For more examples with visualization see [POMDPGallery.jl](https://github.com/JuliaPOMDP/POMDPGallery.jl).
+For more examples with visualization see the documentation below and [POMDPGallery.jl](https://github.com/JuliaPOMDP/POMDPGallery.jl).
 
 ## Documentation and Tutorials
 
