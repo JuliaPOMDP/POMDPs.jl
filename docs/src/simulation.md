@@ -20,7 +20,7 @@ The last three of these inputs are optional. If they are not explicitly provided
 
 - `up = `[`updater`](@ref)`(policy)`
 - `b0` = `[`initialstate`](@ref)`(pomdp)`
-- `s = `rand([`initialstate`](@ref)`(pomdp))`
+- `s = rand(`[`initialstate`](@ref)`(pomdp))`
 
 ### Simulation Loop
 
@@ -63,7 +63,7 @@ In general, MDP simulations take up to 3 inputs (see also the [`simulate`](@ref)
 
 The last of these inputs is optional. If the initial state is not explicitly provided, it should be generated using
 
-- `s = `rand([`initialstate`](@ref)`(mdp))`
+- `s = rand(`[`initialstate`](@ref)`(mdp))`
 
 
 ### Simulation Loop
