@@ -72,7 +72,7 @@ The main simulation loop is shown below. Note again that the [`isterminal`](@ref
 
 ```julia
 r_total = 0.0
-disc = 1.0
+d = 1.0
 while !isterminal(mdp, s)
     a = action(policy, s)
     s, r = @gen(:sp,:r)(mdp, s, a)
