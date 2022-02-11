@@ -7,14 +7,14 @@
 ### For problem implementers
 
 - [`transition`](@ref) should be implemented to define the state transition distribution, either explicitly, or, if only samples from the distribution are available, with an [`ImplicitDistribution`](@ref implicit_distribution_section).
-- [`gen`](@ref) should **only** be implemented if your simulator can only output samples of two or more of the next state, observation, and reward *at the same time*, e.g. if rewards are calculated as a robot moves from the current state to the next state so it is difficult to define the [`reward`](@ref) function separately from the state transitions.
-- [`@gen`](@ref) should **never** be implemented or modified by the problem writer; it is only used in simulators and solvers (see below).
+- [`gen`](@ref) should *only* be implemented if your simulator can only output samples of two or more of the next state, observation, and reward *at the same time*, e.g. if rewards are calculated as a robot moves from the current state to the next state so it is difficult to define the [`reward`](@ref) function separately from the state transitions.
+- [`@gen`](@ref) should *never* be implemented or modified by the problem writer; it is only used in simulators and solvers (see below).
 
 ### For solver/simulator implementers
 
 - [`@gen`](@ref) should be called whenever a sample of the next state, observation, and or reward is needed. It automatically combines calls to `rand`, [`transition`](@ref), [`observation`](@ref), [`reward`](@ref), and [`gen`](@ref), depending on what is implemented for the problem and the outputs requested by the caller without any overhead.
-- [`transition`](@ref) should be called **only** when you need access to the explicit transition probability distribution.
-- [`gen`](@ref) should **never** be called directly by a solver or simulator; it is only a tool for implementers (see above).
+- [`transition`](@ref) should be called *only* when you need access to the explicit transition probability distribution.
+- [`gen`](@ref) should *never* be called directly by a solver or simulator; it is only a tool for implementers (see above).
 
 ## How do I save my policies?
 
@@ -26,8 +26,7 @@ save("my_policy.jld2", "policy", policy)
 ```
 ## Why is my solver producing a suboptimal policy?
 
-There could be a number of things that are going wrong. If you have a discrete POMDP or MDP and you're using a solver that requires the explicit transition probabilities
-(you've implemented a `pdf` function), the first thing to try is make sure that your probability masses sum up to unity. 
+There could be a number of things that are going wrong. If you have a discrete POMDP or MDP and you're using a solver that requires the explicit transition probabilities, the first thing to try is make sure that your probability masses sum up to unity. 
 We've provide some tools in POMDPToolbox that can check this for you.
 If you have a POMDP called pomdp, you can run the checks by doing the following:
 

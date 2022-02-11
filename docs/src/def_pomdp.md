@@ -350,7 +350,7 @@ It is easy to see that the new methods are similar to the keyword arguments in t
 
 In some cases, you may wish to use a simulator that generates the next state, observation, and/or reward (``s'``, ``o``, and ``r``) simultaneously. This is sometimes called a "generative model".
 
-For example if you are working on an autonomous driving POMDP, the car may travel for one or more seconds in between POMDP decision steps during which it may accumulate reward and observation measurements. In this case it might be very difficult to create a reward or observation function based on ``s``, ``a``, and ``s'``.
+For example if you are working on an autonomous driving POMDP, the car may travel for one or more seconds in between POMDP decision steps during which it may accumulate reward and observation measurements. In this case it might be very difficult to create a [`reward`](@ref) or [`observation`](@ref) function based on ``s``, ``a``, and ``s'`` arguments.
 
 For situations like this, `gen` is an alternative to `transition`, `observation`, and `reward`. The `gen` function should take in state, action, and random number generator arguments and return a [`NamedTuple`](https://docs.julialang.org/en/v1/manual/types/#Named-Tuple-Types) with keys `sp` (for "s-prime", the next state), `o`, and `r`. The [mountaincar example above](@ref po-mountaincar) can be implemented with `gen` as shown below.
 
