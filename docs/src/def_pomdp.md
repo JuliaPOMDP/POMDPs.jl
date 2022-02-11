@@ -175,7 +175,7 @@ end
 The transition and observation observation distributions are specified through *functions that return distributions*. A distribution object implements parts of the [distribution interface](@ref Distributions), most importantly a [`rand`](@ref) function that provides a way to sample the distribution and, for explicit distributions, a [`pdf`](@ref) function that evaluates the probability mass or density of a given outcome. In most simple cases, you will be able to use a pre-defined distribution like the ones listed below, but occasionally you will define your own for more complex problems.
 
 !!! tip
-    Since the `transition` and `observation` functions return distributions, you should not call `rand` within these functions (unless it is within an `ImplicitDistribution` sampling function (see below)).
+    Since the `transition` and `observation` functions return distributions, you should not call `rand` within these functions (unless it is within an [`ImplicitDistribution`](@ref implicit_distribution_section) sampling function (see below)).
 
 The `transition` function takes in a state `s` and action `a` and returns a distribution object that defines the distribution of next states given that the current state is `s` and the action is `a`, that is ``T(s' | s, a)``. Similarly the `observation` function takes in the action `a` and the next state `sp` and returns a distribution object defining ``O(z | a, s')``.
 
@@ -208,7 +208,7 @@ observation = (a, sp) -> Normal(sp[1], 0.15)
 ```
 returns a `Normal` distribution from this package with a mean that depends on the car's location (the first element of state `sp`) and a standard deviation of 0.15.
 
-##### `ImplicitDistribution`
+##### [`ImplicitDistribution`](@id implicit_distribution_section)
 
 In many cases, especially when the state or observation spaces are continuous or hybrid, it is difficult or impossible to specify the probability density explicitly. Fortunately, many solvers for these problems do not require explicit density information and instead need only samples from the distribution. In this case, an "implicit distribution" or "generative model" is sufficient. In POMDPs.jl, this can be represented using an [`ImplicitDistribution` object](https://juliapomdp.github.io/POMDPModelTools.jl/stable/distributions/#POMDPModelTools.ImplicitDistribution).
 
@@ -230,7 +230,7 @@ Here, `rng` is the random number generator. When `rand(rng, d)` is called, the s
 !!! note
     The random number generator is a subtype of `AbstractRNG`. It is important to use this random number generator for all calls to `rand` in the sample function for reproducible results. Moreover some solvers use specialized random number generators that allow them to reduce variance. See also the [What if I don't use the `rng` argument?](@ref) FAQ.
 
-It is also common to use Julia's [`do` block syntax](https://docs.julialang.org/en/v1/manual/functions/#Do-Block-Syntax-for-Function-Arguments) to define more complex sampling functions. For instance the transition function in the mountaincar example returns an ImplicitDistribution with a sampling function that (1) generates a new noisy velocity through a `randn` call, then (2) clamps the velocity, and finally (3) integrates the position with Euler's method:
+It is also common to use Julia's [`do` block syntax](https://docs.julialang.org/en/v1/manual/functions/#Do-Block-Syntax-for-Function-Arguments) to define more complex sampling functions. For instance the transition function in the mountaincar example returns an [`ImplicitDistribution`](@ref implicit_distribution_section) with a sampling function that (1) generates a new noisy velocity through a `randn` call, then (2) clamps the velocity, and finally (3) integrates the position with Euler's method:
 ```julia
 transition = function (s, a)        
     ImplicitDistribution() do rng
@@ -350,7 +350,13 @@ It is easy to see that the new methods are similar to the keyword arguments in t
 
 In some cases, you may wish to use a simulator that generates the next state, observation, and/or reward (``s'``, ``o``, and ``r``) simultaneously. This is sometimes called a "generative model".
 
-For example if you are working on an autonomous driving POMDP, the car may travel for one or more seconds in between POMDP decision steps during which it may accumulate reward and observation measurements. In this case it might be very difficult to create a reward or observation function based on ``s``, ``a``, and ``s'``. For such situations, `gen` function is an alternative to `transition`, `observation`, and `reward`. `gen` should take in state, action, and random number generator arguments and return a [`NamedTuple`](https://docs.julialang.org/en/v1/manual/types/#Named-Tuple-Types) with keys `sp` (for "s-prime", the next state), `o`, and `r`. The [mountaincar example above](@ref po-mountaincar) can be implemented with `gen` as follows:
+For example if you are working on an autonomous driving POMDP, the car may travel for one or more seconds in between POMDP decision steps during which it may accumulate reward and observation measurements. In this case it might be very difficult to create a reward or observation function based on ``s``, ``a``, and ``s'``.
+
+For situations like this, `gen` is an alternative to `transition`, `observation`, and `reward`. The `gen` function should take in state, action, and random number generator arguments and return a [`NamedTuple`](https://docs.julialang.org/en/v1/manual/types/#Named-Tuple-Types) with keys `sp` (for "s-prime", the next state), `o`, and `r`. The [mountaincar example above](@ref po-mountaincar) can be implemented with `gen` as shown below.
+
+!!! note
+    `gen` is intended *only* for the case where *two or more* of the next state, observation, and reward need to be generated at the same time. If the state transition model can be separated from the reward and observation models, you should implement `transition` with an [`ImplicitDistribution`](@ref implicit_distribution_section) instead of `gen`. See also the "[What is the difference between `transition`, `gen`, and `@gen`?](@ref)" FAQ.
+
 ```jldoctest; output=false, filter=r"QuickPOMDP.*"
 using QuickPOMDPs: QuickPOMDP
 using POMDPModelTools: ImplicitDistribution
@@ -422,10 +428,6 @@ R = [-1. -100. 10.;
 
 m = TabularPOMDP(T, R, O, 0.95)
 # output
-TabularPOMDP([1.0 0.5 0.5; 0.0 0.5 0.5]
-
-[0.0 0.5 0.5; 1.0 0.5 0.5], [-1.0 -100.0 10.0; -1.0 10.0 -100.0], [0.85 0.5 0.5; 0.15 0.5 0.5]
-
-[0.15 0.5 0.5; 0.85 0.5 0.5], 0.95)
+TabularPOMDP([1.0 0.5 0.5; 0.0 0.5 0.5;;; 0.0 0.5 0.5; 1.0 0.5 0.5], [-1.0 -100.0 10.0; -1.0 10.0 -100.0], [0.85 0.5 0.5; 0.15 0.5 0.5;;; 0.15 0.5 0.5; 0.85 0.5 0.5], 0.95)
 ```
 Here `T` is a ``|S| \times |A| \times |S|`` array representing the transition probabilities, with `T[sp, a, s]` `` = T(s' | s, a)``. Similarly, `O` is an ``|O| \times |A| \times |S|`` encoding the observation distribution with `O[o, a, sp]` `` = Z(o | a, s')``, and `R` is a ``|S| \times |A|`` matrix that encodes the reward function. 0.95 is the discount factor.
