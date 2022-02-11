@@ -1,5 +1,21 @@
 # Frequently Asked Questions (FAQ)
 
+## What is the difference between `transition`, `gen`, and `@gen`?
+
+(See also: [Using a single generative function instead of separate ``T``, ``Z``, and ``R``](@ref))
+
+### For problem implementers
+
+- [`transition`](@ref) should be implemented to define the state transition distribution, either explicitly, or, if only samples from the distribution are available, with an [`ImplicitDistribution`](@ref implicit_distribution_section).
+- [`gen`](@ref) should **only** be implemented if your simulator can only output samples of two or more of the next state, observation, and reward *at the same time*, e.g. if rewards are calculated as a robot moves from the current state to the next state so it is difficult to define the [`reward`](@ref) function separately from the state transitions.
+- [`@gen`](@ref) should **never** be implemented or modified by the problem writer; it is only used in simulators and solvers (see below).
+
+### For solver/simulator implementers
+
+- [`@gen`](@ref) should be called whenever a sample of the next state, observation, and or reward is needed. It automatically combines calls to `rand`, [`transition`](@ref), [`observation`](@ref), [`reward`](@ref), and [`gen`](@ref), depending on what is implemented for the problem and the outputs requested by the caller without any overhead.
+- [`transition`](@ref) should be called **only** when you need access to the explicit transition probability distribution.
+- [`gen`](@ref) should **never** be called directly by a solver or simulator; it is only a tool for implementers (see above).
+
 ## How do I save my policies?
 
 We recommend using [JLD2](https://github.com/JuliaIO/JLD2.jl) to save the whole policy object:
