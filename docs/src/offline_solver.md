@@ -51,6 +51,7 @@ function POMDPs.solve(::GreedyOfflineSolver, m::MDP)
                 end
                 if r >= best
                     best_actions[s] = a
+                    best = r
                 end
             end
         end
