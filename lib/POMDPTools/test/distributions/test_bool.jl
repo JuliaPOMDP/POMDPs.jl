@@ -15,5 +15,8 @@ let
   # testing hash
   @test hash(d) == hash(d2)
 
+  @test rand(d) in [true, false]
+  @test all(x in [true, false] for x in rand(d,2))
+
   @test sprint((io,d)->show(io,MIME("text/plain"),d), d) == sprint((io,d)->showdistribution(io,d,title="BoolDistribution"), d)
 end

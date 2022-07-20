@@ -11,7 +11,7 @@ end
 
 pdf(d::BoolDistribution, s::Bool) = s ? d.p : 1.0-d.p
 
-rand(rng::AbstractRNG, d::BoolDistribution) = rand(rng) <= d.p
+rand(rng::AbstractRNG, s::Random.SamplerTrivial{BoolDistribution}) = rand(rng) <= s[].p
 
 Base.iterate(d::BoolDistribution) = ((d.p, true), true)
 function Base.iterate(d::BoolDistribution, state::Bool)

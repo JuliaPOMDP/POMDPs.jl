@@ -12,7 +12,21 @@ struct SparseCat{V, P}
     probs::P
 end
 
-function rand(rng::AbstractRNG, d::SparseCat)
+# handle cases where probs is an array of something other than numbers (issue #35)
+function SparseCat(v, p::AbstractArray)
+    cp = try
+        convert(AbstractArray{Float64}, p)
+    catch
+        @error("Couldn't convert all probabilities to Float64 when creating a SparseCat distribution. Did you get the arguments in the right order?", values=v, probabilities=p)
+        rethrow()
+    end
+    SparseCat(v, cp)
+end
+# the method above gets all arrays *except* ones that have a numeric eltype, which are handled below
+SparseCat(v, p::AbstractArray{<:Number}) = SparseCat{typeof(v), typeof(p)}(v, p)
+
+function rand(rng::AbstractRNG, s::Random.SamplerTrivial{<:SparseCat})
+    d = s[]
     r = sum(d.probs)*rand(rng)
     tot = zero(eltype(d.probs))
     for (v, p) in d

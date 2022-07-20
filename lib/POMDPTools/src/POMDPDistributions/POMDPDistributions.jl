@@ -1,9 +1,12 @@
 module POMDPDistributions
 
 import Distributions
-import Distributions: support, pdf, mode, mean # should use Random.pdf directly in the code instead of importing like this
 import Random
 using Random: AbstractRNG
+
+# Should use Module.function directly in the code instead of doing this
+import Distributions: support, pdf, mode, mean
+import Random: rand
 
 using UnicodePlots: barplot
 

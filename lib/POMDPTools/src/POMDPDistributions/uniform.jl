@@ -56,7 +56,7 @@ Random.gentype(::Type{UnsafeUniform{T}}) where T = eltype(T)
 
 const Unif = Union{Uniform,UnsafeUniform}
 
-rand(rng::AbstractRNG, d::Unif) = rand(rng, support(d))
+rand(rng::AbstractRNG, s::Random.SamplerTrivial{<:Unif}) = rand(rng, support(s[]))
 mean(d::Unif) = mean(support(d))
 mode(d::Unif) = mode(support(d))
 

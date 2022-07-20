@@ -1,7 +1,9 @@
 d = Deterministic(1)
 
 @test rand(d) == 1
+@test all(rand(d, 2) .== 1)
 @test rand(MersenneTwister(4), d) == 1
+@test all(rand(MersenneTwister(4), d, 2) .== 1)
 @test collect(support(d)) == [1]
 @test Random.gentype(d) == typeof(1)
 @test Random.gentype(typeof(d)) == typeof(1)

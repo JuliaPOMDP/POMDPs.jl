@@ -9,12 +9,11 @@ struct Deterministic{T}
     val::T
 end
 
-Random.rand(rng::AbstractRNG, d::Deterministic) = d.val
-Random.rand(d::Deterministic) = d.val
-Distributions.support(d::Deterministic) = (d.val,)
+rand(rng::AbstractRNG, s::Random.SamplerTrivial{<:Deterministic}) = s[].val
+support(d::Deterministic) = (d.val,)
 sampletype(::Type{Deterministic{T}}) where T = T
 Random.gentype(::Type{Deterministic{T}}) where T = T
-Distributions.pdf(d::Deterministic, x) = convert(Float64, x == d.val)
-Distributions.mode(d::Deterministic) = d.val
-Distributions.mean(d::Deterministic{N}) where N<:Number = d.val / 1 # / 1 is to make this return a similar type to Statistics.mean
-Distributions.mean(d::Deterministic) = d.val # so that division need not be implemented for the value type
+pdf(d::Deterministic, x) = convert(Float64, x == d.val)
+mode(d::Deterministic) = d.val
+mean(d::Deterministic{N}) where N<:Number = d.val / 1 # / 1 is to make this return a similar type to Statistics.mean
+mean(d::Deterministic) = d.val # so that division need not be implemented for the value type
