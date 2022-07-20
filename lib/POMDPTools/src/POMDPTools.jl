@@ -2,13 +2,19 @@ module POMDPTools
 
 using Reexport
 
+include("POMDPDistributions/POMDPDistributions.jl")
+@reexport using .POMDPDistributions
+
 include("ModelTools/ModelTools.jl")
+@reexport using .ModelTools
 
-@reexport import .ModelTools
+include("BeliefUpdaters/BeliefUpdaters.jl")
+@reexport using .BeliefUpdaters
 
-# include("BeliefUpdaters/BeliefUpdaters.jl")
-# 
-# @reexport import BeliefUpdaters
+include("Policies/Policies.jl")
+@reexport using .Policies
 
+include("Simulators/Simulators.jl")
+@reexport using .Simulators
 
 end

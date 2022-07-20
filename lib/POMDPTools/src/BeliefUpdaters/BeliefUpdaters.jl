@@ -1,14 +1,13 @@
 module BeliefUpdaters
 
-
 using POMDPs
 import POMDPs: Updater, update, initialize_belief, pdf, mode, updater, support
+using ..ModelTools
+
 import Base: ==
 import Statistics
-using ..ModelTools
 using StatsBase
 using Random
-
 
 export
     NothingUpdater

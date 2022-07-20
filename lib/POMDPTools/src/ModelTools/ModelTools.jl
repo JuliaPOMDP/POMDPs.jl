@@ -4,16 +4,16 @@ using POMDPs
 using Random
 using LinearAlgebra
 using SparseArrays
-using UnicodePlots
 using Tricks: static_hasmethod
 
 import POMDPs: actions, actionindex
 import POMDPs: states, stateindex
 import POMDPs: observations, obsindex
 import POMDPs: initialstate, isterminal, discount
-import Random: rand, rand!
 import Statistics: mean
 import Base: ==
+
+using ..POMDPDistributions: Deterministic
 
 # import Distributions: pdf, mode, mean, support
 # import POMDPLinter: @POMDP_require
