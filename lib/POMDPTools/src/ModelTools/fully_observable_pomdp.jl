@@ -16,7 +16,7 @@ mdptype(::Type{FullyObservablePOMDP{M,S,A}}) where {M,S,A} = M
 POMDPs.observations(pomdp::FullyObservablePOMDP) = states(pomdp.mdp)
 POMDPs.obsindex(pomdp::FullyObservablePOMDP{S, A}, o::S) where {S, A} = stateindex(pomdp.mdp, o)
 
-POMDPs.convert_o(T::Type{V}, o, pomdp::FullyObservablePOMDP) where {V<:AbstractArray} = convert_s(T, s, pomdp.mdp)
+POMDPs.convert_o(T::Type{V}, o, pomdp::FullyObservablePOMDP) where {V<:AbstractArray} = convert_s(T, o, pomdp.mdp)
 POMDPs.convert_o(T::Type{S}, vec::V, pomdp::FullyObservablePOMDP) where {S,V<:AbstractArray} = convert_s(T, vec, pomdp.mdp)
 
 function POMDPs.observation(pomdp::FullyObservablePOMDP, a, sp)

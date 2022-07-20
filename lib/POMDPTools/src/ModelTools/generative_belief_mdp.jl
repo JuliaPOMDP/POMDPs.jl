@@ -52,10 +52,10 @@ function gbmdp_handle_terminal(pomdp::POMDP, updater::Updater, b, s, a, rng)
 end
 
 function initialstate(bmdp::GenerativeBeliefMDP)
-    return Deterministic(initialize_belief(bmdp.updater, initialstate_distribution(bmdp.pomdp)))
+    return Deterministic(initialize_belief(bmdp.updater, initialstate(bmdp.pomdp)))
 end
 
 # deprecated in POMDPs v0.9
 function initialstate(bmdp::GenerativeBeliefMDP, rng::AbstractRNG)
-    return initialize_belief(bmdp.updater, initialstate_distribution(bmdp.pomdp))
+    return initialize_belief(bmdp.updater, initialstate(bmdp.pomdp))
 end
