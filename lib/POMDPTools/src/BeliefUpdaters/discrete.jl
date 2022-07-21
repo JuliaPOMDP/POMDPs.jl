@@ -27,18 +27,18 @@ end
 function DiscreteBelief(pomdp, b::Vector{Float64}; check::Bool=true)
     if check
         if !isapprox(sum(b), 1.0, atol=0.001)
-            @warn """
+            @warn("""
                   b in DiscreteBelief(pomdp, b) does not sum to 1.
  
                   To suppress this warning use `DiscreteBelief(pomdp, b, check=false)`
-                  """
+                  """, b)
         end
         if !all(0.0 <= p <= 1.0 for p in b)
-            @warn """
+            @warn("""
                   b in DiscreteBelief(pomdp, b) contains entries outside [0,1].
  
                   To suppress this warning use `DiscreteBelief(pomdp, b, check=false)`
-                  """
+                  """, b)
         end
     end
     return DiscreteBelief(pomdp, ordered_states(pomdp), b)
@@ -120,7 +120,7 @@ function update(bu::DiscreteUpdater, b::DiscreteBelief, a, o)
 
             for (sp, tp) in weighted_iterator(td)
                 spi = stateindex(pomdp, sp)
-                op = obs_weight(pomdp, s, a, sp, o) # shortcut for observation probability from POMDPTools
+                op = obs_weight(pomdp, s, a, sp, o) # shortcut for observation probability from POMDPModelTools
 
                 bp[spi] += op * tp * b.b[si]
             end

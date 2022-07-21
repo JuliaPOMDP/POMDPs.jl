@@ -27,7 +27,7 @@ function action(policy::StochasticPolicy, s)
 end
 
 ## convenience functions ##
-updater(policy::StochasticPolicy) = VoidUpdater() # since the stochastic policy does not depend on the belief
+updater(policy::StochasticPolicy) = NothingUpdater() # since the stochastic policy does not depend on the belief
 
 # Samples actions uniformly
 UniformRandomPolicy(problem, rng=Random.GLOBAL_RNG) = StochasticPolicy(actions(problem), rng)

@@ -1,67 +1,45 @@
-mutable struct VoidUpdater <: Updater end
-POMDPs.update(::VoidUpdater, ::B, ::Any, ::Any, b=nothing) where B = nothing
-
-mutable struct RandomPolicy{P <: Union{MDP, POMDP}} <: Policy
-    rng::AbstractRNG
-    problem::P
-end
-RandomPolicy(problem::Union{POMDP,MDP};
-            rng=Random.GLOBAL_RNG) = RandomPolicy(rng, problem)
-
-function POMDPs.action(policy::RandomPolicy, s)
-    return rand(policy.rng, actions(policy.problem, s))
-end
-
-mutable struct RandomSolver <: Solver
-    rng::AbstractRNG
-end
-
-RandomSolver(;rng=Base.GLOBAL_RNG) = RandomSolver(rng)
-POMDPs.solve(solver::RandomSolver, problem::P) where {P<:Union{POMDP,MDP}} = RandomPolicy(solver.rng, problem)
-
 let
-    rng = MersenneTwister(7)
+    mutable struct InfoTestUpdater <: Updater end
+    POMDPs.update(::InfoTestUpdater, ::B, ::Any, ::Any, b=nothing) where B = nothing
 
-    mdp = LegacyGridWorld()
-    #=
-    POMDPs.DDNStructure(::Type{typeof(mdp)}) = DDNStructure(MDP) |> add_infonode
-    @test :info in nodenames(DDNStructure(mdp))
-    s = initialstate(mdp, rng)
-    a = rand(rng, actions(mdp))
-    if VERSION >= v"1.3"
-        sp, r, i = @inferred gen(DDNOut(:sp,:r,:info), mdp, s, a, rng)
-    else
-        sp, r, i = gen(DDNOut(:sp,:r,:info), mdp, s, a, rng)
+    mutable struct InfoTestRandomPolicy{P <: Union{MDP, POMDP}} <: Policy
+        rng::AbstractRNG
+        problem::P
     end
-    @test i === nothing
+    InfoTestRandomPolicy(problem::Union{POMDP,MDP};
+                rng=Random.GLOBAL_RNG) = InfoTestRandomPolicy(rng, problem)
 
-    pomdp = TigerPOMDP()
-    POMDPs.DDNStructure(::Type{typeof(pomdp)}) = DDNStructure(POMDP) |> add_infonode
-    @test :info in nodenames(DDNStructure(pomdp))
-    s = initialstate(pomdp, rng)
-    a = rand(rng, actions(pomdp))
-    if VERSION >= v"1.3"
-        sp, o, r, i = @inferred gen(DDNOut(:sp,:o,:r,:info), pomdp, s, a, rng)
-    else
-        sp, o, r, i = gen(DDNOut(:sp,:o,:r,:info), pomdp, s, a, rng)
+    function POMDPs.action(policy::InfoTestRandomPolicy, s)
+        return rand(policy.rng, actions(policy.problem, s))
     end
-    @test i === nothing
-    =#
 
-    pomdp = TigerPOMDP()
-    s = rand(rng, initialstate(pomdp))
+    mutable struct InfoTestRandomSolver <: Solver
+        rng::AbstractRNG
+    end
 
-    up = VoidUpdater()
-    policy = RandomPolicy(rng, pomdp)
-    @inferred action_info(policy, s)
+    InfoTestRandomSolver(;rng=Base.GLOBAL_RNG) = InfoTestRandomSolver(rng)
+    POMDPs.solve(solver::InfoTestRandomSolver, problem::P) where {P<:Union{POMDP,MDP}} = InfoTestRandomPolicy(solver.rng, problem)
 
-    solver = RandomSolver(rng=rng)
-    policy, sinfo = solve_info(solver, pomdp)
-    @test isa(sinfo, Nothing)
+    let
+        rng = MersenneTwister(7)
 
-    d = initialstate_distribution(pomdp)
-    b = initialize_belief(up, d)
-    a = action(policy, b)
-    sp, o, r = @gen(:sp,:o,:r)(pomdp, rand(rng, d), a, rng)
-    @inferred update_info(up, b, a, o)
+        mdp = LegacyGridWorld()
+
+        pomdp = TigerPOMDP()
+        s = rand(rng, initialstate(pomdp))
+
+        up = InfoTestUpdater()
+        policy = InfoTestRandomPolicy(rng, pomdp)
+        @inferred action_info(policy, s)
+
+        solver = InfoTestRandomSolver(rng=rng)
+        policy, sinfo = solve_info(solver, pomdp)
+        @test isa(sinfo, Nothing)
+
+        d = initialstate_distribution(pomdp)
+        b = initialize_belief(up, d)
+        a = action(policy, b)
+        sp, o, r = @gen(:sp,:o,:r)(pomdp, rand(rng, d), a, rng)
+        @inferred update_info(up, b, a, o)
+    end
 end

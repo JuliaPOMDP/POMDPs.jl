@@ -38,14 +38,11 @@ UnicodePlots = "1, 2"
 julia = "1"
 
 [extras]
-BeliefUpdaters = "8bb6e9a1-7d73-552c-a44a-e5dc5634aac4"
 DiscreteValueIteration = "4b033969-44f6-5439-a48b-c11fa3648068"
 Documenter = "e30172f5-a6a5-5a46-863b-614d45cd2de4"
 POMDPModels = "355abbd5-f08e-5560-ac9e-8b5f2592a0ca"
-POMDPPolicies = "182e52fb-cfd0-5e46-8c26-fd0667c990f4"
-POMDPSimulators = "e0d0a172-29c6-5d4e-96d0-f262df5d01fd"
 QuickPOMDPs = "8af83fb2-a731-493c-9049-9e19dbce6165"
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
 
 [targets]
-test = ["BeliefUpdaters", "POMDPModels", "POMDPPolicies", "Test", "POMDPSimulators", "DiscreteValueIteration", "Documenter", "QuickPOMDPs"]
+test = ["POMDPModels", "Test", "DiscreteValueIteration", "Documenter", "QuickPOMDPs"]

@@ -40,7 +40,7 @@ action_hist(h::AbstractSimHistory) = h[:a]
 observation_hist(h::AbstractSimHistory) = h[:o]
 belief_hist(h::AbstractSimHistory) = push!([step.b for step in hist(h)], last(hist(h)).bp)
 reward_hist(h::AbstractSimHistory) = h[:r]
-info_hist(h::AbstractSimHistory) = h[:i]
+info_hist(h::AbstractSimHistory) = h[:info]
 ainfo_hist(h::AbstractSimHistory) = h[:action_info]
 uinfo_hist(h::AbstractSimHistory) = h[:update_info]
 

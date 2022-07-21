@@ -37,7 +37,7 @@ display(r1)
 println()
 
 for tuple in r1
-    @test length(tuple) == length(POMDPSimulators.default_spec(problem))
+    @test length(tuple) == length(POMDPTools.Simulators.default_spec(problem))
 end
 
 for ui in eachstep(r2, "update_info")
@@ -49,7 +49,7 @@ end
 
 # test that complete step is returned
 step = first(eachstep(r2))
-for key in POMDPSimulators.default_spec(problem)
+for key in POMDPTools.Simulators.default_spec(problem)
     @test haskey(step, key)
     @test first(r2[key]) == step[key]
 end
@@ -68,7 +68,7 @@ r1 = simulate(sim, problem, policy, initialstate(problem, sim.rng))
 @test r1[end] == last(r1)
 @test r1[1] == first(r1)
 for tuple in r1
-    @test length(tuple) == length(POMDPSimulators.default_spec(problem))
+    @test length(tuple) == length(POMDPTools.Simulators.default_spec(problem))
     @test isa(tuple.s, statetype(problem))
     @test isa(tuple.a, actiontype(problem))
     @test isa(tuple.r, Float64)
@@ -79,7 +79,7 @@ display(r1)
 println()
 
 step = first(eachstep(r1))
-for key in POMDPSimulators.default_spec(problem)
+for key in POMDPTools.Simulators.default_spec(problem)
     @test haskey(step, key)
     @test first(r1[key]) == step[key]
 end
@@ -116,7 +116,7 @@ tuples = collect(eachstep(hv, "r,sp,s,a,t"))
 @test sum(t.r for t in tuples) == undiscounted_reward(hv)
 
 hi = HistoryIterator(hv, :r)
-@inferred POMDPSimulators.step_tuple(hi, 1)
+@inferred POMDPTools.Simulators.step_tuple(hi, 1)
 @test collect(hi) == collect(reward_hist(hv))
 @test collect(eachstep(hv, "r")) == collect(reward_hist(hv)) # why isn't collect able to infer the type here??
 

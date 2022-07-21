@@ -35,8 +35,7 @@ function action(policy::RandomPolicy, b::Nothing)
 end
 
 ## convenience functions ##
-updater(policy::RandomPolicy) = policy.updater
-
+POMDPs.updater(policy::RandomPolicy) = policy.updater
 
 """
 solver that produces a random policy

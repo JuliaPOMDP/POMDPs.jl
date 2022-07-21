@@ -6,14 +6,14 @@ let
     rnd = solve(RandomSolver(MersenneTwister(7)), pomdp)
 
     q = []
-    push!(q, Sim(pomdp, fwc, max_steps=32, rng=MersenneTwister(4), metadata=Dict(:policy=>"feed when crying")))
-    push!(q, Sim(pomdp, fwc, max_steps=32, rng=MersenneTwister(4), metadata=Dict(:policy=>"feed when crying")))
-    push!(q, Sim(pomdp, rnd, max_steps=32, rng=MersenneTwister(4), metadata=(policy="random",)))
+    push!(q, Sim(pomdp, fwc, PreviousObservationUpdater(), max_steps=32, rng=MersenneTwister(4), metadata=Dict(:policy=>"feed when crying")))
+    push!(q, Sim(pomdp, fwc, PreviousObservationUpdater(), max_steps=32, rng=MersenneTwister(4), metadata=Dict(:policy=>"feed when crying")))
+    push!(q, Sim(pomdp, rnd, NothingUpdater(), max_steps=32, rng=MersenneTwister(4), metadata=(policy="random",)))
 
     @test_logs (:warn,) run_parallel(q, show_progress=false)
 
     procs = addprocs(2)
-    @everywhere using POMDPSimulators
+    @everywhere using POMDPTools
     @everywhere using POMDPModels
     
     # test progress=nothing deprecation
@@ -36,7 +36,7 @@ end
 
 # example from readme
 let
-    using POMDPSimulators
+    using POMDPTools
     using POMDPModels
 
     pomdp = BabyPOMDP()
@@ -44,8 +44,8 @@ let
     rnd = solve(RandomSolver(MersenneTwister(7)), pomdp)
 
     q = [] # vector of the simulations to be run
-    push!(q, Sim(pomdp, fwc, max_steps=32, rng=MersenneTwister(4), metadata=Dict(:policy=>"feed when crying")))
-    push!(q, Sim(pomdp, rnd, max_steps=32, rng=MersenneTwister(4), metadata=Dict(:policy=>"random")))
+    push!(q, Sim(pomdp, fwc, PreviousObservationUpdater(), max_steps=32, rng=MersenneTwister(4), metadata=Dict(:policy=>"feed when crying")))
+    push!(q, Sim(pomdp, rnd, NothingUpdater(), max_steps=32, rng=MersenneTwister(4), metadata=Dict(:policy=>"random")))
 
     # this creates two simulations, one with the feed-when-crying policy and one with a random policy
 

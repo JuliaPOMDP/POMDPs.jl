@@ -1,4 +1,4 @@
-let
+let # broken because of updater(policy)
     problem = BabyPOMDP()
 
     solver = RandomSolver(rng=MersenneTwister(1))

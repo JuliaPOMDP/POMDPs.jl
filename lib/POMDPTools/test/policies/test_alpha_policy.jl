@@ -29,7 +29,7 @@ let
     @test action(policy, sparse_b0) == false
 
     # Bool_distribution (if it works for this, it should work for an arbitrary distribution)
-    bd = initialstate_distribution(pomdp)::BoolDistribution
+    bd = initialstate_distribution(pomdp)
     @test action(policy, bd) == false 
      
     # try pushing new vector
