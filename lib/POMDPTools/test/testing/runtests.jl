@@ -1,8 +1,3 @@
-using Test
-using POMDPs
-using POMDPTesting
-using POMDPTools
-
 import POMDPs:
     transition,
     observation,

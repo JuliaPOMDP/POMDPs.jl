@@ -20,6 +20,7 @@ include("Simulators/Simulators.jl")
 include("CommonRLIntegration/CommonRLIntegration.jl")
 @reexport using .CommonRLIntegration
 
-# Testing
+include("Testing/Testing.jl")
+@reexport using .Testing
 
 end

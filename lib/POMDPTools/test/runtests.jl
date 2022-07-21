@@ -71,6 +71,6 @@ import CommonRLInterface
     end
 
     @testset "Testing" begin
-        
+        include("testing/runtests.jl")
     end
 end
