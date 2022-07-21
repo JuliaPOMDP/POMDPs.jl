@@ -17,7 +17,8 @@ include("Policies/Policies.jl")
 include("Simulators/Simulators.jl")
 @reexport using .Simulators
 
-# CommonRL
+include("CommonRLIntegration/CommonRLIntegration.jl")
+@reexport using .CommonRLIntegration
 
 # Testing
 

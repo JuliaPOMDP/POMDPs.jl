@@ -22,8 +22,8 @@ let
     end
     iob = IOBuffer()
     io = IOContext(iob, :limit=>true, :displaysize=>(7, 7))
-    POMDPs.states(m::MDP) = 1:m.n
-    POMDPs.actions(m::MDP) = 1:3
+    POMDPs.states(m::M) = 1:m.n
+    POMDPs.actions(m::M) = 1:3
     m = M(1_000_000_000)
     showpolicy(io, m, RandomPolicy(m))
     # Below, the actual values could be different because of the RandomPolicy, but length should be the same

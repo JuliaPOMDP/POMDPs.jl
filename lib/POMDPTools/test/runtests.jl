@@ -1,17 +1,19 @@
+# these imports are first for now to deal with issues because it imports the old POMDPModelTools
+using POMDPs
+using DiscreteValueIteration: ValueIterationSolver
+using QuickPOMDPs
+using POMDPModels: BabyPOMDP, TigerPOMDP, SimpleGridWorld, LegacyGridWorld, RandomMDP, TMaze, Starve, FeedWhenCrying
+import POMDPLinter
+
 using POMDPTools
 using Test
 
-using POMDPs
-using POMDPModels: BabyPOMDP, TigerPOMDP, SimpleGridWorld, LegacyGridWorld, RandomMDP, TMaze, Starve, FeedWhenCrying
-using DiscreteValueIteration: ValueIterationSolver
-using QuickPOMDPs
-
 import Random
 using Random: MersenneTwister, AbstractRNG
-
-import POMDPLinter
-
 using SparseArrays: sparse
+
+import CommonRLInterface
+
 
 @testset "POMDPTools.jl" begin
     @testset "POMDPDistributions" begin
@@ -62,5 +64,13 @@ using SparseArrays: sparse
         include("simulators/test_rollout.jl")
         include("simulators/test_sim.jl")
         include("simulators/test_stepthrough.jl")
+    end
+
+    @testset "CommonRLIntegration" begin
+        include("common_rl_integration/test_common_rl.jl")
+    end
+
+    @testset "Testing" begin
+        
     end
 end
