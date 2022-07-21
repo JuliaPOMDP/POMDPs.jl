@@ -1,7 +1,7 @@
 using Test
 using POMDPs
 using POMDPTesting
-using POMDPModelTools
+using POMDPTools
 
 import POMDPs:
     transition,

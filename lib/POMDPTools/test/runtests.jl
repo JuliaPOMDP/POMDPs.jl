@@ -2,11 +2,13 @@ using POMDPTools
 using Test
 
 using POMDPs
-using POMDPModels: BabyPOMDP, SimpleGridWorld
+using POMDPModels: BabyPOMDP, TigerPOMDP, SimpleGridWorld, LegacyGridWorld, RandomMDP, TMaze, Starve
+using DiscreteValueIteration: ValueIterationSolver
 
 import Random
 using Random: MersenneTwister, AbstractRNG
-using DiscreteValueIteration: ValueIterationSolver
+
+using SparseArrays: sparse
 
 @testset "POMDPTools.jl" begin
     # Distributions
@@ -30,6 +32,7 @@ using DiscreteValueIteration: ValueIterationSolver
     include("model_tools/test_underlying_mdp.jl")
     include("model_tools/test_visualization.jl")
 
+    # Belief Updaters
     # include("belief_updaters/test_belief.jl")
     # include("belief_updaters/test_k_previous_observations.jl")
 end

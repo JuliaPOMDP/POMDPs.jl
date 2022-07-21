@@ -1,4 +1,4 @@
-import POMDPModelTools: obs_weight
+import POMDPTools: obs_weight
 import POMDPs: observation
 
 struct P <: POMDP{Nothing, Nothing, Nothing} end

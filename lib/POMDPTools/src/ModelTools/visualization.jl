@@ -28,7 +28,7 @@ Keyword arguments are reserved for the problem implementer and can be used to co
 - `o` typically corresponds to `sp`, so it is often clearer for POMDPs to render `sp` rather than `s`.
 """
 function render(m::Union{MDP,POMDP}, step)
-    @warn("No implementation of POMDPModelTools.render(m::$m, step) found. Falling back to text default.", maxlog=1)
+    @warn("No implementation of POMDPTools.render(m::$m, step) found. Falling back to text default.", maxlog=1)
     io = IOBuffer()
     ioc = IOContext(io, :short=>true)
     try
@@ -41,7 +41,7 @@ function render(m::Union{MDP,POMDP}, step)
     finally
         println(ioc, """
 
-            Please implement POMDPModelTools.render(m::$(typeof(m)), step) to enable visualization.
+            Please implement POMDPTools.render(m::$(typeof(m)), step) to enable visualization.
             """)
     end
     return String(take!(io))

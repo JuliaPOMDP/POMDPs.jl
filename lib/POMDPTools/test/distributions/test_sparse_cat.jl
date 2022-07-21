@@ -22,7 +22,7 @@ let
     # rand(::SparseCat)
     samples = Symbol[]
     N = 100_000
-    @time for i in 1:N
+    for i in 1:N
         push!(samples, rand(d))
     end
     @test isapprox(count(samples.==:a)/N, pdf(d,:a), atol=0.005)

@@ -7,7 +7,7 @@ Construct transition matrices for (PO)MDP m.
 The returned object is an associative object (usually a Dict), where the keys are actions. Each value in this object is an AbstractMatrix where the row corresponds to the state index of s and the column corresponds to the state index of s'. The entry in the matrix is the probability of transitioning from state s to state s'.
 """
 function transition_matrices(m::Union{MDP,POMDP}; sparse::Bool=true)
-    transmats = POMDPModelTools.transition_matrix_a_s_sp(m)
+    transmats = transition_matrix_a_s_sp(m)
     if !sparse
         transmats = [convert(Matrix, t) for t in transmats]
     end

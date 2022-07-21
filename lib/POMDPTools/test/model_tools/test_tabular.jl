@@ -119,7 +119,7 @@ function test_pomdp(pomdp::POMDP)
         spomdp3 = SparseTabularPOMDP(spomdp, discount = 0.5)
         @test spomdp3.discount != spomdp.discount
         @test size(observation_matrix(spomdp, 1)) == (length(states(spomdp)), length(observations(spomdp)))
-        @show size(observation_matrix(spomdp, 1)) == (length(states(spomdp)), length(observations(spomdp)))
+        @test size(observation_matrix(spomdp, 1)) == (length(states(spomdp)), length(observations(spomdp)))
         @test observation_matrices(spomdp) == spomdp2.O
         @test transition_matrices(spomdp) == spomdp2.T
         @test reward_matrix(spomdp) == spomdp2.R

@@ -20,7 +20,7 @@ Returns a DiscreteValueFunction, which maps states to values.
 
 # Example
 ```
-using POMDPModelTools, POMDPPolicies, POMDPModels
+using POMDPTools, POMDPModels
 m = SimpleGridWorld()
 u = evaluate(m, FunctionPolicy(x->:left))
 u([1,1]) # value of always moving left starting at state [1,1]

@@ -120,7 +120,7 @@ function update(bu::DiscreteUpdater, b::DiscreteBelief, a, o)
 
             for (sp, tp) in weighted_iterator(td)
                 spi = stateindex(pomdp, sp)
-                op = obs_weight(pomdp, s, a, sp, o) # shortcut for observation probability from POMDPModelTools
+                op = obs_weight(pomdp, s, a, sp, o) # shortcut for observation probability from POMDPTools
 
                 bp[spi] += op * tp * b.b[si]
             end

@@ -12,7 +12,7 @@ import POMDPs: action, value, solve, updater
 
 using ..BeliefUpdaters
 using ..ModelTools
-using ..POMDPDistributions: SparseCat
+using ..POMDPDistributions
 
 using Base.Iterators: take
 
@@ -82,5 +82,10 @@ export
     PlaybackPolicy
 
 include("playback.jl")
+
+export
+    evaluate
+
+include("policy_evaluation.jl")
 
 end

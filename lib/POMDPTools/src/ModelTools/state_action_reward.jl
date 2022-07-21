@@ -9,7 +9,7 @@ If `reward(m, s, a)` is implemented, that will be used, otherwise the mean of `r
 ```jldoctest
 using POMDPs
 using POMDPModels
-using POMDPModelTools
+using POMDPTools
 
 m = BabyPOMDP()
 

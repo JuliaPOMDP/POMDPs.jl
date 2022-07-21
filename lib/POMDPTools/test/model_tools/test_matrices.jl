@@ -14,6 +14,6 @@ for m in [BabyPOMDP(), SimpleGridWorld()]
         @test a in keys(rs)
         r = rs[a]
         @test r isa AbstractVector
-        @test r == POMDPModelTools.policy_reward_vector(m, FunctionPolicy(s->a))
+        @test r == POMDPTools.Policies.policy_reward_vector(m, FunctionPolicy(s->a))
     end
 end

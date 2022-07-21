@@ -13,7 +13,7 @@ import POMDPs: initialstate, isterminal, discount
 import Statistics: mean
 import Base: ==
 
-using ..POMDPDistributions: Deterministic
+using ..POMDPDistributions
 
 # import Distributions: pdf, mode, mean, support
 # import POMDPLinter: @POMDP_require
