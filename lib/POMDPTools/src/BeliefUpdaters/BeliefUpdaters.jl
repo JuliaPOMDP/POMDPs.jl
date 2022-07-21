@@ -2,6 +2,7 @@ module BeliefUpdaters
 
 using POMDPs
 import POMDPs: Updater, update, initialize_belief, pdf, mode, updater, support
+using ..POMDPDistributions
 using ..ModelTools
 
 import Base: ==

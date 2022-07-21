@@ -33,6 +33,6 @@ using SparseArrays: sparse
     include("model_tools/test_visualization.jl")
 
     # Belief Updaters
-    # include("belief_updaters/test_belief.jl")
-    # include("belief_updaters/test_k_previous_observations.jl")
+    include("belief_updaters/test_belief.jl")
+    include("belief_updaters/test_k_previous_observations_belief.jl")
 end
