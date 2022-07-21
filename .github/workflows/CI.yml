@@ -15,6 +15,14 @@ jobs:
       - uses: julia-actions/julia-buildpkg@v1
       - uses: julia-actions/julia-runtest@v1
 
+      # always test POMDPTools as well
+      - name: Test POMDPTools
+        run: |
+          julia --color=yes -e '
+            using Pkg;
+            Pkg.develop(path="lib/POMDPTools")
+            Pkg.test("POMDPTools")'
+
   docs:
     name: Documentation
     runs-on: ubuntu-latest
