@@ -93,7 +93,7 @@ GenerativeBeliefMDP
 
 #### Example
 
-```jldoctest belief_mdp; output=false, filter=r".*DiscreteBelief.*"
+```jldoctest belief_mdp; filter=r".*DiscreteBelief.*"
 using POMDPs
 using POMDPModels
 using POMDPTools
