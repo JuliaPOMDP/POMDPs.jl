@@ -31,7 +31,7 @@ We've provide some tools in POMDPToolbox that can check this for you.
 If you have a POMDP called pomdp, you can run the checks by doing the following:
 
 ```julia
-using POMDPTesting
+using POMDPTools
 @assert has_consistent_distributions(pomdp)
 ```
 

@@ -1,6 +1,5 @@
 # [POMDPs.jl](https://github.com/JuliaPOMDP/POMDPs.jl)
-*A Julia interface for defining, solving and simulating partially observable Markov decision processes and their fully
-observable counterparts.*
+*A Julia interface for defining, solving and simulating partially observable Markov decision processes and their fully observable counterparts.*
 
 ## Package Features
 
@@ -50,6 +49,8 @@ Pages = [ "def_solver.md", "offline_solver.md", "online_solver.md", "def_updater
 ```@contents
 Pages = [ "simulation.md", "run_simulation.md", "policy_interaction.md" ]
 ```
+
+### POMDPTools - the standard library for POMDPs.jl
 
 ### Reference
 

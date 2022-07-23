@@ -15,7 +15,7 @@ In the first section of this guide, we will explain a QuickPOMDP implementation 
 
 ```jldoctest tiger; output=false, filter=r"QuickPOMDP.*"
 using QuickPOMDPs: QuickPOMDP
-using POMDPModelTools: Deterministic, Uniform, SparseCat
+using POMDPTools: Deterministic, Uniform, SparseCat
 
 m = QuickPOMDP(
     states = ["left", "right"],
@@ -88,7 +88,7 @@ The example above shows a complete implementation of a very simple discrete-spac
 
 ```jldoctest mountaincar; output=false, filter=r"QuickPOMDP.*"
 import QuickPOMDPs: QuickPOMDP
-import POMDPModelTools: ImplicitDistribution
+import POMDPTools: ImplicitDistribution
 import Distributions: Normal
 
 mountaincar = QuickPOMDP(
@@ -184,7 +184,7 @@ The `transition` function takes in a state `s` and action `a` and returns a dist
 
 #### Commonly-used distributions
 
-In most cases, the following pre-defined distributions found in the [POMDPModelTools](https://github.com/JuliaPOMDP/POMDPModelTools.jl) and [Distributions](https://github.com/JuliaStats/Distributions.jl) packages will be sufficient to define models.
+In most cases, the following pre-defined distributions found in the [POMDPTools](@ref pomdptools_section) and [Distributions](https://github.com/JuliaStats/Distributions.jl) packages will be sufficient to define models.
 
 ##### `Deterministic`
 
@@ -210,13 +210,13 @@ returns a `Normal` distribution from this package with a mean that depends on th
 
 ##### [`ImplicitDistribution`](@id implicit_distribution_section)
 
-In many cases, especially when the state or observation spaces are continuous or hybrid, it is difficult or impossible to specify the probability density explicitly. Fortunately, many solvers for these problems do not require explicit density information and instead need only samples from the distribution. In this case, an "implicit distribution" or "generative model" is sufficient. In POMDPs.jl, this can be represented using an [`ImplicitDistribution` object](https://juliapomdp.github.io/POMDPModelTools.jl/stable/distributions/#POMDPModelTools.ImplicitDistribution).
+In many cases, especially when the state or observation spaces are continuous or hybrid, it is difficult or impossible to specify the probability density explicitly. Fortunately, many solvers for these problems do not require explicit density information and instead need only samples from the distribution. In this case, an "implicit distribution" or "generative model" is sufficient. In POMDPs.jl, this can be represented using an [`ImplicitDistribution`](@ref) object.
 
 The argument to an `ImplicitDistribution` constructor is a function that takes a random number generator as an argument and returns a sample from the distribution. To see how this works, we'll look at an example inspired by the [mountaincar](@ref po-mountaincar) initial state distribution.
 Samples from this distribution are position-velocity tuples where the velocity is always zero, but the position is uniformly distributed between -0.2 and 0. Consider the following code:
 ```jldoctest
 using Random: MersenneTwister
-using POMDPModelTools: ImplicitDistribution
+using POMDPTools: ImplicitDistribution
 
 rng = MersenneTwister(1)
 
@@ -293,7 +293,7 @@ First, it is possible to create your own (PO)MDP types and implement the compone
 ```jldoctest; output=false
 import POMDPs
 using POMDPs: POMDP
-using POMDPModelTools: Deterministic, Uniform, SparseCat
+using POMDPTools: Deterministic, Uniform, SparseCat
 
 struct TigerPOMDP <: POMDP{String, String, String}
     p_correct::Float64
@@ -359,7 +359,7 @@ For situations like this, `gen` is an alternative to `transition`, `observation`
 
 ```jldoctest; output=false, filter=r"QuickPOMDP.*"
 using QuickPOMDPs: QuickPOMDP
-using POMDPModelTools: ImplicitDistribution
+using POMDPTools: ImplicitDistribution
 
 mountaincar = QuickPOMDP(
     actions = [-1., 0., 1.],

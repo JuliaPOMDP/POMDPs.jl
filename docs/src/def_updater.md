@@ -7,7 +7,7 @@ Typically a belief updater will have an associated belief type, and may be close
 ## Defining a Belief Type
 
 A belief object should contain all of the information needed for the next belief update and for the policy to make a decision.
-The belief type could be a pre-defined type such as a distribution from `Distributions.jl` or `DiscreteBelief` or `SparseCat` from `POMDPModelTools.jl`, or it could be a custom type.
+The belief type could be a pre-defined type such as a distribution from `Distributions.jl` or `DiscreteBelief` or `SparseCat` from the [POMDPTools](@ref pomdptools_section) package, or it could be a custom type.
 
 Often, but not always, the belief will represent a probability distribution.
 In this case, the functions in the [distribution interface](@ref Distributions) should be implemented if possible.
@@ -53,8 +53,7 @@ end
 At each step, the history starts with the original distribution, then contains all the actions and observations received up to that point. The example below shows this for the crying baby problem (observations are true/false for crying and actions are true/false for feeding).
 
 ```julia
-using POMDPPolicies
-using POMDPSimulators
+using POMDPTools
 using POMDPModels
 using Random
 

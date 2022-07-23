@@ -31,7 +31,7 @@ POMDPs.action(p::DictPolicy, s) = p.actions[s]
 ```
 
 !!! note
-    A `POMDPPolicies.VectorPolicy` could be used here. We include this example to show how to define a custom policy.
+    A `POMDPTools.VectorPolicy` could be used here. We include this example to show how to define a custom policy.
 
 The solve function calculates the best greedy action for each state and saves it in a policy. To have the widest possible compatibility with POMDP models, we want to use [`reward`](@ref)`(m, s, a, sp)` instead of [`reward`](@ref)`(m, s, a)`, which means we need to calculate the expectation of the reward over transitions to every possible next state.
 
@@ -65,7 +65,7 @@ end
 ```
 
 !!! note
-    We limited this implementation to using basic POMDPs.jl implementation functions, but tools such as `POMDPModelTools.StateActionReward`, `POMDPModelTools.ordered_states`, and `POMDPModelTools.weighted_iterator` could have been used for a more concise and efficient implementation.
+    We limited this implementation to using basic POMDPs.jl implementation functions, but tools such as `POMDPTools.StateActionReward`, `POMDPTools.ordered_states`, and `POMDPTools.weighted_iterator` could have been used for a more concise and efficient implementation.
 
 We can now verify whether the policy produces the greedy action on an example from POMDPModels:
 
@@ -89,7 +89,7 @@ For a POMDP, the greedy solution is the action that maximizes the expected immed
 Again, because a POMDP, may have [`reward`](@ref)`(m, s, a, sp, o)` instead of [`reward`](@ref)`(m, s, a)`, we use the former and calculate the expectation over all next states and observations.
 
 ```jldoctest offline; output=false
-import POMDPPolicies
+using POMDPTools: AlphaVectorPolicy
 
 function POMDPs.solve(::GreedyOfflineSolver, m::POMDP)
 
@@ -114,7 +114,7 @@ function POMDPs.solve(::GreedyOfflineSolver, m::POMDP)
         push!(alphas, alpha)
     end
     
-    return POMDPPolicies.AlphaVectorPolicy(m, alphas, collect(actions(m)))
+    return AlphaVectorPolicy(m, alphas, collect(actions(m)))
 end
 
 # output
@@ -124,7 +124,7 @@ We can now verify that a policy created by the solver determines the correct gre
 
 ```jldoctest offline; output=false
 using POMDPModels
-using POMDPModelTools # for Deterministic, Uniform
+using POMDPTools: Deterministic, Uniform
 
 tiger = TigerPOMDP()
 policy = solve(GreedyOfflineSolver(), tiger)

@@ -1,5 +1,6 @@
 """
-    has_consistent_distributions(m::Union)
+    has_consistent_distributions(m::MDP)
+    has_consistent_distributions(m::POMDP)
 
 Return true if no problems are found in the distributions for a discrete problem. Print information and return false if problems are found.
 

@@ -1,9 +1,9 @@
 push!(LOAD_PATH, "../src/")
 
-using Documenter, POMDPs
+using Documenter, POMDPs, POMDPTools
 
 makedocs(
-    modules = [POMDPs],
+    modules = [POMDPs, POMDPTools],
     format = Documenter.HTML(),
     sitename = "POMDPs.jl",
     pages = [
@@ -38,8 +38,21 @@ makedocs(
             "policy_interaction.md"
            ],
 
+        "POMDPTools" => [
+            "POMDPTools/index.md",
+            "POMDPTools/distributions.md",
+            "POMDPTools/model.md",
+            "POMDPTools/visualization.md",
+            "POMDPTools/beliefs.md",
+            "POMDPTools/policies.md",
+            "POMDPTools/simulators.md",
+            "POMDPTools/common_rl.md",
+            "POMDPTools/testing.md"
+           ],
+
         "faq.md",
-        "api.md"
+        "api.md",
+
     ]
 )
 

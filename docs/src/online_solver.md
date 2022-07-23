@@ -85,7 +85,7 @@ action(planner, GWPos(1,1))
 
 ```jldoctest online; output=false
 using POMDPModels
-using POMDPModelTools # for Deterministic, Uniform
+using POMDPTools: Deterministic, Uniform
 
 tiger = TigerPOMDP()
 solver = MonteCarloGreedySolver(1000)

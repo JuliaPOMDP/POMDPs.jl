@@ -23,6 +23,6 @@ The following functions may be called on a distribution object (Click on a funct
 - [`mode`](@ref)
 - [`mean`](@ref)
 
-You can find some useful pre-made distribution objects in [Distributions.jl](https://github.com/JuliaStats/Distributions.jl) or [POMDPModelTools.jl](https://juliapomdp.github.io/POMDPModelTools.jl/latest/distributions.html).
+You can find some useful pre-made distribution objects in [Distributions.jl](https://github.com/JuliaStats/Distributions.jl) or [POMDPTools](@ref pomdptools_section).
 
 [^1]: Distributions should support both `rand(rng::AbstractRNG, d)` and `rand(d)`. The recommended way to do this is by implmenting `Base.rand(rng::AbstractRNG, s::Random.SamplerTrivial{<:YourDistribution})` from the [julia rand interface](https://docs.julialang.org/en/v1/stdlib/Random/index.html#Generating-values-from-a-collection-1).
