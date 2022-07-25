@@ -104,16 +104,11 @@ Many packages use the POMDPs.jl interface, including MDP and POMDP solvers, supp
 
 #### Tools:
 
-POMDPs.jl itself contains only the interface for communicating about problem definitions. Most of the functionality for interacting with problems is actually contained in several support tools packages:
+POMDPs.jl itself contains only the core interface for communicating about problem definitions. Most of the functionality for interacting with problems is actually contained in several support tools packages:
 
 |  **`Package`**   |  **`Build`** | **`Coverage`** |
 |-------------------|----------------------|------------------|
-| [POMDPModelTools](https://github.com/JuliaPOMDP/POMDPModelTools.jl) | [![Build Status](https://github.com/JuliaPOMDP/POMDPModelTools.jl/actions/workflows/CI.yml/badge.svg)](https://github.com/JuliaPOMDP/POMDPModelTools.jl/actions/workflows/CI.yml/) | [![Coverage Status](https://codecov.io/gh/JuliaPOMDP/POMDPModelTools.jl/branch/master/graph/badge.svg)](https://codecov.io/gh/JuliaPOMDP/POMDPModelTools.jl) |
-| [BeliefUpdaters](https://github.com/JuliaPOMDP/BeliefUpdaters.jl) | [![Build Status](https://github.com/JuliaPOMDP/BeliefUpdaters.jl/actions/workflows/CI.yml/badge.svg)](https://github.com/JuliaPOMDP/BeliefUpdaters.jl) | [![Coverage Status](https://codecov.io/gh/JuliaPOMDP/BeliefUpdaters.jl/branch/master/graph/badge.svg)](https://codecov.io/gh/JuliaPOMDP/BeliefUpdaters.jl?) |
-| [POMDPPolicies](https://github.com/JuliaPOMDP/POMDPPolicies.jl) | [![Build Status](https://github.com/JuliaPOMDP/POMDPPolicies.jl/actions/workflows/CI.yml/badge.svg)](https://github.com/JuliaPOMDP/POMDPPolicies.jl) | [![Coverage Status](https://codecov.io/gh/JuliaPOMDP/POMDPPolicies.jl/branch/master/graph/badge.svg)](https://codecov.io/gh/JuliaPOMDP/POMDPPolicies.jl?) |
-| [POMDPSimulators](https://github.com/JuliaPOMDP/POMDPSimulators.jl) | [![Build Status](https://github.com/JuliaPOMDP/POMDPSimulators.jl/actions/workflows/CI.yml/badge.svg)](https://github.com/JuliaPOMDP/POMDPSimulators.jl) | [![Coverage Status](https://codecov.io/gh/JuliaPOMDP/POMDPSimulators.jl/branch/master/graph/badge.svg)](https://codecov.io/gh/JuliaPOMDP/POMDPSimulators.jl?) |
-| [POMDPModels](https://github.com/JuliaPOMDP/POMDPModels.jl) | [![Build Status](https://github.com/JuliaPOMDP/POMDPModels.jl/actions/workflows/CI.yml/badge.svg)](https://github.com/JuliaPOMDP/POMDPModels.jl) | [![Coverage Status](https://codecov.io/gh/JuliaPOMDP/POMDPModels.jl/branch/master/graph/badge.svg)](https://codecov.io/gh/JuliaPOMDP/POMDPModels.jl?) |
-| [POMDPTesting](https://github.com/JuliaPOMDP/POMDPTesting.jl) | [![Build Status](https://github.com/JuliaPOMDP/POMDPTesting.jl/actions/workflows/CI.yml/badge.svg)](https://github.com/JuliaPOMDP/POMDPTesting.jl) | [![Coverage Status](https://codecov.io/gh/JuliaPOMDP/POMDPTesting.jl/branch/master/graph/badge.svg)](https://codecov.io/gh/JuliaPOMDP/POMDPTesting.jl?) |
+| [POMDPTools](https://github.com/JuliaPOMDP/POMDPs.jl/tree/master/lib/POMDPTools) (hosted in this repository) |  [![Build Status](https://github.com/JuliaPOMDP/POMDPs.jl/actions/workflows/CI.yml/badge.svg)](https://github.com/JuliaPOMDP/POMDPs.jl/actions/workflows/CI.yml) | 
 | [ParticleFilters](https://github.com/JuliaPOMDP/ParticleFilters.jl) | [![Build Status](https://github.com/JuliaPOMDP/ParticleFilters.jl/actions/workflows/CI.yml/badge.svg)](https://github.com/JuliaPOMDP/ParticleFilters.jl) | [![codecov.io](http://codecov.io/github/JuliaPOMDP/ParticleFilters.jl/coverage.svg?)](http://codecov.io/github/JuliaPOMDP/ParticleFilters.jl?) |
 
 #### MDP solvers:
