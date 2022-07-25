@@ -108,7 +108,7 @@ POMDPs.jl itself contains only the core interface for communicating about proble
 
 |  **`Package`**   |  **`Build`** | **`Coverage`** |
 |-------------------|----------------------|------------------|
-| [POMDPTools](https://github.com/JuliaPOMDP/POMDPs.jl/tree/master/lib/POMDPTools) (hosted in this repository) |  [![Build Status](https://github.com/JuliaPOMDP/POMDPs.jl/actions/workflows/CI.yml/badge.svg)](https://github.com/JuliaPOMDP/POMDPs.jl/actions/workflows/CI.yml) | 
+| [POMDPTools](https://github.com/JuliaPOMDP/POMDPs.jl/tree/master/lib/POMDPTools) (hosted in this repository) | [![Build Status](https://github.com/JuliaPOMDP/POMDPs.jl/actions/workflows/CI.yml/badge.svg)](https://github.com/JuliaPOMDP/POMDPs.jl/actions/workflows/CI.yml) | |
 | [ParticleFilters](https://github.com/JuliaPOMDP/ParticleFilters.jl) | [![Build Status](https://github.com/JuliaPOMDP/ParticleFilters.jl/actions/workflows/CI.yml/badge.svg)](https://github.com/JuliaPOMDP/ParticleFilters.jl) | [![codecov.io](http://codecov.io/github/JuliaPOMDP/ParticleFilters.jl/coverage.svg?)](http://codecov.io/github/JuliaPOMDP/ParticleFilters.jl?) |
 
 #### MDP solvers:

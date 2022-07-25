@@ -10,6 +10,7 @@ using Test
 
 import Random
 using Random: MersenneTwister, AbstractRNG
+using StableRNGs: StableRNG
 using SparseArrays: sparse
 
 import CommonRLInterface

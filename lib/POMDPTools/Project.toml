@@ -33,6 +33,7 @@ POMDPs = "0.9"
 Parameters = "0.12"
 ProgressMeter = "1"
 Reexport = "1"
+StableRNGs = "1"
 StatsBase = "0.30, 0.31, 0.32, 0.33"
 Tricks = "0.1"
 UnicodePlots = "1, 2"
@@ -44,6 +45,7 @@ Documenter = "e30172f5-a6a5-5a46-863b-614d45cd2de4"
 POMDPModels = "355abbd5-f08e-5560-ac9e-8b5f2592a0ca"
 QuickPOMDPs = "8af83fb2-a731-493c-9049-9e19dbce6165"
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
+StableRNGs = "860ef19b-820b-49d6-a774-d7a799459cd3"
 
 [targets]
-test = ["POMDPModels", "Test", "DiscreteValueIteration", "Documenter", "QuickPOMDPs"]
+test = ["POMDPModels", "Test", "DiscreteValueIteration", "Documenter", "QuickPOMDPs", "StableRNGs"]
