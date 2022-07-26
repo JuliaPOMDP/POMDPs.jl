@@ -10,6 +10,7 @@
 [![Slack](https://img.shields.io/badge/Chat%20on%20Slack-with%20%23pomdp--bridged-ff69b4)](https://slackinvite.julialang.org)
 
 This package provides a core interface for working with [Markov decision processes (MDPs)](https://en.wikipedia.org/wiki/Markov_decision_process) and [partially observable Markov decision processes (POMDPs)](https://en.wikipedia.org/wiki/Partially_observable_Markov_decision_process).
+The [POMDPTools](https://juliapomdp.github.io/POMDPs.jl/stable/POMDPTools/#pomdptools_section) package acts as a "standard library" for the POMPDs.jl interface, providing implementations of commonly-used components such as policies, belief updaters, distributions, and simulators.
 
 Our goal is to provide a common programming vocabulary for:
 1. [Expressing problems as MDPs and POMDPs](http://juliapomdp.github.io/POMDPs.jl/stable/def_pomdp). 
@@ -17,8 +18,8 @@ Our goal is to provide a common programming vocabulary for:
 3. Running simulations efficiently.
 
 POMDPs.jl integrates with other ecosystems:
-- The [POMDPModelTools package](https://github.com/JuliaPOMDP/POMDPModelTools.jl) provides [two-way integration](https://juliapomdp.github.io/POMDPModelTools.jl/stable/common_rl/#CommonRLInterface-Integration) with [CommonRLInterface](https://github.com/JuliaReinforcementLearning/CommonRLInterface.jl) and therefore with the [JuliaReinforcementLearning packages](https://github.com/JuliaReinforcementLearning/ReinforcementLearning.jl).
 - Python can be used to define and solve MDPs and POMDPs via the [quickpomdps](https://github.com/JuliaPOMDP/quickpomdps) package or through tables directly via [pyjulia](https://github.com/JuliaPy/pyjulia).
+- POMDPTools provides [two-way integration](https://juliapomdp.github.io/POMDPModelTools.jl/stable/common_rl/#CommonRLInterface-Integration) with [CommonRLInterface](https://github.com/JuliaReinforcementLearning/CommonRLInterface.jl) and therefore with the [JuliaReinforcementLearning packages](https://github.com/JuliaReinforcementLearning/ReinforcementLearning.jl).
 - The [SymbolicMDPs package](https://github.com/JuliaPlanners/SymbolicMDPs.jl) provides an interface to work with PDDL models.
 
 For a detailed introduction, check out our [Julia Academy course](https://juliaacademy.com/p/decision-making-under-uncertainty-with-pomdps-jl)! For help, please post in [GitHub Discussions tab](https://github.com/JuliaPOMDP/POMDPs.jl/discussions). We welcome contributions from anyone! See [CONTRIBUTING.md](/CONTRIBUTING.md) for information about contributing.
@@ -100,11 +101,11 @@ Several tutorials are hosted in the [POMDPExamples repository](https://github.co
 
 ## Supported Packages
 
-Many packages use the POMDPs.jl interface, including MDP and POMDP solvers, support tools, and extensions to the POMDPs.jl interface. POMDPs.jl and all packages in the JuliaPOMDP project are fully supported on Linux and OS X. Windows is supported for all native solvers\*, and most non-native solvers should work, but may require additional configuration.
+Many packages use the POMDPs.jl interface, including MDP and POMDP solvers, support tools, and extensions to the POMDPs.jl interface. POMDPs.jl and all packages in the JuliaPOMDP project are fully supported on Linux. OSX and Windows are supported for all native solvers\*, and most non-native solvers should work, but may require additional configuration.
 
 #### Tools:
 
-POMDPs.jl itself contains only the core interface for communicating about problem definitions. Most of the functionality for interacting with problems is actually contained in several support tools packages:
+POMDPs.jl itself contains only the core interface for communicating about problem definitions; these packages contain implementations of commonly-used components:
 
 |  **`Package`**   |  **`Build`** | **`Coverage`** |
 |-------------------|----------------------|------------------|
