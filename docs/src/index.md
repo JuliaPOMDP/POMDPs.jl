@@ -52,6 +52,10 @@ Pages = [ "simulation.md", "run_simulation.md", "policy_interaction.md" ]
 
 ### POMDPTools - the standard library for POMDPs.jl
 
+```@contents
+Pages = ["POMDPTools/index.md", "POMDPTools/distributions.md", "POMDPTools/model.md", "POMDPTools/visualization.md", "POMDPTools/beliefs.md", "POMDPTools/policies.md", "POMDPTools/simulators.md", "POMDPTools/common_rl.md", "POMDPTools/testing.md"]
+```
+
 ### Reference
 
 ```@contents
