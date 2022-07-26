@@ -1,4 +1,4 @@
-# Simulators in POMDPTools
+# Implemented Simulators 
 
 POMDPTools contains a collection of POMDPs.jl simulators.
 

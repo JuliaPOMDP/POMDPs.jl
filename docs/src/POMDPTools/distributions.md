@@ -1,4 +1,4 @@
-# Distributions in POMDPTools
+# Implemented Distributions
 
 POMDPTools contains several utility distributions to be used in the POMDPs `transition` and `observation` functions. These implement the appropriate methods of the functions in the [distributions interface](@ref Distributions).
 

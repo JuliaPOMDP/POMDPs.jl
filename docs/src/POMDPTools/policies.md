@@ -1,4 +1,4 @@
-# Policies in POMDPTools
+# Implemented Policies
 
 POMDPTools currently provides the following policy types:
 - a wrapper to turn a function into a `Policy`

@@ -1,4 +1,4 @@
-# Belief Updaters in POMDPTools
+# Implemented Belief Updaters
 
 POMDPTools provides the following generic belief updaters:
 - a discrete belief updater
