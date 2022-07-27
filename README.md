@@ -10,14 +10,16 @@
 [![Slack](https://img.shields.io/badge/Chat%20on%20Slack-with%20%23pomdp--bridged-ff69b4)](https://slackinvite.julialang.org)
 
 This package provides a core interface for working with [Markov decision processes (MDPs)](https://en.wikipedia.org/wiki/Markov_decision_process) and [partially observable Markov decision processes (POMDPs)](https://en.wikipedia.org/wiki/Partially_observable_Markov_decision_process).
-The [POMDPTools](https://juliapomdp.github.io/POMDPs.jl/stable/POMDPTools/#pomdptools_section) package acts as a "standard library" for the POMPDs.jl interface, providing implementations of commonly-used components such as policies, belief updaters, distributions, and simulators.
+The [POMDPTools](https://juliapomdp.github.io/POMDPs.jl/stable/POMDPTools/#pomdptools_section) package acts as a "standard library" for the POMDPs.jl interface, providing implementations of commonly-used components such as policies, belief updaters, distributions, and simulators.
 
 Our goal is to provide a common programming vocabulary for:
+
 1. [Expressing problems as MDPs and POMDPs](http://juliapomdp.github.io/POMDPs.jl/stable/def_pomdp). 
 2. Writing solver software.
 3. Running simulations efficiently.
 
 POMDPs.jl integrates with other ecosystems:
+
 - Python can be used to define and solve MDPs and POMDPs via the [quickpomdps](https://github.com/JuliaPOMDP/quickpomdps) package or through tables directly via [pyjulia](https://github.com/JuliaPy/pyjulia).
 - POMDPTools provides [two-way integration](https://juliapomdp.github.io/POMDPModelTools.jl/stable/common_rl/#CommonRLInterface-Integration) with [CommonRLInterface](https://github.com/JuliaReinforcementLearning/CommonRLInterface.jl) and therefore with the [JuliaReinforcementLearning packages](https://github.com/JuliaReinforcementLearning/ReinforcementLearning.jl).
 - The [SymbolicMDPs package](https://github.com/JuliaPlanners/SymbolicMDPs.jl) provides an interface to work with PDDL models.
@@ -111,6 +113,21 @@ POMDPs.jl itself contains only the core interface for communicating about proble
 |-------------------|----------------------|------------------|
 | [POMDPTools](https://github.com/JuliaPOMDP/POMDPs.jl/tree/master/lib/POMDPTools) (hosted in this repository) | [![Build Status](https://github.com/JuliaPOMDP/POMDPs.jl/actions/workflows/CI.yml/badge.svg)](https://github.com/JuliaPOMDP/POMDPs.jl/actions/workflows/CI.yml) | |
 | [ParticleFilters](https://github.com/JuliaPOMDP/ParticleFilters.jl) | [![Build Status](https://github.com/JuliaPOMDP/ParticleFilters.jl/actions/workflows/CI.yml/badge.svg)](https://github.com/JuliaPOMDP/ParticleFilters.jl) | [![codecov.io](http://codecov.io/github/JuliaPOMDP/ParticleFilters.jl/coverage.svg?)](http://codecov.io/github/JuliaPOMDP/ParticleFilters.jl?) |
+
+#### Implemented Models:
+
+Many models have been implemented using the POMDPs.jl interface for various projects. This list contains a few commonly used models:
+
+|  **`Package`**   |  **`Build`** | **`Coverage`** |
+|-------------------|----------------------|------------------|
+| [POMDPModels](https://github.com/JuliaPOMDP/POMDPModels.jl) | [![Build Status](https://travis-ci.org/JuliaPOMDP/POMDPModels.jl.svg?branch=master)](https://travis-ci.org/JuliaPOMDP/POMDPModels.jl) | [![Coverage Status](https://coveralls.io/repos/github/JuliaPOMDP/POMDPModels.jl/badge.svg)](https://coveralls.io/github/JuliaPOMDP/POMDPModels.jl) |
+| [LaserTag](https://github.com/JuliaPOMDP/LaserTag.jl) | [![Build Status](https://travis-ci.org/JuliaPOMDP/LaserTag.jl.svg?branch=master)](https://travis-ci.org/JuliaPOMDP/LaserTag.jl) | [![Coverage Status](https://coveralls.io/repos/JuliaPOMDP/LaserTag.jl/badge.svg?branch=master&service=github)](https://coveralls.io/github/JuliaPOMDP/LaserTag.jl?branch=master) |
+| [RockSample](https://github.com/JuliaPOMDP/RockSample.jl) | [![Build Status](https://travis-ci.org/JuliaPOMDP/RockSample.jl.svg?branch=master)](https://travis-ci.org/JuliaPOMDP/RockSample.jl) | [![Coverage Status](https://coveralls.io/repos/github/JuliaPOMDP/RockSample.jl/badge.svg?branch=master)](https://coveralls.io/github/JuliaPOMDP/RockSample.jl?branch=master) |
+| [DroneSurveillance](https://github.com/JuliaPOMDP/DroneSurveillance.jl) | [![Build status](https://github.com/JuliaPOMDP/DroneSurveillance.jl/workflows/CI/badge.svg)](https://github.com/JuliaPOMDP/DroneSurveillance.jl/actions) | [![codecov](https://codecov.io/gh/juliapomdp/DroneSurveillance.jl/branch/master/graph/badge.svg)](https://codecov.io/gh/juliapomdp/DroneSurveillance.jl) |
+| [ContinuumWorld](https://github.com/JuliaPOMDP/ContinuumWorld.jl) | [![Build Status](https://travis-ci.org/JuliaPOMDP/ContinuumWorld.jl.svg?branch=master)](https://travis-ci.org/JuliaPOMDP/ContinuumWorld.jl) | [![Coverage Status](https://coveralls.io/repos/JuliaPOMDP/ContinuumWorld.jl/badge.svg?branch=master&service=github)](https://coveralls.io/github/JuliaPOMDP/ContinuumWorld.jl?branch=master) |
+| [VDPTag](https://github.com/zsunberg/VDPTag2.jl) | [![Build Status](https://travis-ci.org/zsunberg/VDPTag2.jl.svg?branch=master)](https://travis-ci.org/zsunberg/VDPTag2.jl) | |
+| [Roomba Localization](https://github.com/sisl/RoombaPOMDPs.jl) | [![Build Status](https://travis-ci.org/sisl/RoombaPOMDPs.jl.svg?branch=master)](https://travis-ci.org/sisl/RoombaPOMDPs.jl) | |
+
 
 #### MDP solvers:
 
