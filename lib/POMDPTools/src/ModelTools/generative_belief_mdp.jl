@@ -32,20 +32,14 @@ isterminal(bmdp::GenerativeBeliefMDP, b) = all(isterminal(bmdp.pomdp, s) for s i
 
 discount(bmdp::GenerativeBeliefMDP) = discount(bmdp.pomdp)
 
-const warned_about_gbmdp_terminal=false
-
 # override this if you want to handle it in a special way
 function gbmdp_handle_terminal(pomdp::POMDP, updater::Updater, b, s, a, rng)
-    global warned_about_gbmdp_terminal
-    if !warned_about_gbmdp_terminal
-        @warn("""
-             Sampled a terminal state for a GenerativeBeliefMDP transition - not sure how to proceed, but will try.
+    @warn("""
+         Sampled a terminal state for a GenerativeBeliefMDP transition - not sure how to proceed, but will try.
 
-             See $(@__FILE__) and implement a new method of POMDPToolbox.gbmdp_handle_terminal if you want special behavior in this case.
+         See $(@__FILE__) and implement a new method of POMDPToolbox.gbmdp_handle_terminal if you want special behavior in this case.
 
-             """)
-        warned_about_gbmdp_terminal = true
-    end
+         """, maxlog=1)
     sp, o, r = @gen(:sp, :o, :r)(pomdp, s, a, rng)
     bp = update(updater, b, a, o)
     return bp
