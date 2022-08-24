@@ -10,7 +10,7 @@ let
     io = IOBuffer()
     d = TextDisplay(io)
     display(d, p)
-    @test length(split(String(take!(io)), '\n')) == 6
+    @test length(split(String(take!(io)), '\n')) in [6,7] # length different in julia 1.8
 
     for s1 in states(gw)
         @test action(p, s1) == GridWorldAction(:left)
@@ -29,5 +29,5 @@ let
     io = IOBuffer()
     d = TextDisplay(io)
     display(d, p3)
-    @test length(split(String(take!(io)), '\n')) == 6
+    @test length(split(String(take!(io)), '\n')) in [6,7]
 end
