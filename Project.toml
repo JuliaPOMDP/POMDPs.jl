@@ -4,7 +4,7 @@ version = "0.9.4"
 
 [deps]
 Distributions = "31c24e10-a181-5473-b8eb-7969acd0382f"
-LightGraphs = "093fc24a-ae57-5d10-9952-331d41423f4d"
+Graphs = "86223c79-3864-5bf0-83f7-82e725a168b6"
 NamedTupleTools = "d9ec5142-1e00-5aa0-9d6a-321866360f50"
 POMDPLinter = "f3bd98c0-eb40-45e2-9eb1-f2763262d755"
 Pkg = "44cfe95a-1eb2-52ea-b672-e2afdf69b78f"
@@ -13,7 +13,7 @@ Statistics = "10745b16-79ce-11e8-11f9-7d13ad32a3b2"
 
 [compat]
 Distributions = "0.17, 0.18, 0.19, 0.20, 0.21, 0.22, 0.23, 0.24, 0.25"
-LightGraphs = "1"
+Graphs = "1"
 NamedTupleTools = "0.10, 0.11, 0.12, 0.13, 0.14"
 POMDPLinter = "0.1"
 julia = "1"
