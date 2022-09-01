@@ -26,7 +26,7 @@ UnicodePlots = "b8865327-cd53-5732-bb35-84acbb429228"
 CommonRLInterface = "0.2, 0.3"
 DataFrames = "0.19, 0.20, 0.21, 0.22, 1"
 Distributions = "0.17, 0.18, 0.19, 0.20, 0.21, 0.22, 0.23, 0.24, 0.25"
-NamedTupleTools = "0.13"
+NamedTupleTools = "0.13, 0.14"
 POMDPLinter = "0.1"
 POMDPModels = "0.4"
 POMDPs = "0.9"
@@ -44,8 +44,8 @@ DiscreteValueIteration = "4b033969-44f6-5439-a48b-c11fa3648068"
 Documenter = "e30172f5-a6a5-5a46-863b-614d45cd2de4"
 POMDPModels = "355abbd5-f08e-5560-ac9e-8b5f2592a0ca"
 QuickPOMDPs = "8af83fb2-a731-493c-9049-9e19dbce6165"
-Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
 StableRNGs = "860ef19b-820b-49d6-a774-d7a799459cd3"
+Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
 
 [targets]
 test = ["POMDPModels", "Test", "DiscreteValueIteration", "Documenter", "QuickPOMDPs", "StableRNGs"]
