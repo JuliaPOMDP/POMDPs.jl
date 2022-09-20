@@ -22,6 +22,7 @@ POMDPs.transition(mdp::UnderlyingMDP{P, S, A}, s::S, a::A) where {P,S,A}= transi
 POMDPs.initialstate(m::UnderlyingMDP) = initialstate(m.pomdp)
 POMDPs.states(mdp::UnderlyingMDP) = states(mdp.pomdp)
 POMDPs.actions(mdp::UnderlyingMDP) = actions(mdp.pomdp)
+POMDPs.actions(mdp::UnderlyingMDP{P, S, A}, s::S) where {P,S,A} = actions(mdp.pomdp, s)
 POMDPs.reward(mdp::UnderlyingMDP{P, S, A}, s::S, a::A) where {P,S,A} = reward(mdp.pomdp, s, a)
 POMDPs.reward(mdp::UnderlyingMDP{P, S, A}, s::S, a::A, sp::S) where {P,S,A} = reward(mdp.pomdp, s, a, sp)
 POMDPs.isterminal(mdp ::UnderlyingMDP{P, S, A}, s::S) where {P,S,A} = isterminal(mdp.pomdp, s)
