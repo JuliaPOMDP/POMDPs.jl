@@ -25,4 +25,8 @@ let
     # test mdp passthrough
     m = SimpleGridWorld()
     @test UnderlyingMDP(m) === m
+
+    struct Issue429POMDP <: POMDP{Int, Int, Int} end
+    POMDPs.actions(m::Issue429POMDP, s) = [1,2]
+    @test actions(UnderlyingMDP(Issue429POMDP()), 1) == [1,2]
 end
