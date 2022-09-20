@@ -132,7 +132,7 @@ In POMDPs.jl, a state, action, or observation can be represented by any Julia ob
 
 !!! warn
     
-    Objects representing individual states, actions, and observations should not be altered once they are created, since they may be used as dictionary keys or stored in histories. Hence it is usually best to use immutable objects such as integers or [`StaticArray`s](https://github.com/JuliaArrays/StaticArrays.jl).
+    Objects representing individual states, actions, and observations should not be altered once they are created, since they may be used as dictionary keys or stored in histories. Hence it is usually best to use immutable objects such as integers or [`StaticArray`s](https://github.com/JuliaArrays/StaticArrays.jl). If the states need to be mutable (e.g. aggregate types with vectors in them), make sure the states are not actualy mutated and that `hash` and `==` functions are implmemented (see [`AutoHashEquals`](https://github.com/andrewcooke/AutoHashEquals.jl))
 
 The state, action, and observation spaces are defined with the `states`, `actions`, and `observations` Quick(PO)MDP keyword arguments. The simplest way to define these spaces is with a `Vector` of states, e.g. `states = ["left", "right"]` in the tiger problem. More complicated spaces, such as vector spaces and other continuous, uncountable, or hybrid sets can be defined with custom objects that adhere to the [space interface](@ref space-interface). However it should be noted that, for many solvers, *an explicit enumeration of the state and observation spaces is not needed*. Instead, it is sufficient to specify the state or observation *type* using the `statetype` or `obstype` arguments, e.g. `obstype = Float64` in the mountaincar problem.
 
