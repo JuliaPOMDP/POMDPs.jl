@@ -8,6 +8,7 @@ The recommended way to access the transition and reward matrices is through the 
 # Fields
 - `T::Vector{SparseMatrixCSC{Float64, Int64}}` The transition model is represented as a vector of sparse matrices (one for each action). `T[a][s, sp]` the probability of transition from `s` to `sp` taking action `a`.
 - `R::Array{Float64, 2}` The reward is represented as a matrix where the rows are states and the columns actions: `R[s, a]` is the reward of taking action `a` in sate `s`.
+- `initial_probs::Vector{Float64}` The initial state distribution with one entry for each state
 - `terminal_states::Set{Int64}` Stores the terminal states
 - `discount::Float64` The discount factor
 
@@ -22,6 +23,7 @@ To learn more information about how to define an MDP with the explicit interface
 struct SparseTabularMDP <: MDP{Int64, Int64}
     T::Vector{SparseMatrixCSC{Float64, Int64}} # T[a][s, sp]
     R::Array{Float64, 2} # R[s, a]
+    initial_probs::Vector{Float64}
     terminal_states::Set{Int64}
     discount::Float64
 end
@@ -30,7 +32,8 @@ function SparseTabularMDP(mdp::MDP)
     T = transition_matrix_a_s_sp(mdp)
     R = reward_s_a(mdp)
     ts = terminal_states_set(mdp)
-    return SparseTabularMDP(T, R, ts, discount(mdp))
+    ip = inital_probs_vec(mdp)
+    return SparseTabularMDP(T, R, ip, ts, discount(mdp))
 end
 
 @POMDP_require SparseTabularMDP(mdp::MDP) begin
@@ -80,8 +83,10 @@ The recommended way to access the transition, reward, and observation matrices i
 - `T::Vector{SparseMatrixCSC{Float64, Int64}}` The transition model is represented as a vector of sparse matrices (one for each action). `T[a][s, sp]` the probability of transition from `s` to `sp` taking action `a`.
 - `R::Array{Float64, 2}` The reward is represented as a matrix where the rows are states and the columns actions: `R[s, a]` is the reward of taking action `a` in sate `s`.
 - `O::Vector{SparseMatrixCSC{Float64, Int64}}` The observation model is represented as a vector of sparse matrices (one for each action). `O[a][sp, o]` is the probability of observing `o` from state `sp` after having taken action `a`.
+- `initial_probs::Vector{Float64}` The initial state distribution with one entry for each state
 - `terminal_states::Set{Int64}` Stores the terminal states
 - `discount::Float64` The discount factor
+
 
 # Constructors
 
@@ -95,8 +100,10 @@ struct SparseTabularPOMDP <: POMDP{Int64, Int64, Int64}
     T::Vector{SparseMatrixCSC{Float64, Int64}} # T[a][s, sp]
     R::Array{Float64, 2} # R[s,sp]
     O::Vector{SparseMatrixCSC{Float64, Int64}} # O[a][sp, o]
+    initial_probs::Vector{Float64}
     terminal_states::Set{Int64}
     discount::Float64
+
 end
 
 function SparseTabularPOMDP(pomdp::POMDP)
@@ -104,7 +111,8 @@ function SparseTabularPOMDP(pomdp::POMDP)
     R = reward_s_a(pomdp)
     O = observation_matrix_a_sp_o(pomdp)
     ts = terminal_states_set(pomdp)
-    return SparseTabularPOMDP(T, R, O, ts, discount(pomdp))
+    ip = inital_probs_vec(pomdp)
+    return SparseTabularPOMDP(T, R, O, ip, ts, discount(pomdp))
 end
 
 @POMDP_require SparseTabularPOMDP(pomdp::POMDP) begin
@@ -229,6 +237,14 @@ function terminal_states_set(mdp::Union{MDP, POMDP})
     return ts
 end
 
+function inital_probs_vec(mdp::Union{MDP, POMDP})
+    ip = zeros(length(states(mdp)))
+    for (s, p) in weighted_iterator(initialstate(mdp))
+        ip[stateindex(mdp, s)] = p
+    end
+    ip
+end
+
 function observation_matrix_a_sp_o(pomdp::POMDP)
     state_space, action_space, obs_space = states(pomdp), actions(pomdp), observations(pomdp)
     na, ns, no = length(action_space), length(state_space), length(obs_space)
@@ -270,6 +286,8 @@ POMDPs.discount(p::SparseTabularProblem) = p.discount
 POMDPs.transition(p::SparseTabularProblem, s::Int64, a::Int64) = SparseCat(findnz(p.T[a][s, :])...) # XXX not memory efficient
 
 POMDPs.reward(p::SparseTabularProblem, s::Int64, a::Int64) = p.R[s, a]
+
+POMDPs.initialstate(p::SparseTabularProblem) = SparseCat(states(p), p.initial_probs)
 
 POMDPs.isterminal(p::SparseTabularProblem, s::Int64) = s ∈ p.terminal_states
 
