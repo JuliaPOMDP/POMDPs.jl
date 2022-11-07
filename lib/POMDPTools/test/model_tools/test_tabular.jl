@@ -39,7 +39,7 @@ function test_reward(pb1::Union{MDP, POMDP}, pb2::Union{SparseTabularMDP, Sparse
 end
 
 function test_observation(pb1::POMDP, pb2::SparseTabularPOMDP)
-    @testset "transitions" begin
+    @testset "observations" begin
         for s in states(pb1)
             for a in actions(pb1)
                 od1 = observation(pb1, a, s)
@@ -51,6 +51,17 @@ function test_observation(pb1::POMDP, pb2::SparseTabularPOMDP)
                     @test pdf(od2, oi) == p
                 end
             end
+        end
+    end
+end
+
+function test_initialstate(pb1::POMDP, pb2::SparseTabularPOMDP)
+    @testset "initialstate" begin
+        is1 = initialstate(pb1)
+        is2 = initialstate(pb2)
+        for s in states(pb1)
+            si = stateindex(pb1, s)
+            @test pdf(is1, s) == pdf(is2, si)
         end
     end
 end
@@ -91,7 +102,6 @@ sparsegw = SparseTabularMDP(gw)
 @test actions(sparsegw, 101) == collect(actions(sparsegw))
 
 end
-
 
 ## POMDP 
 
@@ -137,6 +147,7 @@ function test_pomdp(pomdp::POMDP)
     test_transition(pomdp, spomdp)
     test_reward(pomdp, spomdp)
     test_observation(pomdp, spomdp)
+    test_initialstate(pomdp, spomdp)
 end
 
 @testset "Tiger POMDP" begin
