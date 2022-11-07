@@ -1,7 +1,7 @@
 name = "POMDPTools"
 uuid = "7588e00f-9cae-40de-98dc-e0c70c48cdd7"
 authors = ["Zachary Sunberg <zachary.sunberg@colorado.edu> and contributors"]
-version = "0.1.1"
+version = "0.1.2"
 
 [deps]
 CommonRLInterface = "d842c3ba-07a1-494f-bbec-f5741b0a3e98"
