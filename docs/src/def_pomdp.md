@@ -142,13 +142,14 @@ The state, action, and observation spaces are defined with the `states`, `action
 
 #### [State- or belief-dependent action spaces](@id state-dep-action)
 
-In some problems, the set of allowable actions depends on the state or belief. This can be implemented by providing a function of the state or belief to the `actions` argument, e.g. if you can only take the action `1` in state `1`, but can take actions `2` and `3`, in an MDP, you might use
+In some problems, the set of allowable actions depends on the state or belief. This can be implemented by providing a function of the state or belief to the `actions` argument, e.g. if you can only take the action `1` in state `1`, but can take full action space `1`, `2` and `3`, in an MDP, you might use
 ```jldoctest ; output=false, filter=r".* \(generic function.*\)"
-actions = function (s)
+# add default vlaue "s = nothing" , "actions(mdp)" won't throw error.
+actions = function (s = nothing) 
     if s == 1
-        return [1,2,3]
+        return [1]      #<--- return state-dep-actions
     else
-        return [2,3]
+        return [1,2,3]  #<--- return full action space here
     end
 end
 
