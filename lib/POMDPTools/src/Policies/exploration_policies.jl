@@ -54,25 +54,25 @@ If a function is passed for `eps`, `eps(k)` is called to compute the value of ep
 - `rng::AbstractRNG`
 - `actions::A` an indexable list of action
 """
-struct EpsGreedyPolicy{T<:Function, R<:AbstractRNG, A} <: ExplorationPolicy
+struct EpsGreedyPolicy{T<:Function, R<:AbstractRNG, M<:Union{MDP,POMDP}} <: ExplorationPolicy
     eps::T
     rng::R
-    actions::A
+    m::M
 end
 
-function EpsGreedyPolicy(problem, eps::Function; 
+function EpsGreedyPolicy(problem::Union{MDP,POMDP}, eps::Function; 
                          rng::AbstractRNG=Random.GLOBAL_RNG)
-    return EpsGreedyPolicy(eps, rng, actions(problem))
+    return EpsGreedyPolicy(eps, rng, problem)
 end
-function EpsGreedyPolicy(problem, eps::Real; 
+function EpsGreedyPolicy(problem::Union{MDP,POMDP}, eps::Real; 
                          rng::AbstractRNG=Random.GLOBAL_RNG)
-    return EpsGreedyPolicy(x->eps, rng, actions(problem))
+    return EpsGreedyPolicy(x->eps, rng, problem)
 end
 
 
 function POMDPs.action(p::EpsGreedyPolicy, on_policy::Policy, k, s)
     if rand(p.rng) < p.eps(k)
-        return rand(p.rng, p.actions)
+        return rand(p.rng, actions(p.m,s))
     else 
         return action(on_policy, s)
     end
