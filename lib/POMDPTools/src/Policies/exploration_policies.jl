@@ -52,7 +52,7 @@ If a function is passed for `eps`, `eps(k)` is called to compute the value of ep
 
 - `eps::Function`
 - `rng::AbstractRNG`
-- `actions::A` an indexable list of action
+- `m::M` POMDPs or MDPs problem
 """
 struct EpsGreedyPolicy{T<:Function, R<:AbstractRNG, M<:Union{MDP,POMDP}} <: ExplorationPolicy
     eps::T
