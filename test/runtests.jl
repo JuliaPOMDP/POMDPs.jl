@@ -54,39 +54,3 @@ struct EB <: POMDP{Int, Int, Int} end
     @test history(4)[end][:o] == 4
     @test currentobs(4) == 4
 end
-
-@testset "deprecated" begin
-    
-    if VERSION >= v"1.1"
-        POMDPs.add_registry()
-    end
-    
-    @test !@implemented transition(::EA, ::Int, ::Int)
-    POMDPs.transition(::EA, ::Int, ::Int) = [0]
-    @test @implemented transition(::EA, ::Int, ::Int)
-
-    @POMDP_require solve(a::Int, b::Int) begin
-        @req transition(::EA, ::Int, ::Int)
-    end
-    @POMDP_requirements Int begin end
-    @requirements_info Int
-    a = 1
-    b = 2
-    @get_requirements solve(a, b)
-    @show_requirements solve(a, b)
-    @warn_requirements solve(a, b)
-
-    @test_throws ErrorException @req
-    @test_throws ErrorException @subreq
-
-    @test gen(DDNOut(:sp), EA(), 1, 1, MersenneTwister(3)) == 0
-    @test_throws MethodError @gen(:sp,:o)(EA(), 1, true, MersenneTwister(4))
-
-    POMDPs.initialstate(::EA) = [1,2,3]
-    @test (@test_deprecated initialstate_distribution(EA())) == initialstate(EA())
-    @test (@test_deprecated initialstate(EA(), Random.GLOBAL_RNG)) in initialstate(EA())
-
-    @test_throws MethodError initialstate(EB())
-    POMDPs.initialstate_distribution(m::EB) = [1]
-    @test initialstate(EB()) == [1]
-end

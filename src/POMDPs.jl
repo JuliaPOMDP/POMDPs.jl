@@ -11,10 +11,9 @@ import NamedTupleTools
 import Pkg
 using Graphs: SimpleDiGraph, topological_sort_by_dfs, add_edge!
 
-# For Deprecated
 import POMDPLinter
 
-export 
+export
     # Abstract type
     POMDP,
     MDP,
@@ -35,13 +34,13 @@ export
     gen,
     @gen,
     DDNOut,
-    
+
     # Discrete Functions
     length,
     stateindex,
     actionindex,
     obsindex,
-    
+
     # Common Functions
     rand,
     pdf,
@@ -52,7 +51,7 @@ export
     # Solver types
     Solver,
     solve,
-    
+
     # Beliefs
     Updater,
     update,
@@ -76,26 +75,7 @@ export
     convert_o,
     statetype,
     actiontype,
-    obstype,
-
-    # Deprecated
-    implemented,
-    @implemented,
-    RequirementSet,
-    check_requirements,
-    show_requirements,
-    get_requirements,
-    requirements_info,
-    @POMDP_require,
-    @POMDP_requirements,
-    @requirements_info,
-    @get_requirements,
-    @show_requirements,
-    @warn_requirements,
-    @req,
-    @subreq,
-    initialstate_distribution,
-    dimensions
+    obstype
 
 
 include("pomdp.jl")
@@ -108,6 +88,5 @@ include("policy.jl")
 include("type_inferrence.jl")
 include("generative.jl")
 include("gen_impl.jl")
-include("deprecated.jl")
 
 end
