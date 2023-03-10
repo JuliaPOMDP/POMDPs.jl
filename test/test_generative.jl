@@ -1,4 +1,4 @@
-import POMDPs: transition, observation, reward, initialstate_distribution
+import POMDPs: transition, observation, reward
 import POMDPs: gen
 
 struct Deterministic{T}
