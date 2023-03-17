@@ -13,9 +13,9 @@ The simulation will be terminated when either
 3) max_steps have been executed
 
 # Keyword arguments:
-- rng: A random number generator to use.
-- eps: A small number; if γᵗ where γ is the discount factor and t is the time step becomes smaller than this, the simulation will be terminated.
-- max_steps: The maximum number of steps to simulate.
+- rng::AbstractRNG (default: Random.GLOBAL_RNG) - A random number generator to use. 
+- eps::Float64 (default: 0.0) - A small number; if γᵗ where γ is the discount factor and t is the time step becomes smaller than this, the simulation will be terminated.
+- max_steps::Int (default: typemax(Int)) - The maximum number of steps to simulate.
 
 # Usage (optional arguments in brackets):
 
@@ -28,16 +28,16 @@ struct RolloutSimulator{RNG<:AbstractRNG} <: Simulator
     rng::RNG
 
     # optional: if these are null, they will be ignored
-    max_steps::Union{Nothing,Int}
-    eps::Union{Nothing,Float64}
+    max_steps::Int
+    eps::Float64
 end
 
-RolloutSimulator(rng::AbstractRNG, d::Int=typemax(Int)) = RolloutSimulator(rng, d, nothing)
 function RolloutSimulator(;rng=Random.GLOBAL_RNG,
-                           eps=nothing,
-                           max_steps=nothing)
-    return RolloutSimulator{typeof(rng)}(rng, max_steps, eps)
+    eps=0.0,
+    max_steps=typemax(Int))
+    return RolloutSimulator(rng, max_steps, eps)
 end
+RolloutSimulator(rng::AbstractRNG, d::Int=typemax(Int)) = RolloutSimulator(rng, d, 0.0)
 
 
 @POMDP_require simulate(sim::RolloutSimulator, pomdp::POMDP, policy::Policy) begin
@@ -83,19 +83,6 @@ end
 end
 
 function simulate(sim::RolloutSimulator, pomdp::POMDP, policy::Policy, updater::Updater, initial_belief, s)
-    
-    if sim.eps == nothing
-        eps = 0.0
-    else
-        eps = sim.eps
-    end
-    
-    if sim.max_steps == nothing
-        max_steps = typemax(Int)
-    else
-        max_steps = sim.max_steps
-    end
-
     disc = 1.0
     r_total = 0.0
 
@@ -103,7 +90,7 @@ function simulate(sim::RolloutSimulator, pomdp::POMDP, policy::Policy, updater::
 
     step = 1
 
-    while disc > eps && !isterminal(pomdp, s) && step <= max_steps
+    while disc > sim.eps && !isterminal(pomdp, s) && step <= sim.max_steps
 
         a = action(policy, b)
 
@@ -144,26 +131,13 @@ function simulate(sim::RolloutSimulator, mdp::MDP, policy::Policy)
 end
 
 function simulate(sim::RolloutSimulator, mdp::MDP{S}, policy::Policy, initialstate::S) where {S}
-    
-    if sim.eps == nothing
-        eps = 0.0
-    else
-        eps = sim.eps
-    end
-    
-    if sim.max_steps == nothing
-        max_steps = typemax(Int)
-    else
-        max_steps = sim.max_steps
-    end
-
     s = initialstate
 
     disc = 1.0
     r_total = 0.0
     step = 1
 
-    while disc > eps && !isterminal(mdp, s) && step <= max_steps
+    while disc > sim.eps && !isterminal(mdp, s) && step <= sim.max_steps
         a = action(policy, s)
 
         sp, r = @gen(:sp,:r)(mdp, s, a, sim.rng)
