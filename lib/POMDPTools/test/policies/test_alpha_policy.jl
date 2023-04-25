@@ -2,7 +2,7 @@ let
     pomdp = BabyPOMDP()
 
     bu = DiscreteUpdater(pomdp)
-    b0 = initialize_belief(bu, initialstate_distribution(pomdp))
+    b0 = initialize_belief(bu, initialstate(pomdp))
 
     # these values were gotten from FIB.jl
     # alphas = [-29.4557 -36.5093; -19.4557 -16.0629]
@@ -29,7 +29,7 @@ let
     @test action(policy, sparse_b0) == false
 
     # Bool_distribution (if it works for this, it should work for an arbitrary distribution)
-    bd = initialstate_distribution(pomdp)
+    bd = initialstate(pomdp)
     @test action(policy, bd) == false 
      
     # try pushing new vector

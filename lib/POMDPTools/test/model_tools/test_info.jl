@@ -36,7 +36,7 @@ let
         policy, sinfo = solve_info(solver, pomdp)
         @test isa(sinfo, Nothing)
 
-        d = initialstate_distribution(pomdp)
+        d = initialstate(pomdp)
         b = initialize_belief(up, d)
         a = action(policy, b)
         sp, o, r = @gen(:sp,:o,:r)(pomdp, rand(rng, d), a, rng)
