@@ -36,6 +36,4 @@ POMDPs.actionindex(mdp::UnderlyingMDP{P,S, Bool}, a::Bool) where {P,S} = actioni
 
 POMDPs.gen(mdp::UnderlyingMDP, s, a, rng) = gen(mdp.pomdp, s, a, rng)
 
-# deprecated in POMDPs.jl v0.9
-POMDPs.initialstate_distribution(mdp::UnderlyingMDP) = initialstate_distribution(mdp.pomdp)
 POMDPs.initialstate(mdp::UnderlyingMDP, rng::AbstractRNG) = initialstate(mdp.pomdp, rng)

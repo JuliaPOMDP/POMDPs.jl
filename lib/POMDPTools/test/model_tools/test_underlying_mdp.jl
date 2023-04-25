@@ -4,8 +4,8 @@ let
     mdp = UnderlyingMDP(pomdp)
 
     @test states(mdp) == states(pomdp)
-    s_mdp = rand(MersenneTwister(1), initialstate_distribution(mdp))
-    s_pomdp = rand(MersenneTwister(1), initialstate_distribution(pomdp))
+    s_mdp = rand(MersenneTwister(1), initialstate(mdp))
+    s_pomdp = rand(MersenneTwister(1), initialstate(pomdp))
 
     @test s_mdp == s_pomdp
 

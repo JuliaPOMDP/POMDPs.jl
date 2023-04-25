@@ -1,8 +1,7 @@
-# these imports are first for now to deal with issues because it imports the old POMDPModelTools
 using POMDPs
 using DiscreteValueIteration: ValueIterationSolver
 using QuickPOMDPs
-using POMDPModels: BabyPOMDP, TigerPOMDP, SimpleGridWorld, LegacyGridWorld, RandomMDP, TMaze, Starve, FeedWhenCrying
+using POMDPModels: BabyPOMDP, TigerPOMDP, SimpleGridWorld, LegacyGridWorld, RandomMDP, TMaze, Starve, FeedWhenCrying, RandomPOMDP
 import POMDPLinter
 
 using POMDPTools
