@@ -16,7 +16,7 @@ import Base: ==
 using ..POMDPDistributions
 
 # import Distributions: pdf, mode, mean, support
-# import POMDPLinter: @POMDP_require
+import POMDPLinter: @POMDP_require
 
 export
     render
