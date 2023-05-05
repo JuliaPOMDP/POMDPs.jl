@@ -12,6 +12,7 @@ let
     s_po = rand(MersenneTwister(1), initialstate(pomdp))
     s_mdp = rand(MersenneTwister(1), initialstate(mdp))
     @test s_po == s_mdp
+    @test stateindex(mdp, s_mdp) == stateindex(pomdp, s_po) == obsindex(pomdp, s_po)
 
     solver = ValueIterationSolver(max_iterations = 100)
     @test_skip begin
