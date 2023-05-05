@@ -14,18 +14,12 @@ end
 mdptype(::Type{FullyObservablePOMDP{M,S,A}}) where {M,S,A} = M
 
 POMDPs.observations(pomdp::FullyObservablePOMDP) = states(pomdp.mdp)
-POMDPs.obsindex(pomdp::FullyObservablePOMDP{S, A}, o::S) where {S, A} = stateindex(pomdp.mdp, o)
+POMDPs.obsindex(pomdp::FullyObservablePOMDP, o) = stateindex(pomdp.mdp, o)
 
 POMDPs.convert_o(T::Type{V}, o, pomdp::FullyObservablePOMDP) where {V<:AbstractArray} = convert_s(T, o, pomdp.mdp)
 POMDPs.convert_o(T::Type{S}, vec::V, pomdp::FullyObservablePOMDP) where {S,V<:AbstractArray} = convert_s(T, vec, pomdp.mdp)
 
-function POMDPs.observation(pomdp::FullyObservablePOMDP, a, sp)
-    return Deterministic(sp)
-end
-
-function POMDPs.observation(pomdp::FullyObservablePOMDP, s, a, sp)
-    return Deterministic(sp)
-end
+POMDPs.observation(::FullyObservablePOMDP, a, sp) = Deterministic(sp)
 
 # inherit other function from the MDP type
 
