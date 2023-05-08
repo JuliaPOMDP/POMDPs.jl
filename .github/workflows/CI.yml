@@ -29,10 +29,10 @@ jobs:
       # always test POMDPTools as well
       - name: Test POMDPTools
         run: |
-          julia --color=yes -e '
+          julia --color=yes -e "
             using Pkg;
-            Pkg.develop(path="lib/POMDPTools")
-            Pkg.test("POMDPTools")'
+            Pkg.develop(path=joinpath(string(:lib), string(:POMDPTools)))
+            Pkg.test(string(:POMDPTools))"
 
   docs:
     name: Documentation
