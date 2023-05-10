@@ -4,24 +4,36 @@ on: [push, pull_request]
 
 jobs:
   test:
-    runs-on: ubuntu-latest
+    name: Julia ${{ matrix.version }} - ${{ matrix.os }} - ${{ matrix.arch }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        version:
+          - '1'
+        os:
+          - ubuntu-latest
+          - macOS-latest
+          - windows-latest
+        arch:
+          - x64
 
     steps:
       - uses: actions/checkout@v2
       - uses: julia-actions/setup-julia@v1
         with:
-          version: '1'
-          arch: x64
+          version: ${{ matrix.version }}
+          arch: ${{ matrix.arch }}
       - uses: julia-actions/julia-buildpkg@v1
       - uses: julia-actions/julia-runtest@v1
 
       # always test POMDPTools as well
+      # symbol->string conversion for OS compatibility (quotes break things)
       - name: Test POMDPTools
         run: |
-          julia --color=yes -e '
+          julia --color=yes -e "
             using Pkg;
-            Pkg.develop(path="lib/POMDPTools")
-            Pkg.test("POMDPTools")'
+            Pkg.develop(path=joinpath(string(:lib), string(:POMDPTools)))
+            Pkg.test(string(:POMDPTools))"
 
   docs:
     name: Documentation
