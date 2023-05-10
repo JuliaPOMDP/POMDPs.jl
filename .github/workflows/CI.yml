@@ -27,6 +27,7 @@ jobs:
       - uses: julia-actions/julia-runtest@v1
 
       # always test POMDPTools as well
+      # symbol->string conversion for OS compatibility (quotes break things)
       - name: Test POMDPTools
         run: |
           julia --color=yes -e "
