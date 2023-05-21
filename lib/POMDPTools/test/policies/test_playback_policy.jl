@@ -13,6 +13,12 @@ playback = PlaybackPolicy(collect(action_hist(hist)), RandomPolicy(mdp))
 hist2 = simulate(HistoryRecorder(), mdp, playback, GWPos(3,3))
 @test hist == hist2
 
+## Test with default error policy
+playback = PlaybackPolicy(collect(action_hist(hist)))
+@test all(playback.actions .== action_hist(hist))
+hist3 = simulate(HistoryRecorder(), mdp, playback, GWPos(3,3))
+@test_throws ErrorException action(playback, GWPos(3,3))
+
 ## Test log probability
 Distributions.logpdf(p::RandomPolicy, h) = length(h)*log(1. / length(actions(p.problem)))
 playback = PlaybackPolicy(collect(action_hist(hist)), RandomPolicy(mdp), logpdfs = -ones(length(hist)))
