@@ -40,7 +40,7 @@ import POMDPs
 
 struct HistoryUpdater <: POMDPs.Updater end
 
-initialize_belief(up::HistoryUpdater, d) = Any[d]
+POMDPs.initialize_belief(up::HistoryUpdater, d) = Any[d]
 
 function POMDPs.update(up::HistoryUpdater, b, a, o)
     bp = copy(b)
