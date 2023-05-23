@@ -7,7 +7,7 @@ Create a sparse categorical distribution.
 
 This is optimized for value iteration with a fast implementation of `weighted_iterator`. Both `pdf` and `rand` are order n.
 """
-struct SparseCat{V, P}
+struct SparseCat{V, P, F} <: Distribution{F, Discrete}
     vals::V
     probs::P
 end
@@ -23,7 +23,9 @@ function SparseCat(v, p::AbstractArray)
     SparseCat(v, cp)
 end
 # the method above gets all arrays *except* ones that have a numeric eltype, which are handled below
-SparseCat(v, p::AbstractArray{<:Number}) = SparseCat{typeof(v), typeof(p)}(v, p)
+SparseCat(v, p::AbstractArray{<:Number}) = SparseCat{typeof(v), typeof(p), infer_variate_form(eltype(v))}(v, p)
+
+SparseCat(v, p) = SparseCat{typeof(v), typeof(p), infer_variate_form(eltype(v))}(v, p)
 
 function rand(rng::AbstractRNG, s::Random.SamplerTrivial{<:SparseCat})
     d = s[]
@@ -47,8 +49,14 @@ function rand(rng::AbstractRNG, s::Random.SamplerTrivial{<:SparseCat})
     error("Error sampling from SparseCat distribution with vals $(d.vals) and probs $(d.probs)") # try to help with type stability
 end
 
+rand(rng::AbstractRNG, d::SparseCat) = rand(rng, Random.SamplerTrivial(d))
+
+# to resolve ambiguity between pdf(::UnivariateDistribution, ::Real) and pdf(::SparseCat, ::Any)
+pdf(d::SparseCat, s) = _pdf(d, s)
+pdf(d::SparseCat, s::Real) = _pdf(d, s)
+
 # slow linear search :(
-function pdf(d::SparseCat, s)
+function _pdf(d::SparseCat, s)
     for (v, p) in d
         if v == s
             return p
@@ -57,7 +65,7 @@ function pdf(d::SparseCat, s)
     return zero(eltype(d.probs))
 end
 
-function pdf(d::SparseCat{V,P}, s) where {V<:AbstractArray, P<:AbstractArray}
+function _pdf(d::SparseCat{V,P}, s) where {V<:AbstractArray, P<:AbstractArray}
     for (i,v) in enumerate(d.vals)
         if v == s
             return d.probs[i]
@@ -65,7 +73,6 @@ function pdf(d::SparseCat{V,P}, s) where {V<:AbstractArray, P<:AbstractArray}
     end
     return zero(eltype(d.probs))
 end
-
 
 
 support(d::SparseCat) = d.vals
