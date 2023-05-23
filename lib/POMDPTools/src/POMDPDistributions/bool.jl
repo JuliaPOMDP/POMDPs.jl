@@ -9,7 +9,8 @@ struct BoolDistribution <: DiscreteUnivariateDistribution
     p::Float64 # probability of true
 end
 
-pdf(d::BoolDistribution, s::Bool) = s ? d.p : 1.0-d.p
+pdf(d::BoolDistribution, s::Real) = convert(Bool, s) ? d.p : 1.0-d.p
+Distributions.logpdf(d::BoolDistribution, s) = log(pdf(d, s))
 
 rand(rng::AbstractRNG, s::Random.SamplerTrivial{BoolDistribution}) = rand(rng) <= s[].p
 rand(rng::AbstractRNG, d::BoolDistribution) = rand(rng) <= d.p

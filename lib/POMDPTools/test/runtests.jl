@@ -14,8 +14,7 @@ using SparseArrays: sparse
 
 import CommonRLInterface
 
-import Distributions: Product
-
+using Distributions: Distributions, product_distribution, Product
 
 @testset "POMDPTools.jl" begin
     @testset "POMDPDistributions" begin
