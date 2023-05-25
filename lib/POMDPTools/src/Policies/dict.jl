@@ -16,7 +16,7 @@ mutable struct DictPolicy{P<:Union{POMDP,MDP}, T<:AbstractDict{Tuple,Float64}} <
 end
 
 function DictPolicy(mdp::Union{MDP,POMDP})
-    return DictPolicy(mdp, Dict{Tuple,Float64}())
+    return DictPolicy(mdp, Dict{Tuple{statetype(mdp), actiontype(mdp)}, Float64}())
 end
 
 # return the action with the max value
@@ -36,7 +36,7 @@ function action(p::DictPolicy, s)
         end
     end
     if max_action === nothing
-        max_action = available_actions[1]
+        max_action = first(available_actions)
     end
     return max_action
 end
