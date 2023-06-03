@@ -40,3 +40,19 @@ end
     @test !has_consistent_observation_distributions(SupportMismatchPOMDP())
     @test !has_consistent_distributions(SupportMismatchPOMDP())
 end
+
+@testset "tolerance" begin
+    struct ToleranceTestPOMDP <: POMDP{Int, Int, Int} end
+    POMDPs.states(::ToleranceTestPOMDP) = 1:2
+    POMDPs.actions(::ToleranceTestPOMDP) = 1:2
+    POMDPs.observations(::ToleranceTestPOMDP) = 1:2
+    POMDPs.initialstate(::ToleranceTestPOMDP) = Deterministic(1)
+    POMDPs.transition(::ToleranceTestPOMDP, s, a) = SparseCat(1:2, [1.0, 0.001])
+    POMDPs.observation(::ToleranceTestPOMDP, s, a, sp) = SparseCat(1:2, [1.0, 0.001])
+    @test !has_consistent_transition_distributions(ToleranceTestPOMDP())
+    @test !has_consistent_observation_distributions(ToleranceTestPOMDP())
+    @test !has_consistent_distributions(ToleranceTestPOMDP())
+    @test has_consistent_transition_distributions(ToleranceTestPOMDP(), atol=1e-3)
+    @test has_consistent_observation_distributions(ToleranceTestPOMDP(), atol=1e-3)
+    @test has_consistent_distributions(ToleranceTestPOMDP(), atol=1e-3)
+end
