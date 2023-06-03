@@ -1,6 +1,6 @@
 """
-    has_consistent_distributions(m::MDP)
-    has_consistent_distributions(m::POMDP)
+    has_consistent_distributions(m::MDP; [atol=0])
+    has_consistent_distributions(m::POMDP; [atol=0)
 
 Return true if no problems are found in the distributions for a discrete problem. Print information and return false if problems are found.
 
@@ -8,18 +8,21 @@ Tests whether
 - All probabilities are positive
 - Probabilities for all distributions sum to 1
 - All items with positive probability are in the support
+
+# Keyword Arguments
+- `atol`: absolute tolerance passed to `approx` for all probability checks
 """
 function has_consistent_distributions end
 
-function has_consistent_distributions(m::POMDP)
-    return has_consistent_initial_distribution(m) &&
-        has_consistent_transition_distributions(m) &&
-        has_consistent_observation_distributions(m)
+function has_consistent_distributions(m::POMDP; atol=0.0)
+    return has_consistent_initial_distribution(m; atol) &&
+        has_consistent_transition_distributions(m; atol) &&
+        has_consistent_observation_distributions(m; atol)
 end
 
-function has_consistent_distributions(m::MDP)
-    return has_consistent_initial_distribution(m) &&
-        has_consistent_transition_distributions(m)
+function has_consistent_distributions(m::MDP; atol=0.0)
+    return has_consistent_initial_distribution(m; atol) &&
+        has_consistent_transition_distributions(m; atol)
 end
 
 """
@@ -29,7 +32,7 @@ Return true if no problems are found in the transition distributions for a discr
 
 See `has_consistent_distributions` for information on what checks are performed.
 """
-function has_consistent_transition_distributions(m::Union{MDP,POMDP})
+function has_consistent_transition_distributions(m::Union{MDP,POMDP}; atol=0.0)
     ok = true
     for s in states(m)
         if !isterminal(m, s)
@@ -54,7 +57,7 @@ function has_consistent_transition_distributions(m::Union{MDP,POMDP})
                     end
                     psum += p
                 end
-                if !isapprox(psum, 1.0)
+                if !isapprox(psum, 1.0; atol)
                     @warn "Transition probabilities sum to $psum, not 1." s a
                     ok = false
                 end
@@ -71,7 +74,7 @@ Return true if no problems are found in the observation distributions for a disc
 
 See `has_consistent_distributions` for information on what checks are performed.
 """
-function has_consistent_observation_distributions(m::POMDP)
+function has_consistent_observation_distributions(m::POMDP; atol=0.0)
     ok = true
     for s in states(m)
         if !isterminal(m, s)
@@ -97,7 +100,7 @@ function has_consistent_observation_distributions(m::POMDP)
                         end
                         psum += p
                     end
-                    if !isapprox(psum, 1.0)
+                    if !isapprox(psum, 1.0; atol)
                         @warn "Observation probabilities sum to $psum, not 1." s a sp
                         ok = false
                     end
@@ -115,7 +118,7 @@ Return true if no problems are found with the initial state distribution for a d
 
 See `has_consistent_distributions` for information on what checks are performed.
 """
-function has_consistent_initial_distribution(m::Union{MDP,POMDP})
+function has_consistent_initial_distribution(m::Union{MDP,POMDP}; atol=0.0)
     ok = true
     d = initialstate(m)
     sup = Set(support(d))
@@ -131,7 +134,7 @@ function has_consistent_initial_distribution(m::Union{MDP,POMDP})
             ok = false
         end
     end
-    if !isapprox(psum, 1.0)
+    if !isapprox(psum, 1.0; atol)
         @warn "Initial state probabilities sum to $psum, not 1."
         ok = false
     end
