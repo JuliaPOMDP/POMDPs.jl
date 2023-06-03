@@ -1,6 +1,6 @@
 """
-    has_consistent_distributions(m::MDP; [atol=0])
-    has_consistent_distributions(m::POMDP; [atol=0)
+    has_consistent_distributions(m::MDP; atol=0)
+    has_consistent_distributions(m::POMDP; atol=0)
 
 Return true if no problems are found in the distributions for a discrete problem. Print information and return false if problems are found.
 
@@ -26,7 +26,7 @@ function has_consistent_distributions(m::MDP; atol=0.0)
 end
 
 """
-    has_consistent_transition_distributions(m)
+    has_consistent_transition_distributions(m; atol=0)
 
 Return true if no problems are found in the transition distributions for a discrete problem. Print information and return false if problems are found.
 
@@ -68,7 +68,7 @@ function has_consistent_transition_distributions(m::Union{MDP,POMDP}; atol=0.0)
 end
 
 """
-    has_consistent_observation_distributions(m)
+    has_consistent_observation_distributions(m; atol=0)
 
 Return true if no problems are found in the observation distributions for a discrete POMDP. Print information and return false if problems are found.
 
@@ -112,7 +112,7 @@ function has_consistent_observation_distributions(m::POMDP; atol=0.0)
 end
 
 """
-    has_consistent_initial_distribution(m)
+    has_consistent_initial_distribution(m; atol=0)
 
 Return true if no problems are found with the initial state distribution for a discrete problem. Print information and return false if problems are found.
 
