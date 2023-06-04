@@ -53,7 +53,7 @@ export
 include("vector.jl")
 
 export 
-    DictPolicy
+    ValueDictPolicy
     
 include("dict.jl")
 

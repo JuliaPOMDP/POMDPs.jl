@@ -1,7 +1,7 @@
 let
+    
     gw = SimpleGridWorld()
-
-    p = DictPolicy(gw)
+    p = ValueDictPolicy(gw)
     
     s = GWPos(8,8)
     a = :down
@@ -15,4 +15,24 @@ let
     @test actions_dict[:down] == 3.0
     @test actions_dict[:left] == 0.0
     @test actions_dict[:right] == 0.0
+
+    #test defalut_value
+    p2 = ValueDictPolicy(gw,-Inf)
+    p2.value_dict[(s,a)] = r
+    @test action(p,s) == :down
+
+    actions_dict2 = actionvalues(p2,s)
+    @test actions_dict2[:up] == -Inf
+    @test actions_dict2[:down] == 3.0
+    @test actions_dict2[:left] == -Inf
+    @test actions_dict2[:right] == -Inf
+
+    # test error
+    POMDPs.actions(mdp::SimpleGridWorld,s) = []
+    try
+        action(p,s)
+    catch e
+        @test e isa Exception
+    end
+    
 end

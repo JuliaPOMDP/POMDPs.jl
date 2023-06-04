@@ -84,11 +84,11 @@ VectorSolver
 ValuePolicy
 ```
 
-## Dict Policy
-`DictPolicy` holds a dict of values, key is state-action tuple, and chooses the action with the highest value at the given state. It allows you to write solvers without enumerating state and action spaces, but you need add `Base.isequal()` and `Base.hash()` for state and action type.
+## Value Dict Policy
+`ValueDictPolicy` holds a dict of values, key is state-action tuple, and chooses the action with the highest value at the given state. It allows you to write solvers without enumerating state and action spaces, but you need add `Base.isequal()` and `Base.hash()` for state and action type.
 
 ```@docs
-DictPolicy
+ValueDictPolicy
 ```
 
 ## Exploration Policies 
