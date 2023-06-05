@@ -34,15 +34,15 @@ end
 
 RL.observe(env::MDPCommonRLEnv{RLO}) where {RLO} = convert_s(RLO, env.s, env.m)
 
-RL.@provide RL.clone(env::MDPCommonRLEnv{RLO}) where {RLO} = MDPCommonRLEnv{RLO}(env.m, env.s)
-RL.@provide RL.render(env::MDPCommonRLEnv) = render(env.m, (sp=env.s,))
-RL.@provide RL.state(env::MDPCommonRLEnv{RLO}) where {RLO} = convert_s(RLO, env.s, env.m)
-RL.@provide RL.valid_actions(env::MDPCommonRLEnv) = actions(env.m, env.s)
+RL.clone(env::MDPCommonRLEnv{RLO}) where {RLO} = MDPCommonRLEnv{RLO}(env.m, env.s)
+RL.render(env::MDPCommonRLEnv) = render(env.m, (sp=env.s,))
+RL.state(env::MDPCommonRLEnv{RLO}) where {RLO} = convert_s(RLO, env.s, env.m)
+RL.valid_actions(env::MDPCommonRLEnv) = actions(env.m, env.s)
 
 RL.observations(env::MDPCommonRLEnv{RLO}) where {RLO} = (convert_s(RLO, s, env.m) for s in states(env.m)) # should really be some kind of lazy map that handles uncountably infinite spaces
 RL.provided(::typeof(RL.observations), ::Type{<:Tuple{MDPCommonRLEnv{<:Any, M, <:Any}}}) where {M} = static_hasmethod(states, Tuple{<:M})
 
-RL.@provide function RL.setstate!(env::MDPCommonRLEnv{<:Any, <:Any, S}, s) where S
+function RL.setstate!(env::MDPCommonRLEnv{<:Any, <:Any, S}, s) where S
     env.s = convert_s(S, s, env.m)
     return nothing
 end
@@ -79,15 +79,15 @@ end
 
 RL.observe(env::POMDPCommonRLEnv{RLO}) where {RLO} = convert_o(RLO, env.o, env.m)
 
-RL.@provide RL.clone(env::POMDPCommonRLEnv{RLO}) where {RLO} = POMDPCommonRLEnv{RLO}(env.m, env.s, env.o)
-RL.@provide RL.render(env::POMDPCommonRLEnv) = render(env.m, (sp=env.s, o=env.o))
-RL.@provide RL.state(env::POMDPCommonRLEnv) = (env.s, env.o)
-RL.@provide RL.valid_actions(env::POMDPCommonRLEnv) = actions(env.m, env.s)
+RL.clone(env::POMDPCommonRLEnv{RLO}) where {RLO} = POMDPCommonRLEnv{RLO}(env.m, env.s, env.o)
+RL.render(env::POMDPCommonRLEnv) = render(env.m, (sp=env.s, o=env.o))
+RL.state(env::POMDPCommonRLEnv) = (env.s, env.o)
+RL.valid_actions(env::POMDPCommonRLEnv) = actions(env.m, env.s)
 
 RL.observations(env::POMDPCommonRLEnv{RLO}) where {RLO} = (convert_o(RLO, o, env.m) for o in observations(env.m)) # should really be some kind of lazy map that handles uncountably infinite spaces
 RL.provided(::typeof(RL.observations), ::Type{<:Tuple{POMDPCommonRLEnv{<:Any, M, <:Any, <:Any}}}) where {M} = static_hasmethod(observations, Tuple{<:M})
 
-RL.@provide function RL.setstate!(env::POMDPCommonRLEnv, so)
+function RL.setstate!(env::POMDPCommonRLEnv, so)
     env.s = first(so)
     env.o = last(so)
     return nothing

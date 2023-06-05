@@ -73,8 +73,6 @@ end
 
 mdp = RandomMDP(100, 4, 0.95)
 
-@test_skip @show_requirements SparseTabularMDP(mdp)
-
 smdp = SparseTabularMDP(mdp)
 
 smdp2 = SparseTabularMDP(smdp)
@@ -106,8 +104,6 @@ end
 ## POMDP 
 
 function test_pomdp(pomdp::POMDP)
-    @test_skip @show_requirements SparseTabularPOMDP(pomdp)
-
     rand_mdp = RandomMDP(100, 4, 0.95)
 
     spomdp = SparseTabularPOMDP(pomdp)

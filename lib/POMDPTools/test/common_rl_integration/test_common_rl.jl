@@ -106,8 +106,8 @@ end
     @test m1 isa OpaqueRLEnvMDP
     @test simulate(RolloutSimulator(), m1, FunctionPolicy(s->1)) == 3.0
 
-    RL.@provide RL.state(env::MDPEnv) = env.s
-    RL.@provide RL.setstate!(env::MDPEnv, s) = env.s = s
+    RL.state(env::MDPEnv) = env.s
+    RL.setstate!(env::MDPEnv, s) = env.s = s
 
     env = MDPEnv(1)
     m2 = convert(MDP, env)
@@ -140,8 +140,8 @@ end
     @test m1 isa OpaqueRLEnvPOMDP
     @test simulate(RolloutSimulator(), m1, FunctionPolicy(s->1)) == 3.0
 
-    RL.@provide RL.state(env::POMDPEnv) = env.s
-    RL.@provide RL.setstate!(env::POMDPEnv, s) = env.s = s
+    RL.state(env::POMDPEnv) = env.s
+    RL.setstate!(env::POMDPEnv, s) = env.s = s
 
     env = POMDPEnv(1)
     m2 = convert(POMDP, env)
