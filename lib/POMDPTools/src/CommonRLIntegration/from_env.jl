@@ -6,31 +6,41 @@ const AbstractRLEnvProblem = Union{AbstractRLEnvMDP, AbstractRLEnvPOMDP}
 POMDPs.actions(m::AbstractRLEnvProblem) = RL.actions(m.env)
 POMDPs.discount(m::AbstractRLEnvProblem) = m.discount
 
+function with_temporary_state(f, env, s)
+    old = AD.state(env)
+    AD.setstate!(env, s)
+    ret = f(env)
+    AD.setstate!(env, old)
+    return ret
+end
+
+function with_temporary_state(f, env)
+    old = AD.state(env)
+    ret = f(env)
+    AD.setstate!(env, old)
+    return ret
+end
+
 function POMDPs.actions(m::AbstractRLEnvProblem, s)
-    if provided(RL.valid_actions, m.env)
-        old = RL.state(m.env)
-        RL.setstate!(m.env, s)
-        va = RL.valid_actions(m.env)
-        RL.setstate!(m.env, old)
-        return va
-    else
-        return RL.actions(m.env)
+    with_temporary_state(m.env, s) do env
+        return AD.valid_actions(env)
     end
 end
 
 function POMDPs.initialstate(m::AbstractRLEnvProblem)
     return ImplicitDistribution(m) do m, rng
-        RL.reset!(m.env)
-        return RL.state(m.env)
+        # currently ignores rng
+        with_temporary_state(m.env) do env
+            AD.reset!(env)
+            return AD.state(env)
+        end
     end
 end
 
 function POMDPs.isterminal(m::AbstractRLEnvProblem, s)
-    old = RL.state(m.env)
-    RL.setstate!(m.env, s)
-    t = RL.terminated(m.env)
-    RL.setstate!(m.env, old)
-    return t
+    with_temporary_state(m.env, s) do env
+        return AD.terminated(env)
+    end
 end
 
 struct RLEnvMDP{E, S, A} <: AbstractRLEnvMDP{S, A}
@@ -48,15 +58,16 @@ function RLEnvMDP(env; discount=1.0)
     if S == Any
         @warn("State type inferred for $(typeof(env)) by looking at the return type of state(env) was Any. This could cause significant performance degradation.")
     end
-    return RLEnvMDP{typeof(env), S, eltype(RL.actions(env))}(env, discount)
+    return RLEnvMDP{typeof(env), S, eltype(AD.actions(env))}(env, discount)
 end
 
 function POMDPs.gen(m::RLEnvMDP, s, a, rng)
     # rng is not currently used
-    RL.setstate!(m.env, s)
-    r = RL.act!(m.env, a)
-    sp = RL.state(m.env)
-    return (sp=sp, r=r)
+    with_temporary_state(m.env, s) do env
+        r = AD.act!(m.env, a)
+        sp = AD.state(m.env)
+        return (sp=sp, r=r)
+    end
 end
 
 """
@@ -78,16 +89,17 @@ function RLEnvPOMDP(env; discount=1.0)
     if S == Any
         @warn("Observation type inferred for $(typeof(env)) by looking at the return type of observe(env) was Any. This could cause significant performance degradation.")
     end
-    return RLEnvPOMDP{typeof(env), S, eltype(RL.actions(env)), O}(env, discount)
+    return RLEnvPOMDP{typeof(env), S, eltype(AD.actions(env)), O}(env, discount)
 end
 
 
 function POMDPs.gen(m::RLEnvPOMDP, s, a, rng)
-    RL.setstate!(m.env, s)
-    r = RL.act!(m.env, a)
-    sp = RL.state(m.env)
-    o = RL.observe(m.env)
-    return (sp=sp, o=o, r=r)
+    with_temporary_state(m.env, s) do env
+        r = AD.act!(env, a)
+        sp = AD.state(env)
+        o = AD.observe(env)
+        return (sp=sp, o=o, r=r)
+    end
 end
 
 #####################
@@ -110,7 +122,7 @@ end
 Wrap a `CommonRLInterface.AbstractEnv` in an `MDP` object. The state will be an `OpaqueRLEnvState` and only simulation will be supported.
 """
 function OpaqueRLEnvMDP(env; discount::Float64=1.0)
-    return OpaqueRLEnvMDP{typeof(env), eltype(RL.actions(env))}(env, 1, discount)
+    return OpaqueRLEnvMDP{typeof(env), eltype(AD.actions(env))}(env, 1, discount)
 end
 
 mutable struct OpaqueRLEnvPOMDP{E, A, O} <: AbstractRLEnvPOMDP{OpaqueRLEnvState, A, O}
@@ -125,22 +137,22 @@ end
 Wrap a `CommonRLInterface.AbstractEnv` in an `POMDP` object. The state will be an `OpaqueRLEnvState` and only simulation will be supported.
 """
 function OpaqueRLEnvPOMDP(env, discount=1.0)
-    return OpaqueRLEnvPOMDP{typeof(env), eltype(RL.actions(env)), typeof(RL.observe(env))}(env, 1, discount)
+    return OpaqueRLEnvPOMDP{typeof(env), eltype(AD.actions(env)), typeof(AD.observe(env))}(env, 1, discount)
 end
 
 const OpaqueRLEnvProblem = Union{OpaqueRLEnvMDP, OpaqueRLEnvPOMDP}
 
 function POMDPs.actions(m::OpaqueRLEnvProblem, s::OpaqueRLEnvState)
-    if provided(RL.valid_actions, m.env) && s.age == m.age
-        return RL.valid_actions(m.env)
+    if s.age == m.age
+        return AD.valid_actions(m.env)
     else
-        return RL.actions(m.env)
+        throw(OpaqueRLEnvStateError(m.env, m.age, s))
     end
 end
 
 function POMDPs.initialstate(m::OpaqueRLEnvProblem)
     return ImplicitDistribution(m) do m, rng
-        RL.reset!(m.env)
+        AD.reset!(m.env)
         m.age += 1
         return OpaqueRLEnvState(m.age)
     end
@@ -148,30 +160,30 @@ end
 
 function POMDPs.isterminal(m::OpaqueRLEnvProblem, s::OpaqueRLEnvState)
     if s.age != m.age
-        throw(OpaqueRLEnvState(m, s))
+        throw(OpaqueRLEnvStateError(m.env, m.age, s))
     end
-    return RL.terminated(m.env)
+    return AD.terminated(m.env)
 end
 
 
 function POMDPs.gen(m::OpaqueRLEnvMDP, s::OpaqueRLEnvState, a, rng)
     if s.age == m.age
-        r = RL.act!(m.env, a)
+        r = AD.act!(m.env, a)
         m.age += 1
         return (sp=OpaqueRLEnvState(m.age), r=r)
     else
-        throw(OpaqueRLEnvState(m.env, m.age, s))
+        throw(OpaqueRLEnvStateError(m.env, m.age, s))
     end
 end
 
 function POMDPs.gen(m::OpaqueRLEnvPOMDP, s::OpaqueRLEnvState, a, rng)
     if s.age == m.age
-        r = RL.act!(m.env, a)
-        o = RL.observe(m.env)
+        r = AD.act!(m.env, a)
+        o = AD.observe(m.env)
         m.age += 1
         return (sp=OpaqueRLEnvState(m.age), o=o, r=r)
     else
-        throw(OpaqueRLEnvState(m.env, m.age, s))
+        throw(OpaqueRLEnvStateError(m.env, m.age, s))
     end
 end
 
