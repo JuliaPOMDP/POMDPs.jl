@@ -58,7 +58,7 @@ function has_consistent_transition_distributions(m::Union{MDP,POMDP}; atol=0.0)
                     psum += p
                 end
                 if !isapprox(psum, 1.0; atol)
-                    @warn "Transition probabilities sum to $psum, not 1." s a
+                    @warn "Transition probabilities sum to $psum, not 1. Consider atol keyword argument." s a
                     ok = false
                 end
             end
@@ -101,7 +101,7 @@ function has_consistent_observation_distributions(m::POMDP; atol=0.0)
                         psum += p
                     end
                     if !isapprox(psum, 1.0; atol)
-                        @warn "Observation probabilities sum to $psum, not 1." s a sp
+                        @warn "Observation probabilities sum to $psum, not 1. Consider atol keyword argument." s a sp
                         ok = false
                     end
                 end
@@ -135,7 +135,7 @@ function has_consistent_initial_distribution(m::Union{MDP,POMDP}; atol=0.0)
         end
     end
     if !isapprox(psum, 1.0; atol)
-        @warn "Initial state probabilities sum to $psum, not 1."
+        @warn "Initial state probabilities sum to $psum, not 1. Consider atol keyword argument."
         ok = false
     end
     return ok
