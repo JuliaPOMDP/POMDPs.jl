@@ -23,7 +23,7 @@ Tricks = "410a4b4d-49e4-4fbc-ab6d-cb71b17b3775"
 UnicodePlots = "b8865327-cd53-5732-bb35-84acbb429228"
 
 [compat]
-CommonRLInterface = "0.2, 0.3"
+CommonRLInterface = "0.3.2"
 DataFrames = "0.19, 0.20, 0.21, 0.22, 1"
 Distributions = "0.17, 0.18, 0.19, 0.20, 0.21, 0.22, 0.23, 0.24, 0.25"
 NamedTupleTools = "0.13, 0.14"

@@ -15,11 +15,9 @@ let
     @test stateindex(mdp, s_mdp) == stateindex(pomdp, s_po) == obsindex(pomdp, s_po)
 
     solver = ValueIterationSolver(max_iterations = 100)
-    @test_skip begin
-        mdp_policy = solve(solver, mdp)
-        pomdp_policy = solve(solver, UnderlyingMDP(pomdp))
-        mdp_policy.util == pomdp_policy.util
-    end
+    mdp_policy = solve(solver, mdp)
+    pomdp_policy = solve(solver, UnderlyingMDP(pomdp))
+    mdp_policy.util == pomdp_policy.util
 
     is = rand(MersenneTwister(3), initialstate(mdp))
     for (sp, o, r) in stepthrough(pomdp,
