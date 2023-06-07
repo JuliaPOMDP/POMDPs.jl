@@ -94,6 +94,7 @@ end
 
     RL.reset!(env::MDPEnv) = env.s = 1
     RL.actions(env::MDPEnv) = [-1, 1]
+    RL.valid_action_mask(env::MDPEnv) = env.s < 1 ? [false, true] : trues(2)
     RL.observe(env::MDPEnv) = [env.s]
     RL.terminated(env::MDPEnv) = env.s >= 3
     function RL.act!(env::MDPEnv, a)
@@ -105,6 +106,11 @@ end
     m1 = convert(MDP, MDPEnv(1))
     @test m1 isa OpaqueRLEnvMDP
     @test simulate(RolloutSimulator(), m1, FunctionPolicy(s->1)) == 3.0
+    m1a = convert(MDP, MDPEnv(0))
+    @test Set(actions(m1a, CommonRLIntegration.OpaqueRLEnvState(m1a.age))) == Set([1])
+    m1b = convert(MDP, MDPEnv(1))
+    @test Set(actions(m1b, CommonRLIntegration.OpaqueRLEnvState(m1b.age))) == Set([-1, 1])
+    @test_throws CommonRLIntegration.OpaqueRLEnvStateError actions(m1b, CommonRLIntegration.OpaqueRLEnvState(m1b.age+1))
 
     RL.state(env::MDPEnv) = env.s
     RL.setstate!(env::MDPEnv, s) = env.s = s
@@ -113,6 +119,9 @@ end
     m2 = convert(MDP, env)
     @test m2 isa RLEnvMDP
     @test simulate(RolloutSimulator(), m2, FunctionPolicy(s->1)) == 3.0
+
+    @test Set(actions(m2, 0)) == Set([1])
+    @test Set(actions(m2, 1)) == Set([-1, 1])
 
     RL.setstate!(env, 1)
     @test isterminal(m2, 3)

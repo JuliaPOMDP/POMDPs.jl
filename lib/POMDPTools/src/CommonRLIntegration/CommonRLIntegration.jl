@@ -4,8 +4,9 @@ using ..POMDPDistributions
 
 using POMDPs
 import CommonRLInterface
+import CommonRLInterface.AutomaticDefault as AD
 
-using Tricks: static_hasmethod # Yuck! 
+using Tricks: static_hasmethod
 
 export
     MDPCommonRLEnv,
