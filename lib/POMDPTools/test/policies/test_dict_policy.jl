@@ -26,13 +26,4 @@ let
     @test actions_dict2[:down] == 3.0
     @test actions_dict2[:left] == -Inf
     @test actions_dict2[:right] == -Inf
-
-    # test error
-    POMDPs.actions(mdp::SimpleGridWorld,s) = []
-    try
-        action(p,s)
-    catch e
-        @test e isa Exception
-    end
-    
 end

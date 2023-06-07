@@ -48,7 +48,7 @@ function action(p::ValueDictPolicy, s)
 end
 
 # return a dict of actions=>values at state s
-function actionvalues(p::ValueDictPolicy, s) ::Dict
+function actionvalues(p::ValueDictPolicy, s)::Dict{Any,Float64}
     available_actions = actions(p.mdp,s)
     action_dict = Dict{actiontype(p.mdp),Float64}()
     for a in available_actions
