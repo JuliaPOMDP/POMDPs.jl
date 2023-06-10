@@ -21,7 +21,11 @@ mutable struct PlaybackPolicy{A<:AbstractArray, P<:Policy, V<:AbstractArray{<:Re
 end
 
 # Constructor for the PlaybackPolicy
-PlaybackPolicy(actions::AbstractArray, backup_policy::Policy; logpdfs::AbstractArray{<:Real} = Float64[]) = PlaybackPolicy(actions, backup_policy, logpdfs, 1)
+function PlaybackPolicy(actions::AbstractArray,
+                        backup_policy::Policy = FunctionPolicy(s->error("PlaybackPolicy out of actions."));
+                        logpdfs::AbstractArray{<:Real} = Float64[])
+    return PlaybackPolicy(actions, backup_policy, logpdfs, 1)
+end
 
 # Action selection for the PlaybackPolicy
 function POMDPs.action(p::PlaybackPolicy, s)
@@ -41,5 +45,3 @@ function Distributions.logpdf(p::PlaybackPolicy, h)
         return sum(p.logpdfs[1:N])
     end
 end
-
-
