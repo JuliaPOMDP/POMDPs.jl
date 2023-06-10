@@ -85,7 +85,7 @@ ValuePolicy
 ```
 
 ## Value Dict Policy
-`ValueDictPolicy` holds a dict of values, key is state-action tuple, and chooses the action with the highest value at the given state. It allows you to write solvers without enumerating state and action spaces, but you need add `Base.isequal()` and `Base.hash()` for state and action type.
+`ValueDictPolicy` holds a dictionary of values, where the key is state-action tuple, and chooses the action with the highest value at the given state. It allows one to write solvers without enumerating state and action spaces, but actions and states must support `Base.isequal()` and `Base.hash()`.
 
 ```@docs
 ValueDictPolicy
