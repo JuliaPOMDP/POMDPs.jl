@@ -3,5 +3,5 @@ let
     up = updater(pomdp)
 
     bmdp = GenerativeBeliefMDP(pomdp, up)
-    b = initialstate(bmdp, Random.GLOBAL_RNG)
+    b = initialstate(bmdp, Random.default_rng())
 end

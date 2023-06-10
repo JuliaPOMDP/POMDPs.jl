@@ -40,7 +40,7 @@ function DisplaySimulator(;display=nothing,
                            extra_final=true,
                            max_steps=nothing,
                            spec=CompleteSpec(),
-                           rng=Random.GLOBAL_RNG
+                           rng=Random.default_rng()
                          )
     stepsim = StepSimulator(rng, max_steps, spec)
     return DisplaySimulator(display,

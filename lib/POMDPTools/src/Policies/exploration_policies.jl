@@ -43,7 +43,7 @@ The evolution of epsilon can be controlled using a schedule. This feature is use
 
 # Constructor:
 
-`EpsGreedyPolicy(problem::Union{MDP, POMDP}, eps::Union{Function, Float64}; rng=Random.GLOBAL_RNG, schedule=ConstantSchedule)`
+`EpsGreedyPolicy(problem::Union{MDP, POMDP}, eps::Union{Function, Float64}; rng=Random.default_rng(), schedule=ConstantSchedule)`
 
 If a function is passed for `eps`, `eps(k)` is called to compute the value of epsilon when calling `action(exploration_policy, on_policy, k, s)`.
 
@@ -61,11 +61,11 @@ struct EpsGreedyPolicy{T<:Function, R<:AbstractRNG, M<:Union{MDP,POMDP}} <: Expl
 end
 
 function EpsGreedyPolicy(problem::Union{MDP,POMDP}, eps::Function; 
-                         rng::AbstractRNG=Random.GLOBAL_RNG)
+                         rng::AbstractRNG=Random.default_rng())
     return EpsGreedyPolicy(eps, rng, problem)
 end
 function EpsGreedyPolicy(problem::Union{MDP,POMDP}, eps::Real; 
-                         rng::AbstractRNG=Random.GLOBAL_RNG)
+                         rng::AbstractRNG=Random.default_rng())
     return EpsGreedyPolicy(x->eps, rng, problem)
 end
 
@@ -90,7 +90,7 @@ A temperature parameter or function can be used to make the resulting distributi
 
 # Constructor
 
-`SoftmaxPolicy(problem, temperature::Union{Function, Float64}; rng=Random.GLOBAL_RNG)`
+`SoftmaxPolicy(problem, temperature::Union{Function, Float64}; rng=Random.default_rng())`
 
 If a function is passed for `temperature`, `temperature(k)` is called to compute the value of the temperature when calling `action(exploration_policy, on_policy, k, s)`
 
@@ -108,11 +108,11 @@ struct SoftmaxPolicy{T<:Function, R<:AbstractRNG, A} <: ExplorationPolicy
 end
 
 function SoftmaxPolicy(problem, temperature::Function; 
-                       rng::AbstractRNG=Random.GLOBAL_RNG)
+                       rng::AbstractRNG=Random.default_rng())
     return SoftmaxPolicy(temperature, rng, actions(problem))
 end
 function SoftmaxPolicy(problem, temperature::Real; 
-                       rng::AbstractRNG=Random.GLOBAL_RNG)
+                       rng::AbstractRNG=Random.default_rng())
     return SoftmaxPolicy(x->temperature, rng, actions(problem))
 end
 

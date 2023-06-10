@@ -62,6 +62,6 @@ Let `m` be an `MDP` or `POMDP`, `s` be a state of `m`, `a` be an action of `m`, 
 macro gen(symbols...)
     quote
         # this should be an anonymous function, but there is a bug (https://github.com/JuliaLang/julia/issues/36272)
-        f(m, s, a, rng=Random.GLOBAL_RNG) = genout(DDNOut($(symbols...)), m, s, a, rng)
+        f(m, s, a, rng=Random.default_rng()) = genout(DDNOut($(symbols...)), m, s, a, rng)
     end
 end

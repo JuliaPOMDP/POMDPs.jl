@@ -7,7 +7,7 @@ Create a Sim object that contains everything needed to run and record a single s
 A vector of `Sim` objects can be executed with [`run`](@ref) or [`run_parallel`](@ref).
 
 ## Keyword Arguments
-- `rng::AbstractRNG=Random.GLOBAL_RNG`
+- `rng::AbstractRNG=Random.default_rng()`
 - `max_steps::Int=typemax(Int)`
 - `simulator::Simulator=HistoryRecorder(rng=rng, max_steps=max_steps)`
 - `metadata::NamedTuple a named tuple (or dictionary) of metadata for the sim that will be recorded, e.g. `(solver_iterations=500,)`.
@@ -47,7 +47,7 @@ function Sim(pomdp::POMDP,
              up=updater(policy),
              initial_belief=initialstate(pomdp),
              initialstate=nothing;
-             rng::AbstractRNG=Random.GLOBAL_RNG,
+             rng::AbstractRNG=Random.default_rng(),
              max_steps::Int=typemax(Int),
              simulator::Simulator=HistoryRecorder(rng=rng, max_steps=max_steps),
              metadata = NamedTuple()
@@ -70,7 +70,7 @@ Create a `Sim` object that represents a MDP simulation.
 function Sim(mdp::MDP,
              policy::Policy,
              initialstate=nothing;
-             rng::AbstractRNG=Random.GLOBAL_RNG,
+             rng::AbstractRNG=Random.default_rng(),
              max_steps::Int=typemax(Int),
              simulator::Simulator=HistoryRecorder(rng=rng, max_steps=max_steps),
              metadata = NamedTuple()

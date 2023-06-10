@@ -13,7 +13,7 @@ The simulation will be terminated when either
 3) max_steps have been executed
 
 # Keyword arguments:
-- rng::AbstractRNG (default: Random.GLOBAL_RNG) - A random number generator to use. 
+- rng::AbstractRNG (default: Random.default_rng()) - A random number generator to use. 
 - eps::Float64 (default: 0.0) - A small number; if γᵗ where γ is the discount factor and t is the time step becomes smaller than this, the simulation will be terminated.
 - max_steps::Int (default: typemax(Int)) - The maximum number of steps to simulate.
 
@@ -32,7 +32,7 @@ struct RolloutSimulator{RNG<:AbstractRNG} <: Simulator
     eps::Float64
 end
 
-function RolloutSimulator(;rng=Random.GLOBAL_RNG,
+function RolloutSimulator(;rng=Random.default_rng(),
     eps=0.0,
     max_steps=typemax(Int))
     return RolloutSimulator(rng, max_steps, eps)
