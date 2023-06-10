@@ -84,6 +84,13 @@ VectorSolver
 ValuePolicy
 ```
 
+## Value Dict Policy
+`ValueDictPolicy` holds a dictionary of values, where the key is state-action tuple, and chooses the action with the highest value at the given state. It allows one to write solvers without enumerating state and action spaces, but actions and states must support `Base.isequal()` and `Base.hash()`.
+
+```@docs
+ValueDictPolicy
+```
+
 ## Exploration Policies 
 
 Exploration policies are often useful for Reinforcement Learning algorithm to choose an action that is different than the action given by the policy being learned (`on_policy`). 

@@ -52,6 +52,11 @@ export
 
 include("vector.jl")
 
+export 
+    ValueDictPolicy
+    
+include("dict.jl")
+
 export
     StochasticPolicy,
     UniformRandomPolicy,

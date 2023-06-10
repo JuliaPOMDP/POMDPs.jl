@@ -55,6 +55,7 @@ import CommonRLInterface
         include("policies/test_stochastic_policy.jl")
         include("policies/test_utility_wrapper.jl")
         include("policies/test_vector_policy.jl")
+        include("policies/test_dict_policy.jl")
     end
 
     @testset "Simulators" begin
