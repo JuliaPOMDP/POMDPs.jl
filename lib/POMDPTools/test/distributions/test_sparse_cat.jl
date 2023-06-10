@@ -7,7 +7,7 @@ let
     @test mode(d) == :b
     @test Random.gentype(d) == Symbol
     @test Random.gentype(typeof(d)) == Symbol
-    @inferred rand(Random.GLOBAL_RNG, d)
+    @inferred rand(Random.default_rng(), d)
 
     dt = SparseCat((:a, :b, :d), (0.4, 0.5, 0.1))
     c = collect(weighted_iterator(dt))
@@ -17,7 +17,7 @@ let
     @test mode(dt) == :b
     @test Random.gentype(dt) == Symbol
     @test Random.gentype(typeof(dt)) == Symbol
-    @inferred rand(Random.GLOBAL_RNG, dt)
+    @inferred rand(Random.default_rng(), dt)
     
     # rand(::SparseCat)
     samples = Symbol[]
@@ -49,7 +49,7 @@ let
     @test isapprox(count(samples.==:c)/N, pdf(d,:c), atol=0.005)
     @test isapprox(count(samples.==:d)/N, pdf(d,:d), atol=0.005)
 
-    @test_throws ErrorException rand(Random.GLOBAL_RNG, SparseCat([1], [0.0]))
+    @test_throws ErrorException rand(Random.default_rng(), SparseCat([1], [0.0]))
 
     @test sprint((io,d)->show(io,MIME("text/plain"),d), d) == sprint((io,d)->showdistribution(io,d,title="SparseCat distribution"), d)
 

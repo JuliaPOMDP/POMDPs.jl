@@ -7,7 +7,7 @@ let
         problem::P
     end
     InfoTestRandomPolicy(problem::Union{POMDP,MDP};
-                rng=Random.GLOBAL_RNG) = InfoTestRandomPolicy(rng, problem)
+                rng=Random.default_rng()) = InfoTestRandomPolicy(rng, problem)
 
     function POMDPs.action(policy::InfoTestRandomPolicy, s)
         return rand(policy.rng, actions(policy.problem, s))
@@ -17,7 +17,7 @@ let
         rng::AbstractRNG
     end
 
-    InfoTestRandomSolver(;rng=Base.GLOBAL_RNG) = InfoTestRandomSolver(rng)
+    InfoTestRandomSolver(;rng=Base.default_rng()) = InfoTestRandomSolver(rng)
     POMDPs.solve(solver::InfoTestRandomSolver, problem::P) where {P<:Union{POMDP,MDP}} = InfoTestRandomPolicy(solver.rng, problem)
 
     let

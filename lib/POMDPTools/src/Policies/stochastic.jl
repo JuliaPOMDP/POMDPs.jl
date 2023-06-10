@@ -8,7 +8,7 @@ Represents a stochastic policy. Action are sampled from an arbitrary distributio
 
 Constructor:
 
-    `StochasticPolicy(distribution; rng=Random.GLOBAL_RNG)`
+    `StochasticPolicy(distribution; rng=Random.default_rng())`
 
 # Fields 
 - `distribution::D`
@@ -19,7 +19,7 @@ mutable struct StochasticPolicy{D, RNG <: AbstractRNG} <: Policy
     rng::RNG
 end
 # The constructor below should be used to create the policy so that the action space is initialized correctly
-StochasticPolicy(distribution; rng=Random.GLOBAL_RNG) = StochasticPolicy(distribution, rng)
+StochasticPolicy(distribution; rng=Random.default_rng()) = StochasticPolicy(distribution, rng)
 
 ## policy execution ##
 function action(policy::StochasticPolicy, s)
@@ -30,7 +30,7 @@ end
 updater(policy::StochasticPolicy) = NothingUpdater() # since the stochastic policy does not depend on the belief
 
 # Samples actions uniformly
-UniformRandomPolicy(problem, rng=Random.GLOBAL_RNG) = StochasticPolicy(actions(problem), rng)
+UniformRandomPolicy(problem, rng=Random.default_rng()) = StochasticPolicy(actions(problem), rng)
 
 """
     CategoricalTabularPolicy
@@ -39,7 +39,7 @@ represents a stochastic policy sampling an action from a categorical distributio
 
 constructor:
 
-`CategoricalTabularPolicy(mdp::Union{POMDP,MDP}; rng=Random.GLOBAL_RNG)`
+`CategoricalTabularPolicy(mdp::Union{POMDP,MDP}; rng=Random.default_rng())`
 
 # Fields
 - `stochastic::StochasticPolicy`
@@ -49,7 +49,7 @@ mutable struct CategoricalTabularPolicy <: Policy
     stochastic::StochasticPolicy
     value::ValuePolicy
 end
-function CategoricalTabularPolicy(mdp::Union{POMDP,MDP}; rng=Random.GLOBAL_RNG)
+function CategoricalTabularPolicy(mdp::Union{POMDP,MDP}; rng=Random.default_rng())
     CategoricalTabularPolicy(StochasticPolicy(Weights(zeros(length(actions((mdp))))), rng), ValuePolicy(mdp))
 end
 

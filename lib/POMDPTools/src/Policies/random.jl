@@ -7,7 +7,7 @@ a generic policy that uses the actions function to create a list of actions and 
 Constructor:
 
     `RandomPolicy(problem::Union{POMDP,MDP};
-             rng=Random.GLOBAL_RNG,
+             rng=Random.default_rng(),
              updater=NothingUpdater())`
 
 # Fields 
@@ -22,7 +22,7 @@ mutable struct RandomPolicy{RNG<:AbstractRNG, P<:Union{POMDP,MDP}, U<:Updater} <
 end
 # The constructor below should be used to create the policy so that the action space is initialized correctly
 RandomPolicy(problem::Union{POMDP,MDP};
-             rng=Random.GLOBAL_RNG,
+             rng=Random.default_rng(),
              updater=NothingUpdater()) = RandomPolicy(rng, problem, updater)
 
 ## policy execution ##
@@ -43,5 +43,5 @@ solver that produces a random policy
 mutable struct RandomSolver <: Solver
     rng::AbstractRNG
 end
-RandomSolver(;rng=Random.GLOBAL_RNG) = RandomSolver(rng)
+RandomSolver(;rng=Random.default_rng()) = RandomSolver(rng)
 solve(solver::RandomSolver, problem::Union{POMDP,MDP}) = RandomPolicy(solver.rng, problem, NothingUpdater())
