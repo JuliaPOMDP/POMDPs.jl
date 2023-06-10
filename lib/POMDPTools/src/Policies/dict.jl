@@ -1,26 +1,22 @@
 """
-     ValueDictPolicy{M<:MDP, T<:AbstractDict{Tuple,Float64}}
-A generic MDP policy that consists of a value dict.
+     ValueDictPolicy(mdp)
 
-# Fields 
-- `mdp::P` the MDP problem
-- `value_table::T` the value dict, key is (s,a) Tuple.
+A generic MDP policy that consists of a `Dict` storing Q-values for state-action pairs. If there are no entries higher than a default value, this will fall back to a default policy.
+
+# Keyword Arguments 
+- `value_table::AbstractDict` the value dict, key is (s, a) Tuple.
 - `default_value::Float64` the defalut value of `value_dict`.
+- `default_policy::Policy` the policy taken when no action has a value higher than `default_value`
 """
-
-struct ValueDictPolicy{M<:MDP, T<:AbstractDict} <: Policy
+@kwdef struct ValueDictPolicy{M<:MDP, T<:AbstractDict, P<:Policy} <: Policy
     mdp::M
-    value_dict::T
-    default_value::Float64
+    value_dict::T          = Dict{Tuple{statetype(mdp), actiontype(mdp)}, Float64}()
+    default_value::Float64 = -Inf
+    default_policy::P      = RandomPolicy(mdp)
 end
 
-ValueDictPolicy(mdp::MDP) = 
-    ValueDictPolicy(mdp, Dict{Tuple{statetype(mdp), actiontype(mdp)}, Float64}(),0.0)
+ValueDictPolicy(m; kwargs...) = ValueDictPolicy(;mdp=m, kwargs...)
 
-ValueDictPolicy(mdp::MDP,default_value::Float64) = 
-    ValueDictPolicy(mdp, Dict{Tuple{statetype(mdp), actiontype(mdp)}, Float64}(),default_value)
-
-# return the action with the max value
 function action(p::ValueDictPolicy, s)
     available_actions = actions(p.mdp,s)
 
@@ -37,18 +33,18 @@ function action(p::ValueDictPolicy, s)
                 max_action = a
                 max_action_value = action_value
             end
-        else
-            p.value_dict[(s,a)] = p.default_value
         end
     end
     if isnothing(max_action)
-        max_action = rand(available_actions)
+        max_action = action(p.default_policy, s)
     end
     return max_action
 end
 
-# return a dict of actions=>values at state s
-function actionvalues(p::ValueDictPolicy, s)::Dict{Any,Float64}
+"""
+Return a Dict mapping actions to values at state s.
+"""
+function valuemap(p::ValueDictPolicy, s)
     available_actions = actions(p.mdp,s)
     action_dict = Dict{actiontype(p.mdp),Float64}()
     for a in available_actions
