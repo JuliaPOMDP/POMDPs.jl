@@ -38,20 +38,20 @@ using Pkg; Pkg.add("POMDPs"); Pkg.add("QMDP")
 To run a simple simulation of the classic [Tiger POMDP](https://people.csail.mit.edu/lpk/papers/aij98-pomdp.pdf) using a policy created by the QMDP solver, you can use the following code (note that POMDPs.jl is not limited to discrete problems with explicitly-defined distributions like this):
 
 ```julia
-using POMDPs, QuickPOMDPs, POMDPModelTools, POMDPSimulators, QMDP
+using POMDPs, QuickPOMDPs, POMDPTools, QMDP
 
 m = QuickPOMDP(
     states = ["left", "right"],
     actions = ["left", "right", "listen"],
     observations = ["left", "right"],
-    initialstate = Uniform(["left", "right"]),
+    initialstate = POMDPDistributions.Uniform(["left", "right"]),
     discount = 0.95,
 
     transition = function (s, a)
         if a == "listen"
             return Deterministic(s) # tiger stays behind the same door
         else # a door is opened
-            return Uniform(["left", "right"]) # reset
+            return POMDPDistributions.Uniform(["left", "right"]) # reset
         end
     end,
 
@@ -63,7 +63,7 @@ m = QuickPOMDP(
                 return SparseCat(["right", "left"], [0.85, 0.15])
             end
         else
-            return Uniform(["left", "right"])
+            return POMDPDistributions.Uniform(["left", "right"])
         end
     end,
 
