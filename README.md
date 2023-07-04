@@ -38,7 +38,7 @@ using Pkg; Pkg.add("POMDPs"); Pkg.add("QMDP")
 To run a simple simulation of the classic [Tiger POMDP](https://people.csail.mit.edu/lpk/papers/aij98-pomdp.pdf) using a policy created by the QMDP solver, you can use the following code (note that POMDPs.jl is not limited to discrete problems with explicitly-defined distributions like this):
 
 ```julia
-using POMDPs, QuickPOMDPs, POMDPModelTools, POMDPSimulators, QMDP
+using POMDPs, QuickPOMDPs, POMDPTools, QMDP
 
 m = QuickPOMDP(
     states = ["left", "right"],
