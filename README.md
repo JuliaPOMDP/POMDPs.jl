@@ -160,7 +160,7 @@ Many models have been implemented using the POMDPs.jl interface for various proj
 
 <sup>1</sup>: Will run, but will not converge to optimal solution
 
-<sup>2</sup>: Will run, but convergence to optimal solution is not proven, and it will likely not work well on multidimensional action spaces
+<sup>2</sup>: Will run, but convergence to optimal solution is not proven, and it will likely not work well on multidimensional action spaces. See also https://github.com/michaelhlim/VOOTreeSearch.jl.
 
 
 #### Reinforcement Learning:
