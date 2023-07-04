@@ -44,14 +44,14 @@ m = QuickPOMDP(
     states = ["left", "right"],
     actions = ["left", "right", "listen"],
     observations = ["left", "right"],
-    initialstate = POMDPDistributions.Uniform(["left", "right"]),
+    initialstate = Uniform(["left", "right"]),
     discount = 0.95,
 
     transition = function (s, a)
         if a == "listen"
             return Deterministic(s) # tiger stays behind the same door
         else # a door is opened
-            return POMDPDistributions.Uniform(["left", "right"]) # reset
+            return Uniform(["left", "right"]) # reset
         end
     end,
 
@@ -63,7 +63,7 @@ m = QuickPOMDP(
                 return SparseCat(["right", "left"], [0.85, 0.15])
             end
         else
-            return POMDPDistributions.Uniform(["left", "right"])
+            return Uniform(["left", "right"])
         end
     end,
 
