@@ -3,6 +3,8 @@
 
 Function for implementing the entire MDP/POMDP generative model by returning a `NamedTuple`.
 
+`gen` should *only* be implemented in the case where *two or more* of the next state, observation, and reward need to be generated at the same time. If the state transition model can be separated from the reward and observation models, you should implement `transition` with an `ImplicitDistribution` instead of `gen`.
+
 Solver and simulator writers should use the `@gen` macro to call a generative model.
 
 # Arguments
