@@ -37,7 +37,7 @@ define each of its components as described in the [problem definition section](@
 A POMDP is a more general sequential decision making problem in which
 the agent is not sure what state they are in. The state is only
 partially observable by the decision making agent. Mathematically, a
-POMDP is a tuple ``(S,A,T,R,O,Z,\gamma)`` where ``S``, ``A``, ``T``, ``R``, and ``\gamma`` have the same meaning as in an MDP, ``Z`` is the agent's observation space, and ``O`` defines the probability
+POMDP is a tuple ``(S,A,T,R,O,Z,\gamma)`` where ``S``, ``A``, ``T``, ``R``, and ``\gamma`` have the same meaning as in an MDP, ``O`` is the agent's observation space, and ``Z`` defines the probability
 of receiving each observation at a transition. In POMDPs.jl, a POMDP is
 represented by a concrete subtype of the [`POMDP`](@ref) abstract type,
 and the methods described in the [problem definition section](@ref defining_pomdps).
