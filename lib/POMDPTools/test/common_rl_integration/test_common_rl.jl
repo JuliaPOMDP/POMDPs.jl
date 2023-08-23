@@ -64,7 +64,7 @@ end
     @test RL.actions(env) == [-1, 1]
     @test RL.valid_actions(env) == [-1, 1]
     @test RL.observe(env) == [2]
-    @test RL.state(env) == (1,2)
+    @test RL.state(env) == [1]
     RL.setstate!(env, RL.state(env))
     @test RL.act!(env, 1) == 2
     @test !RL.terminated(env)
@@ -76,7 +76,7 @@ end
     @test RL.observe(env) == [4]
     @test RL.terminated(env)
 
-    RL.setstate!(env, (2,3))
+    RL.setstate!(env, [2])
     @test RL.observe(env) == [3]
 
     env2 = RL.clone(env)
