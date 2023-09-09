@@ -88,7 +88,7 @@ RL.valid_actions(env::POMDPCommonRLEnv) = actions(env.m, env.s)
 RL.observations(env::POMDPCommonRLEnv{RLO}) where {RLO} = (convert_o(RLO, o, env.m) for o in observations(env.m)) # should really be some kind of lazy map that handles uncountably infinite spaces
 RL.provided(::typeof(RL.observations), ::Type{<:Tuple{POMDPCommonRLEnv{<:Any,<:Any,M,<:Any,<:Any}}}) where {M} = static_hasmethod(observations, Tuple{<:M})
 
-RL.@provide function RL.setstate!(env::POMDPCommonRLEnv{<:Any,<:Any,<:Any,S}, s) where {S}
+function RL.setstate!(env::POMDPCommonRLEnv{<:Any,<:Any,<:Any,S}, s) where {S}
     env.s = convert_s(S, s, env.m)
     env.o = rand(initialobs(env.m, env.s))
     return nothing
