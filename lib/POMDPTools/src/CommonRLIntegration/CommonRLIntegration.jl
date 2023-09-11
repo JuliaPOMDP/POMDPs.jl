@@ -10,14 +10,15 @@ using Tricks: static_hasmethod
 
 export
     MDPCommonRLEnv,
-    POMDPCommonRLEnv
-include("to_env.jl") 
+    POMDPCommonRLEnv,
+    POMDPsCommonRLEnv
+include("to_env.jl")
 
 export
     RLEnvMDP,
     RLEnvPOMDP,
     OpaqueRLEnvMDP,
     OpaqueRLEnvPOMDP
-include("from_env.jl") 
+include("from_env.jl")
 
 end
