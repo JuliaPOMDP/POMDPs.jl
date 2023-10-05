@@ -8,7 +8,7 @@ A generic MDP policy that consists of a `Dict` storing Q-values for state-action
 - `default_value::Float64` the defalut value of `value_dict`.
 - `default_policy::Policy` the policy taken when no action has a value higher than `default_value`
 """
-@kwdef struct ValueDictPolicy{M<:MDP, T<:AbstractDict, P<:Policy} <: Policy
+Base.@kwdef struct ValueDictPolicy{M<:MDP, T<:AbstractDict, P<:Policy} <: Policy
     mdp::M
     value_dict::T          = Dict{Tuple{statetype(mdp), actiontype(mdp)}, Float64}()
     default_value::Float64 = -Inf
