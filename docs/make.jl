@@ -53,7 +53,8 @@ makedocs(
         "faq.md",
         "api.md",
 
-    ]
+    ],
+    warnonly = [:missing_docs]
 )
 
 deploydocs(

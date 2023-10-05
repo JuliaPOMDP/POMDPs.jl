@@ -19,7 +19,6 @@ Note that constructing the transition and reward matrices requires to iterate ov
 To learn more information about how to define an MDP with the explicit interface please visit https://juliapomdp.github.io/POMDPs.jl/latest/explicit/ .
 - `SparseTabularMDP(smdp::SparseTabularMDP; transition, reward, discount)` : This constructor returns a new sparse MDP that is a copy of the original smdp except for the field specified by the keyword arguments.
 """
-
 struct SparseTabularMDP <: MDP{Int64, Int64}
     T::Vector{SparseMatrixCSC{Float64, Int64}} # T[a][s, sp]
     R::Array{Float64, 2} # R[s, a]

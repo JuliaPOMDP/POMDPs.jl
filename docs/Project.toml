@@ -7,3 +7,6 @@ POMDPModels = "355abbd5-f08e-5560-ac9e-8b5f2592a0ca"
 POMDPTools = "7588e00f-9cae-40de-98dc-e0c70c48cdd7"
 POMDPs = "a93abf59-7444-517b-a68a-c42f96afdd7d"
 QuickPOMDPs = "8af83fb2-a731-493c-9049-9e19dbce6165"
+
+[compat]
+Documenter = "1"
