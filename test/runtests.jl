@@ -54,3 +54,10 @@ struct EB <: POMDP{Int, Int, Int} end
     @test history(4)[end][:o] == 4
     @test currentobs(4) == 4
 end
+
+@testset "Issues" begin
+    @testset "POMDPModels Issue #97" begin
+        m = TigerPOMDP()
+        @test convert_o(Bool, [1.], m) == true
+    end
+end
