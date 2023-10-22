@@ -150,10 +150,13 @@ Convert a state to vectorized form or vice versa.
 """
 function convert_s end
 
+convert_s(::Type{Any}, s::S, problem::Union{MDP{S,<:Any},POMDP{S,<:Any,<:Any}}) where {S} = s
+convert_s(::Type{S}, s, problem::Union{MDP{S,<:Any},POMDP{S,<:Any,<:Any}}) where {S} = convert(S, s)
+
 convert_s(T::Type{A1}, s::A2, problem::Union{MDP, POMDP}) where {A1<:AbstractArray, A2<:AbstractArray} = convert(T, s)
 
 convert_s(::Type{A}, s::Number, problem::Union{MDP,POMDP}) where A<:AbstractArray = convert(A, [s])
-convert_s(::Type{N}, v::AbstractArray{F}, problem::Union{MDP, POMDP}) where {N<:Number, F<:Number} = convert(N, first(v))
+convert_s(::Type{N}, v::AbstractArray{F}, problem::Union{MDP, POMDP}) where {N<:Number, F<:Number} = convert(N, only(v))
 
 
 """
@@ -164,10 +167,13 @@ Convert an action to vectorized form or vice versa.
 """
 function convert_a end
 
-convert_a(T::Type{A1}, s::A2, problem::Union{MDP, POMDP}) where {A1<:AbstractArray, A2<:AbstractArray} = convert(T, s)
+convert_a(::Type{Any}, a::A, problem::Union{MDP{<:Any,A},POMDP{<:Any,A,<:Any}}) where {A} = a
+convert_a(::Type{A}, a, problem::Union{MDP{<:Any,A},POMDP{<:Any,A,<:Any}}) where {A} = convert(A, a)
 
-convert_a(::Type{A}, s::Number, problem::Union{MDP,POMDP}) where A<:AbstractArray = convert(A,[s])
-convert_a(::Type{N}, v::AbstractArray{F}, problem::Union{MDP, POMDP}) where {N<:Number, F<:Number} = convert(N, first(v))
+convert_a(T::Type{A1}, a::A2, problem::Union{MDP, POMDP}) where {A1<:AbstractArray, A2<:AbstractArray} = convert(T, a)
+
+convert_a(::Type{A}, a::Number, problem::Union{MDP,POMDP}) where A<:AbstractArray = convert(A,[a])
+convert_a(::Type{N}, v::AbstractArray{F}, problem::Union{MDP, POMDP}) where {N<:Number, F<:Number} = convert(N, only(v))
 
 
 """
@@ -178,7 +184,10 @@ Convert an observation to vectorized form or vice versa.
 """
 function convert_o end
 
-convert_o(T::Type{A1}, s::A2, problem::Union{MDP, POMDP}) where {A1<:AbstractArray, A2<:AbstractArray} = convert(T, s)
+convert_o(::Type{Any}, o::O, problem::POMDP{<:Any,<:Any,O}) where {O} = o
+convert_o(::Type{O}, o, problem::POMDP{<:Any,<:Any,O}) where {O} = convert(O, o)
 
-convert_o(::Type{A}, s::Number, problem::Union{MDP,POMDP}) where A<:AbstractArray = convert(A, [s])
-convert_o(::Type{N}, v::AbstractArray{F}, problem::Union{MDP, POMDP}) where {N<:Number, F<:Number} = convert(N, first(v))
+convert_o(T::Type{A1}, s::A2, problem::POMDP) where {A1<:AbstractArray, A2<:AbstractArray} = convert(T, s)
+
+convert_o(::Type{A}, s::Number, problem::POMDP) where A<:AbstractArray = convert(A, [s])
+convert_o(::Type{N}, v::AbstractArray{F}, problem::POMDP) where {N<:Number, F<:Number} = convert(N, only(v))
