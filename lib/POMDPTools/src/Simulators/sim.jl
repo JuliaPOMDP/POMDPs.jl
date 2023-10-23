@@ -126,7 +126,7 @@ function default_init_obs(p::POMDP, s)
 end
 
 @generated function default_init_state(p::Union{MDP,POMDP})
-    if implemented(initialstate, Tuple{p, typeof(Random.default_rng())})
+    if implemented(initialstate, Tuple{p})
         return :(rand(Random.default_rng(), initialstate(p)))
     else
         return quote
