@@ -1,7 +1,7 @@
 using POMDPs
 using DiscreteValueIteration: ValueIterationSolver
 using QuickPOMDPs
-using POMDPModels: BabyPOMDP, TigerPOMDP, SimpleGridWorld, LegacyGridWorld, RandomMDP, TMaze, Starve, FeedWhenCrying, RandomPOMDP
+using POMDPModels: BabyPOMDP, TigerPOMDP, SimpleGridWorld, LegacyGridWorld, RandomMDP, TMaze, Starve, FeedWhenCrying, RandomPOMDP, MiniHallway
 import POMDPLinter
 
 using POMDPTools

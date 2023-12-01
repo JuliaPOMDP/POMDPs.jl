@@ -76,3 +76,16 @@ bnew = update(up, bold, a, o)
 b5 = DiscreteBelief(pomdp, [0.4, 0.6])
 @test @inferred(mean(b5)) == 0.6
 @test @inferred(mode(b5)) == true
+
+# test display of DiscreteBelief
+b = DiscreteBelief(MiniHallway(), [0.1, 0.1, 0.123, 0.4, 0, 0, 0, 0, 0.177, 0.05, 0, 0, 0.05])
+@test occursin("MiniHallway", sprint(showdistribution, b))
+@test occursin("0.123", sprint(showdistribution, b))
+
+# test SparseCat of DiscreteBelief
+b_sparse_cat = SparseCat(b)
+@test length(b_sparse_cat.vals) == sum(b.b .!= 0.0)
+@test isapprox(sum(b_sparse_cat.probs), 1.0; atol=eps())
+b_sparse_cat = SparseCat(b; check_zeros=false)
+@test length(b_sparse_cat.vals) == length(b.state_list)
+@test isapprox(sum(b_sparse_cat.probs), 1.0; atol=eps())
