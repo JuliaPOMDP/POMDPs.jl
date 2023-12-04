@@ -13,10 +13,10 @@ Normalization of `b` is assumed in some calculations (e.g. pdf), but it is only 
 # Constructor
     DiscreteBelief(pomdp, b::Vector{Float64}; check::Bool=true)
 
-# Fields 
-- `pomdp` : the POMDP problem  
+# Fields
+- `pomdp` : the POMDP problem
 - `state_list` : a vector of ordered states
-- `b` : the probability vector 
+- `b` : the probability vector
 """
 struct DiscreteBelief{P<:POMDP, S}
     pomdp::P
@@ -29,14 +29,14 @@ function DiscreteBelief(pomdp, b::Vector{Float64}; check::Bool=true)
         if !isapprox(sum(b), 1.0, atol=0.001)
             @warn("""
                   b in DiscreteBelief(pomdp, b) does not sum to 1.
- 
+
                   To suppress this warning use `DiscreteBelief(pomdp, b, check=false)`
                   """, b)
         end
         if !all(0.0 <= p <= 1.0 for p in b)
             @warn("""
                   b in DiscreteBelief(pomdp, b) contains entries outside [0,1].
- 
+
                   To suppress this warning use `DiscreteBelief(pomdp, b, check=false)`
                   """, b)
         end
@@ -44,6 +44,22 @@ function DiscreteBelief(pomdp, b::Vector{Float64}; check::Bool=true)
     return DiscreteBelief(pomdp, ordered_states(pomdp), b)
 end
 
+import .POMDPDistributions: SparseCat
+"""
+    SparseCat(d::DiscreteBelief; check_zeros=true)
+
+Create a sparse categorical distribution from a DiscreteBelief.
+`check_zeros` is a flag to "sparsify" the distribution.
+"""
+function SparseCat(b::DiscreteBelief; check_zeros=true)
+    if !check_zeros
+        return SparseCat(b.state_list, b.b)
+    end
+    non_zero_indices = findall(x -> !isapprox(x, 0.0; atol=eps()), b.b)
+    return SparseCat(b.state_list[non_zero_indices], b.b[non_zero_indices])
+end
+
+Base.show(io::IO, m::MIME"text/plain", d::DiscreteBelief) = showdistribution(io, m, d, title="$(typeof(d.pomdp)) DiscreteBelief")
 
 """
      uniform_belief(pomdp)
