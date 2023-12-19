@@ -53,7 +53,7 @@ function Sim(pomdp::POMDP,
              metadata = NamedTuple()
             )
 
-    if initialstate == nothing && statetype(pomdp) != Nothing
+    if initialstate === nothing && statetype(pomdp) != Nothing
         is = rand(rng, initial_belief)
     else
         is = initialstate
@@ -76,7 +76,7 @@ function Sim(mdp::MDP,
              metadata = NamedTuple()
             )
 
-    if initialstate == nothing && statetype(mdp) != Nothing
+    if initialstate === nothing && statetype(mdp) != Nothing
         is = rand(rng, POMDPs.initialstate(mdp))
     else
         is = initialstate
@@ -119,7 +119,7 @@ end
 will return a dataframe with with the number of steps and the reward in it.
 """
 function run_parallel(process::Function, queue::AbstractVector, pool::AbstractWorkerPool=default_worker_pool();
-                      progress=Progress(length(queue), desc="Simulating..."),
+                      progress=Progress(length(queue); desc="Simulating..."),
                       proc_warn::Bool=true, show_progress::Bool=true)
 
     if nworkers(pool) == 1 && proc_warn
@@ -133,7 +133,7 @@ function run_parallel(process::Function, queue::AbstractVector, pool::AbstractWo
     end
     
     if progress in (nothing, false)
-        progstr = (progress == nothing) ? "nothing" : "false"
+        progstr = (progress === nothing) ? "nothing" : "false"
         @warn("run_parallel(..., progress=$progstr) is deprecated. Use run_parallel(..., show_progress=false) instead.")
         show_progress = false
     end

@@ -69,7 +69,7 @@ function PolicyWrapper(policy::Policy; payload=nothing)
 end
 
 function action(p::PolicyWrapper, s)
-    if p.payload == nothing
+    if p.payload === nothing
         return p.f(p.policy, s)
     else
         return p.f(p.policy, p.payload, s)

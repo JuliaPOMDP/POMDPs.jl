@@ -21,10 +21,10 @@ r2 = simulate(sim, problem, policy)
 @test length(ainfo_hist(r2)) == steps
 @test length(uinfo_hist(r2)) == steps
 
-@test exception(r1) == nothing
-@test exception(r2) == nothing
-@test backtrace(r1) == nothing
-@test backtrace(r2) == nothing
+@test exception(r1) === nothing
+@test exception(r2) === nothing
+@test backtrace(r1) === nothing
+@test backtrace(r2) === nothing
 
 @test n_steps(r1) == n_steps(r2)
 @test undiscounted_reward(r1) == undiscounted_reward(r2)
@@ -41,7 +41,7 @@ for tuple in r1
 end
 
 for ui in eachstep(r2, "update_info")
-    @test ui == nothing
+    @test ui === nothing
 end
 
 @test r1[1] == first(r1)

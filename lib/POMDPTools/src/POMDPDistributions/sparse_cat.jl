@@ -83,7 +83,7 @@ function Base.iterate(d::SparseCat, dstate::Tuple)
     vstate, pstate = dstate
     vnext = iterate(d.vals, vstate)
     pnext = iterate(d.probs, pstate)
-    if vnext == nothing || pnext == nothing
+    if vnext === nothing || pnext === nothing
         return nothing 
     end
     val, vstate_next = vnext
