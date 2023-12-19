@@ -89,7 +89,7 @@ function simulate(sim::HistoryRecorder,
     end
     
     if sim.show_progress
-        if (sim.max_steps == nothing) && (sim.eps == nothing)
+        if (sim.max_steps === nothing) && (sim.eps === nothing)
             error("If show_progress=true in a HistoryRecorder, you must also specify max_steps or eps.")
         end
         prog = Progress(max_steps, "Simulating..." )
@@ -147,7 +147,7 @@ function simulate(sim::HistoryRecorder,
                         max_steps)
 
     if sim.show_progress
-        if (sim.max_steps == nothing) && (sim.eps == nothing)
+        if (sim.max_steps === nothing) && (sim.eps === nothing)
             error("If show_progress=true in a HistoryRecorder, you must also specify max_steps or eps.")
         end
         prog = Progress(max_steps, "Simulating..." )
