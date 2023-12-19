@@ -119,7 +119,7 @@ end
 will return a dataframe with with the number of steps and the reward in it.
 """
 function run_parallel(process::Function, queue::AbstractVector, pool::AbstractWorkerPool=default_worker_pool();
-                      progress=Progress(length(queue), desc="Simulating..."),
+                      progress=Progress(length(queue); desc="Simulating..."),
                       proc_warn::Bool=true, show_progress::Bool=true)
 
     if nworkers(pool) == 1 && proc_warn
