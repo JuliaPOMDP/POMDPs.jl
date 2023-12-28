@@ -125,17 +125,15 @@ function default_init_obs(p::POMDP, s)
     end
 end
 
-@generated function default_init_state(p::Union{MDP,POMDP})
-    if implemented(initialstate, Tuple{p})
-        return :(rand(Random.default_rng(), initialstate(p)))
+function default_init_state(m::Union{MDP,POMDP})
+    if implemented(initialstate, Tuple{typeof(m)})
+        return rand(Random.default_rng(), initialstate(m))
     else
-        return quote
-            error("""
-                  Error in sim(::$(typeof(p))): No initial state specified.
-                  
-                  Please supply it as a keyword argument or provide POMDPs.initialstate(::$(typeof(p))).
+        error("""
+              Error in sim(::$(typeof(m))): No initial state specified.
+              
+              Please supply it as a keyword argument or provide POMDPs.initialstate(::$(typeof(m))).
 
-                  """)
-        end
+              """)
     end
 end
