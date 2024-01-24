@@ -49,6 +49,12 @@ Pages = [ "def_solver.md", "offline_solver.md", "online_solver.md", "def_updater
 Pages = [ "simulation.md", "run_simulation.md", "policy_interaction.md" ]
 ```
 
+### Examples and Gallery
+
+```@contents
+Pages = [ "examples.md", "example_defining_problems.md", "example_solvers.md", "example_simulations.md", "example_gridworld_mdp.md", "gallery.md"]
+```
+
 ### POMDPTools - the standard library for POMDPs.jl
 
 ```@contents
