@@ -34,8 +34,6 @@ using MCTS
 
 In Grid World, we are trying to control an agent who has trouble moving in the desired direction. In our problem, we have four reward states within the a grid. Each position on the grid represents a state, and the positive reward states are terminal (the agent stops recieving reward after reaching them and performing an action from that state). The agent has four actions to choose from: up, down, left, right. The agent moves in the desired direction with a probability of $0.7$, and with a probability of $0.1$ in each of the remaining three directions. If the agent bumps into the outside wall, there is a penalty of $1$ (i.e. reward of $-1$). The problem has the following form:
 
-<!-- TODO: Insert a better render of the grid world problem -->
-
 ![Grid World](examples/grid_world_overview.gif)
 
 ## Defining the Grid World MDP Type
