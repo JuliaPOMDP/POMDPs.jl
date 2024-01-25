@@ -1,9 +1,11 @@
 [deps]
 BasicPOMCP = "d721219e-3fc6-5570-a8ef-e5402f47c49e"
 DataFrames = "a93c6f00-e57d-5684-b7b6-d8193f3e46c0"
+DiscreteValueIteration = "4b033969-44f6-5439-a48b-c11fa3648068"
 Distributions = "31c24e10-a181-5473-b8eb-7969acd0382f"
 Documenter = "e30172f5-a6a5-5a46-863b-614d45cd2de4"
 LightGraphs = "093fc24a-ae57-5d10-9952-331d41423f4d"
+MCTS = "e12ccd36-dcad-5f33-8774-9175229e7b33"
 NamedTupleTools = "d9ec5142-1e00-5aa0-9d6a-321866360f50"
 NativeSARSOP = "a07c76ea-660d-4c9a-8028-2e6dbd212cb8"
 POMDPLinter = "f3bd98c0-eb40-45e2-9eb1-f2763262d755"
@@ -13,6 +15,7 @@ POMDPs = "a93abf59-7444-517b-a68a-c42f96afdd7d"
 QMDP = "3aa3ecc9-5a5d-57c8-8188-3e47bd8068d2"
 QuickPOMDPs = "8af83fb2-a731-493c-9049-9e19dbce6165"
 StatsBase = "2913bbd2-ae8a-5f71-8c99-4fb6c76f3a91"
+UnicodePlots = "b8865327-cd53-5732-bb35-84acbb429228"
 
 [compat]
 Documenter = "1"
