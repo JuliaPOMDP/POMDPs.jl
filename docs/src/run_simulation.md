@@ -9,4 +9,4 @@ r = simulate(sim, m, p)
 
 More inputs, such as a belief updater, initial state, initial belief, etc. may be specified as arguments to [`simulate`](@ref). See the docstring for [`simulate`](@ref) and the appropriate "Input" sections in the [Simulation Standard](@ref) page for more information.
 
-More examples can be found in the [POMDPExamples package](https://github.com/JuliaPOMDP/POMDPExamples.jl). A variety of simulators that return more information and interact in different ways can be found in [POMDPTools](@ref pomdptools_section).
+More examples can be found in the [Simulations Examples](@ref) section. A variety of simulators that return more information and interact in different ways can be found in [POMDPTools](@ref pomdptools_section).

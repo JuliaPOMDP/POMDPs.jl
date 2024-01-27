@@ -2,7 +2,7 @@
 
 POMDPTools contains a collection of POMDPs.jl simulators.
 
-Usage examples can be found in the [simulation tutorial in the POMDPExamples package](https://github.com/JuliaPOMDP/POMDPExamples.jl/blob/master/notebooks/Running-Simulations.ipynb).
+Usage examples can be found in the [Simulations Examples](@ref) section.
 
 If you are just getting started, probably the easiest way to begin is the [`stepthrough` function](@ref Stepping-through). Otherwise, consult the [Which Simulator Should I Use?](@ref which_simulator) guide below:
 
@@ -51,8 +51,6 @@ for (s, a, o, r) in stepthrough(pomdp, policy, "s,a,o,r", max_steps=10)
 end
 ```
 
-More examples can be found in the [POMDPExamples Package](https://github.com/JuliaPOMDP/POMDPExamples.jl/blob/master/notebooks/Running-Simulations.ipynb).
-
 ```@docs
 stepthrough
 ```
@@ -77,8 +75,6 @@ policy = RandomPolicy(mdp)
 r = simulate(rs, mdp, policy)
 ```
 
-More examples can be found in the [POMDPExamples Package](https://github.com/JuliaPOMDP/POMDPExamples.jl/blob/master/notebooks/Running-Simulations.ipynb)
-
 ```@docs
 RolloutSimulator
 ```
@@ -94,8 +90,6 @@ policy = RandomPolicy(pomdp)
 
 h = simulate(hr, pomdp, policy)
 ```
-
-More examples can be found in the [POMDPExamples Package](https://github.com/JuliaPOMDP/POMDPExamples.jl/blob/master/notebooks/Running-Simulations.ipynb).
 
 ```@docs
 HistoryRecorder
@@ -115,10 +109,6 @@ end
 This allows a flexible and general way to interact with a POMDP environment without creating new `Policy` types.
 
 In the POMDP case, an updater can optionally be supplied as an additional positional argument if the policy function works with beliefs rather than directly with observations.
-
-More examples can be found in the [POMDPExamples Package](https://github.com/JuliaPOMDP/POMDPExamples.jl/blob/master/notebooks/Running-Simulations.ipynb)
-
-More examples can be found in the [POMDPExamples Package](https://github.com/JuliaPOMDP/POMDPExamples.jl/blob/master/notebooks/Running-Simulations.ipynb)
 
 ```@docs
 sim
@@ -197,7 +187,7 @@ POMDPTools contains a utility for running many Monte Carlo simulations in parall
 
 ### Example
 
-An example can be found in the [POMDPExamples Package](https://github.com/JuliaPOMDP/POMDPExamples.jl/blob/master/notebooks/Running-Simulations.ipynb).
+An example can be found in the [Parallel Simulations](@ref) section.
 
 ### Sim objects
 

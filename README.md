@@ -89,16 +89,14 @@ end
 println("Undiscounted reward was $rsum.")
 ```
 
-For more examples with visualization, see the documentation below and [POMDPGallery.jl](https://github.com/JuliaPOMDP/POMDPGallery.jl).
+For more examples and examples with visualizations, reference the [Examples](https://JuliaPOMDP.github.io/POMDPs.jl/latest/examples) and [Gallery of POMDPs.jl Problems](https://JuliaPOMDP.github.io/POMDPs.jl/latest/gallery) sections of the documentaiton.
 
 ## Documentation and Tutorials
 
-In addition to the above-mentioned [Julia Academy course](https://juliaacademy.com/p/decision-making-under-uncertainty-with-pomdps-jl), detailed documentation can be found [here](http://juliapomdp.github.io/POMDPs.jl/stable/).
+In addition to the above-mentioned [Julia Academy course](https://juliaacademy.com/p/decision-making-under-uncertainty-with-pomdps-jl), detailed documentation and examples can be found [here](http://juliapomdp.github.io/POMDPs.jl/stable/).
 
 [![Docs](https://img.shields.io/badge/docs-stable-blue.svg)](https://JuliaPOMDP.github.io/POMDPs.jl/stable)
 [![Docs](https://img.shields.io/badge/docs-latest-blue.svg)](https://JuliaPOMDP.github.io/POMDPs.jl/latest)
-
-Several tutorials are hosted in the [POMDPExamples repository](https://github.com/JuliaPOMDP/POMDPExamples.jl).
 
 
 ## Supported Packages
