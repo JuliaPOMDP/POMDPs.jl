@@ -227,6 +227,7 @@ using POMDPs
 using TagPOMDPProblem
 using NativeSARSOP
 using POMDPGifs
+using Plots
 using Random
 
 pomdp = TagPOMDP()
