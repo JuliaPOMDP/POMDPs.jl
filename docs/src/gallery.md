@@ -105,6 +105,9 @@ sim = GifSimulator(;
     fps=5)
 saved_gif = simulate(sim, pomdp, planner, belief_updater)
 
+Pkg.rm("RoombaPOMDPs") # hide
+Pkg.update() # hide
+
 println("gif saved to: $(saved_gif.filename)")
 ```
 
