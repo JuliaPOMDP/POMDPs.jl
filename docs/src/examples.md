@@ -1,4 +1,4 @@
-# Examples
+# [Examples](@id examples_section)
 
 This section contains examples of how to use POMDPs.jl. For specific informaiton about the interface and functions used in the examples, please reference the correpsonding area in the documenation or the [API Documentation](@ref).
 
