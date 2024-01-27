@@ -222,12 +222,11 @@ The orange agent is the pursuer and the red agent is the evader. The pursuer mus
 
 ![TagPOMDPProblem](examples/TagPOMDP.gif)
 
-```@example
+```julia
 using POMDPs
 using TagPOMDPProblem
 using NativeSARSOP
 using POMDPGifs
-using Plots
 using Random
 
 pomdp = TagPOMDP()
@@ -238,6 +237,9 @@ saved_gif = simulate(sim, pomdp, policy)
 
 println("gif saved to: $(saved_gif.filename)")
 ```
+
+!!! note
+    This gif was not generated at documentation build time because of GR errors with Github Actions [Plots.jl issue 4764](https://github.com/JuliaPlots/Plots.jl/issues/4764).
 
 ## Adding New Gallery Examples
 To add new examples, please submit a pull request to the POMDPs.jl repository with changes made to the `gallery.md` file in `docs/src/`. Please include the creation of a gif in the code snippet. The gif should be generated during the creation of the documenation using `@eval` and saved in the `docs/src/examples/` directory. The gif should be named `problem_name.gif` where `problem_name` is the name of the problem. The gif can then be included using `![problem_name](examples/problem_name.gif)`.
