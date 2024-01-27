@@ -6,7 +6,12 @@ Originally, an optional final project for AA228 at Stanford in Fall 2018. A Room
 
 ![EscapeRoomba](examples/EscapeRoomba.gif)
 
-```@example
+```@setup EscapeRoomba
+using Pkg
+Pkg.add(url="https://github.com/sisl/RoombaPOMDPs.git")
+```
+
+```@example EscapeRoomba
 using POMDPs
 using POMDPTools
 using POMDPGifs
@@ -16,8 +21,9 @@ using Cairo
 using LinearAlgebra
 using BasicPOMCP
 
-using Pkg
-Pkg.add(url="https://github.com/sisl/RoombaPOMDPs.git")
+# If you don't have RoombaPOMDPs installed, uncomment the following two lines
+# using Pkg
+# Pkg.add(url="https://github.com/sisl/RoombaPOMDPs.git")
 using RoombaPOMDPs
 
 # Let's only consider discrete actions
@@ -105,10 +111,11 @@ sim = GifSimulator(;
     fps=5)
 saved_gif = simulate(sim, pomdp, planner, belief_updater)
 
-Pkg.rm("RoombaPOMDPs") # hide
-Pkg.update() # hide
-
 println("gif saved to: $(saved_gif.filename)")
+```
+
+```@setup EscapeRoomba
+Pkg.rm("RoombaPOMDPs")
 ```
 
 ## [DroneSurveillance](https://github.com/JuliaPOMDP/DroneSurveillance.jl)
@@ -239,7 +246,7 @@ println("gif saved to: $(saved_gif.filename)")
 ```
 
 !!! note
-    This gif was not generated at documentation build time because of GR errors with Github Actions [Plots.jl issue 4764](https://github.com/JuliaPlots/Plots.jl/issues/4764).
+    This gif was **not** generated at documentation build time because of GR errors with Github Actions ([Plots.jl issue 4764](https://github.com/JuliaPlots/Plots.jl/issues/4764)).
 
 ## Adding New Gallery Examples
 To add new examples, please submit a pull request to the POMDPs.jl repository with changes made to the `gallery.md` file in `docs/src/`. Please include the creation of a gif in the code snippet. The gif should be generated during the creation of the documenation using `@eval` and saved in the `docs/src/examples/` directory. The gif should be named `problem_name.gif` where `problem_name` is the name of the problem. The gif can then be included using `![problem_name](examples/problem_name.gif)`.
