@@ -259,8 +259,45 @@ Pkg.rm("Plots")
 Pkg.rm("PGFPlotsX")
 ```
 
-!!! note
-    This gif was **not** generated at documentation build time because of GR errors with Github Actions ([Plots.jl issue 4764](https://github.com/JuliaPlots/Plots.jl/issues/4764)).
+## [LaserTag](https://github.com/JuliaPOMDP/LaserTag.jl)
+
+LaserTag problem from A. Somani, N. Ye, D. Hsu, &  W. Lee (2013). DESPOT : Online POMDP Planning with Regularization. Advances in Neural Information Processing Systems. This implementaiton has versions with continuous and discrete observations.
+
+![LaserTag](examples/LaserTag.gif)
+
+```@setup LaserTag
+using Pkg
+Pkg.add("TikzPictures")
+Pkg.add(url="https://github.com/JuliaPOMDP/LaserTag.jl.git")
+using TikzPictures
+```
+
+```@example LaserTag
+using POMDPGifs
+using QMDP
+using Random
+using ParticleFilters
+
+# If you don't have LaserTag installed, uncomment the following two lines
+# using Pkg
+# Pkg.add(url="https://github.com/JuliaPOMDP/LaserTag.jl.git")
+using LaserTag
+
+rng = MersenneTwister(7)
+pomdp = gen_lasertag(rng=rng, robot_position_known=true)
+policy = solve(QMDPSolver(verbose=false), pomdp)
+filter = SIRParticleFilter(pomdp, 10000, rng=rng)
+
+sim = GifSimulator(; filename="examples/LaserTag.gif", max_steps=50, rng=MersenneTwister(1), show_progress=false)
+saved_gif = simulate(sim, pomdp, policy, filter)
+
+println("gif saved to: $(saved_gif.filename)")
+```
+
+```@setup LaserTag
+Pkg.rm("LaserTag")
+Pkg.rm("TikzPictures")
+```
 
 ## Adding New Gallery Examples
 To add new examples, please submit a pull request to the POMDPs.jl repository with changes made to the `gallery.md` file in `docs/src/`. Please include the creation of a gif in the code snippet. The gif should be generated during the creation of the documenation using `@eval` and saved in the `docs/src/examples/` directory. The gif should be named `problem_name.gif` where `problem_name` is the name of the problem. The gif can then be included using `![problem_name](examples/problem_name.gif)`.
