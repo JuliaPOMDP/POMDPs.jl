@@ -189,7 +189,7 @@ If your problem is very large we probably do not want to store all of our states
     # Define the length of the state space, number of grid locations plus the terminal state
     Base.length(mdp::GridWorldMDP) = mdp.size_x * mdp.size_y + 1
     
-    # `states` now returns the mdp, which we will constructur our iterator from
+    # `states` now returns the mdp, which we will construct our iterator from
     POMDPs.states(mdp::GridWorldMDP) = mdp
     
     function Base.getindex(mdp::GridWorldMDP, si::Int) # Enables mdp[si]

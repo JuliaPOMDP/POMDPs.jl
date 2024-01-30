@@ -37,7 +37,7 @@ end
 ```
 
 ## Offline (SARSOP)
-In this example, we will use the [NativeSARSOP](https://github.com/JuliaPOMDP/NativeSARSOP.jl) solver. We are generating the policy offline, so we will also save the policy to a file so we can use it at a later time without having to recompute it.
+In this example, we will use the [NativeSARSOP](https://github.com/JuliaPOMDP/NativeSARSOP.jl) solver. The process for generating offline polcies is similar for all offline solvers. First, we define the solver with the desired parameters. Then, we call `POMDPs.solve` with the solver and the problem. We can query the policy using the `action` function.
 
 ```@example crying_sim
 using NativeSARSOP

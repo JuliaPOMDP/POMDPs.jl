@@ -7,7 +7,7 @@ There is a large variety of problems that can be expressed as MDPs and POMDPs an
 For the examples, we will use the CryingBaby problem from [Algorithms for Decision Making](https://algorithmsbook.com/) by Mykel J. Kochenderfer, Tim A. Wheeler, and Kyle H. Wray.
 
 !!! note 
-    This craying baby problem follows the description in Algorithsm for Decision Making and is different than `BabyPOMDP` defined in [POMDPModels.jl](https://github.com/JuliaPOMDP/POMDPModels.jl).
+    This craying baby problem follows the description in Algorithms for Decision Making and is different than `BabyPOMDP` defined in [POMDPModels.jl](https://github.com/JuliaPOMDP/POMDPModels.jl).
 
 From [Appendix F](https://algorithmsbook.com/files/appendix-f.pdf) of Algorithms for Decision Making:
 > The crying baby problem is a simple POMDP with two states, three actions, and two observations. Our goal is to care for a baby, and we do so by choosing at each time step whether to feed the baby, sing to the baby, or ignore the baby.
