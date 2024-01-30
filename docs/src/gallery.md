@@ -15,11 +15,12 @@ Pkg.add(url="https://github.com/sisl/RoombaPOMDPs.git")
 using POMDPs
 using POMDPTools
 using POMDPGifs
+using BasicPOMCP
 using Random
 using ParticleFilters
 using Cairo
 using LinearAlgebra
-using BasicPOMCP
+
 
 # If you don't have RoombaPOMDPs installed, uncomment the following two lines
 # using Pkg
@@ -126,11 +127,12 @@ In this problem, the UAV must go from one corner to the other while avoiding a g
 ![DroneSurveillance](examples/DroneSurveillance.gif)
 
 ```@example
-using DroneSurveillance
 using POMDPs
-using NativeSARSOP
+using POMDPTools
 using POMDPGifs
+using NativeSARSOP
 using Random
+using DroneSurveillance
 import Cairo, Fontconfig
 
 pomdp = DroneSurveillancePOMDP() 
@@ -152,8 +154,8 @@ An implementation of the classic Mountain Car RL problem using the QuickPOMDPs i
 using POMDPs
 using POMDPTools
 using POMDPGifs
-using QuickPOMDPs
 using Random
+using QuickPOMDPs
 using Compose
 import Cairo
 
@@ -202,11 +204,12 @@ The robot must navigate and sample good rocks (green) and then arrive at an exit
 
 ```@example
 using POMDPs
-using RockSample 
+using POMDPTools
+using POMDPGifs
 using NativeSARSOP
-using POMDPGifs 
-using Cairo 
 using Random
+using RockSample 
+using Cairo 
 
 pomdp = RockSamplePOMDP(rocks_positions=[(2,3), (4,4), (4,2)], 
                         sensor_efficiency=20.0,
@@ -229,12 +232,19 @@ The orange agent is the pursuer and the red agent is the evader. The pursuer mus
 
 ![TagPOMDPProblem](examples/TagPOMDP.gif)
 
-```julia
+```@setup TagPOMDP
+using Pkg
+Pkg.add("Plots")
+using Plots
+```
+
+```@example TagPOMDP
 using POMDPs
-using TagPOMDPProblem
-using NativeSARSOP
+using POMDPTools
 using POMDPGifs
+using NativeSARSOP
 using Random
+using TagPOMDPProblem
 
 pomdp = TagPOMDP()
 solver = SARSOPSolver(; max_time=20.0)
@@ -245,8 +255,10 @@ saved_gif = simulate(sim, pomdp, policy)
 println("gif saved to: $(saved_gif.filename)")
 ```
 
-!!! note
-    This gif was **not** generated at documentation build time because of GR errors with Github Actions ([Plots.jl issue 4764](https://github.com/JuliaPlots/Plots.jl/issues/4764)).
+```@setup TagPOMDP
+using Pkg
+Pkg.rm("Plots")
+```
 
 ## Adding New Gallery Examples
 To add new examples, please submit a pull request to the POMDPs.jl repository with changes made to the `gallery.md` file in `docs/src/`. Please include the creation of a gif in the code snippet. The gif should be generated during the creation of the documenation using `@eval` and saved in the `docs/src/examples/` directory. The gif should be named `problem_name.gif` where `problem_name` is the name of the problem. The gif can then be included using `![problem_name](examples/problem_name.gif)`.
