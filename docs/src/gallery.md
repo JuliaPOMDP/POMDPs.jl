@@ -235,9 +235,7 @@ The orange agent is the pursuer and the red agent is the evader. The pursuer mus
 ```@setup TagPOMDP
 using Pkg
 Pkg.add("Plots")
-Pkg.add("PGFPlotsX")
 using Plots
-pgfplotsx()
 ```
 
 ```@example TagPOMDP
@@ -260,7 +258,6 @@ println("gif saved to: $(saved_gif.filename)")
 ```@setup TagPOMDP
 using Pkg
 Pkg.rm("Plots")
-Pkg.rm("PGFPlotsX")
 ```
 
 ## Adding New Gallery Examples
