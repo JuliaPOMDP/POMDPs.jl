@@ -229,7 +229,15 @@ The orange agent is the pursuer and the red agent is the evader. The pursuer mus
 
 ![TagPOMDPProblem](examples/TagPOMDP.gif)
 
-```julia
+```@setup TagPOMDP
+using Pkg
+Pkg.add("Plots")
+Pkg.add("PGFPlotsX")
+using Plots
+pgfplotsx()
+```
+
+```@example TagPOMDP
 using POMDPs
 using TagPOMDPProblem
 using NativeSARSOP
@@ -243,6 +251,12 @@ sim = GifSimulator(; filename="examples/TagPOMDP.gif", max_steps=50, rng=Mersenn
 saved_gif = simulate(sim, pomdp, policy)
 
 println("gif saved to: $(saved_gif.filename)")
+```
+
+```@setup TagPOMDP
+using Pkg
+Pkg.rm("Plots")
+Pkg.rm("PGFPlotsX")
 ```
 
 !!! note
