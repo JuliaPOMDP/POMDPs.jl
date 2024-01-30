@@ -15,11 +15,12 @@ Pkg.add(url="https://github.com/sisl/RoombaPOMDPs.git")
 using POMDPs
 using POMDPTools
 using POMDPGifs
+using BasicPOMCP
 using Random
 using ParticleFilters
 using Cairo
 using LinearAlgebra
-using BasicPOMCP
+
 
 # If you don't have RoombaPOMDPs installed, uncomment the following two lines
 # using Pkg
@@ -126,11 +127,12 @@ In this problem, the UAV must go from one corner to the other while avoiding a g
 ![DroneSurveillance](examples/DroneSurveillance.gif)
 
 ```@example
-using DroneSurveillance
 using POMDPs
-using NativeSARSOP
+using POMDPTools
 using POMDPGifs
+using NativeSARSOP
 using Random
+using DroneSurveillance
 import Cairo, Fontconfig
 
 pomdp = DroneSurveillancePOMDP() 
@@ -152,8 +154,8 @@ An implementation of the classic Mountain Car RL problem using the QuickPOMDPs i
 using POMDPs
 using POMDPTools
 using POMDPGifs
-using QuickPOMDPs
 using Random
+using QuickPOMDPs
 using Compose
 import Cairo
 
@@ -202,11 +204,12 @@ The robot must navigate and sample good rocks (green) and then arrive at an exit
 
 ```@example
 using POMDPs
-using RockSample 
+using POMDPTools
+using POMDPGifs
 using NativeSARSOP
-using POMDPGifs 
-using Cairo 
 using Random
+using RockSample 
+using Cairo 
 
 pomdp = RockSamplePOMDP(rocks_positions=[(2,3), (4,4), (4,2)], 
                         sensor_efficiency=20.0,
@@ -239,10 +242,11 @@ pgfplotsx()
 
 ```@example TagPOMDP
 using POMDPs
-using TagPOMDPProblem
-using NativeSARSOP
+using POMDPTools
 using POMDPGifs
+using NativeSARSOP
 using Random
+using TagPOMDPProblem
 
 pomdp = TagPOMDP()
 solver = SARSOPSolver(; max_time=20.0)
@@ -269,14 +273,16 @@ LaserTag problem from A. Somani, N. Ye, D. Hsu, &  W. Lee (2013). DESPOT : Onlin
 using Pkg
 Pkg.add("TikzPictures")
 Pkg.add(url="https://github.com/JuliaPOMDP/LaserTag.jl.git")
-using TikzPictures
 ```
 
 ```@example LaserTag
+using POMDPs
+using POMDPTools
 using POMDPGifs
 using QMDP
 using Random
 using ParticleFilters
+using TikzPictures
 
 # If you don't have LaserTag installed, uncomment the following two lines
 # using Pkg
