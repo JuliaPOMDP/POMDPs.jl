@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Using Different Solvers · POMDPs.jl</title><meta name="title" content="Using Different Solvers · POMDPs.jl"/><meta property="og:title" content="Using Different Solvers · POMDPs.jl"/><meta property="twitter:title" content="Using Different Solvers · POMDPs.jl"/><meta name="description" content="Documentation for POMDPs.jl."/><meta property="og:description" content="Documentation for POMDPs.jl."/><meta property="twitter:description" content="Documentation for POMDPs.jl."/><script data-outdated-warner src="../assets/warner.js"></script><link href="https://cdnjs.cloudflare.com/ajax/libs/lato-font/3.0.0/css/lato-font.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/juliamono/0.050/juliamono.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.8/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL=".."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="../assets/documenter.js"></script><script src="../search_index.js"></script><script src="../siteinfo.js"></script><script src="../../versions.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/documenter-dark.css" data-theme-name="documenter-dark" data-theme-primary-dark/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="../assets/themeswap.js"></script></head><body><div id="documenter"><nav class="docs-sidebar"><a class="docs-logo" href="../"><img src="../assets/logo.png" alt="POMDPs.jl logo"/></a><div class="docs-package-name"><span class="docs-autofit"><a href="../">POMDPs.jl</a></span></div><button class="docs-search-query input is-rounded is-small is-clickable my-2 mx-auto py-1 px-2" id="documenter-search-query">Search docs (Ctrl + /)</button><ul class="docs-menu"><li><span class="tocitem">Basics</span><ul><li><a class="tocitem" href="../">POMDPs.jl</a></li><li><a class="tocitem" href="../install/">Installation</a></li><li><a class="tocitem" href="../get_started/">Getting Started</a></li><li><a class="tocitem" href="../concepts/">Concepts and Architecture</a></li></ul></li><li><span class="tocitem">Defining (PO)MDP Models</span><ul><li><a class="tocitem" href="../def_pomdp/">Defining POMDPs and MDPs</a></li><li><a class="tocitem" href="../interfaces/">Spaces and Distributions</a></li></ul></li><li><span class="tocitem">Writing Solvers</span><ul><li><a class="tocitem" href="../def_solver/">Solvers</a></li><li><a class="tocitem" href="../offline_solver/">Example: Defining an offline solver</a></li><li><a class="tocitem" href="../online_solver/">Example: Defining an online solver</a></li></ul></li><li><span class="tocitem">Writing Belief Updaters</span><ul><li><a class="tocitem" href="../def_updater/">Defining a Belief Updater</a></li></ul></li><li><span class="tocitem">Analyzing Results</span><ul><li><a class="tocitem" href="../simulation/">Simulation Standard</a></li><li><a class="tocitem" href="../run_simulation/">Running Simulations</a></li><li><a class="tocitem" href="../policy_interaction/">Interacting with Policies</a></li></ul></li><li><span class="tocitem">Examples and Gallery</span><ul><li><a class="tocitem" href="../examples/">Examples</a></li><li><a class="tocitem" href="../example_defining_problems/">Defining a POMDP</a></li><li class="is-active"><a class="tocitem" href>Using Different Solvers</a><ul class="internal"><li><a class="tocitem" href="#Checking-Requirements"><span>Checking Requirements</span></a></li><li><a class="tocitem" href="#Offline-(SARSOP)"><span>Offline (SARSOP)</span></a></li><li><a class="tocitem" href="#Online-(POMCP)"><span>Online (POMCP)</span></a></li><li><a class="tocitem" href="#Heuristic-Policy"><span>Heuristic Policy</span></a></li></ul></li><li><a class="tocitem" href="../example_simulations/">Simulations Examples</a></li><li><a class="tocitem" href="../example_gridworld_mdp/">GridWorld MDP Tutorial</a></li><li><a class="tocitem" href="../gallery/">Gallery of POMDPs.jl Problems</a></li></ul></li><li><span class="tocitem">POMDPTools</span><ul><li><a class="tocitem" href="../POMDPTools/">POMDPTools: the standard library for POMDPs.jl</a></li><li><a class="tocitem" href="../POMDPTools/distributions/">Implemented Distributions</a></li><li><a class="tocitem" href="../POMDPTools/model/">Model Tools</a></li><li><a class="tocitem" href="../POMDPTools/visualization/">Visualization</a></li><li><a class="tocitem" href="../POMDPTools/beliefs/">Implemented Belief Updaters</a></li><li><a class="tocitem" href="../POMDPTools/policies/">Implemented Policies</a></li><li><a class="tocitem" href="../POMDPTools/simulators/">Implemented Simulators</a></li><li><a class="tocitem" href="../POMDPTools/common_rl/">CommonRLInterface Integration</a></li><li><a class="tocitem" href="../POMDPTools/testing/">Testing</a></li></ul></li><li><a class="tocitem" href="../faq/">Frequently Asked Questions (FAQ)</a></li><li><a class="tocitem" href="../api/">API Documentation</a></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><a class="docs-sidebar-button docs-navbar-link fa-solid fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a><nav class="breadcrumb"><ul class="is-hidden-mobile"><li><a class="is-disabled">Examples and Gallery</a></li><li class="is-active"><a href>Using Different Solvers</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href>Using Different Solvers</a></li></ul></nav><div class="docs-right"><a class="docs-navbar-link" href="https://github.com/JuliaPOMDP/POMDPs.jl" title="View the repository on GitHub"><span class="docs-icon fa-brands"></span><span class="docs-label is-hidden-touch">GitHub</span></a><a class="docs-navbar-link" href="https://github.com/JuliaPOMDP/POMDPs.jl/blob/master/docs/src/example_solvers.md" title="Edit source on GitHub"><span class="docs-icon fa-solid"></span></a><a class="docs-settings-button docs-navbar-link fa-solid fa-gear" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-article-toggle-button fa-solid fa-chevron-up" id="documenter-article-toggle-button" href="javascript:;" title="Collapse all docstrings"></a></div></header><article class="content" id="documenter-page"><h1 id="Using-Different-Solvers"><a class="docs-heading-anchor" href="#Using-Different-Solvers">Using Different Solvers</a><a id="Using-Different-Solvers-1"></a><a class="docs-heading-anchor-permalink" href="#Using-Different-Solvers" title="Permalink"></a></h1><p>There are various solvers implemented for use out-of-the-box. Please reference the repository README for a list of <a href="https://github.com/JuliaPOMDP/POMDPs.jl?tab=readme-ov-file#mdp-solvers">MDP Solvers</a> and <a href="https://github.com/JuliaPOMDP/POMDPs.jl?tab=readme-ov-file#pomdp-solvers">POMDP Solvers</a> implemented and maintained by the JuliaPOMDP community. We provide a few examples of how to use a small subset of these solvers.</p><h2 id="Checking-Requirements"><a class="docs-heading-anchor" href="#Checking-Requirements">Checking Requirements</a><a id="Checking-Requirements-1"></a><a class="docs-heading-anchor-permalink" href="#Checking-Requirements" title="Permalink"></a></h2><p>Before using a solver, it is prudent to ensure the problem meets the requirements of the solver. Please reference the solver documentation for detailed information about the requirements of each solver. </p><p>We can use <a href="https://github.com/JuliaPOMDP/POMDPLinter.jl">POMDPLInter</a> to help us determine if we have all of the required components defined for a particular solver. However, not all solvers have the requirements implemented. If/when you encounter a solver that does not have the requirements implemented, please open an issue on the solver&#39;s repository.</p><p>Let&#39;s check if we have all of the required components of our problems for the QMDP solver.</p><pre><code class="language-julia hljs">using POMDPLinter
+using QMDP
+
+qmdp_solver = QMDPSolver()
+
+println(&quot;Quick Crying Baby POMDP&quot;)
+@show_requirements POMDPs.solve(qmdp_solver, quick_crying_baby_pomdp)
+
+println(&quot;\nExplicit Crying Baby POMDP&quot;)
+@show_requirements POMDPs.solve(qmdp_solver, explicit_crying_baby_pomdp)
+
+println(&quot;\nTabular Crying Baby POMDP&quot;)
+@show_requirements POMDPs.solve(qmdp_solver, tabular_crying_baby_pomdp)
+
+println(&quot;\nGen Crying Baby POMDP&quot;)
+# We don&#39;t have an actions(::GenGryingBabyPOMDP) implemented
+try
+    @show_requirements POMDPs.solve(qmdp_solver, gen_crying_baby_pomdp)
+catch err_msg
+    println(err_msg)
+end</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">Quick Crying Baby POMDP
+INFO: POMDPLinter requirements for solve(::QMDP.QMDPSolver, ::POMDP) and dependencies. ([✔] = implemented correctly; [X] = not implemented; [?] = could not determine)
+
+For solve(::QMDP.QMDPSolver, ::POMDP):
+  [No additional requirements]
+For solve(::ValueIterationSolver, ::Union{MDP,POMDP}) (in solve(::QMDP.QMDPSolver, ::POMDP)):
+  [✔] discount(::UnderlyingMDP{QuickPOMDPs.QuickPOMDP{UUID(&quot;efb5b3c0-a59d-4d4d-aaf7-339456f0b3e3&quot;), Symbol, Symbol, Symbol, @NamedTuple{stateindex::Dict{Symbol, Int64}, isterminal::Bool, obsindex::Dict{Symbol, Int64}, states::Vector{Symbol}, observations::Vector{Symbol}, discount::Float64, actions::Vector{Symbol}, observation::Main.var&quot;#2#5&quot;, actionindex::Dict{Symbol, Int64}, initialstate::Deterministic{Symbol}, transition::Main.var&quot;#1#4&quot;, reward::Main.var&quot;#3#6&quot;}}SymbolSymbol})
+  [✔] transition(::UnderlyingMDP{QuickPOMDPs.QuickPOMDP{UUID(&quot;efb5b3c0-a59d-4d4d-aaf7-339456f0b3e3&quot;), Symbol, Symbol, Symbol, @NamedTuple{stateindex::Dict{Symbol, Int64}, isterminal::Bool, obsindex::Dict{Symbol, Int64}, states::Vector{Symbol}, observations::Vector{Symbol}, discount::Float64, actions::Vector{Symbol}, observation::Main.var&quot;#2#5&quot;, actionindex::Dict{Symbol, Int64}, initialstate::Deterministic{Symbol}, transition::Main.var&quot;#1#4&quot;, reward::Main.var&quot;#3#6&quot;}}SymbolSymbol}, ::Symbol, ::Symbol)
+  [✔] reward(::UnderlyingMDP{QuickPOMDPs.QuickPOMDP{UUID(&quot;efb5b3c0-a59d-4d4d-aaf7-339456f0b3e3&quot;), Symbol, Symbol, Symbol, @NamedTuple{stateindex::Dict{Symbol, Int64}, isterminal::Bool, obsindex::Dict{Symbol, Int64}, states::Vector{Symbol}, observations::Vector{Symbol}, discount::Float64, actions::Vector{Symbol}, observation::Main.var&quot;#2#5&quot;, actionindex::Dict{Symbol, Int64}, initialstate::Deterministic{Symbol}, transition::Main.var&quot;#1#4&quot;, reward::Main.var&quot;#3#6&quot;}}SymbolSymbol}, ::Symbol, ::Symbol, ::Symbol)
+  [✔] stateindex(::UnderlyingMDP{QuickPOMDPs.QuickPOMDP{UUID(&quot;efb5b3c0-a59d-4d4d-aaf7-339456f0b3e3&quot;), Symbol, Symbol, Symbol, @NamedTuple{stateindex::Dict{Symbol, Int64}, isterminal::Bool, obsindex::Dict{Symbol, Int64}, states::Vector{Symbol}, observations::Vector{Symbol}, discount::Float64, actions::Vector{Symbol}, observation::Main.var&quot;#2#5&quot;, actionindex::Dict{Symbol, Int64}, initialstate::Deterministic{Symbol}, transition::Main.var&quot;#1#4&quot;, reward::Main.var&quot;#3#6&quot;}}SymbolSymbol}, ::Symbol)
+  [✔] actionindex(::UnderlyingMDP{QuickPOMDPs.QuickPOMDP{UUID(&quot;efb5b3c0-a59d-4d4d-aaf7-339456f0b3e3&quot;), Symbol, Symbol, Symbol, @NamedTuple{stateindex::Dict{Symbol, Int64}, isterminal::Bool, obsindex::Dict{Symbol, Int64}, states::Vector{Symbol}, observations::Vector{Symbol}, discount::Float64, actions::Vector{Symbol}, observation::Main.var&quot;#2#5&quot;, actionindex::Dict{Symbol, Int64}, initialstate::Deterministic{Symbol}, transition::Main.var&quot;#1#4&quot;, reward::Main.var&quot;#3#6&quot;}}SymbolSymbol}, ::Symbol)
+  [✔] actions(::UnderlyingMDP{QuickPOMDPs.QuickPOMDP{UUID(&quot;efb5b3c0-a59d-4d4d-aaf7-339456f0b3e3&quot;), Symbol, Symbol, Symbol, @NamedTuple{stateindex::Dict{Symbol, Int64}, isterminal::Bool, obsindex::Dict{Symbol, Int64}, states::Vector{Symbol}, observations::Vector{Symbol}, discount::Float64, actions::Vector{Symbol}, observation::Main.var&quot;#2#5&quot;, actionindex::Dict{Symbol, Int64}, initialstate::Deterministic{Symbol}, transition::Main.var&quot;#1#4&quot;, reward::Main.var&quot;#3#6&quot;}}SymbolSymbol}, ::Symbol)
+  [✔] length(::Array{Symbol1})
+  [✔] support(::Deterministic{Symbol})
+  [✔] pdf(::Deterministic{Symbol}, ::Symbol)
+For ordered_states(::Union{MDP,POMDP}) (in solve(::ValueIterationSolver, ::Union{MDP,POMDP})):
+  [✔] states(::UnderlyingMDP{QuickPOMDPs.QuickPOMDP{UUID(&quot;efb5b3c0-a59d-4d4d-aaf7-339456f0b3e3&quot;), Symbol, Symbol, Symbol, @NamedTuple{stateindex::Dict{Symbol, Int64}, isterminal::Bool, obsindex::Dict{Symbol, Int64}, states::Vector{Symbol}, observations::Vector{Symbol}, discount::Float64, actions::Vector{Symbol}, observation::Main.var&quot;#2#5&quot;, actionindex::Dict{Symbol, Int64}, initialstate::Deterministic{Symbol}, transition::Main.var&quot;#1#4&quot;, reward::Main.var&quot;#3#6&quot;}}SymbolSymbol})
+For ordered_actions(::Union{MDP,POMDP}) (in solve(::ValueIterationSolver, ::Union{MDP,POMDP})):
+  [✔] actions(::UnderlyingMDP{QuickPOMDPs.QuickPOMDP{UUID(&quot;efb5b3c0-a59d-4d4d-aaf7-339456f0b3e3&quot;), Symbol, Symbol, Symbol, @NamedTuple{stateindex::Dict{Symbol, Int64}, isterminal::Bool, obsindex::Dict{Symbol, Int64}, states::Vector{Symbol}, observations::Vector{Symbol}, discount::Float64, actions::Vector{Symbol}, observation::Main.var&quot;#2#5&quot;, actionindex::Dict{Symbol, Int64}, initialstate::Deterministic{Symbol}, transition::Main.var&quot;#1#4&quot;, reward::Main.var&quot;#3#6&quot;}}SymbolSymbol})
+
+Explicit Crying Baby POMDP
+INFO: POMDPLinter requirements for solve(::QMDP.QMDPSolver, ::POMDP) and dependencies. ([✔] = implemented correctly; [X] = not implemented; [?] = could not determine)
+
+For solve(::QMDP.QMDPSolver, ::POMDP):
+  [No additional requirements]
+For solve(::ValueIterationSolver, ::Union{MDP,POMDP}) (in solve(::QMDP.QMDPSolver, ::POMDP)):
+  [✔] discount(::UnderlyingMDP{Main.CryingBabyPOMDPMain.CryingBabyStateSymbol})
+  [✔] transition(::UnderlyingMDP{Main.CryingBabyPOMDPMain.CryingBabyStateSymbol}, ::CryingBabyState, ::Symbol)
+  [✔] reward(::UnderlyingMDP{Main.CryingBabyPOMDPMain.CryingBabyStateSymbol}, ::CryingBabyState, ::Symbol, ::CryingBabyState)
+  [✔] stateindex(::UnderlyingMDP{Main.CryingBabyPOMDPMain.CryingBabyStateSymbol}, ::CryingBabyState)
+  [✔] actionindex(::UnderlyingMDP{Main.CryingBabyPOMDPMain.CryingBabyStateSymbol}, ::Symbol)
+  [✔] actions(::UnderlyingMDP{Main.CryingBabyPOMDPMain.CryingBabyStateSymbol}, ::CryingBabyState)
+  [✔] length(::Array{Main.CryingBabyState1})
+  [✔] length(::Array{Symbol1})
+  [✔] support(::Deterministic{Main.CryingBabyState})
+  [✔] pdf(::Deterministic{Main.CryingBabyState}, ::CryingBabyState)
+For ordered_states(::Union{MDP,POMDP}) (in solve(::ValueIterationSolver, ::Union{MDP,POMDP})):
+  [✔] states(::UnderlyingMDP{Main.CryingBabyPOMDPMain.CryingBabyStateSymbol})
+For ordered_actions(::Union{MDP,POMDP}) (in solve(::ValueIterationSolver, ::Union{MDP,POMDP})):
+  [✔] actions(::UnderlyingMDP{Main.CryingBabyPOMDPMain.CryingBabyStateSymbol})
+
+Tabular Crying Baby POMDP
+INFO: POMDPLinter requirements for solve(::QMDP.QMDPSolver, ::POMDP) and dependencies. ([✔] = implemented correctly; [X] = not implemented; [?] = could not determine)
+
+For solve(::QMDP.QMDPSolver, ::POMDP):
+  [No additional requirements]
+For solve(::ValueIterationSolver, ::Union{MDP,POMDP}) (in solve(::QMDP.QMDPSolver, ::POMDP)):
+  [✔] discount(::UnderlyingMDP{POMDPModels.TabularPOMDPInt64Int64})
+  [✔] transition(::UnderlyingMDP{POMDPModels.TabularPOMDPInt64Int64}, ::Int64, ::Int64)
+  [✔] reward(::UnderlyingMDP{POMDPModels.TabularPOMDPInt64Int64}, ::Int64, ::Int64, ::Int64)
+  [✔] stateindex(::UnderlyingMDP{POMDPModels.TabularPOMDPInt64Int64}, ::Int64)
+  [✔] actionindex(::UnderlyingMDP{POMDPModels.TabularPOMDPInt64Int64}, ::Int64)
+  [✔] actions(::UnderlyingMDP{POMDPModels.TabularPOMDPInt64Int64}, ::Int64)
+  [✔] length(::UnitRange{Int64})
+  [✔] support(::DiscreteDistribution{SubArray{Float64, 1, Array{Float64, 3}, Tuple{Base.Slice{Base.OneTo{Int64}}, Int64, Int64}, true}})
+  [✔] pdf(::DiscreteDistribution{SubArray{Float64, 1, Array{Float64, 3}, Tuple{Base.Slice{Base.OneTo{Int64}}, Int64, Int64}, true}}, ::Int64)
+For ordered_states(::Union{MDP,POMDP}) (in solve(::ValueIterationSolver, ::Union{MDP,POMDP})):
+  [✔] states(::UnderlyingMDP{POMDPModels.TabularPOMDPInt64Int64})
+For ordered_actions(::Union{MDP,POMDP}) (in solve(::ValueIterationSolver, ::Union{MDP,POMDP})):
+  [✔] actions(::UnderlyingMDP{POMDPModels.TabularPOMDPInt64Int64})
+
+Gen Crying Baby POMDP
+INFO: POMDPLinter requirements for solve(::QMDP.QMDPSolver, ::POMDP) and dependencies. ([✔] = implemented correctly; [X] = not implemented; [?] = could not determine)
+
+For solve(::QMDP.QMDPSolver, ::POMDP):
+  [No additional requirements]
+For solve(::ValueIterationSolver, ::Union{MDP,POMDP}) (in solve(::QMDP.QMDPSolver, ::POMDP)):
+  [✔] discount(::UnderlyingMDP{Main.GenCryingBabyPOMDPMain.CryingBabyStateSymbol})
+  [✔] transition(::UnderlyingMDP{Main.GenCryingBabyPOMDPMain.CryingBabyStateSymbol}, ::CryingBabyState, ::Symbol)
+  [✔] reward(::UnderlyingMDP{Main.GenCryingBabyPOMDPMain.CryingBabyStateSymbol}, ::CryingBabyState, ::Symbol, ::CryingBabyState)
+  [✔] stateindex(::UnderlyingMDP{Main.GenCryingBabyPOMDPMain.CryingBabyStateSymbol}, ::CryingBabyState)
+  [✔] actionindex(::UnderlyingMDP{Main.GenCryingBabyPOMDPMain.CryingBabyStateSymbol}, ::Symbol)
+  [✔] actions(::UnderlyingMDP{Main.GenCryingBabyPOMDPMain.CryingBabyStateSymbol}, ::CryingBabyState)
+  WARNING: Some requirements may not be shown because a MethodError was thrown.
+For ordered_states(::Union{MDP,POMDP}) (in solve(::ValueIterationSolver, ::Union{MDP,POMDP})):
+  [✔] states(::UnderlyingMDP{Main.GenCryingBabyPOMDPMain.CryingBabyStateSymbol})
+  WARNING: Some requirements may not be shown because a MethodError was thrown.
+For ordered_actions(::Union{MDP,POMDP}) (in solve(::ValueIterationSolver, ::Union{MDP,POMDP})):
+  [✔] actions(::UnderlyingMDP{Main.GenCryingBabyPOMDPMain.CryingBabyStateSymbol})
+  WARNING: Some requirements may not be shown because a MethodError was thrown.
+Note: Missing methods are often due to incorrect importing. You must explicitly import POMDPs functions to add new methods.
+
+Throwing the first exception (from processing solve(::ValueIterationSolver, ::Union{MDP,POMDP}) requirements):
+
+MethodError(POMDPs.actions, (Main.GenCryingBabyPOMDP(0.1, 0.8, 0.9, 0.8, 0.1, 0.0, 0.1, -10.0, -5.0, -0.5, 0.9),), 0x0000000000007c02)</code></pre><h2 id="Offline-(SARSOP)"><a class="docs-heading-anchor" href="#Offline-(SARSOP)">Offline (SARSOP)</a><a id="Offline-(SARSOP)-1"></a><a class="docs-heading-anchor-permalink" href="#Offline-(SARSOP)" title="Permalink"></a></h2><p>In this example, we will use the <a href="https://github.com/JuliaPOMDP/NativeSARSOP.jl">NativeSARSOP</a> solver. The process for generating offline polcies is similar for all offline solvers. First, we define the solver with the desired parameters. Then, we call <code>POMDPs.solve</code> with the solver and the problem. We can query the policy using the <code>action</code> function.</p><pre><code class="language-julia hljs">using NativeSARSOP
+
+# Define the solver with the desired paramters
+sarsop_solver = SARSOPSolver(; max_time=10.0)
+
+# Solve the problem by calling POMDPs.solve. SARSOP will compute the policy and return an `AlphaVectorPolicy`
+sarsop_policy = POMDPs.solve(sarsop_solver, quick_crying_baby_pomdp)
+
+# We can query the policy using the `action` function
+b = initialstate(quick_crying_baby_pomdp)
+a = action(sarsop_policy, b)
+
+@show a</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">:ignore</code></pre><h2 id="Online-(POMCP)"><a class="docs-heading-anchor" href="#Online-(POMCP)">Online (POMCP)</a><a id="Online-(POMCP)-1"></a><a class="docs-heading-anchor-permalink" href="#Online-(POMCP)" title="Permalink"></a></h2><p>For the online solver, we will use Particle Monte Carlo Planning (<a href="https://github.com/JuliaPOMDP/BasicPOMCP.jl">POMCP</a>). For online solvers, we first define the solver similar to offline solvers. However, when we call <code>POMDPs.solve</code>, we are returned an online plannner. Similar to the offline solver, we can query the policy using the <code>action</code> function and that is when the online solver will compute the action.</p><pre><code class="language-julia hljs">using BasicPOMCP
+
+pomcp_solver = POMCPSolver(; c=5.0, tree_queries=1000, rng=MersenneTwister(1))
+pomcp_planner = POMDPs.solve(pomcp_solver, quick_crying_baby_pomdp)
+
+b = initialstate(quick_crying_baby_pomdp)
+a = action(pomcp_planner, b)
+
+@show a</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">:ignore</code></pre><h2 id="Heuristic-Policy"><a class="docs-heading-anchor" href="#Heuristic-Policy">Heuristic Policy</a><a id="Heuristic-Policy-1"></a><a class="docs-heading-anchor-permalink" href="#Heuristic-Policy" title="Permalink"></a></h2><p>While we often want to use a solver to compute a policy, sometimes we might want to use a heuristic policy. For example, we may want to use a heuristic policy during our rollouts for online solvers or to use as a baseline. In this example, we will define a simple heuristic policy that feeds the baby if our belief of the baby being hungry is greater than 50%, otherwise we will randomly ignore or sing to the baby.</p><pre><code class="language-julia hljs">struct HeuristicFeedPolicy{P&lt;:POMDP} &lt;: Policy
+    pomdp::P
+end
+
+# We need to implement the action function for our policy
+function POMDPs.action(policy::HeuristicFeedPolicy, b)
+    if pdf(b, :hungry) &gt; 0.5
+        return :feed
+    else
+        return rand([:ignore, :sing])
+    end
+end
+
+# Let&#39;s also define the default updater for our policy
+function POMDPs.updater(policy::HeuristicFeedPolicy)
+    return DiscreteUpdater(policy.pomdp)
+end
+
+heuristic_policy = HeuristicFeedPolicy(quick_crying_baby_pomdp)
+
+# Let&#39;s query the policy a few times
+b = SparseCat([:sated, :hungry], [0.1, 0.9])
+a1 =  action(heuristic_policy, b)
+
+b = SparseCat([:sated, :hungry], [0.9, 0.1])
+a2 = action(heuristic_policy, b)
+
+@show [a1, a2]</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">2-element Vector{Symbol}:
+ :feed
+ :ignore</code></pre></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../example_defining_problems/">« Defining a POMDP</a><a class="docs-footer-nextpage" href="../example_simulations/">Simulations Examples »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option><option value="auto">Automatic (OS)</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 1.2.1 on <span class="colophon-date" title="Saturday 2 March 2024 00:21">Saturday 2 March 2024</span>. Using Julia version 1.10.1.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
