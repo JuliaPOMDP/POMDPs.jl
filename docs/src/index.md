@@ -18,7 +18,7 @@ The list of solver and support packages maintained by the [JuliaPOMDP](https://g
 
 Documentation comes in three forms:
 1. An explanatory guide is available in the sections outlined below.
-2. How-to examples are available in pages in this document with "Example" in the title and in the [POMDPExamples package](https://github.com/JuliaPOMDP/POMDPExamples.jl).
+2. How-to examples are available throughout this documentation with specicic examples in [Examples](@ref examples_section) and [Gallery of POMDPs.jl Problems](@ref).
 3. Reference docstrings for the entire POMDPs.jl interface are available in the [API Documentation](@ref) section.
 
 !!! note
@@ -47,6 +47,12 @@ Pages = [ "def_solver.md", "offline_solver.md", "online_solver.md", "def_updater
 
 ```@contents
 Pages = [ "simulation.md", "run_simulation.md", "policy_interaction.md" ]
+```
+
+### Examples and Gallery
+
+```@contents
+Pages = [ "examples.md", "example_defining_problems.md", "example_solvers.md", "example_simulations.md", "example_gridworld_mdp.md", "gallery.md"]
 ```
 
 ### POMDPTools - the standard library for POMDPs.jl
