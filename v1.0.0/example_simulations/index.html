@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Simulations Examples · POMDPs.jl</title><meta name="title" content="Simulations Examples · POMDPs.jl"/><meta property="og:title" content="Simulations Examples · POMDPs.jl"/><meta property="twitter:title" content="Simulations Examples · POMDPs.jl"/><meta name="description" content="Documentation for POMDPs.jl."/><meta property="og:description" content="Documentation for POMDPs.jl."/><meta property="twitter:description" content="Documentation for POMDPs.jl."/><script data-outdated-warner src="../assets/warner.js"></script><link href="https://cdnjs.cloudflare.com/ajax/libs/lato-font/3.0.0/css/lato-font.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/juliamono/0.050/juliamono.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.8/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL=".."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="../assets/documenter.js"></script><script src="../search_index.js"></script><script src="../siteinfo.js"></script><script src="../../versions.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/documenter-dark.css" data-theme-name="documenter-dark" data-theme-primary-dark/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="../assets/themeswap.js"></script></head><body><div id="documenter"><nav class="docs-sidebar"><a class="docs-logo" href="../"><img src="../assets/logo.png" alt="POMDPs.jl logo"/></a><div class="docs-package-name"><span class="docs-autofit"><a href="../">POMDPs.jl</a></span></div><button class="docs-search-query input is-rounded is-small is-clickable my-2 mx-auto py-1 px-2" id="documenter-search-query">Search docs (Ctrl + /)</button><ul class="docs-menu"><li><span class="tocitem">Basics</span><ul><li><a class="tocitem" href="../">POMDPs.jl</a></li><li><a class="tocitem" href="../install/">Installation</a></li><li><a class="tocitem" href="../get_started/">Getting Started</a></li><li><a class="tocitem" href="../concepts/">Concepts and Architecture</a></li></ul></li><li><span class="tocitem">Defining (PO)MDP Models</span><ul><li><a class="tocitem" href="../def_pomdp/">Defining POMDPs and MDPs</a></li><li><a class="tocitem" href="../interfaces/">Spaces and Distributions</a></li></ul></li><li><span class="tocitem">Writing Solvers</span><ul><li><a class="tocitem" href="../def_solver/">Solvers</a></li><li><a class="tocitem" href="../offline_solver/">Example: Defining an offline solver</a></li><li><a class="tocitem" href="../online_solver/">Example: Defining an online solver</a></li></ul></li><li><span class="tocitem">Writing Belief Updaters</span><ul><li><a class="tocitem" href="../def_updater/">Defining a Belief Updater</a></li></ul></li><li><span class="tocitem">Analyzing Results</span><ul><li><a class="tocitem" href="../simulation/">Simulation Standard</a></li><li><a class="tocitem" href="../run_simulation/">Running Simulations</a></li><li><a class="tocitem" href="../policy_interaction/">Interacting with Policies</a></li></ul></li><li><span class="tocitem">Examples and Gallery</span><ul><li><a class="tocitem" href="../examples/">Examples</a></li><li><a class="tocitem" href="../example_defining_problems/">Defining a POMDP</a></li><li><a class="tocitem" href="../example_solvers/">Using Different Solvers</a></li><li class="is-active"><a class="tocitem" href>Simulations Examples</a><ul class="internal"><li><a class="tocitem" href="#Stepthrough"><span>Stepthrough</span></a></li><li><a class="tocitem" href="#Rollout-Simulations"><span>Rollout Simulations</span></a></li><li><a class="tocitem" href="#Recording-Histories"><span>Recording Histories</span></a></li><li><a class="tocitem" href="#Parallel-Simulations"><span>Parallel Simulations</span></a></li></ul></li><li><a class="tocitem" href="../example_gridworld_mdp/">GridWorld MDP Tutorial</a></li><li><a class="tocitem" href="../gallery/">Gallery of POMDPs.jl Problems</a></li></ul></li><li><span class="tocitem">POMDPTools</span><ul><li><a class="tocitem" href="../POMDPTools/">POMDPTools: the standard library for POMDPs.jl</a></li><li><a class="tocitem" href="../POMDPTools/distributions/">Implemented Distributions</a></li><li><a class="tocitem" href="../POMDPTools/model/">Model Tools</a></li><li><a class="tocitem" href="../POMDPTools/visualization/">Visualization</a></li><li><a class="tocitem" href="../POMDPTools/beliefs/">Implemented Belief Updaters</a></li><li><a class="tocitem" href="../POMDPTools/policies/">Implemented Policies</a></li><li><a class="tocitem" href="../POMDPTools/simulators/">Implemented Simulators</a></li><li><a class="tocitem" href="../POMDPTools/common_rl/">CommonRLInterface Integration</a></li><li><a class="tocitem" href="../POMDPTools/testing/">Testing</a></li></ul></li><li><a class="tocitem" href="../faq/">Frequently Asked Questions (FAQ)</a></li><li><a class="tocitem" href="../api/">API Documentation</a></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><a class="docs-sidebar-button docs-navbar-link fa-solid fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a><nav class="breadcrumb"><ul class="is-hidden-mobile"><li><a class="is-disabled">Examples and Gallery</a></li><li class="is-active"><a href>Simulations Examples</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href>Simulations Examples</a></li></ul></nav><div class="docs-right"><a class="docs-navbar-link" href="https://github.com/JuliaPOMDP/POMDPs.jl" title="View the repository on GitHub"><span class="docs-icon fa-brands"></span><span class="docs-label is-hidden-touch">GitHub</span></a><a class="docs-navbar-link" href="https://github.com/JuliaPOMDP/POMDPs.jl/blob/master/docs/src/example_simulations.md" title="Edit source on GitHub"><span class="docs-icon fa-solid"></span></a><a class="docs-settings-button docs-navbar-link fa-solid fa-gear" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-article-toggle-button fa-solid fa-chevron-up" id="documenter-article-toggle-button" href="javascript:;" title="Collapse all docstrings"></a></div></header><article class="content" id="documenter-page"><h1 id="Simulations-Examples"><a class="docs-heading-anchor" href="#Simulations-Examples">Simulations Examples</a><a id="Simulations-Examples-1"></a><a class="docs-heading-anchor-permalink" href="#Simulations-Examples" title="Permalink"></a></h1><p>In these simulation examples, we will use the crying baby POMDPs defined in the <a href="../example_defining_problems/#Defining-a-POMDP">Defining a POMDP</a> section (i.e. <a href="../example_defining_problems/#quick_crying"><code>quick_crying_baby_pomdp</code></a>, <a href="../example_defining_problems/#explicit_crying"><code>explicit_crying_baby_pomdp</code></a>, <a href="../example_defining_problems/#gen_crying"><code>gen_crying_baby_pomdp</code></a>, and <a href="../example_defining_problems/#tab_crying"><code>tabular_crying_baby_pomdp</code></a>).</p><h2 id="Stepthrough"><a class="docs-heading-anchor" href="#Stepthrough">Stepthrough</a><a id="Stepthrough-1"></a><a class="docs-heading-anchor-permalink" href="#Stepthrough" title="Permalink"></a></h2><p>The stepthrough simulater provides a window into the simulation with a for-loop syntax.</p><p>Within the body of the for loop, we have access to the belief, the action, the observation, and the reward, in each step. We also calculate the sum of the rewards in this example, but note that this is <em>not</em> the <em>discounted reward</em>.</p><pre><code class="language-julia hljs">policy = RandomPolicy(quick_crying_baby_pomdp)
+r_sum = 0.0
+step = 0
+for (b, s, a, o, r) in stepthrough(quick_crying_baby_pomdp, policy, DiscreteUpdater(quick_crying_baby_pomdp), &quot;b,s,a,o,r&quot;; max_steps=4)
+    step += 1
+    println(&quot;Step $step&quot;)
+    println(&quot;b = sated =&gt; $(b.b[1]), hungry =&gt; $(b.b[2])&quot;)
+    @show s
+    @show a
+    @show o
+    @show r
+    r_sum += r
+    @show r_sum
+    println()
+end</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">Step 1
+b = sated =&gt; 1.0, hungry =&gt; 0.0
+s = :sated
+a = :ignore
+o = :crying
+r = 0.0
+r_sum = 0.0
+
+Step 2
+b = sated =&gt; 0.5294117647058822, hungry =&gt; 0.47058823529411764
+s = :hungry
+a = :sing
+o = :quiet
+r = -10.5
+r_sum = -10.5
+
+Step 3
+b = sated =&gt; 0.9010011123470524, hungry =&gt; 0.09899888765294775
+s = :hungry
+a = :feed
+o = :quiet
+r = -15.0
+r_sum = -25.5
+
+Step 4
+b = sated =&gt; 1.0, hungry =&gt; 0.0
+s = :sated
+a = :ignore
+o = :quiet
+r = 0.0
+r_sum = -25.5</code></pre><h2 id="Rollout-Simulations"><a class="docs-heading-anchor" href="#Rollout-Simulations">Rollout Simulations</a><a id="Rollout-Simulations-1"></a><a class="docs-heading-anchor-permalink" href="#Rollout-Simulations" title="Permalink"></a></h2><p>While stepthrough is a flexible and convenient tool for many user-facing demonstrations, it is often less error-prone to use the standard simulate function with a <code>Simulator</code> object. The simplest Simulator is the <code>RolloutSimulator</code>. It simply runs a simulation and returns the discounted reward. </p><pre><code class="language-julia hljs">policy = RandomPolicy(explicit_crying_baby_pomdp)
+sim = RolloutSimulator(max_steps=10)
+r_sum = simulate(sim, explicit_crying_baby_pomdp, policy)
+println(&quot;Total discounted reward: $r_sum&quot;)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">Total discounted reward: -40.8528906845</code></pre><h2 id="Recording-Histories"><a class="docs-heading-anchor" href="#Recording-Histories">Recording Histories</a><a id="Recording-Histories-1"></a><a class="docs-heading-anchor-permalink" href="#Recording-Histories" title="Permalink"></a></h2><p>Sometimes it is important to record the entire history of a simulation for further examination. This can be accomplished with a <code>HistoryRecorder</code>.</p><pre><code class="language-julia hljs">policy = RandomPolicy(tabular_crying_baby_pomdp)
+hr = HistoryRecorder(max_steps=5)
+history = simulate(hr, tabular_crying_baby_pomdp, policy, DiscreteUpdater(tabular_crying_baby_pomdp), Deterministic(1))</code></pre><p>The history object produced by a <code>HistoryRecorder</code> is a <code>SimHistory</code>, documented in the POMDPTools simulater section <a href="../POMDPTools/simulators/#Histories">Histories</a>. The information in this object can be accessed in several ways. For example, there is a function:</p><pre><code class="language-julia hljs">discounted_reward(history)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">-6.097550000000001</code></pre><p>Accessor functions like <code>state_hist</code> and <code>action_hist</code> can also be used to access parts of the history:</p><pre><code class="language-julia hljs">state_hist(history)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">6-element Vector{Int64}:
+ 1
+ 1
+ 1
+ 1
+ 1
+ 1</code></pre><pre><code class="language-julia hljs">collect(action_hist(history))</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">5-element Vector{Int64}:
+ 2
+ 1
+ 2
+ 2
+ 2</code></pre><p>Keeping track of which states, actions, and observations belong together can be tricky (for example, since there is a starting state, and ending state, but no action is taken from the ending state, the list of actions has a different length than the list of states). It is often better to think of histories in terms of steps that include both starting and ending states.</p><p>The most powerful function for accessing the information in a <code>SimHistory</code> is the <code>eachstep</code> function which returns an iterator through named tuples representing each step in the history. The <code>eachstep</code> function is similar to the <code>stepthrough</code> function above except that it iterates through the immutable steps of a previously simulated history instead of conducting the simulation as the for loop is being carried out.</p><pre><code class="language-julia hljs">r_sum = 0.0
+step = 0
+for step_i in eachstep(sim_history, &quot;b,s,a,o,r&quot;)
+    step += 1
+    println(&quot;Step $step&quot;)
+    println(&quot;step_i.b = sated =&gt; $(step_i.b.b[1]), hungry =&gt; $(step_i.b.b[2])&quot;)
+    @show step_i.s
+    @show step_i.a
+    @show step_i.o
+    @show step_i.r
+    r_sum += step_i.r
+    @show r_sum
+    println()
+end
+end # hide</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">Step 1
+step_i.b = sated =&gt; 1.0, hungry =&gt; 0.0
+step_i.s = 1
+step_i.a = 2
+step_i.o = 2
+step_i.r = -0.5
+r_sum = -0.5
+
+Step 2
+step_i.b = sated =&gt; 0.989010989010989, hungry =&gt; 0.010989010989010992
+step_i.s = 1
+step_i.a = 1
+step_i.o = 2
+step_i.r = -5.0
+r_sum = -5.5
+
+Step 3
+step_i.b = sated =&gt; 1.0, hungry =&gt; 0.0
+step_i.s = 1
+step_i.a = 2
+step_i.o = 2
+step_i.r = -0.5
+r_sum = -6.0
+
+Step 4
+step_i.b = sated =&gt; 0.989010989010989, hungry =&gt; 0.010989010989010992
+step_i.s = 1
+step_i.a = 2
+step_i.o = 2
+step_i.r = -0.5
+r_sum = -6.5
+
+Step 5
+step_i.b = sated =&gt; 0.9878048780487805, hungry =&gt; 0.012195121951219514
+step_i.s = 1
+step_i.a = 2
+step_i.o = 2
+step_i.r = -0.5
+r_sum = -7.0</code></pre><h2 id="Parallel-Simulations"><a class="docs-heading-anchor" href="#Parallel-Simulations">Parallel Simulations</a><a id="Parallel-Simulations-1"></a><a class="docs-heading-anchor-permalink" href="#Parallel-Simulations" title="Permalink"></a></h2><p>It is often useful to evaluate a policy by running many simulations. The parallel simulator is the most effective tool for this. To use the parallel simulator, first create a list of <code>Sim</code> objects, each of which contains all of the information needed to run a simulation. Then then run the simulations using <code>run_parallel</code>, which will return a <code>DataFrame</code> with the results.</p><p>In this example, we will compare the performance of the polcies we computed in the <a href="../example_solvers/#Using-Different-Solvers">Using Different Solvers</a> section (i.e. <code>sarsop_policy</code>, <code>pomcp_planner</code>, and <code>heuristic_policy</code>). To evaluate the policies, we will run 100 simulations for each policy. We can do this by adding 100 <code>Sim</code> objects of each policy to the list.</p><pre><code class="language-julia hljs">using DataFrames
+using StatsBase: std
+
+# Defining paramters for the simulations
+number_of_sim_to_run = 100
+max_steps = 20
+starting_seed = 1
+
+# We will also compare against a random policy
+rand_policy = RandomPolicy(quick_crying_baby_pomdp, rng=MersenneTwister(1))
+
+# Create the list of Sim objects
+sim_list = []
+
+# Add 100 Sim objects of each policy to the list.
+for sim_number in 1:number_of_sim_to_run
+    seed = starting_seed + sim_number
+
+    # Add the SARSOP policy
+    push!(sim_list, Sim(
+        quick_crying_baby_pomdp,
+        rng=MersenneTwister(seed),
+        sarsop_policy,
+        max_steps=max_steps,
+        metadata=Dict(:policy =&gt; &quot;sarsop&quot;, :seed =&gt; seed))
+    )
+
+    # Add the POMCP policy
+    push!(sim_list, Sim(
+        quick_crying_baby_pomdp,
+        rng=MersenneTwister(seed),
+        pomcp_planner,
+        max_steps=max_steps,
+        metadata=Dict(:policy =&gt; &quot;pomcp&quot;, :seed =&gt; seed))
+    )
+
+    # Add the heuristic policy
+    push!(sim_list, Sim(
+        quick_crying_baby_pomdp,
+        rng=MersenneTwister(seed),
+        heuristic_policy,
+        max_steps=max_steps,
+        metadata=Dict(:policy =&gt; &quot;heuristic&quot;, :seed =&gt; seed))
+    )
+
+    # Add the random policy
+    push!(sim_list, Sim(
+        quick_crying_baby_pomdp,
+        rng=MersenneTwister(seed),
+        rand_policy,
+        max_steps=max_steps,
+        metadata=Dict(:policy =&gt; &quot;random&quot;, :seed =&gt; seed))
+    )
+end
+
+# Run the simulations in parallel
+data = run_parallel(sim_list)
+
+# Define a function to calculate the mean and confidence interval
+function mean_and_ci(x)
+    m = mean(x)
+    ci = 1.96 * std(x) / sqrt(length(x))  # 95% confidence interval
+    return (mean = m, ci = ci)
+end
+
+# Calculate the mean and confidence interval for each policy
+grouped_df = groupby(data, :policy)
+result = combine(grouped_df, :reward =&gt; mean_and_ci =&gt; AsTable)</code></pre><div><div style = "float: left;"><span>4×3 DataFrame</span></div><div style = "clear: both;"></div></div><div class = "data-frame" style = "overflow-x: scroll;"><table class = "data-frame" style = "margin-bottom: 6px;"><thead><tr class = "header"><th class = "rowNumber" style = "font-weight: bold; text-align: right;">Row</th><th style = "text-align: left;">policy</th><th style = "text-align: left;">mean</th><th style = "text-align: left;">ci</th></tr><tr class = "subheader headerLastRow"><th class = "rowNumber" style = "font-weight: bold; text-align: right;"></th><th title = "Union{Missing, String}" style = "text-align: left;">String?</th><th title = "Float64" style = "text-align: left;">Float64</th><th title = "Float64" style = "text-align: left;">Float64</th></tr></thead><tbody><tr><td class = "rowNumber" style = "font-weight: bold; text-align: right;">1</td><td style = "text-align: left;">sarsop</td><td style = "text-align: right;">-14.6264</td><td style = "text-align: right;">1.81814</td></tr><tr><td class = "rowNumber" style = "font-weight: bold; text-align: right;">2</td><td style = "text-align: left;">pomcp</td><td style = "text-align: right;">-18.6904</td><td style = "text-align: right;">1.57649</td></tr><tr><td class = "rowNumber" style = "font-weight: bold; text-align: right;">3</td><td style = "text-align: left;">heuristic</td><td style = "text-align: right;">-16.0943</td><td style = "text-align: right;">1.91474</td></tr><tr><td class = "rowNumber" style = "font-weight: bold; text-align: right;">4</td><td style = "text-align: left;">random</td><td style = "text-align: right;">-30.4201</td><td style = "text-align: right;">2.64208</td></tr></tbody></table></div><p>By default, the parallel simulator only returns the reward from each simulation, but more information can be gathered by specifying a function to analyze the <code>Sim</code>-history pair and record additional statistics. Reference the POMDPTools simulator section for more information (<a href="../POMDPTools/simulators/#Specifying-information-to-be-recorded">Specifying information to be recorded</a>).</p></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../example_solvers/">« Using Different Solvers</a><a class="docs-footer-nextpage" href="../example_gridworld_mdp/">GridWorld MDP Tutorial »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="auto">Automatic (OS)</option><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 1.4.1 on <span class="colophon-date" title="Thursday 13 June 2024 20:05">Thursday 13 June 2024</span>. Using Julia version 1.10.4.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>

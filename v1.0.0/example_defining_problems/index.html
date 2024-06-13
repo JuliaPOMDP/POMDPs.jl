@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Defining a POMDP · POMDPs.jl</title><meta name="title" content="Defining a POMDP · POMDPs.jl"/><meta property="og:title" content="Defining a POMDP · POMDPs.jl"/><meta property="twitter:title" content="Defining a POMDP · POMDPs.jl"/><meta name="description" content="Documentation for POMDPs.jl."/><meta property="og:description" content="Documentation for POMDPs.jl."/><meta property="twitter:description" content="Documentation for POMDPs.jl."/><script data-outdated-warner src="../assets/warner.js"></script><link href="https://cdnjs.cloudflare.com/ajax/libs/lato-font/3.0.0/css/lato-font.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/juliamono/0.050/juliamono.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.8/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL=".."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="../assets/documenter.js"></script><script src="../search_index.js"></script><script src="../siteinfo.js"></script><script src="../../versions.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/documenter-dark.css" data-theme-name="documenter-dark" data-theme-primary-dark/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="../assets/themeswap.js"></script></head><body><div id="documenter"><nav class="docs-sidebar"><a class="docs-logo" href="../"><img src="../assets/logo.png" alt="POMDPs.jl logo"/></a><div class="docs-package-name"><span class="docs-autofit"><a href="../">POMDPs.jl</a></span></div><button class="docs-search-query input is-rounded is-small is-clickable my-2 mx-auto py-1 px-2" id="documenter-search-query">Search docs (Ctrl + /)</button><ul class="docs-menu"><li><span class="tocitem">Basics</span><ul><li><a class="tocitem" href="../">POMDPs.jl</a></li><li><a class="tocitem" href="../install/">Installation</a></li><li><a class="tocitem" href="../get_started/">Getting Started</a></li><li><a class="tocitem" href="../concepts/">Concepts and Architecture</a></li></ul></li><li><span class="tocitem">Defining (PO)MDP Models</span><ul><li><a class="tocitem" href="../def_pomdp/">Defining POMDPs and MDPs</a></li><li><a class="tocitem" href="../interfaces/">Spaces and Distributions</a></li></ul></li><li><span class="tocitem">Writing Solvers</span><ul><li><a class="tocitem" href="../def_solver/">Solvers</a></li><li><a class="tocitem" href="../offline_solver/">Example: Defining an offline solver</a></li><li><a class="tocitem" href="../online_solver/">Example: Defining an online solver</a></li></ul></li><li><span class="tocitem">Writing Belief Updaters</span><ul><li><a class="tocitem" href="../def_updater/">Defining a Belief Updater</a></li></ul></li><li><span class="tocitem">Analyzing Results</span><ul><li><a class="tocitem" href="../simulation/">Simulation Standard</a></li><li><a class="tocitem" href="../run_simulation/">Running Simulations</a></li><li><a class="tocitem" href="../policy_interaction/">Interacting with Policies</a></li></ul></li><li><span class="tocitem">Examples and Gallery</span><ul><li><a class="tocitem" href="../examples/">Examples</a></li><li class="is-active"><a class="tocitem" href>Defining a POMDP</a><ul class="internal"><li><a class="tocitem" href="#CryingBaby-Problem-Definition"><span>CryingBaby Problem Definition</span></a></li><li><a class="tocitem" href="#quick_crying"><span>QuickPOMDP Interface</span></a></li><li><a class="tocitem" href="#explicit_crying"><span>Explicit Interface</span></a></li><li><a class="tocitem" href="#gen_crying"><span>Generative Interface</span></a></li><li><a class="tocitem" href="#tab_crying"><span>Probability Tables</span></a></li></ul></li><li><a class="tocitem" href="../example_solvers/">Using Different Solvers</a></li><li><a class="tocitem" href="../example_simulations/">Simulations Examples</a></li><li><a class="tocitem" href="../example_gridworld_mdp/">GridWorld MDP Tutorial</a></li><li><a class="tocitem" href="../gallery/">Gallery of POMDPs.jl Problems</a></li></ul></li><li><span class="tocitem">POMDPTools</span><ul><li><a class="tocitem" href="../POMDPTools/">POMDPTools: the standard library for POMDPs.jl</a></li><li><a class="tocitem" href="../POMDPTools/distributions/">Implemented Distributions</a></li><li><a class="tocitem" href="../POMDPTools/model/">Model Tools</a></li><li><a class="tocitem" href="../POMDPTools/visualization/">Visualization</a></li><li><a class="tocitem" href="../POMDPTools/beliefs/">Implemented Belief Updaters</a></li><li><a class="tocitem" href="../POMDPTools/policies/">Implemented Policies</a></li><li><a class="tocitem" href="../POMDPTools/simulators/">Implemented Simulators</a></li><li><a class="tocitem" href="../POMDPTools/common_rl/">CommonRLInterface Integration</a></li><li><a class="tocitem" href="../POMDPTools/testing/">Testing</a></li></ul></li><li><a class="tocitem" href="../faq/">Frequently Asked Questions (FAQ)</a></li><li><a class="tocitem" href="../api/">API Documentation</a></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><a class="docs-sidebar-button docs-navbar-link fa-solid fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a><nav class="breadcrumb"><ul class="is-hidden-mobile"><li><a class="is-disabled">Examples and Gallery</a></li><li class="is-active"><a href>Defining a POMDP</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href>Defining a POMDP</a></li></ul></nav><div class="docs-right"><a class="docs-navbar-link" href="https://github.com/JuliaPOMDP/POMDPs.jl" title="View the repository on GitHub"><span class="docs-icon fa-brands"></span><span class="docs-label is-hidden-touch">GitHub</span></a><a class="docs-navbar-link" href="https://github.com/JuliaPOMDP/POMDPs.jl/blob/master/docs/src/example_defining_problems.md" title="Edit source on GitHub"><span class="docs-icon fa-solid"></span></a><a class="docs-settings-button docs-navbar-link fa-solid fa-gear" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-article-toggle-button fa-solid fa-chevron-up" id="documenter-article-toggle-button" href="javascript:;" title="Collapse all docstrings"></a></div></header><article class="content" id="documenter-page"><h1 id="Defining-a-POMDP"><a class="docs-heading-anchor" href="#Defining-a-POMDP">Defining a POMDP</a><a id="Defining-a-POMDP-1"></a><a class="docs-heading-anchor-permalink" href="#Defining-a-POMDP" title="Permalink"></a></h1><p>As mentioned in the <a href="../def_pomdp/#defining_pomdps">Defining POMDPs and MDPs</a> section, there are verious ways to define a POMDP using POMDPs.jl. In this section, we provide more examples of how to define a POMDP using the different interfaces.</p><p>There is a large variety of problems that can be expressed as MDPs and POMDPs and different solvers require different components of the POMDPs.jl interface to be defined. Therefore, these examples are not intended to cover all possible use cases. When deeloping a problem and you have an idea of what solver(s) you would like to use, it is recommended to use <a href="https://github.com/JuliaPOMDP/POMDPLinter.jl">POMDPLinter</a> to help you to determine what components of the POMDPs.jl interface need to be defined. Reference the <a href="../example_solvers/#Checking-Requirements">Checking Requirements</a> section for an example of using POMDPLinter.</p><h2 id="CryingBaby-Problem-Definition"><a class="docs-heading-anchor" href="#CryingBaby-Problem-Definition">CryingBaby Problem Definition</a><a id="CryingBaby-Problem-Definition-1"></a><a class="docs-heading-anchor-permalink" href="#CryingBaby-Problem-Definition" title="Permalink"></a></h2><p>For the examples, we will use the CryingBaby problem from <a href="https://algorithmsbook.com/">Algorithms for Decision Making</a> by Mykel J. Kochenderfer, Tim A. Wheeler, and Kyle H. Wray.</p><div class="admonition is-info"><header class="admonition-header">Note</header><div class="admonition-body"><p>This craying baby problem follows the description in Algorithms for Decision Making and is different than <code>BabyPOMDP</code> defined in <a href="https://github.com/JuliaPOMDP/POMDPModels.jl">POMDPModels.jl</a>.</p></div></div><p>From <a href="https://algorithmsbook.com/files/appendix-f.pdf">Appendix F</a> of Algorithms for Decision Making:</p><blockquote><p>The crying baby problem is a simple POMDP with two states, three actions, and two observations. Our goal is to care for a baby, and we do so by choosing at each time step whether to feed the baby, sing to the baby, or ignore the baby.</p><p>The baby becomes hungry over time. We do not directly observe whether the baby is hungry; instead, we receive a noisy observation in the form of whether the baby is crying. The state, action, and observation spaces are as follows:</p><p class="math-container">\[\begin{align*}
+\mathcal{S} &amp;= \{\text{sated}, \text{hungry} \}\\
+\mathcal{A} &amp;= \{\text{feed}, \text{sing}, \text{ignore} \} \\
+\mathcal{O} &amp;= \{\text{crying}, \text{quiet} \}
+\end{align*}\]</p><p>Feeding will always sate the baby. Ignoring the baby risks a sated baby becoming hungry, and ensures that a hungry baby remains hungry. Singing to the baby is an information-gathering action with the same transition dynamics as ignoring, but without the potential for crying when sated (not hungry) and with an increased chance of crying when hungry.</p><p>The transition dynamics are as follows:</p><p class="math-container">\[\begin{align*}
+&amp; T(\text{sated} \mid \text{hungry}, \text{feed}) = 100\% \\
+&amp; T(\text{hungry} \mid \text{hungry}, \text{sing}) = 100\% \\
+&amp; T(\text{hungry} \mid \text{hungry}, \text{ignore}) = 100\% \\
+&amp; T(\text{sated} \mid \text{sated}, \text{feed}) = 100\% \\
+&amp; T(\text{hungry} \mid \text{sated}, \text{sing}) = 10\% \\
+&amp; T(\text{hungry} \mid \text{sated}, \text{ignore}) = 10\%
+\end{align*}\]</p><p>The observation dynamics are as follows:</p><p class="math-container">\[\begin{align*}
+&amp; O(\text{crying} \mid \text{feed}, \text{hungry}) = 80\% \\
+&amp; O(\text{crying} \mid \text{sing}, \text{hungry}) = 90\% \\
+&amp; O(\text{crying} \mid \text{ignore}, \text{hungry}) = 80\% \\
+&amp; O(\text{crying} \mid \text{feed}, \text{sated}) = 10\% \\
+&amp; O(\text{crying} \mid \text{sing}, \text{sated}) = 0\% \\
+&amp; O(\text{crying} \mid \text{ignore}, \text{sated}) = 10\% 
+\end{align*}\]</p><p>The reward function assigns <span>$−10$</span> reward if the baby is hungry, independent of the action taken. The effort of feeding the baby adds a further <span>$−5$</span> reward, whereas singing adds <span>$−0.5$</span> reward. As baby caregivers, we seek the optimal infinite-horizon policy with discount factor <span>$\gamma = 0.9$</span>. </p></blockquote><h2 id="quick_crying"><a class="docs-heading-anchor" href="#quick_crying">QuickPOMDP Interface</a><a id="quick_crying-1"></a><a class="docs-heading-anchor-permalink" href="#quick_crying" title="Permalink"></a></h2><pre><code class="language-julia hljs">using POMDPs
+using POMDPTools
+using QuickPOMDPs
+
+quick_crying_baby_pomdp = QuickPOMDP(
+    states = [:sated, :hungry],
+    actions = [:feed, :sing, :ignore],
+    observations = [:quiet, :crying],
+    initialstate = Deterministic(:sated),
+    discount = 0.9,
+    transition = function (s, a)
+        if a == :feed
+            return Deterministic(:sated)
+        elseif s == :sated # :sated and a != :feed
+            return SparseCat([:sated, :hungry], [0.9, 0.1])
+        else # s == :hungry and a != :feed
+            return Deterministic(:hungry)
+        end
+    end,
+    observation = function (a, sp)
+        if sp == :hungry
+            if a == :sing
+                return SparseCat([:crying, :quiet], [0.9, 0.1])
+            else # a == :ignore || a == :feed
+                return SparseCat([:crying, :quiet], [0.8, 0.2])
+            end
+        else # sp = :sated
+            if a == :sing
+                return Deterministic(:quiet)
+            else # a == :ignore || a == :feed
+                return SparseCat([:crying, :quiet], [0.1, 0.9])
+            end
+            
+        end
+    end,
+    reward = function (s, a)
+        r = 0.0
+        if s == :hungry
+            r += -10.0
+        end
+        if a == :feed
+            r += -5.0
+        elseif a == :sing
+            r+= -0.5
+        end
+        return r
+    end
+)</code></pre><h2 id="explicit_crying"><a class="docs-heading-anchor" href="#explicit_crying">Explicit Interface</a><a id="explicit_crying-1"></a><a class="docs-heading-anchor-permalink" href="#explicit_crying" title="Permalink"></a></h2><pre><code class="language-julia hljs">using POMDPs
+using POMDPTools
+
+struct CryingBabyState
+    hungry::Bool
+end
+
+struct CryingBabyPOMDP &lt;: POMDP{CryingBabyState, Symbol, Symbol}
+    p_sated_to_hungry::Float64
+    p_cry_feed_hungry::Float64
+    p_cry_sing_hungry::Float64
+    p_cry_ignore_hungry::Float64
+    p_cry_feed_sated::Float64
+    p_cry_sing_sated::Float64
+    p_cry_ignore_sated::Float64
+    reward_hungry::Float64
+    reward_feed::Float64
+    reward_sing::Float64
+    discount_factor::Float64
+end
+
+function CryingBabyPOMDP(;
+    p_sated_to_hungry=0.1,
+    p_cry_feed_hungry=0.8,
+    p_cry_sing_hungry=0.9,
+    p_cry_ignore_hungry=0.8,
+    p_cry_feed_sated=0.1,
+    p_cry_sing_sated=0.0,
+    p_cry_ignore_sated=0.1,
+    reward_hungry=-10.0,
+    reward_feed=-5.0,
+    reward_sing=-0.5,
+    discount_factor=0.9
+)
+    return CryingBabyPOMDP(p_sated_to_hungry, p_cry_feed_hungry,
+        p_cry_sing_hungry, p_cry_ignore_hungry, p_cry_feed_sated,
+        p_cry_sing_sated, p_cry_ignore_sated, reward_hungry,
+        reward_feed, reward_sing, discount_factor)
+end
+
+POMDPs.actions(::CryingBabyPOMDP) = [:feed, :sing, :ignore]
+POMDPs.states(::CryingBabyPOMDP) = [CryingBabyState(false), CryingBabyState(true)]
+POMDPs.observations(::CryingBabyPOMDP) = [:crying, :quiet]
+POMDPs.stateindex(::CryingBabyPOMDP, s::CryingBabyState) = s.hungry ? 2 : 1
+POMDPs.obsindex(::CryingBabyPOMDP, o::Symbol) = o == :crying ? 1 : 2
+POMDPs.actionindex(::CryingBabyPOMDP, a::Symbol) = a == :feed ? 1 : a == :sing ? 2 : 3
+
+function POMDPs.transition(pomdp::CryingBabyPOMDP, s::CryingBabyState, a::Symbol)
+    if a == :feed
+        return Deterministic(CryingBabyState(false))
+    elseif s == :sated # :sated and a != :feed
+        return SparseCat([CryingBabyState(false), CryingBabyState(true)], [1 - pomdp.p_sated_to_hungry, pomdp.p_sated_to_hungry])
+    else # s == :hungry and a != :feed
+        return Deterministic(CryingBabyState(true))
+    end
+end
+
+function POMDPs.observation(pomdp::CryingBabyPOMDP, a::Symbol, sp::CryingBabyState)
+    if sp.hungry
+        if a == :sing
+            return SparseCat([:crying, :quiet], [pomdp.p_cry_sing_hungry, 1 - pomdp.p_cry_sing_hungry])
+        elseif a== :ignore
+            return SparseCat([:crying, :quiet], [pomdp.p_cry_ignore_hungry, 1 - pomdp.p_cry_ignore_hungry])
+        else # a == :feed
+            return SparseCat([:crying, :quiet], [pomdp.p_cry_feed_hungry, 1 - pomdp.p_cry_feed_hungry])
+        end
+    else # sated
+        if a == :sing
+            return SparseCat([:crying, :quiet], [pomdp.p_cry_sing_sated, 1 - pomdp.p_cry_sing_sated])
+        elseif a== :ignore
+            return SparseCat([:crying, :quiet], [pomdp.p_cry_ignore_sated, 1 - pomdp.p_cry_ignore_sated])
+        else # a == :feed
+            return SparseCat([:crying, :quiet], [pomdp.p_cry_feed_sated, 1 - pomdp.p_cry_feed_sated])
+        end
+    end
+end
+
+function POMDPs.reward(pomdp::CryingBabyPOMDP, s::CryingBabyState, a::Symbol)
+    r = 0.0
+    if s.hungry
+        r += pomdp.reward_hungry
+    end
+    if a == :feed
+        r += pomdp.reward_feed
+    elseif a == :sing
+        r += pomdp.reward_sing
+    end
+    return r
+end
+
+POMDPs.discount(pomdp::CryingBabyPOMDP) = pomdp.discount_factor
+
+POMDPs.initialstate(::CryingBabyPOMDP) = Deterministic(CryingBabyState(false))
+
+explicit_crying_baby_pomdp = CryingBabyPOMDP()</code></pre><h2 id="gen_crying"><a class="docs-heading-anchor" href="#gen_crying">Generative Interface</a><a id="gen_crying-1"></a><a class="docs-heading-anchor-permalink" href="#gen_crying" title="Permalink"></a></h2><p>This crying baby problem should not be implemented using the generative interface. However, this exmple is provided for pedagogical purposes.</p><pre><code class="language-julia hljs">using POMDPs
+using POMDPTools
+using Random
+
+struct GenCryingBabyState
+    hungry::Bool
+end
+
+struct GenCryingBabyPOMDP &lt;: POMDP{CryingBabyState, Symbol, Symbol}
+    p_sated_to_hungry::Float64
+    p_cry_feed_hungry::Float64
+    p_cry_sing_hungry::Float64
+    p_cry_ignore_hungry::Float64
+    p_cry_feed_sated::Float64
+    p_cry_sing_sated::Float64
+    p_cry_ignore_sated::Float64
+    reward_hungry::Float64
+    reward_feed::Float64
+    reward_sing::Float64
+    discount_factor::Float64
+    
+    GenCryingBabyPOMDP() = new(0.1, 0.8, 0.9, 0.8, 0.1, 0.0, 0.1, -10.0, -5.0, -0.5, 0.9)    
+end
+
+function POMDPs.gen(pomdp::GenCryingBabyPOMDP, s::CryingBabyState, a::Symbol, rng::AbstractRNG)
+    
+    if a == :feed
+        sp = GenCryingBabyState(false)
+    else 
+        sp = rand(rng) &lt; pomdp.p_sated_to_hungry ? GenCryingBabyState(true) : GenCryingBabyState(false)
+    end
+    
+    if sp.hungry
+        if a == :sing
+            o = rand(rng) &lt; pomdp.p_cry_sing_hungry ? :crying : :quiet
+        elseif a== :ignore
+            o = rand(rng) &lt; pomdp.p_cry_ignore_hungry ? :crying : :quiet
+        else # a == :feed
+            o = rand(rng) &lt; pomdp.p_cry_feed_hungry ? :crying : :quiet
+        end
+    else # sated
+        if a == :sing
+            o = rand(rng) &lt; pomdp.p_cry_sing_sated ? :crying : :quiet
+        elseif a== :ignore
+            o = rand(rng) &lt; pomdp.p_cry_ignore_sated ? :crying : :quiet
+        else # a == :feed
+            o = rand(rng) &lt; pomdp.p_cry_feed_sated ? :crying : :quiet
+        end
+    end
+    
+    r = 0.0
+    if sp.hungry
+        r += pomdp.reward_hungry
+    end
+    if a == :feed
+        r += pomdp.reward_feed
+    elseif a == :sing
+        r += pomdp.reward_sing
+    end
+    
+    return (sp=sp, o=o, r=r) 
+end
+
+POMDPs.initialstate(::GenCryingBabyPOMDP) = Deterministic(GenCryingBabyState(false))
+
+gen_crying_baby_pomdp = GenCryingBabyPOMDP()</code></pre><h2 id="tab_crying"><a class="docs-heading-anchor" href="#tab_crying">Probability Tables</a><a id="tab_crying-1"></a><a class="docs-heading-anchor-permalink" href="#tab_crying" title="Permalink"></a></h2><p>For this implementaion we will use the following indexes:</p><ul><li>States<ul><li><code>:sated</code> = 1</li><li><code>:hungry</code> = 2</li></ul></li><li>Actions<ul><li><code>:feed</code> = 1</li><li><code>:sing</code> = 2</li><li><code>:ignore</code> = 3</li></ul></li><li>Observations<ul><li><code>:crying</code> = 1</li><li><code>:quiet</code> = 2</li></ul></li></ul><pre><code class="language-julia hljs">using POMDPModels
+
+T = zeros(2, 3, 2) # |S| x |A| x |S&#39;|, T[sp, a, s] = p(sp | a, s)
+T[:, 1, :] = [1.0 1.0; 
+              0.0 0.0]
+T[:, 2, :] = [0.9 0.0; 
+              0.1 1.0]
+T[:, 3, :] = [0.9 0.0; 
+              0.1 1.0]
+
+O = zeros(2, 3, 2) # |O| x |A| x |S&#39;|, O[o, a, sp] = p(o | a, sp)
+O[:, 1, :] = [0.1 0.8; 
+              0.9 0.2]
+O[:, 2, :] = [0.0 0.9;
+              1.0 0.1]
+O[:, 3, :] = [0.1 0.8;
+              0.9 0.2]
+
+R = zeros(2, 3) # |S| x |A|
+R = [-5.0 -0.5 0.0;
+     -15.0 -10.5 0.0]
+     
+discount = 0.9
+
+tabular_crying_baby_pomdp = TabularPOMDP(T, R, O, discount)</code></pre></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../examples/">« Examples</a><a class="docs-footer-nextpage" href="../example_solvers/">Using Different Solvers »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="auto">Automatic (OS)</option><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 1.4.1 on <span class="colophon-date" title="Thursday 13 June 2024 20:05">Thursday 13 June 2024</span>. Using Julia version 1.10.4.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
