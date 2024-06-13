@@ -67,7 +67,7 @@ quick_crying_baby_pomdp = QuickPOMDP(
 )</code></pre><h2 id="explicit_crying"><a class="docs-heading-anchor" href="#explicit_crying">Explicit Interface</a><a id="explicit_crying-1"></a><a class="docs-heading-anchor-permalink" href="#explicit_crying" title="Permalink"></a></h2><pre><code class="language-julia hljs">using POMDPs
 using POMDPTools
 
-struct CryingBabyState
+struct CryingBabyState # Alternatively, you could just use a Bool or Symbol for the state.
     hungry::Bool
 end
 
@@ -162,11 +162,11 @@ explicit_crying_baby_pomdp = CryingBabyPOMDP()</code></pre><h2 id="gen_crying"><
 using POMDPTools
 using Random
 
-struct GenCryingBabyState
+struct GenCryingBabyState # Alternatively, you could just use a Bool or Symbol for the state.
     hungry::Bool
 end
 
-struct GenCryingBabyPOMDP &lt;: POMDP{CryingBabyState, Symbol, Symbol}
+struct GenCryingBabyPOMDP &lt;: POMDP{GenCryingBabyState, Symbol, Symbol}
     p_sated_to_hungry::Float64
     p_cry_feed_hungry::Float64
     p_cry_sing_hungry::Float64
@@ -182,7 +182,7 @@ struct GenCryingBabyPOMDP &lt;: POMDP{CryingBabyState, Symbol, Symbol}
     GenCryingBabyPOMDP() = new(0.1, 0.8, 0.9, 0.8, 0.1, 0.0, 0.1, -10.0, -5.0, -0.5, 0.9)    
 end
 
-function POMDPs.gen(pomdp::GenCryingBabyPOMDP, s::CryingBabyState, a::Symbol, rng::AbstractRNG)
+function POMDPs.gen(pomdp::GenCryingBabyPOMDP, s::GenCryingBabyState, a::Symbol, rng::AbstractRNG)
     
     if a == :feed
         sp = GenCryingBabyState(false)
@@ -247,4 +247,4 @@ R = [-5.0 -0.5 0.0;
      
 discount = 0.9
 
-tabular_crying_baby_pomdp = TabularPOMDP(T, R, O, discount)</code></pre></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../examples/">« Examples</a><a class="docs-footer-nextpage" href="../example_solvers/">Using Different Solvers »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="auto">Automatic (OS)</option><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 1.4.1 on <span class="colophon-date" title="Thursday 13 June 2024 19:30">Thursday 13 June 2024</span>. Using Julia version 1.10.4.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
+tabular_crying_baby_pomdp = TabularPOMDP(T, R, O, discount)</code></pre></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../examples/">« Examples</a><a class="docs-footer-nextpage" href="../example_solvers/">Using Different Solvers »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="auto">Automatic (OS)</option><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 1.4.1 on <span class="colophon-date" title="Thursday 13 June 2024 21:51">Thursday 13 June 2024</span>. Using Julia version 1.10.4.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
