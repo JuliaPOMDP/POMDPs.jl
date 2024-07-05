@@ -1,6 +1,6 @@
 # GridWorld MDP Tutorial
 
-In this tutorial, we provide a simple example of how to define a Markov decision process (MDP) using the POMDPS.jl interface. We will then solve the MDP using value iteration and Monte Carlo tree search (MCTS). We will walk through constructing the MDP using the explicit interface which involves defining a new type for the MDP and then extending different components of the POMDPs.jl interface for that type.
+In this tutorial, we provide a simple example of how to define a Markov decision process (MDP) using the POMDPS.jl interface. We will then solve the MDP using value iteration and Monte Carlo tree search (MCTS). We will walk through constructing the MDP using the explicit interface which invovles defining a new type for the MDP and then extending different components of the POMDPs.jl interface for that type.
 
 ## Dependencies
 
@@ -32,7 +32,7 @@ using MCTS
 
 ## Problem Overview
 
-In Grid World, we are trying to control an agent who has trouble moving in the desired direction. In our problem, we have four reward states within the a grid. Each position on the grid represents a state, and the positive reward states are terminal (the agent stops receiving reward after reaching them and performing an action from that state). The agent has four actions to choose from: up, down, left, right. The agent moves in the desired direction with a probability of $0.7$, and with a probability of $0.1$ in each of the remaining three directions. If the agent bumps into the outside wall, there is a penalty of $1$ (i.e. reward of $-1$). The problem has the following form:
+In Grid World, we are trying to control an agent who has trouble moving in the desired direction. In our problem, we have four reward states within the a grid. Each position on the grid represents a state, and the positive reward states are terminal (the agent stops recieving reward after reaching them and performing an action from that state). The agent has four actions to choose from: up, down, left, right. The agent moves in the desired direction with a probability of $0.7$, and with a probability of $0.1$ in each of the remaining three directions. If the agent bumps into the outside wall, there is a penalty of $1$ (i.e. reward of $-1$). The problem has the following form:
 
 ![Grid World](examples/grid_world_overview.gif)
 
@@ -79,7 +79,7 @@ struct GridWorldMDP <: MDP{GridWorldState, Symbol}
     reward_states_values::Dict{GridWorldState, Float64} # Dictionary mapping reward states to their values
     hit_wall_reward::Float64 # reward for hitting a wall
     tprob::Float64 # probability of transitioning to the desired state
-    discount_factor::Float64 # discount factor
+    discount_factor::Float64 # disocunt factor
 end
 ```
 
@@ -126,7 +126,7 @@ mdp = GridWorldMDP()
 ```
 
 !!! note
-    In this definition of the problem, our coordinates start in the bottom left of the grid. That is GridState(1, 1) is the bottom left of the grid and GridState(10, 10) would be on the right of the grid with a grid size of 10 by 10.
+    In this definition of the problem, our coordiates start in the bottom left of the grid. That is GridState(1, 1) is the bottom left of the grid and GridState(10, 10) would be on the right of the grid with a grid size of 10 by 10.
     
 ## Grid World State Space
 The state space in an MDP represents all the states in the problem. There are two primary functionalities that we want our spaces to support. We want to be able to iterate over the state space (for Value Iteration for example), and sometimes we want to be able to sample form the state space (used in some POMDP solvers). In this notebook, we will only look at iterable state spaces.
@@ -236,7 +236,7 @@ Similar to above, let's iterate over a few of the states in our state space:
 ```
 
 ## Grid World Action Space
-The action space is the set of all actions available to the agent. In the grid world problem the action space consists of up, down, left, and right. We can define the action space by implementing a new method of the actions function.
+The action space is the set of all actions availiable to the agent. In the grid world problem the action space consists of up, down, left, and right. We can define the action space by implementing a new method of the actions function.
 
 ```@example gridworld_mdp
 POMDPs.actions(mdp::GridWorldMDP) = [:up, :down, :left, :right]
@@ -255,7 +255,7 @@ end
 ## Grid World Transition Function
 MDPs often define the transition function as $T(s^{\prime} \mid s, a)$, which is the probability of transitioning to state $s^{\prime}$ given that we are in state $s$ and take action $a$. For the POMDPs.jl interface, we define the transition function as a distribution over the next states. That is, we want $T(\cdot \mid s, a)$ which is a function that takes in a state and an action and returns a distribution over the next states.
 
-For our grid world example, there are only a few states to which the agent can transition and thus only a few states with nonzero probability in $T(\cdot \mid s, a)$. We can use the `SparseCat` distribution to represent this. The `SparseCat` distribution is a categorical distribution that only stores the nonzero probabilities. We can define our transition function as follows:
+For our grid world example, there are only a few states to which the agent can transition and thus only a few states with nonzero probaility in $T(\cdot \mid s, a)$. We can use the `SparseCat` distribution to represent this. The `SparseCat` distribution is a categorical distribution that only stores the nonzero probabilities. We can define our transition function as follows:
 
 ```@example gridworld_mdp
 function POMDPs.transition(mdp::GridWorldMDP, s::GridWorldState, a::Symbol)

@@ -1,13 +1,13 @@
 # Defining a POMDP
-As mentioned in the [Defining POMDPs and MDPs](@ref defining_pomdps) section, there are various ways to define a POMDP using POMDPs.jl. In this section, we provide more examples of how to define a POMDP using the different interfaces.
+As mentioned in the [Defining POMDPs and MDPs](@ref defining_pomdps) section, there are verious ways to define a POMDP using POMDPs.jl. In this section, we provide more examples of how to define a POMDP using the different interfaces.
 
-There is a large variety of problems that can be expressed as MDPs and POMDPs and different solvers require different components of the POMDPs.jl interface to be defined. Therefore, these examples are not intended to cover all possible use cases. When developing a problem and you have an idea of what solver(s) you would like to use, it is recommended to use [POMDPLinter](https://github.com/JuliaPOMDP/POMDPLinter.jl) to help you to determine what components of the POMDPs.jl interface need to be defined. Reference the [Checking Requirements](@ref) section for an example of using POMDPLinter.
+There is a large variety of problems that can be expressed as MDPs and POMDPs and different solvers require different components of the POMDPs.jl interface to be defined. Therefore, these examples are not intended to cover all possible use cases. When deeloping a problem and you have an idea of what solver(s) you would like to use, it is recommended to use [POMDPLinter](https://github.com/JuliaPOMDP/POMDPLinter.jl) to help you to determine what components of the POMDPs.jl interface need to be defined. Reference the [Checking Requirements](@ref) section for an example of using POMDPLinter.
 
 ## CryingBaby Problem Definition
 For the examples, we will use the CryingBaby problem from [Algorithms for Decision Making](https://algorithmsbook.com/) by Mykel J. Kochenderfer, Tim A. Wheeler, and Kyle H. Wray.
 
 !!! note 
-    This crying baby problem follows the description in Algorithms for Decision Making and is different than `BabyPOMDP` defined in [POMDPModels.jl](https://github.com/JuliaPOMDP/POMDPModels.jl).
+    This craying baby problem follows the description in Algorithms for Decision Making and is different than `BabyPOMDP` defined in [POMDPModels.jl](https://github.com/JuliaPOMDP/POMDPModels.jl).
 
 From [Appendix F](https://algorithmsbook.com/files/appendix-f.pdf) of Algorithms for Decision Making:
 > The crying baby problem is a simple POMDP with two states, three actions, and two observations. Our goal is to care for a baby, and we do so by choosing at each time step whether to feed the baby, sing to the baby, or ignore the baby.
@@ -201,7 +201,7 @@ explicit_crying_baby_pomdp = CryingBabyPOMDP()
 ```
 
 ## [Generative Interface](@id gen_crying)
-This crying baby problem should not be implemented using the generative interface. However, this example is provided for pedagogical purposes.
+This crying baby problem should not be implemented using the generative interface. However, this exmple is provided for pedagogical purposes.
 
 ```julia
 using POMDPs
@@ -273,7 +273,7 @@ gen_crying_baby_pomdp = GenCryingBabyPOMDP()
 ```
 
 ## [Probability Tables](@id tab_crying)
-For this implementation we will use the following indexes:
+For this implementaion we will use the following indexes:
 - States
     - `:sated` = 1
     - `:hungry` = 2

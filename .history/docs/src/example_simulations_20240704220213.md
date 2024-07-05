@@ -9,7 +9,7 @@ include("examples/crying_baby_solvers.jl")
 ```
 
 ## Stepthrough
-The stepthrough simulator provides a window into the simulation with a for-loop syntax.
+The stepthrough simulater provides a window into the simulation with a for-loop syntax.
 
 Within the body of the for loop, we have access to the belief, the action, the observation, and the reward, in each step. We also calculate the sum of the rewards in this example, but note that this is _not_ the _discounted reward_.
 
@@ -58,7 +58,7 @@ history = simulate(hr, tabular_crying_baby_pomdp, policy, DiscreteUpdater(tabula
 nothing # hide
 ```
 
-The history object produced by a `HistoryRecorder` is a `SimHistory`, documented in the POMDPTools simulator section [Histories](@ref). The information in this object can be accessed in several ways. For example, there is a function:
+The history object produced by a `HistoryRecorder` is a `SimHistory`, documented in the POMDPTools simulater section [Histories](@ref). The information in this object can be accessed in several ways. For example, there is a function:
 ```@example crying_sim
 discounted_reward(history)
 ```
@@ -97,7 +97,7 @@ demo_eachstep(history) # hide
 ## Parallel Simulations
 It is often useful to evaluate a policy by running many simulations. The parallel simulator is the most effective tool for this. To use the parallel simulator, first create a list of `Sim` objects, each of which contains all of the information needed to run a simulation. Then then run the simulations using `run_parallel`, which will return a `DataFrame` with the results.
 
-In this example, we will compare the performance of the policies we computed in the [Using Different Solvers](@ref) section (i.e. `sarsop_policy`, `pomcp_planner`, and `heuristic_policy`). To evaluate the policies, we will run 100 simulations for each policy. We can do this by adding 100 `Sim` objects of each policy to the list.
+In this example, we will compare the performance of the polcies we computed in the [Using Different Solvers](@ref) section (i.e. `sarsop_policy`, `pomcp_planner`, and `heuristic_policy`). To evaluate the policies, we will run 100 simulations for each policy. We can do this by adding 100 `Sim` objects of each policy to the list.
 
 ```@example crying_sim
 using DataFrames 
