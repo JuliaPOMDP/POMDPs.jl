@@ -49,9 +49,9 @@ end</code></pre><p>Now lets create an instance of our <code>GridWorldMDP</code>:
 	Size y: 10
 	Reward states:
 		Main.GridWorldState(9, 3) =&gt; 10.0
-		Main.GridWorldState(4, 3) =&gt; -10.0
 		Main.GridWorldState(4, 6) =&gt; -5.0
 		Main.GridWorldState(8, 8) =&gt; 3.0
+		Main.GridWorldState(4, 3) =&gt; -10.0
 	Hit wall reward: -1.0
 	Transition probability: 0.7
 	Discount: 0.9
@@ -239,30 +239,30 @@ mdp = GridWorldMDP()
 solver = ValueIterationSolver(; max_iterations=100, belres=1e-3, verbose=true)
 
 # Solve for an optimal policy
-vi_policy = POMDPs.solve(solver, mdp)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">[Iteration 1   ] residual:         10 | iteration runtime:      0.234 ms, (  0.000234 s total)
-[Iteration 2   ] residual:        6.3 | iteration runtime:      0.320 ms, (  0.000554 s total)
-[Iteration 3   ] residual:       4.53 | iteration runtime:      0.262 ms, (  0.000816 s total)
-[Iteration 4   ] residual:       3.21 | iteration runtime:      0.263 ms, (   0.00108 s total)
-[Iteration 5   ] residual:       2.31 | iteration runtime:      0.251 ms, (   0.00133 s total)
-[Iteration 6   ] residual:       1.62 | iteration runtime:      0.245 ms, (   0.00157 s total)
-[Iteration 7   ] residual:       1.24 | iteration runtime:      0.221 ms, (    0.0018 s total)
-[Iteration 8   ] residual:       1.06 | iteration runtime:      0.223 ms, (   0.00202 s total)
-[Iteration 9   ] residual:      0.865 | iteration runtime:      0.219 ms, (   0.00224 s total)
-[Iteration 10  ] residual:      0.657 | iteration runtime:      0.223 ms, (   0.00246 s total)
-[Iteration 11  ] residual:      0.545 | iteration runtime:      0.224 ms, (   0.00269 s total)
-[Iteration 12  ] residual:      0.455 | iteration runtime:      0.233 ms, (   0.00292 s total)
-[Iteration 13  ] residual:      0.378 | iteration runtime:      0.218 ms, (   0.00314 s total)
-[Iteration 14  ] residual:      0.306 | iteration runtime:      0.217 ms, (   0.00335 s total)
-[Iteration 15  ] residual:      0.211 | iteration runtime:      0.218 ms, (   0.00357 s total)
-[Iteration 16  ] residual:      0.132 | iteration runtime:      0.217 ms, (   0.00379 s total)
-[Iteration 17  ] residual:     0.0778 | iteration runtime:      0.218 ms, (   0.00401 s total)
-[Iteration 18  ] residual:     0.0437 | iteration runtime:      0.223 ms, (   0.00423 s total)
-[Iteration 19  ] residual:     0.0237 | iteration runtime:      0.218 ms, (   0.00445 s total)
-[Iteration 20  ] residual:     0.0125 | iteration runtime:      0.218 ms, (   0.00467 s total)
-[Iteration 21  ] residual:    0.00649 | iteration runtime:      0.218 ms, (   0.00488 s total)
-[Iteration 22  ] residual:    0.00332 | iteration runtime:      0.213 ms, (    0.0051 s total)
-[Iteration 23  ] residual:    0.00167 | iteration runtime:      0.221 ms, (   0.00532 s total)
-[Iteration 24  ] residual:   0.000834 | iteration runtime:      0.213 ms, (   0.00553 s total)</code></pre><p>We can now use the policy to compute the optimal action for a given state:</p><pre><code class="language-julia hljs">s = GridWorldState(9, 2)
+vi_policy = POMDPs.solve(solver, mdp)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">[Iteration 1   ] residual:         10 | iteration runtime:      0.216 ms, (  0.000216 s total)
+[Iteration 2   ] residual:        6.3 | iteration runtime:      0.214 ms, (   0.00043 s total)
+[Iteration 3   ] residual:       4.53 | iteration runtime:      0.207 ms, (  0.000637 s total)
+[Iteration 4   ] residual:       3.21 | iteration runtime:      0.208 ms, (  0.000845 s total)
+[Iteration 5   ] residual:       2.31 | iteration runtime:      0.206 ms, (   0.00105 s total)
+[Iteration 6   ] residual:       1.62 | iteration runtime:      0.204 ms, (   0.00126 s total)
+[Iteration 7   ] residual:       1.24 | iteration runtime:      0.204 ms, (   0.00146 s total)
+[Iteration 8   ] residual:       1.06 | iteration runtime:      0.206 ms, (   0.00167 s total)
+[Iteration 9   ] residual:      0.865 | iteration runtime:      0.205 ms, (   0.00187 s total)
+[Iteration 10  ] residual:      0.657 | iteration runtime:      0.206 ms, (   0.00208 s total)
+[Iteration 11  ] residual:      0.545 | iteration runtime:      0.206 ms, (   0.00228 s total)
+[Iteration 12  ] residual:      0.455 | iteration runtime:      0.221 ms, (    0.0025 s total)
+[Iteration 13  ] residual:      0.378 | iteration runtime:      0.208 ms, (   0.00271 s total)
+[Iteration 14  ] residual:      0.306 | iteration runtime:      0.204 ms, (   0.00292 s total)
+[Iteration 15  ] residual:      0.211 | iteration runtime:      0.206 ms, (   0.00312 s total)
+[Iteration 16  ] residual:      0.132 | iteration runtime:      0.207 ms, (   0.00333 s total)
+[Iteration 17  ] residual:     0.0778 | iteration runtime:      0.204 ms, (   0.00353 s total)
+[Iteration 18  ] residual:     0.0437 | iteration runtime:      0.205 ms, (   0.00374 s total)
+[Iteration 19  ] residual:     0.0237 | iteration runtime:      0.212 ms, (   0.00395 s total)
+[Iteration 20  ] residual:     0.0125 | iteration runtime:      0.207 ms, (   0.00416 s total)
+[Iteration 21  ] residual:    0.00649 | iteration runtime:      0.203 ms, (   0.00436 s total)
+[Iteration 22  ] residual:    0.00332 | iteration runtime:      0.202 ms, (   0.00456 s total)
+[Iteration 23  ] residual:    0.00167 | iteration runtime:      0.205 ms, (   0.00477 s total)
+[Iteration 24  ] residual:   0.000834 | iteration runtime:      0.203 ms, (   0.00497 s total)</code></pre><p>We can now use the policy to compute the optimal action for a given state:</p><pre><code class="language-julia hljs">s = GridWorldState(9, 2)
 @show action(vi_policy, s)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">:up</code></pre><pre><code class="language-julia hljs">s = GridWorldState(8, 3)
 @show action(vi_policy, s)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">:right</code></pre><h2 id="Solving-the-Grid-World-MDP-(MCTS)"><a class="docs-heading-anchor" href="#Solving-the-Grid-World-MDP-(MCTS)">Solving the Grid World MDP (MCTS)</a><a id="Solving-the-Grid-World-MDP-(MCTS)-1"></a><a class="docs-heading-anchor-permalink" href="#Solving-the-Grid-World-MDP-(MCTS)" title="Permalink"></a></h2><p>Similar to the process with Value Iteration, we can solve the MDP using MCTS. We will use the <code>MCTSSolver</code> from the <a href="https://github.com/JuliaPOMDP/MCTS.jl">MCTS</a> package.</p><pre><code class="language-julia hljs"># Initialize the problem (we have already done this, but just calling it again for completeness in the example)
 mdp = GridWorldMDP()
@@ -367,4 +367,4 @@ end</code></pre><pre class="documenter-example-output"><code class="nohighlight 
  2 | →  →  →  →  →  →  →  →  ↑  ↑ |
  1 | →  →  →  →  →  →  ↑  ↑  ↑  ↑ |
    ------------------------------
-    1  2  3  4  5  6  7  8  9  10</code></pre><h2 id="Seeing-a-Policy-In-Action"><a class="docs-heading-anchor" href="#Seeing-a-Policy-In-Action">Seeing a Policy In Action</a><a id="Seeing-a-Policy-In-Action-1"></a><a class="docs-heading-anchor-permalink" href="#Seeing-a-Policy-In-Action" title="Permalink"></a></h2><p>Another useful tool is to view the policy in action by creating a gif of a simulation. To accomplish this, we could use <a href="https://github.com/JuliaPOMDP/POMDPGifs.jl">POMDPGifs</a>. To use POMDPGifs, we need to extend the <a href="../POMDPTools/visualization/#POMDPTools.ModelTools.render"><code>POMDPTools.render</code></a> function to <code>GridWorldMDP</code>. Please reference <a href="../gallery/#Gallery-of-POMDPs.jl-Problems">Gallery of POMDPs.jl Problems</a> for examples of this process.</p></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../example_simulations/">« Simulations Examples</a><a class="docs-footer-nextpage" href="../gallery/">Gallery of POMDPs.jl Problems »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="auto">Automatic (OS)</option><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option><option value="catppuccin-latte">catppuccin-latte</option><option value="catppuccin-frappe">catppuccin-frappe</option><option value="catppuccin-macchiato">catppuccin-macchiato</option><option value="catppuccin-mocha">catppuccin-mocha</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 1.5.0 on <span class="colophon-date" title="Sunday 30 June 2024 23:42">Sunday 30 June 2024</span>. Using Julia version 1.10.4.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
+    1  2  3  4  5  6  7  8  9  10</code></pre><h2 id="Seeing-a-Policy-In-Action"><a class="docs-heading-anchor" href="#Seeing-a-Policy-In-Action">Seeing a Policy In Action</a><a id="Seeing-a-Policy-In-Action-1"></a><a class="docs-heading-anchor-permalink" href="#Seeing-a-Policy-In-Action" title="Permalink"></a></h2><p>Another useful tool is to view the policy in action by creating a gif of a simulation. To accomplish this, we could use <a href="https://github.com/JuliaPOMDP/POMDPGifs.jl">POMDPGifs</a>. To use POMDPGifs, we need to extend the <a href="../POMDPTools/visualization/#POMDPTools.ModelTools.render"><code>POMDPTools.render</code></a> function to <code>GridWorldMDP</code>. Please reference <a href="../gallery/#Gallery-of-POMDPs.jl-Problems">Gallery of POMDPs.jl Problems</a> for examples of this process.</p></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../example_simulations/">« Simulations Examples</a><a class="docs-footer-nextpage" href="../gallery/">Gallery of POMDPs.jl Problems »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="auto">Automatic (OS)</option><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option><option value="catppuccin-latte">catppuccin-latte</option><option value="catppuccin-frappe">catppuccin-frappe</option><option value="catppuccin-macchiato">catppuccin-macchiato</option><option value="catppuccin-mocha">catppuccin-mocha</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 1.5.0 on <span class="colophon-date" title="Sunday 7 July 2024 23:42">Sunday 7 July 2024</span>. Using Julia version 1.10.4.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
