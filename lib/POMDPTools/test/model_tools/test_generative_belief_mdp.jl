@@ -46,12 +46,12 @@ let
 
             # default terminal behavior
             bm = GenerativeBeliefMDP(terminal_test_m, up)
-            hist = collect(stepthrough(bm, RandomPolicy(bm), "s,sp")
+            hist = collect(stepthrough(bm, RandomPolicy(bm), "s,sp"))
             @test isterminal(bm, last(hist).sp)
 
             behavior = TerminalStateTerminalBehavior()
             bm = GenerativeBeliefMDP(terminal_test_m, up)
-            hist = collect(stepthrough(bm, RandomPolicy(bm), "s,sp")
+            hist = collect(stepthrough(bm, RandomPolicy(bm), "s,sp"))
             @test last(hist).sp === terminalstate
             @test isterminal(bm, last(hist).sp)
 
