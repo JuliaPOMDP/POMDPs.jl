@@ -40,7 +40,10 @@ export
     terminalstate
 include("terminal_state.jl")
 
-export GenerativeBeliefMDP
+export GenerativeBeliefMDP,
+    DefaultGBMDPTerminalBehavior,
+    ContinueTerminalBehavior,
+    TerminalStateTerminalBehavior
 include("generative_belief_mdp.jl")
 
 export FullyObservablePOMDP
@@ -77,5 +80,9 @@ export
     transition_matrices,
     reward_vectors
 include("matrices.jl")
+
+export
+    gbmdp_handle_terminal
+include("deprecated.jl")
 
 end

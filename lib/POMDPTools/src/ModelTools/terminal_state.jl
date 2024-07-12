@@ -12,9 +12,9 @@ struct TerminalState end
 """
     terminalstate
 
-The singleton instance of type `TerminalState` representing a terminal state.
+The singleton instance of type [`TerminalState`](@ref) representing a terminal state.
 """
 const terminalstate = TerminalState()
 
-isterminal(m::Union{MDP,POMDP}, ts::TerminalState) = true
+isterminal(m::Union{MDP,POMDP}, ts::TerminalState) = true 
 Base.promote_rule(::Type{TerminalState}, T::Type) = Union{TerminalState, T}
