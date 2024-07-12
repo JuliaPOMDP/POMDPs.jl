@@ -106,7 +106,7 @@ quick_crying_baby_pomdp = QuickPOMDP(
 using POMDPs
 using POMDPTools
 
-struct CryingBabyState
+struct CryingBabyState # Alternatively, you could just use a Bool or Symbol for the state.
     hungry::Bool
 end
 
@@ -208,11 +208,11 @@ using POMDPs
 using POMDPTools
 using Random
 
-struct GenCryingBabyState
+struct GenCryingBabyState # Alternatively, you could just use a Bool or Symbol for the state.
     hungry::Bool
 end
 
-struct GenCryingBabyPOMDP <: POMDP{CryingBabyState, Symbol, Symbol}
+struct GenCryingBabyPOMDP <: POMDP{GenCryingBabyState, Symbol, Symbol}
     p_sated_to_hungry::Float64
     p_cry_feed_hungry::Float64
     p_cry_sing_hungry::Float64
@@ -228,7 +228,7 @@ struct GenCryingBabyPOMDP <: POMDP{CryingBabyState, Symbol, Symbol}
     GenCryingBabyPOMDP() = new(0.1, 0.8, 0.9, 0.8, 0.1, 0.0, 0.1, -10.0, -5.0, -0.5, 0.9)    
 end
 
-function POMDPs.gen(pomdp::GenCryingBabyPOMDP, s::CryingBabyState, a::Symbol, rng::AbstractRNG)
+function POMDPs.gen(pomdp::GenCryingBabyPOMDP, s::GenCryingBabyState, a::Symbol, rng::AbstractRNG)
     
     if a == :feed
         sp = GenCryingBabyState(false)

@@ -9,6 +9,6 @@ abstract type Simulator end
 
 Run a simulation using the specified policy.
 
-The return type is flexible and depends on the simulator. Simulations should adhere to the [Simulation Standard](http://juliapomdp.github.io/POMDPs.jl/latest/simulation.html#Simulation-Standard-1).
+The return type is flexible and depends on the simulator. Simulations should adhere to the [Simulation Standard](https://juliapomdp.github.io/POMDPs.jl/stable/simulation/#Simulation-Standard).
 """
 function simulate end
