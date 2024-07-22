@@ -413,7 +413,7 @@ We are almost done! We still need to define `discount`. Let's first use `POMDPLi
 using POMDPLinter
 
 @show_requirements POMDPs.solve(ValueIterationSolver(), mdp)
-
+nothing # hide
 ```
 As we expected, we need to define `discount`.
 
@@ -428,7 +428,7 @@ Let's check again:
 
 ```@example gridworld_mdp
 @show_requirements POMDPs.solve(ValueIterationSolver(), mdp)
-
+nothing # hide
 ```
 
 ## Solving the Grid World MDP (Value Iteration)
