@@ -216,15 +216,15 @@ In many cases, especially when the state or observation spaces are continuous or
 The argument to an `ImplicitDistribution` constructor is a function that takes a random number generator as an argument and returns a sample from the distribution. To see how this works, we'll look at an example inspired by the [mountaincar](@ref po-mountaincar) initial state distribution.
 Samples from this distribution are position-velocity tuples where the velocity is always zero, but the position is uniformly distributed between -0.2 and 0. Consider the following code:
 ```jldoctest
-using Random: MersenneTwister
+using StableRNGs: StableRNG
 using POMDPTools: ImplicitDistribution
 
-rng = MersenneTwister(1)
+rng = StableRNG(1)
 
 d = ImplicitDistribution(rng -> (-0.2*rand(rng), 0.0))
 rand(rng, d)
 # output
-(-0.04720666913240939, 0.0)
+(-0.11703892844248372, 0.0)
 ```
 Here, `rng` is the random number generator. When `rand(rng, d)` is called, the sampling function, `rng -> (-0.2*rand(rng), 0.0)`, is called to generate a state.  The sampling function uses `rng` to generate a random number between 0 and 1 (`rand(rng)`), multiplies it by -0.2 to get the position, and creates a tuple with the position and a velocity of `0.0` and returns an initial state that might be, for instance `(-0.11, 0.0)`. Any time that a solver, belief updater, or simulator needs an initial state for the problem, it will be sampled in this way.
 
