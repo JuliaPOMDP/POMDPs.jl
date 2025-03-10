@@ -16,7 +16,17 @@ The list of solver and support packages maintained by the [JuliaPOMDP](https://g
 
 ## Documentation Outline
 
-Documentation comes in three forms:
-1. An explanatory guide is available in the sections outlined below.
-2. How-to examples are available throughout this documentation with specicic examples in [Examples](@ref examples_section) and [Gallery of POMDPs.jl Problems](@ref).
-3. Reference docstrings for the entire POMDPs.jl interface are available in the [API Documentation](@ref) section.
+The documentation is organized into three sections:
+
+1.	Examples and Tutorials--Practical, step-by-step demonstrations are provided in the [Examples](@ref examples_section) and the [Gallery of POMDPs.jl Problems](@ref), illustrating common workflows and use cases.
+
+2.	API Reference--Complete technical documentation of all interface functions, types, and methods in POMDPs.jl can be found in the [API Documentation](@ref).
+
+
+3.	Explanatory Guide--Conceptual explanations of POMDPs.jl, including how to define problems, solve them using provided solvers, and simulate results. See the detailed sections listed below.
+
+
+```@contents
+Pages = reduce(vcat, map(last, Main.page_order))
+Depth = 3
+```

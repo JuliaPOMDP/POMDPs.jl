@@ -51,31 +51,6 @@ page_order = [
     ]
 ]
 
-# Append the @contents blocks to the index.md file
-index_md_file = joinpath(@__DIR__, "src", "index.md")
-
-# Copy original index.md to restore it after the build
-original_index_md_file = joinpath(@__DIR__, "src", "original_index.md")
-cp(index_md_file, original_index_md_file)
-
-open(index_md_file, "a") do f
-    write(f, "\n\n")
-    # Loop over the sections and generate a @contents block for each.
-    for (section, pages) in page_order
-        if section isa String && pages isa Vector{String}  # Only sections with pages
-            write(f, "### $(section)\n\n")
-            write(f, "```@contents\n")
-            write(f, "Pages = $(pages)\n")
-            if section == "Defining (PO)MDP Models"
-                write(f, "Depth = 3\n")
-            else
-                write(f, "Depth = 2\n")
-            end
-            write(f, "```\n\n")
-        end
-    end
-end
-
 makedocs(
     modules = [POMDPs, POMDPTools],
     format = Documenter.HTML(),
@@ -88,8 +63,3 @@ deploydocs(
     repo = "github.com/JuliaPOMDP/POMDPs.jl.git",
     push_preview=true
 )
-
-# Restore the original index.md file
-if isfile(original_index_md_file)
-    mv(original_index_md_file, index_md_file, force=true)
-end
