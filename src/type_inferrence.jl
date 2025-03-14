@@ -21,7 +21,7 @@ statetype(p::Union{POMDP,MDP}) = statetype(typeof(p))
     actiontype(t::Type)
     actiontype(p::Union{POMDP,MDP})
 
-Return the state type for a problem type (the `S` in `POMDP{S,A,O}`).
+Return the action type for a problem type (the `A` in `POMDP{S,A,O}`).
 
 ```
 type A <: POMDP{Bool, Int, Bool} end
@@ -38,7 +38,7 @@ actiontype(p::Union{POMDP,MDP}) = actiontype(typeof(p))
 """
     obstype(t::Type)
 
-Return the state type for a problem type (the `S` in `POMDP{S,A,O}`).
+Return the observation type for a problem type (the `O` in `POMDP{S,A,O}`).
 
 ```
 type A <: POMDP{Bool, Bool, Int} end
