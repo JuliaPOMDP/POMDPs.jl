@@ -40,7 +40,7 @@ Return the entire observation space.
 function observations end
 
 """
-    observations{S,A,O}(problem::POMDP{S,A,O}, state::S)
+    observations(problem::POMDP{S,A,O}, state::S)
 
 Return the observation space accessible from the given state and returns it.
 """
