@@ -16,53 +16,17 @@ The list of solver and support packages maintained by the [JuliaPOMDP](https://g
 
 ## Documentation Outline
 
-Documentation comes in three forms:
-1. An explanatory guide is available in the sections outlined below.
-2. How-to examples are available throughout this documentation with specicic examples in [Examples](@ref examples_section) and [Gallery of POMDPs.jl Problems](@ref).
-3. Reference docstrings for the entire POMDPs.jl interface are available in the [API Documentation](@ref) section.
+The documentation is organized into three sections:
 
-!!! note
-    When updating these documents, make sure this is synced with [docs/make.jl](https://github.com/JuliaPOMDP/POMDPs.jl/blob/master/docs/make.jl)!!
+1.	Examples and Tutorials--Practical, step-by-step demonstrations are provided in the [Examples](@ref examples_section) and the [Gallery of POMDPs.jl Problems](@ref), illustrating common workflows and use cases.
 
-### Basics
+2.	API Reference--Complete technical documentation of all interface functions, types, and methods in POMDPs.jl can be found in the [API Documentation](@ref).
 
-```@contents
-Pages = ["install.md", "get_started.md", "concepts.md"]
-```
 
-### Defining POMDP Models
+3.	Explanatory Guide--Conceptual explanations of POMDPs.jl, including how to define problems, solve them using provided solvers, and simulate results. See the detailed sections listed below.
+
 
 ```@contents
-Pages = [ "def_pomdp.md", "interfaces.md"]
+Pages = reduce(vcat, map(last, Main.page_order))
 Depth = 3
-```
-
-### Writing Solvers and Updaters
-
-```@contents
-Pages = [ "def_solver.md", "offline_solver.md", "online_solver.md", "def_updater.md" ]
-```
-
-### Analyzing Results
-
-```@contents
-Pages = [ "simulation.md", "run_simulation.md", "policy_interaction.md" ]
-```
-
-### Examples and Gallery
-
-```@contents
-Pages = [ "examples.md", "example_defining_problems.md", "example_solvers.md", "example_simulations.md", "example_gridworld_mdp.md", "gallery.md"]
-```
-
-### POMDPTools - the standard library for POMDPs.jl
-
-```@contents
-Pages = ["POMDPTools/index.md", "POMDPTools/distributions.md", "POMDPTools/model.md", "POMDPTools/visualization.md", "POMDPTools/beliefs.md", "POMDPTools/policies.md", "POMDPTools/simulators.md", "POMDPTools/common_rl.md", "POMDPTools/testing.md"]
-```
-
-### Reference
-
-```@contents
-Pages = ["faq.md", "api.md"]
 ```
