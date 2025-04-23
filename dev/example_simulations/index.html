@@ -16,39 +16,39 @@ for (b, s, a, o, r) in stepthrough(quick_crying_baby_pomdp, policy, DiscreteUpda
 end</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">Step 1
 b = sated =&gt; 1.0, hungry =&gt; 0.0
 s = :sated
-a = :ignore
+a = :feed
 o = :quiet
-r = 0.0
-r_sum = 0.0
+r = -5.0
+r_sum = -5.0
 
 Step 2
-b = sated =&gt; 0.9759036144578314, hungry =&gt; 0.024096385542168676
+b = sated =&gt; 1.0, hungry =&gt; 0.0
 s = :sated
-a = :ignore
+a = :feed
 o = :quiet
-r = 0.0
-r_sum = 0.0
+r = -5.0
+r_sum = -10.0
 
 Step 3
-b = sated =&gt; 0.9701315984030756, hungry =&gt; 0.029868401596924443
+b = sated =&gt; 1.0, hungry =&gt; 0.0
 s = :sated
-a = :sing
+a = :feed
 o = :quiet
-r = -0.5
-r_sum = -0.5
+r = -5.0
+r_sum = -15.0
 
 Step 4
-b = sated =&gt; 0.9856761552470408, hungry =&gt; 0.014323844752959168
+b = sated =&gt; 1.0, hungry =&gt; 0.0
 s = :sated
 a = :ignore
 o = :quiet
 r = 0.0
-r_sum = -0.5</code></pre><h2 id="Rollout-Simulations"><a class="docs-heading-anchor" href="#Rollout-Simulations">Rollout Simulations</a><a id="Rollout-Simulations-1"></a><a class="docs-heading-anchor-permalink" href="#Rollout-Simulations" title="Permalink"></a></h2><p>While stepthrough is a flexible and convenient tool for many user-facing demonstrations, it is often less error-prone to use the standard simulate function with a <code>Simulator</code> object. The simplest Simulator is the <code>RolloutSimulator</code>. It simply runs a simulation and returns the discounted reward. </p><pre><code class="language-julia hljs">policy = RandomPolicy(explicit_crying_baby_pomdp)
+r_sum = -15.0</code></pre><h2 id="Rollout-Simulations"><a class="docs-heading-anchor" href="#Rollout-Simulations">Rollout Simulations</a><a id="Rollout-Simulations-1"></a><a class="docs-heading-anchor-permalink" href="#Rollout-Simulations" title="Permalink"></a></h2><p>While stepthrough is a flexible and convenient tool for many user-facing demonstrations, it is often less error-prone to use the standard simulate function with a <code>Simulator</code> object. The simplest Simulator is the <code>RolloutSimulator</code>. It simply runs a simulation and returns the discounted reward. </p><pre><code class="language-julia hljs">policy = RandomPolicy(explicit_crying_baby_pomdp)
 sim = RolloutSimulator(max_steps=10)
 r_sum = simulate(sim, explicit_crying_baby_pomdp, policy)
-println(&quot;Total discounted reward: $r_sum&quot;)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">Total discounted reward: -42.58379439000001</code></pre><h2 id="Recording-Histories"><a class="docs-heading-anchor" href="#Recording-Histories">Recording Histories</a><a id="Recording-Histories-1"></a><a class="docs-heading-anchor-permalink" href="#Recording-Histories" title="Permalink"></a></h2><p>Sometimes it is important to record the entire history of a simulation for further examination. This can be accomplished with a <code>HistoryRecorder</code>.</p><pre><code class="language-julia hljs">policy = RandomPolicy(tabular_crying_baby_pomdp)
+println(&quot;Total discounted reward: $r_sum&quot;)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">Total discounted reward: -46.16597799500001</code></pre><h2 id="Recording-Histories"><a class="docs-heading-anchor" href="#Recording-Histories">Recording Histories</a><a id="Recording-Histories-1"></a><a class="docs-heading-anchor-permalink" href="#Recording-Histories" title="Permalink"></a></h2><p>Sometimes it is important to record the entire history of a simulation for further examination. This can be accomplished with a <code>HistoryRecorder</code>.</p><pre><code class="language-julia hljs">policy = RandomPolicy(tabular_crying_baby_pomdp)
 hr = HistoryRecorder(max_steps=5)
-history = simulate(hr, tabular_crying_baby_pomdp, policy, DiscreteUpdater(tabular_crying_baby_pomdp), Deterministic(1))</code></pre><p>The history object produced by a <code>HistoryRecorder</code> is a <code>SimHistory</code>, documented in the POMDPTools simulator section <a href="../POMDPTools/simulators/#Histories">Histories</a>. The information in this object can be accessed in several ways. For example, there is a function:</p><pre><code class="language-julia hljs">discounted_reward(history)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">-4.050000000000001</code></pre><p>Accessor functions like <code>state_hist</code> and <code>action_hist</code> can also be used to access parts of the history:</p><pre><code class="language-julia hljs">state_hist(history)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">6-element Vector{Int64}:
+history = simulate(hr, tabular_crying_baby_pomdp, policy, DiscreteUpdater(tabular_crying_baby_pomdp), Deterministic(1))</code></pre><p>The history object produced by a <code>HistoryRecorder</code> is a <code>SimHistory</code>, documented in the POMDPTools simulator section <a href="../POMDPTools/simulators/#Histories">Histories</a>. The information in this object can be accessed in several ways. For example, there is a function:</p><pre><code class="language-julia hljs">discounted_reward(history)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">-8.55</code></pre><p>Accessor functions like <code>state_hist</code> and <code>action_hist</code> can also be used to access parts of the history:</p><pre><code class="language-julia hljs">state_hist(history)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">6-element Vector{Int64}:
  1
  1
  1
@@ -56,10 +56,10 @@ history = simulate(hr, tabular_crying_baby_pomdp, policy, DiscreteUpdater(tabula
  1
  1</code></pre><pre><code class="language-julia hljs">collect(action_hist(history))</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">5-element Vector{Int64}:
  3
- 3
+ 1
  2
- 2
- 1</code></pre><p>Keeping track of which states, actions, and observations belong together can be tricky (for example, since there is a starting state, and ending state, but no action is taken from the ending state, the list of actions has a different length than the list of states). It is often better to think of histories in terms of steps that include both starting and ending states.</p><p>The most powerful function for accessing the information in a <code>SimHistory</code> is the <code>eachstep</code> function which returns an iterator through named tuples representing each step in the history. The <code>eachstep</code> function is similar to the <code>stepthrough</code> function above except that it iterates through the immutable steps of a previously simulated history instead of conducting the simulation as the for loop is being carried out.</p><pre><code class="language-julia hljs">r_sum = 0.0
+ 1
+ 3</code></pre><p>Keeping track of which states, actions, and observations belong together can be tricky (for example, since there is a starting state, and ending state, but no action is taken from the ending state, the list of actions has a different length than the list of states). It is often better to think of histories in terms of steps that include both starting and ending states.</p><p>The most powerful function for accessing the information in a <code>SimHistory</code> is the <code>eachstep</code> function which returns an iterator through named tuples representing each step in the history. The <code>eachstep</code> function is similar to the <code>stepthrough</code> function above except that it iterates through the immutable steps of a previously simulated history instead of conducting the simulation as the for loop is being carried out.</p><pre><code class="language-julia hljs">r_sum = 0.0
 step = 0
 for step_i in eachstep(sim_history, &quot;b,s,a,o,r&quot;)
     step += 1
@@ -84,34 +84,34 @@ r_sum = 0.0
 Step 2
 step_i.b = sated =&gt; 0.9759036144578314, hungry =&gt; 0.024096385542168676
 step_i.s = 1
-step_i.a = 3
+step_i.a = 1
 step_i.o = 2
-step_i.r = 0.0
-r_sum = 0.0
+step_i.r = -5.0
+r_sum = -5.0
 
 Step 3
-step_i.b = sated =&gt; 0.9701315984030756, hungry =&gt; 0.029868401596924443
+step_i.b = sated =&gt; 1.0, hungry =&gt; 0.0
 step_i.s = 1
 step_i.a = 2
 step_i.o = 2
 step_i.r = -0.5
-r_sum = -0.5
+r_sum = -5.5
 
 Step 4
-step_i.b = sated =&gt; 0.9856761552470408, hungry =&gt; 0.014323844752959168
-step_i.s = 1
-step_i.a = 2
-step_i.o = 2
-step_i.r = -0.5
-r_sum = -1.0
-
-Step 5
-step_i.b = sated =&gt; 0.987434132782365, hungry =&gt; 0.012565867217634951
+step_i.b = sated =&gt; 0.989010989010989, hungry =&gt; 0.010989010989010992
 step_i.s = 1
 step_i.a = 1
 step_i.o = 2
 step_i.r = -5.0
-r_sum = -6.0</code></pre><h2 id="Parallel-Simulations"><a class="docs-heading-anchor" href="#Parallel-Simulations">Parallel Simulations</a><a id="Parallel-Simulations-1"></a><a class="docs-heading-anchor-permalink" href="#Parallel-Simulations" title="Permalink"></a></h2><p>It is often useful to evaluate a policy by running many simulations. The parallel simulator is the most effective tool for this. To use the parallel simulator, first create a list of <code>Sim</code> objects, each of which contains all of the information needed to run a simulation. Then then run the simulations using <code>run_parallel</code>, which will return a <code>DataFrame</code> with the results.</p><p>In this example, we will compare the performance of the policies we computed in the <a href="../example_solvers/#Using-Different-Solvers">Using Different Solvers</a> section (i.e. <code>sarsop_policy</code>, <code>pomcp_planner</code>, and <code>heuristic_policy</code>). To evaluate the policies, we will run 100 simulations for each policy. We can do this by adding 100 <code>Sim</code> objects of each policy to the list.</p><pre><code class="language-julia hljs">using DataFrames
+r_sum = -10.5
+
+Step 5
+step_i.b = sated =&gt; 1.0, hungry =&gt; 0.0
+step_i.s = 1
+step_i.a = 3
+step_i.o = 2
+step_i.r = 0.0
+r_sum = -10.5</code></pre><h2 id="Parallel-Simulations"><a class="docs-heading-anchor" href="#Parallel-Simulations">Parallel Simulations</a><a id="Parallel-Simulations-1"></a><a class="docs-heading-anchor-permalink" href="#Parallel-Simulations" title="Permalink"></a></h2><p>It is often useful to evaluate a policy by running many simulations. The parallel simulator is the most effective tool for this. To use the parallel simulator, first create a list of <code>Sim</code> objects, each of which contains all of the information needed to run a simulation. Then then run the simulations using <code>run_parallel</code>, which will return a <code>DataFrame</code> with the results.</p><p>In this example, we will compare the performance of the policies we computed in the <a href="../example_solvers/#Using-Different-Solvers">Using Different Solvers</a> section (i.e. <code>sarsop_policy</code>, <code>pomcp_planner</code>, and <code>heuristic_policy</code>). To evaluate the policies, we will run 100 simulations for each policy. We can do this by adding 100 <code>Sim</code> objects of each policy to the list.</p><pre><code class="language-julia hljs">using DataFrames
 using StatsBase: std
 
 # Defining paramters for the simulations
@@ -178,4 +178,4 @@ end
 
 # Calculate the mean and confidence interval for each policy
 grouped_df = groupby(data, :policy)
-result = combine(grouped_df, :reward =&gt; mean_and_ci =&gt; AsTable)</code></pre><div><div style = "float: left;"><span>4×3 DataFrame</span></div><div style = "clear: both;"></div></div><div class = "data-frame" style = "overflow-x: scroll;"><table class = "data-frame" style = "margin-bottom: 6px;"><thead><tr class = "header"><th class = "rowNumber" style = "font-weight: bold; text-align: right;">Row</th><th style = "text-align: left;">policy</th><th style = "text-align: left;">mean</th><th style = "text-align: left;">ci</th></tr><tr class = "subheader headerLastRow"><th class = "rowNumber" style = "font-weight: bold; text-align: right;"></th><th title = "Union{Missing, String}" style = "text-align: left;">String?</th><th title = "Float64" style = "text-align: left;">Float64</th><th title = "Float64" style = "text-align: left;">Float64</th></tr></thead><tbody><tr><td class = "rowNumber" style = "font-weight: bold; text-align: right;">1</td><td style = "text-align: left;">sarsop</td><td style = "text-align: right;">-15.2408</td><td style = "text-align: right;">1.84332</td></tr><tr><td class = "rowNumber" style = "font-weight: bold; text-align: right;">2</td><td style = "text-align: left;">pomcp</td><td style = "text-align: right;">-20.1549</td><td style = "text-align: right;">1.73457</td></tr><tr><td class = "rowNumber" style = "font-weight: bold; text-align: right;">3</td><td style = "text-align: left;">heuristic</td><td style = "text-align: right;">-16.2165</td><td style = "text-align: right;">2.05487</td></tr><tr><td class = "rowNumber" style = "font-weight: bold; text-align: right;">4</td><td style = "text-align: left;">random</td><td style = "text-align: right;">-28.1802</td><td style = "text-align: right;">2.5492</td></tr></tbody></table></div><p>By default, the parallel simulator only returns the reward from each simulation, but more information can be gathered by specifying a function to analyze the <code>Sim</code>-history pair and record additional statistics. Reference the POMDPTools simulator section for more information (<a href="../POMDPTools/simulators/#Specifying-information-to-be-recorded">Specifying information to be recorded</a>).</p></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../example_solvers/">« Using Different Solvers</a><a class="docs-footer-nextpage" href="../example_gridworld_mdp/">GridWorld MDP Tutorial »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="auto">Automatic (OS)</option><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option><option value="catppuccin-latte">catppuccin-latte</option><option value="catppuccin-frappe">catppuccin-frappe</option><option value="catppuccin-macchiato">catppuccin-macchiato</option><option value="catppuccin-mocha">catppuccin-mocha</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 1.10.1 on <span class="colophon-date" title="Wednesday 23 April 2025 01:24">Wednesday 23 April 2025</span>. Using Julia version 1.11.5.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
+result = combine(grouped_df, :reward =&gt; mean_and_ci =&gt; AsTable)</code></pre><div><div style = "float: left;"><span>4×3 DataFrame</span></div><div style = "clear: both;"></div></div><div class = "data-frame" style = "overflow-x: scroll;"><table class = "data-frame" style = "margin-bottom: 6px;"><thead><tr class = "header"><th class = "rowNumber" style = "font-weight: bold; text-align: right;">Row</th><th style = "text-align: left;">policy</th><th style = "text-align: left;">mean</th><th style = "text-align: left;">ci</th></tr><tr class = "subheader headerLastRow"><th class = "rowNumber" style = "font-weight: bold; text-align: right;"></th><th title = "Union{Missing, String}" style = "text-align: left;">String?</th><th title = "Float64" style = "text-align: left;">Float64</th><th title = "Float64" style = "text-align: left;">Float64</th></tr></thead><tbody><tr><td class = "rowNumber" style = "font-weight: bold; text-align: right;">1</td><td style = "text-align: left;">sarsop</td><td style = "text-align: right;">-15.2408</td><td style = "text-align: right;">1.84332</td></tr><tr><td class = "rowNumber" style = "font-weight: bold; text-align: right;">2</td><td style = "text-align: left;">pomcp</td><td style = "text-align: right;">-20.1549</td><td style = "text-align: right;">1.73457</td></tr><tr><td class = "rowNumber" style = "font-weight: bold; text-align: right;">3</td><td style = "text-align: left;">heuristic</td><td style = "text-align: right;">-16.7058</td><td style = "text-align: right;">2.03583</td></tr><tr><td class = "rowNumber" style = "font-weight: bold; text-align: right;">4</td><td style = "text-align: left;">random</td><td style = "text-align: right;">-28.1802</td><td style = "text-align: right;">2.5492</td></tr></tbody></table></div><p>By default, the parallel simulator only returns the reward from each simulation, but more information can be gathered by specifying a function to analyze the <code>Sim</code>-history pair and record additional statistics. Reference the POMDPTools simulator section for more information (<a href="../POMDPTools/simulators/#Specifying-information-to-be-recorded">Specifying information to be recorded</a>).</p></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../example_solvers/">« Using Different Solvers</a><a class="docs-footer-nextpage" href="../example_gridworld_mdp/">GridWorld MDP Tutorial »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="auto">Automatic (OS)</option><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option><option value="catppuccin-latte">catppuccin-latte</option><option value="catppuccin-frappe">catppuccin-frappe</option><option value="catppuccin-macchiato">catppuccin-macchiato</option><option value="catppuccin-mocha">catppuccin-mocha</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 1.10.1 on <span class="colophon-date" title="Wednesday 23 April 2025 01:26">Wednesday 23 April 2025</span>. Using Julia version 1.11.5.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
