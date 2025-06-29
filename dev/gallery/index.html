@@ -114,7 +114,30 @@ policy = solve(solver, pomdp)
 sim = GifSimulator(; filename=&quot;examples/DroneSurveillance.gif&quot;, max_steps=30, rng=MersenneTwister(1), show_progress=false)
 saved_gif = simulate(sim, pomdp, policy)
 
-println(&quot;gif saved to: $(saved_gif.filename)&quot;)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">gif saved to: examples/DroneSurveillance.gif</code></pre><h2 id="[QuickMountainCar](https://github.com/JuliaPOMDP/QuickPOMDPs.jl)"><a class="docs-heading-anchor" href="#[QuickMountainCar](https://github.com/JuliaPOMDP/QuickPOMDPs.jl)"><a href="https://github.com/JuliaPOMDP/QuickPOMDPs.jl">QuickMountainCar</a></a><a id="[QuickMountainCar](https://github.com/JuliaPOMDP/QuickPOMDPs.jl)-1"></a><a class="docs-heading-anchor-permalink" href="#[QuickMountainCar](https://github.com/JuliaPOMDP/QuickPOMDPs.jl)" title="Permalink"></a></h2><p>An implementation of the classic Mountain Car RL problem using the QuickPOMDPs interface.</p><p><img src="../examples/QuickMountainCar.gif" alt="QuickMountainCar"/></p><pre><code class="language-julia hljs">using POMDPs
+println(&quot;gif saved to: $(saved_gif.filename)&quot;)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">--------------------------------------------------------------------------------------
+ Time       Iter       LB           UB           Precision       # Alphas   # Beliefs
+--------------------------------------------------------------------------------------
+ 0.00       0          9.7042745    12.4486101   2.7443356304    9          8
+ 0.01       10         10.9207149   11.9971382   1.0764233328    51         46
+ 0.02       20         11.1230725   11.8670021   0.7439295662    101        86
+ 0.06       30         11.2616451   11.8079791   0.5463340197    191        181
+ 0.10       40         11.3791507   11.7381048   0.3589541556    270        257
+ 0.15       50         11.4096312   11.7066989   0.2970677360    318        284
+ 0.21       60         11.4166071   11.6833399   0.2667328242    359        315
+ 0.30       70         11.4349222   11.6471348   0.2122126207    456        392
+ 0.41       80         11.4446978   11.6303482   0.1856503192    524        448
+ 0.49       90         11.4446978   11.6188803   0.1741824517    546        463
+ 0.61       100        11.4657690   11.6123440   0.1465750546    592        488
+ 0.76       110        11.4708251   11.6070567   0.1362315879    668        536
+ 0.95       120        11.4752201   11.6033048   0.1280846619    741        584
+ 1.21       130        11.4799698   11.6023547   0.1223848745    820        637
+ 1.44       140        11.4801262   11.5999048   0.1197785490    878        680
+ 1.73       150        11.4810456   11.5970656   0.1160200702    953        725
+ 2.06       160        11.4851627   11.5895910   0.1044283213    1036       775
+--------------------------------------------------------------------------------------
+ 2.26       166        11.4941667   11.5872541   0.0930873413    1098       838
+--------------------------------------------------------------------------------------
+gif saved to: examples/DroneSurveillance.gif</code></pre><h2 id="[QuickMountainCar](https://github.com/JuliaPOMDP/QuickPOMDPs.jl)"><a class="docs-heading-anchor" href="#[QuickMountainCar](https://github.com/JuliaPOMDP/QuickPOMDPs.jl)"><a href="https://github.com/JuliaPOMDP/QuickPOMDPs.jl">QuickMountainCar</a></a><a id="[QuickMountainCar](https://github.com/JuliaPOMDP/QuickPOMDPs.jl)-1"></a><a class="docs-heading-anchor-permalink" href="#[QuickMountainCar](https://github.com/JuliaPOMDP/QuickPOMDPs.jl)" title="Permalink"></a></h2><p>An implementation of the classic Mountain Car RL problem using the QuickPOMDPs interface.</p><p><img src="../examples/QuickMountainCar.gif" alt="QuickMountainCar"/></p><pre><code class="language-julia hljs">using POMDPs
 using POMDPTools
 using POMDPGifs
 using Random
@@ -174,7 +197,117 @@ policy = solve(solver, pomdp)
 sim = GifSimulator(; filename=&quot;examples/RockSample.gif&quot;, max_steps=30, rng=MersenneTwister(1), show_progress=false)
 saved_gif = simulate(sim, pomdp, policy)
 
-println(&quot;gif saved to: $(saved_gif.filename)&quot;)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">gif saved to: examples/RockSample.gif</code></pre><h2 id="[TagPOMDPProblem](https://github.com/JuliaPOMDP/TagPOMDPProblem.jl)"><a class="docs-heading-anchor" href="#[TagPOMDPProblem](https://github.com/JuliaPOMDP/TagPOMDPProblem.jl)"><a href="https://github.com/JuliaPOMDP/TagPOMDPProblem.jl">TagPOMDPProblem</a></a><a id="[TagPOMDPProblem](https://github.com/JuliaPOMDP/TagPOMDPProblem.jl)-1"></a><a class="docs-heading-anchor-permalink" href="#[TagPOMDPProblem](https://github.com/JuliaPOMDP/TagPOMDPProblem.jl)" title="Permalink"></a></h2><p>The Tag problem from J. Pineau, G. Gordon, and S. Thrun, &quot;Point-based value iteration: An anytime algorithm for POMDPs&quot;, International Joint Conference on Artificial Intelligence (IJCAI), 2003.</p><p>The orange agent is the pursuer and the red agent is the evader. The pursuer must &quot;tag&quot; the evader by being in the same grid cell as the evader. However, the pursuer can only see the evader if it is in the same grid cell as the evader. The evader moves stochastically &quot;away&quot; from the pursuer.</p><p><img src="../examples/TagPOMDP.gif" alt="TagPOMDPProblem"/></p><pre><code class="language-julia hljs">using POMDPs
+println(&quot;gif saved to: $(saved_gif.filename)&quot;)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">--------------------------------------------------------------------------------------
+ Time       Iter       LB           UB           Precision       # Alphas   # Beliefs
+--------------------------------------------------------------------------------------
+ 0.00       0          18.2477082   29.6423065   11.3945982874   11         11
+ 0.00       10         23.9296069   28.1601912   4.2305843116    69         79
+ 0.01       20         25.1435565   28.0189628   2.8754063150    119        136
+ 0.02       30         25.1435565   27.9475650   2.8040085611    152        177
+ 0.03       40         25.1435565   27.5046404   2.3610839780    181        218
+ 0.05       50         25.4618449   27.3742365   1.9123916348    218        255
+ 0.08       60         25.9607969   27.2672035   1.3064066269    251        269
+ 0.10       70         25.9607969   27.1317088   1.1709119384    273        315
+ 0.13       80         25.9607969   27.0715707   1.1107737893    280        349
+ 0.16       90         25.9607969   27.0343223   1.0735254158    288        389
+ 0.20       100        25.9607969   26.9902894   1.0294924937    307        430
+ 0.23       110        25.9607969   26.9659572   1.0051603558    314        461
+ 0.28       120        25.9607969   26.9497624   0.9889655520    337        505
+ 0.32       130        25.9607969   26.9167900   0.9559931179    346        536
+ 0.36       140        25.9607969   26.8782904   0.9174935656    357        579
+ 0.41       150        25.9607969   26.8575556   0.8967587175    362        608
+ 0.46       160        25.9616168   26.8330945   0.8714777506    371        637
+ 0.51       170        25.9616168   26.9308987   0.9692819320    382        665
+ 0.56       180        25.9616168   26.7815047   0.8198879616    383        689
+ 0.61       190        25.9616168   26.7544134   0.7927966625    390        722
+ 0.66       200        25.9616168   26.7181721   0.7565552991    406        754
+ 0.72       210        25.9616168   26.7025211   0.7409043588    417        775
+ 0.78       220        25.9616168   26.6857506   0.7241338720    422        803
+ 0.84       230        25.9616168   26.6735145   0.7118977510    432        821
+ 0.90       240        25.9616168   26.6531028   0.6914860219    437        847
+ 0.95       250        25.9616168   26.6173876   0.6557708318    438        863
+ 1.03       260        25.9616168   26.5962686   0.6346517844    455        897
+ 1.10       270        25.9616168   26.5819480   0.6203312043    463        932
+ 1.18       280        25.9616168   26.5699813   0.6083645528    468        968
+ 1.26       290        25.9616168   26.5552251   0.5936082978    472        994
+ 1.32       300        25.9616168   26.5359846   0.5743677981    472        1005
+ 1.38       310        25.9616168   26.5204906   0.5588738345    472        1017
+ 1.49       320        25.9616168   26.4773498   0.5157330615    480        1040
+ 1.56       330        25.9616168   26.4730569   0.5114401174    493        1066
+ 1.67       340        25.9616168   26.4564137   0.4947969372    505        1105
+ 1.77       350        25.9616168   26.4416154   0.4799986208    515        1143
+ 1.88       360        25.9616168   26.4315766   0.4699597923    519        1189
+ 1.97       370        25.9616168   26.4199881   0.4583713745    520        1220
+ 2.08       380        25.9616168   26.4132791   0.4516623163    530        1258
+ 2.17       390        25.9616168   26.4059680   0.4443512053    534        1281
+ 2.25       400        25.9616168   26.3921766   0.4305598077    534        1304
+ 2.33       410        25.9616168   26.3796869   0.4180701102    538        1317
+ 2.42       420        25.9616168   26.3683353   0.4067185047    538        1329
+ 2.51       430        25.9616168   26.3627409   0.4011241335    539        1339
+ 2.62       440        25.9616168   26.3438955   0.3822787052    544        1376
+ 2.74       450        25.9616168   26.3355429   0.3739261528    553        1403
+ 2.83       460        25.9616168   26.3257463   0.3641295158    555        1423
+ 2.96       470        25.9616168   26.3108574   0.3492405857    560        1457
+ 3.06       480        25.9616168   26.3048655   0.3432486844    565        1487
+ 3.15       490        25.9616168   26.2985501   0.3369333525    565        1495
+ 3.26       500        25.9616168   26.2868872   0.3252704228    568        1521
+ 3.36       510        25.9616168   26.2804075   0.3187907682    568        1538
+ 3.46       520        25.9616168   26.2698051   0.3081882978    568        1556
+ 3.57       530        25.9616168   26.2630297   0.3014129272    569        1574
+ 3.68       540        25.9616168   26.2559261   0.2943093512    571        1603
+ 3.78       550        25.9616168   26.2501756   0.2885588087    571        1614
+ 3.88       560        25.9616168   26.2370356   0.2754187882    571        1627
+ 3.97       570        25.9616168   26.2311225   0.2695057519    571        1639
+ 4.08       580        25.9616168   26.2194049   0.2577880879    574        1665
+ 4.18       590        25.9616168   26.2135635   0.2519467202    574        1680
+ 4.29       600        25.9616168   26.2030700   0.2414531921    576        1702
+ 4.39       610        25.9616168   26.2022599   0.2406431012    582        1704
+ 4.50       620        25.9616168   26.1997890   0.2381722081    582        1700
+ 4.61       630        25.9616168   26.1912145   0.2295977535    588        1716
+ 4.74       640        25.9616168   26.1847997   0.2231829517    590        1738
+ 4.86       650        25.9616168   26.1798547   0.2182379359    595        1761
+ 4.98       660        25.9616168   26.1783158   0.2166990744    595        1774
+ 5.12       670        25.9616168   26.1766280   0.2150112790    600        1797
+ 5.24       680        25.9616168   26.1729652   0.2113483893    602        1812
+ 5.39       690        25.9616168   26.1696818   0.2080649967    603        1824
+ 5.51       700        25.9616168   26.1639429   0.2023261530    604        1841
+ 5.63       710        25.9616168   26.1610105   0.1993937236    604        1856
+ 5.75       720        25.9616168   26.1556030   0.1939862312    610        1874
+ 5.87       730        25.9616168   26.1509627   0.1893459565    611        1884
+ 6.01       740        25.9616168   26.1463213   0.1847044965    612        1906
+ 6.16       750        25.9616168   26.1430052   0.1813883904    616        1934
+ 6.28       760        25.9616168   26.1406246   0.1790078632    617        1944
+ 6.40       770        25.9616168   26.1336634   0.1720465960    617        1959
+ 6.53       780        25.9616168   26.1308226   0.1692058152    622        1972
+ 6.65       790        25.9616168   26.1287354   0.1671186112    622        1979
+ 6.80       800        25.9616168   26.1242965   0.1626797076    623        1996
+ 6.94       810        25.9616168   26.1193038   0.1576870734    627        2018
+ 7.07       820        25.9616168   26.1179779   0.1563611808    633        2037
+ 7.20       830        25.9616168   26.1158089   0.1541921468    636        2048
+ 7.33       840        25.9616168   26.1137114   0.1520946061    639        2061
+ 7.46       850        25.9616168   26.1107051   0.1490883666    643        2076
+ 7.60       860        25.9616168   26.1074884   0.1458716493    646        2092
+ 7.74       870        25.9616168   26.1054510   0.1438342617    647        2109
+ 7.86       880        25.9616168   26.1016949   0.1400781639    647        2114
+ 8.00       890        25.9616168   26.1005447   0.1389279602    648        2118
+ 8.15       900        25.9616168   26.0949679   0.1333511272    648        2133
+ 8.29       910        25.9616168   26.0911673   0.1295505284    648        2144
+ 8.43       920        25.9616168   26.0854636   0.1238468470    648        2156
+ 8.56       930        25.9616168   26.0818054   0.1201886334    649        2164
+ 8.69       940        25.9616168   26.0756139   0.1139970988    649        2172
+ 8.84       950        25.9616168   26.0733820   0.1117652302    649        2185
+ 8.97       960        25.9616168   26.0698075   0.1081906918    649        2190
+ 9.11       970        25.9616168   26.0676768   0.1060600389    649        2196
+ 9.25       980        25.9616168   26.0635443   0.1019274854    653        2203
+ 9.38       990        25.9616168   26.0610326   0.0994158275    653        2210
+ 9.52       1000       25.9616168   26.0585671   0.0969502884    653        2217
+ 9.65       1010       25.9616168   26.0562957   0.0946788824    653        2228
+ 9.79       1020       25.9616168   26.0533836   0.0917668671    653        2241
+ 9.91       1030       25.9616168   26.0512458   0.0896290437    653        2246
+--------------------------------------------------------------------------------------
+ 10.01      1038       25.9616168   26.0499451   0.0883283290    653        2248
+--------------------------------------------------------------------------------------
+gif saved to: examples/RockSample.gif</code></pre><h2 id="[TagPOMDPProblem](https://github.com/JuliaPOMDP/TagPOMDPProblem.jl)"><a class="docs-heading-anchor" href="#[TagPOMDPProblem](https://github.com/JuliaPOMDP/TagPOMDPProblem.jl)"><a href="https://github.com/JuliaPOMDP/TagPOMDPProblem.jl">TagPOMDPProblem</a></a><a id="[TagPOMDPProblem](https://github.com/JuliaPOMDP/TagPOMDPProblem.jl)-1"></a><a class="docs-heading-anchor-permalink" href="#[TagPOMDPProblem](https://github.com/JuliaPOMDP/TagPOMDPProblem.jl)" title="Permalink"></a></h2><p>The Tag problem from J. Pineau, G. Gordon, and S. Thrun, &quot;Point-based value iteration: An anytime algorithm for POMDPs&quot;, International Joint Conference on Artificial Intelligence (IJCAI), 2003.</p><p>The orange agent is the pursuer and the red agent is the evader. The pursuer must &quot;tag&quot; the evader by being in the same grid cell as the evader. However, the pursuer can only see the evader if it is in the same grid cell as the evader. The evader moves stochastically &quot;away&quot; from the pursuer.</p><p><img src="../examples/TagPOMDP.gif" alt="TagPOMDPProblem"/></p><pre><code class="language-julia hljs">using POMDPs
 using POMDPTools
 using POMDPGifs
 using NativeSARSOP
@@ -187,4 +320,60 @@ policy = solve(solver, pomdp)
 sim = GifSimulator(; filename=&quot;examples/TagPOMDP.gif&quot;, max_steps=50, rng=MersenneTwister(1), show_progress=false)
 saved_gif = simulate(sim, pomdp, policy)
 
-println(&quot;gif saved to: $(saved_gif.filename)&quot;)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">gif saved to: examples/TagPOMDP.gif</code></pre><h2 id="Adding-New-Gallery-Examples"><a class="docs-heading-anchor" href="#Adding-New-Gallery-Examples">Adding New Gallery Examples</a><a id="Adding-New-Gallery-Examples-1"></a><a class="docs-heading-anchor-permalink" href="#Adding-New-Gallery-Examples" title="Permalink"></a></h2><p>To add new examples, please submit a pull request to the POMDPs.jl repository with changes made to the <code>gallery.md</code> file in <code>docs/src/</code>. Please include the creation of a gif in the code snippet. The gif should be generated during the creation of the documentation using <code>@eval</code> and saved in the <code>docs/src/examples/</code> directory. The gif should be named <code>problem_name.gif</code> where <code>problem_name</code> is the name of the problem. The gif can then be included using <code>![problem_name](examples/problem_name.gif)</code>.</p></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../example_gridworld_mdp/">« GridWorld MDP Tutorial</a><a class="docs-footer-nextpage" href="../POMDPTools/">POMDPTools: the standard library for POMDPs.jl »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="auto">Automatic (OS)</option><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option><option value="catppuccin-latte">catppuccin-latte</option><option value="catppuccin-frappe">catppuccin-frappe</option><option value="catppuccin-macchiato">catppuccin-macchiato</option><option value="catppuccin-mocha">catppuccin-mocha</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 1.13.0 on <span class="colophon-date" title="Tuesday 24 June 2025 20:45">Tuesday 24 June 2025</span>. Using Julia version 1.11.5.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
+println(&quot;gif saved to: $(saved_gif.filename)&quot;)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">--------------------------------------------------------------------------------------
+ Time       Iter       LB           UB           Precision       # Alphas   # Beliefs
+--------------------------------------------------------------------------------------
+ 0.00       0          -19.3713764  -4.6944443   14.6769321680   18         16
+ 0.04       10         -13.3597906  -4.9043894   8.4554011717    69         118
+ 0.10       20         -13.0885683  -4.9951429   8.0934254179    121        207
+ 0.18       30         -12.7546909  -5.0365054   7.7181854349    145        293
+ 0.28       40         -12.2345082  -5.0784041   7.1561040619    168        366
+ 0.40       50         -12.2066146  -5.1055719   7.1010427368    186        436
+ 0.55       60         -12.1787030  -5.1394329   7.0392700968    210        503
+ 0.70       70         -12.1724918  -5.1710357   7.0014560629    214        564
+ 0.88       80         -12.0985627  -5.1905675   6.9079951641    231        622
+ 1.07       90         -12.0790254  -5.2181385   6.8608868586    240        683
+ 1.34       100        -12.0547330  -5.2345755   6.8201574817    245        748
+ 1.58       110        -12.0522939  -5.2565765   6.7957173493    270        811
+ 1.84       120        -12.0464833  -5.2733525   6.7731308157    279        872
+ 2.15       130        -11.9025308  -5.2931276   6.6094031976    317        937
+ 2.45       140        -11.8713043  -5.3108004   6.5605038793    318        994
+ 2.75       150        -11.8633813  -5.3291722   6.5342090631    320        1048
+ 3.06       160        -11.8633813  -5.3469002   6.5164810594    322        1107
+ 3.39       170        -11.8326544  -5.3642403   6.4684140772    333        1163
+ 3.73       180        -11.7740343  -5.3829942   6.3910400565    338        1216
+ 4.08       190        -11.7701722  -5.3939737   6.3761985670    341        1271
+ 4.45       200        -11.7701722  -5.4024525   6.3677197565    341        1321
+ 4.85       210        -11.7520147  -5.4104166   6.3415980692    347        1375
+ 5.24       220        -11.6008912  -5.4201940   6.1806972448    352        1426
+ 5.68       230        -11.5956380  -5.4335326   6.1621053872    354        1476
+ 6.11       240        -11.5882186  -5.4535283   6.1346902796    365        1542
+ 6.55       250        -11.5882186  -5.4710479   6.1171706415    377        1609
+ 7.04       260        -11.5882186  -5.4928026   6.0954159742    381        1671
+ 7.49       270        -11.5882186  -5.5045475   6.0836710432    384        1719
+ 7.95       280        -11.5882186  -5.5110840   6.0771345482    385        1767
+ 8.42       290        -11.5594538  -5.5208795   6.0385743643    389        1816
+ 8.91       300        -11.5330784  -5.5247902   6.0082881821    392        1870
+ 9.40       310        -11.5299159  -5.5316600   5.9982558806    391        1915
+ 9.97       320        -11.5290886  -5.5455061   5.9835824775    396        1972
+ 10.46      330        -11.5290886  -5.5570438   5.9720447337    398        2025
+ 10.97      340        -11.4131909  -5.5755671   5.8376237409    409        2093
+ 11.49      350        -11.3535439  -5.5858986   5.7676452432    417        2149
+ 12.05      360        -11.3363456  -5.6067432   5.7296023726    427        2195
+ 12.58      370        -11.3172236  -5.6233017   5.6939218785    432        2248
+ 13.13      380        -11.3141244  -5.6380871   5.6760372857    439        2305
+ 13.69      390        -11.3115463  -5.6583127   5.6532336664    444        2359
+ 14.26      400        -11.3115463  -5.6700069   5.6415394768    445        2411
+ 14.83      410        -11.3115463  -5.6773722   5.6341741560    446        2458
+ 15.41      420        -11.3115463  -5.6983191   5.6132272328    446        2513
+ 15.99      430        -11.3115463  -5.7064912   5.6050551060    453        2557
+ 16.58      440        -11.3115463  -5.7121988   5.5993475519    454        2606
+ 17.20      450        -11.3115463  -5.7168072   5.5947391734    455        2651
+ 17.82      460        -11.3115463  -5.7232411   5.5883052420    456        2701
+ 18.44      470        -11.3115463  -5.7363414   5.5752049198    457        2751
+ 19.07      480        -11.3115463  -5.7430082   5.5685381952    460        2802
+ 19.70      490        -11.3115463  -5.7496906   5.5618557148    461        2846
+--------------------------------------------------------------------------------------
+ 20.04      496        -11.3115463  -5.7520022   5.5595441127    462        2875
+--------------------------------------------------------------------------------------
+gif saved to: examples/TagPOMDP.gif</code></pre><h2 id="Adding-New-Gallery-Examples"><a class="docs-heading-anchor" href="#Adding-New-Gallery-Examples">Adding New Gallery Examples</a><a id="Adding-New-Gallery-Examples-1"></a><a class="docs-heading-anchor-permalink" href="#Adding-New-Gallery-Examples" title="Permalink"></a></h2><p>To add new examples, please submit a pull request to the POMDPs.jl repository with changes made to the <code>gallery.md</code> file in <code>docs/src/</code>. Please include the creation of a gif in the code snippet. The gif should be generated during the creation of the documentation using <code>@eval</code> and saved in the <code>docs/src/examples/</code> directory. The gif should be named <code>problem_name.gif</code> where <code>problem_name</code> is the name of the problem. The gif can then be included using <code>![problem_name](examples/problem_name.gif)</code>.</p></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../example_gridworld_mdp/">« GridWorld MDP Tutorial</a><a class="docs-footer-nextpage" href="../POMDPTools/">POMDPTools: the standard library for POMDPs.jl »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="auto">Automatic (OS)</option><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option><option value="catppuccin-latte">catppuccin-latte</option><option value="catppuccin-frappe">catppuccin-frappe</option><option value="catppuccin-macchiato">catppuccin-macchiato</option><option value="catppuccin-mocha">catppuccin-mocha</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 1.13.0 on <span class="colophon-date" title="Sunday 29 June 2025 23:43">Sunday 29 June 2025</span>. Using Julia version 1.11.5.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
