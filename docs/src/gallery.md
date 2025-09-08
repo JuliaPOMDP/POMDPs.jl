@@ -8,6 +8,7 @@ Originally, an optional final project for AA228 at Stanford in Fall 2018. A Room
 
 ```@setup EscapeRoomba
 using Pkg
+Pkg.add(name="ParticleFilters", version="0.5.7")
 Pkg.add(url="https://github.com/sisl/RoombaPOMDPs.git")
 ```
 
@@ -88,6 +89,8 @@ function POMDPs.update(up::RoombaParticleFilter, b::ParticleCollection, a, o)
     if all_terminal
         error("Particle filter update error: all states in the particle collection were terminal.")
     end
+
+
     
     # return ParticleFilters.ParticleCollection(deepcopy(pm))
     return ParticleFilters.resample(up.resampler,
@@ -116,6 +119,7 @@ println("gif saved to: $(saved_gif.filename)")
 ```
 
 ```@setup EscapeRoomba
+Pkg.rm("ParticleFilters")
 Pkg.rm("RoombaPOMDPs")
 ```
 
@@ -126,7 +130,7 @@ In this problem, the UAV must go from one corner to the other while avoiding a g
 
 ![DroneSurveillance](examples/DroneSurveillance.gif)
 
-```@example
+```@example DroneSurveillance
 using POMDPs
 using POMDPTools
 using POMDPGifs
@@ -150,7 +154,7 @@ An implementation of the classic Mountain Car RL problem using the QuickPOMDPs i
 
 ![QuickMountainCar](examples/QuickMountainCar.gif)
 
-```@example
+```@example QuickMountainCar
 using POMDPs
 using POMDPTools
 using POMDPGifs
@@ -202,7 +206,7 @@ The robot must navigate and sample good rocks (green) and then arrive at an exit
 
 ![RockSample](examples/RockSample.gif)
 
-```@example
+```@example RockSample
 using POMDPs
 using POMDPTools
 using POMDPGifs
