@@ -170,6 +170,7 @@ Many models have been implemented using the POMDPs.jl interface for various proj
 |-------------------|----------------------|------------------|------------------|--|
 | [TabularTDLearning](https://github.com/JuliaPOMDP/TabularTDLearning.jl) | [![Build Status](https://github.com/JuliaPOMDP/TabularTDLearning.jl/actions/workflows/CI.yml/badge.svg)](https://github.com/JuliaPOMDP/TabularTDLearning.jl) <br> [![Coverage Status](https://codecov.io/gh/JuliaPOMDP/TabularTDLearning.jl/branch/master/graph/badge.svg)](https://codecov.io/gh/JuliaPOMDP/TabularTDLearning.jl?branch=master) | N | N | ★★ |
 | [DeepQLearning](https://github.com/JuliaPOMDP/DeepQLearning.jl) | [![Build Status](https://github.com/JuliaPOMDP/DeepQLearning.jl/actions/workflows/CI.yml/badge.svg)](https://github.com/JuliaPOMDP/DeepQLearning.jl) <br> [![Coverage Status](https://codecov.io/gh/JuliaPOMDP/DeepQLearning.jl/branch/master/graph/badge.svg)](https://codecov.io/gh/JuliaPOMDP/DeepQLearning.jl?branch=master) | Y<sup>1</sup> | N | ★★★ |
+| [Crux](https://github.com/sisl/Crux.jl) | [![Build Status](https://github.com/sisl/Crux.jl/actions/workflows/CI.yml/badge.svg)](https://github.com/sisl/Crux.jl) <br> [![Coverage Status](https://codecov.io/gh/sisl/Crux.jl/branch/master/graph/badge.svg)](https://codecov.io/gh/sisl/Crux.jl?branch=master) | Y | Y | ★★★★ |
 
 <sup>1</sup>: For POMDPs, it will use the observation instead of the state as input to the policy.
 
