@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>GridWorld MDP Tutorial · POMDPs.jl</title><meta name="title" content="GridWorld MDP Tutorial · POMDPs.jl"/><meta property="og:title" content="GridWorld MDP Tutorial · POMDPs.jl"/><meta property="twitter:title" content="GridWorld MDP Tutorial · POMDPs.jl"/><meta name="description" content="Documentation for POMDPs.jl."/><meta property="og:description" content="Documentation for POMDPs.jl."/><meta property="twitter:description" content="Documentation for POMDPs.jl."/><script data-outdated-warner src="../assets/warner.js"></script><link href="https://cdnjs.cloudflare.com/ajax/libs/lato-font/3.0.0/css/lato-font.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/juliamono/0.050/juliamono.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.8/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL=".."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="../assets/documenter.js"></script><script src="../search_index.js"></script><script src="../siteinfo.js"></script><script src="../../versions.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/catppuccin-mocha.css" data-theme-name="catppuccin-mocha"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/catppuccin-macchiato.css" data-theme-name="catppuccin-macchiato"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/catppuccin-frappe.css" data-theme-name="catppuccin-frappe"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/catppuccin-latte.css" data-theme-name="catppuccin-latte"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/documenter-dark.css" data-theme-name="documenter-dark" data-theme-primary-dark/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="../assets/themeswap.js"></script></head><body><div id="documenter"><nav class="docs-sidebar"><a class="docs-logo" href="../"><img src="../assets/logo.png" alt="POMDPs.jl logo"/></a><div class="docs-package-name"><span class="docs-autofit"><a href="../">POMDPs.jl</a></span></div><button class="docs-search-query input is-rounded is-small is-clickable my-2 mx-auto py-1 px-2" id="documenter-search-query">Search docs (Ctrl + /)</button><ul class="docs-menu"><li><a class="tocitem" href="../">POMDPs.jl</a></li><li><span class="tocitem">Basics</span><ul><li><a class="tocitem" href="../install/">Installation</a></li><li><a class="tocitem" href="../get_started/">Getting Started</a></li><li><a class="tocitem" href="../concepts/">Concepts and Architecture</a></li></ul></li><li><span class="tocitem">Defining (PO)MDP Models</span><ul><li><a class="tocitem" href="../def_pomdp/">Defining POMDPs and MDPs</a></li><li><a class="tocitem" href="../interfaces/">Spaces and Distributions</a></li></ul></li><li><span class="tocitem">Writing Solvers</span><ul><li><a class="tocitem" href="../def_solver/">Solvers</a></li><li><a class="tocitem" href="../offline_solver/">Example: Defining an offline solver</a></li><li><a class="tocitem" href="../online_solver/">Example: Defining an online solver</a></li></ul></li><li><span class="tocitem">Writing Belief Updaters</span><ul><li><a class="tocitem" href="../def_updater/">Defining a Belief Updater</a></li></ul></li><li><span class="tocitem">Analyzing Results</span><ul><li><a class="tocitem" href="../simulation/">Simulation Standard</a></li><li><a class="tocitem" href="../run_simulation/">Running Simulations</a></li><li><a class="tocitem" href="../policy_interaction/">Interacting with Policies</a></li></ul></li><li><span class="tocitem">Examples and Gallery</span><ul><li><a class="tocitem" href="../examples/">Examples</a></li><li><a class="tocitem" href="../example_defining_problems/">Defining a POMDP</a></li><li><a class="tocitem" href="../example_solvers/">Using Different Solvers</a></li><li><a class="tocitem" href="../example_simulations/">Simulations Examples</a></li><li class="is-active"><a class="tocitem" href>GridWorld MDP Tutorial</a><ul class="internal"><li><a class="tocitem" href="#Dependencies"><span>Dependencies</span></a></li><li><a class="tocitem" href="#Problem-Overview"><span>Problem Overview</span></a></li><li><a class="tocitem" href="#Defining-the-Grid-World-MDP-Type"><span>Defining the Grid World MDP Type</span></a></li><li><a class="tocitem" href="#Grid-World-State-Space"><span>Grid World State Space</span></a></li><li><a class="tocitem" href="#Grid-World-Action-Space"><span>Grid World Action Space</span></a></li><li><a class="tocitem" href="#Grid-World-Transition-Function"><span>Grid World Transition Function</span></a></li><li><a class="tocitem" href="#Grid-World-Reward-Function"><span>Grid World Reward Function</span></a></li><li><a class="tocitem" href="#Grid-World-Remaining-Functions"><span>Grid World Remaining Functions</span></a></li><li><a class="tocitem" href="#Solving-the-Grid-World-MDP-(Value-Iteration)"><span>Solving the Grid World MDP (Value Iteration)</span></a></li><li><a class="tocitem" href="#Solving-the-Grid-World-MDP-(MCTS)"><span>Solving the Grid World MDP (MCTS)</span></a></li><li><a class="tocitem" href="#Visualizing-the-Value-Iteration-Policy"><span>Visualizing the Value Iteration Policy</span></a></li><li><a class="tocitem" href="#Seeing-a-Policy-In-Action"><span>Seeing a Policy In Action</span></a></li></ul></li><li><a class="tocitem" href="../gallery/">Gallery of POMDPs.jl Problems</a></li></ul></li><li><span class="tocitem">POMDPTools</span><ul><li><a class="tocitem" href="../POMDPTools/">POMDPTools: the standard library for POMDPs.jl</a></li><li><a class="tocitem" href="../POMDPTools/distributions/">Implemented Distributions</a></li><li><a class="tocitem" href="../POMDPTools/model/">Model Tools</a></li><li><a class="tocitem" href="../POMDPTools/visualization/">Visualization</a></li><li><a class="tocitem" href="../POMDPTools/beliefs/">Implemented Belief Updaters</a></li><li><a class="tocitem" href="../POMDPTools/policies/">Implemented Policies</a></li><li><a class="tocitem" href="../POMDPTools/simulators/">Implemented Simulators</a></li><li><a class="tocitem" href="../POMDPTools/common_rl/">CommonRLInterface Integration</a></li><li><a class="tocitem" href="../POMDPTools/testing/">Testing</a></li></ul></li><li><span class="tocitem">References</span><ul><li><a class="tocitem" href="../faq/">Frequently Asked Questions (FAQ)</a></li><li><a class="tocitem" href="../api/">API Documentation</a></li></ul></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><a class="docs-sidebar-button docs-navbar-link fa-solid fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a><nav class="breadcrumb"><ul class="is-hidden-mobile"><li><a class="is-disabled">Examples and Gallery</a></li><li class="is-active"><a href>GridWorld MDP Tutorial</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href>GridWorld MDP Tutorial</a></li></ul></nav><div class="docs-right"><a class="docs-navbar-link" href="https://github.com/JuliaPOMDP/POMDPs.jl" title="View the repository on GitHub"><span class="docs-icon fa-brands"></span><span class="docs-label is-hidden-touch">GitHub</span></a><a class="docs-navbar-link" href="https://github.com/JuliaPOMDP/POMDPs.jl/blob/master/docs/src/example_gridworld_mdp.md" title="Edit source on GitHub"><span class="docs-icon fa-solid"></span></a><a class="docs-settings-button docs-navbar-link fa-solid fa-gear" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-article-toggle-button fa-solid fa-chevron-up" id="documenter-article-toggle-button" href="javascript:;" title="Collapse all docstrings"></a></div></header><article class="content" id="documenter-page"><h1 id="GridWorld-MDP-Tutorial"><a class="docs-heading-anchor" href="#GridWorld-MDP-Tutorial">GridWorld MDP Tutorial</a><a id="GridWorld-MDP-Tutorial-1"></a><a class="docs-heading-anchor-permalink" href="#GridWorld-MDP-Tutorial" title="Permalink"></a></h1><p>In this tutorial, we provide a simple example of how to define a Markov decision process (MDP) using the POMDPS.jl interface. We will then solve the MDP using value iteration and Monte Carlo tree search (MCTS). We will walk through constructing the MDP using the explicit interface which involves defining a new type for the MDP and then extending different components of the POMDPs.jl interface for that type.</p><h2 id="Dependencies"><a class="docs-heading-anchor" href="#Dependencies">Dependencies</a><a id="Dependencies-1"></a><a class="docs-heading-anchor-permalink" href="#Dependencies" title="Permalink"></a></h2><p>We need a few modules in order to run this example. All of the models can be added by running the following command in the Julia REPL:</p><pre><code class="language-julia hljs">using Pkg
+
+Pkg.add(&quot;POMDPs&quot;)
+Pkg.add(&quot;POMDPTools&quot;)
+Pkg.add(&quot;DiscreteValueIteration&quot;)
+Pkg.add(&quot;MCTS&quot;)</code></pre><p>If you already had the models installed, it is prudent to update them to the latest version:</p><pre><code class="language-julia hljs">Pkg.update()</code></pre><p>Now that we have the models installed, we can load them into our workspace:</p><pre><code class="language-julia hljs">using POMDPs
+using POMDPTools
+using DiscreteValueIteration
+using MCTS</code></pre><h2 id="Problem-Overview"><a class="docs-heading-anchor" href="#Problem-Overview">Problem Overview</a><a id="Problem-Overview-1"></a><a class="docs-heading-anchor-permalink" href="#Problem-Overview" title="Permalink"></a></h2><p>In Grid World, we are trying to control an agent who has trouble moving in the desired direction. In our problem, we have four reward states within the a grid. Each position on the grid represents a state, and the positive reward states are terminal (the agent stops receiving reward after reaching them and performing an action from that state). The agent has four actions to choose from: up, down, left, right. The agent moves in the desired direction with a probability of <span>$0.7$</span>, and with a probability of <span>$0.1$</span> in each of the remaining three directions. If the agent bumps into the outside wall, there is a penalty of <span>$1$</span> (i.e. reward of <span>$-1$</span>). The problem has the following form:</p><p><img src="../examples/grid_world_overview.gif" alt="Grid World"/></p><h2 id="Defining-the-Grid-World-MDP-Type"><a class="docs-heading-anchor" href="#Defining-the-Grid-World-MDP-Type">Defining the Grid World MDP Type</a><a id="Defining-the-Grid-World-MDP-Type-1"></a><a class="docs-heading-anchor-permalink" href="#Defining-the-Grid-World-MDP-Type" title="Permalink"></a></h2><p>In POMDPs.jl, an MDP is defined by creating a subtype of the <code>MDP</code> abstract type. The types of the states and actions for the MDP are declared as <a href="https://docs.julialang.org/en/v1/manual/types/#Parametric-Types-1">parameters</a> of the MDP type. For example, if our states and actions are both represented by integers, we can define our MDP type as follows:</p><pre><code class="language-julia hljs">struct MyMDP &lt;: MDP{Int64, Int64} # MDP{StateType, ActionType}
+    # fields go here
+end</code></pre><p>In our grid world problem, we will represent the states using a custom type that designates the <code>x</code> and <code>y</code> coordinate within the grid. The actions will by represented by a symbol.</p><h3 id="GridWorldState"><a class="docs-heading-anchor" href="#GridWorldState">GridWorldState</a><a id="GridWorldState-1"></a><a class="docs-heading-anchor-permalink" href="#GridWorldState" title="Permalink"></a></h3><p>There are numerous ways to represent the state of the agent in a grid world. We will use a custom type that designates the <code>x</code> and <code>y</code> coordinate within the grid. </p><pre><code class="language-julia hljs">struct GridWorldState
+    x::Int64
+    y::Int64
+end</code></pre><p>To help us later, let&#39;s extend the <code>==</code> for our <code>GridWorldStat</code>:</p><pre><code class="language-julia hljs">function Base.:(==)(s1::GridWorldState, s2::GridWorldState)
+    return s1.x == s2.x &amp;&amp; s1.y == s2.y
+end</code></pre><h3 id="GridWorld-Actions"><a class="docs-heading-anchor" href="#GridWorld-Actions">GridWorld Actions</a><a id="GridWorld-Actions-1"></a><a class="docs-heading-anchor-permalink" href="#GridWorld-Actions" title="Permalink"></a></h3><p>Since our action is the direction the agent chooses to go (i.e. up, down, left, right), we can use a Symbol to represent it. Note that in this case, we are not defining a custom type for our action, instead we represent it directly with a symbol. Our actions will be <code>:up</code>, <code>:down</code>, <code>:left</code>, and <code>:right</code>.</p><h3 id="GridWorldMDP"><a class="docs-heading-anchor" href="#GridWorldMDP">GridWorldMDP</a><a id="GridWorldMDP-1"></a><a class="docs-heading-anchor-permalink" href="#GridWorldMDP" title="Permalink"></a></h3><p>Now that we have defined our types for states and actions, we can define our MDP type. We will call it <code>GridWorldMDP</code> and it will be a subtype of <code>MDP{GridWorldState, Symbol}</code>.</p><pre><code class="language-julia hljs">struct GridWorldMDP &lt;: MDP{GridWorldState, Symbol}
+    size_x::Int64 # x size of the grid
+    size_y::Int64 # y size of the grid
+    reward_states_values::Dict{GridWorldState, Float64} # Dictionary mapping reward states to their values
+    hit_wall_reward::Float64 # reward for hitting a wall
+    tprob::Float64 # probability of transitioning to the desired state
+    discount_factor::Float64 # discount factor
+end</code></pre><p>We can define a constructor for our <code>GridWorldMDP</code> to make it easier to create instances of our MDP.</p><pre><code class="language-julia hljs">function GridWorldMDP(;
+    size_x::Int64=10,
+    size_y::Int64=10,
+    reward_states_values::Dict{GridWorldState, Float64}=Dict(
+        GridWorldState(4, 3) =&gt; -10.0,
+        GridWorldState(4, 6) =&gt; -5.0,
+        GridWorldState(9, 3) =&gt; 10.0,
+        GridWorldState(8, 8) =&gt; 3.0),
+    hit_wall_reward::Float64=-1.0,
+    tprob::Float64=0.7,
+    discount_factor::Float64=0.9)
+    return GridWorldMDP(size_x, size_y, reward_states_values, hit_wall_reward, tprob, discount_factor)
+end</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">Main.GridWorldMDP</code></pre><p>To help us visualize our MDP, we can extend <code>show</code> for our <code>GridWorldMDP</code> type:</p><pre><code class="language-julia hljs">function Base.show(io::IO, mdp::GridWorldMDP)
+    println(io, &quot;Grid World MDP&quot;)
+    println(io, &quot;\tSize x: $(mdp.size_x)&quot;)
+    println(io, &quot;\tSize y: $(mdp.size_y)&quot;)
+    println(io, &quot;\tReward states:&quot;)
+    for (key, value) in mdp.reward_states_values
+        println(io, &quot;\t\t$key =&gt; $value&quot;)
+    end
+    println(io, &quot;\tHit wall reward: $(mdp.hit_wall_reward)&quot;)
+    println(io, &quot;\tTransition probability: $(mdp.tprob)&quot;)
+    println(io, &quot;\tDiscount: $(mdp.discount_factor)&quot;)
+end</code></pre><p>Now lets create an instance of our <code>GridWorldMDP</code>:</p><pre><code class="language-julia hljs">mdp = GridWorldMDP()</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">Grid World MDP
+	Size x: 10
+	Size y: 10
+	Reward states:
+		Main.GridWorldState(4, 3) =&gt; -10.0
+		Main.GridWorldState(8, 8) =&gt; 3.0
+		Main.GridWorldState(9, 3) =&gt; 10.0
+		Main.GridWorldState(4, 6) =&gt; -5.0
+	Hit wall reward: -1.0
+	Transition probability: 0.7
+	Discount: 0.9
+</code></pre><div class="admonition is-info" id="Note-26ac951093d7a066"><header class="admonition-header">Note<a class="admonition-anchor" href="#Note-26ac951093d7a066" title="Permalink"></a></header><div class="admonition-body"><p>In this definition of the problem, our coordinates start in the bottom left of the grid. That is GridState(1, 1) is the bottom left of the grid and GridState(10, 10) would be on the right of the grid with a grid size of 10 by 10.</p></div></div><h2 id="Grid-World-State-Space"><a class="docs-heading-anchor" href="#Grid-World-State-Space">Grid World State Space</a><a id="Grid-World-State-Space-1"></a><a class="docs-heading-anchor-permalink" href="#Grid-World-State-Space" title="Permalink"></a></h2><p>The state space in an MDP represents all the states in the problem. There are two primary functionalities that we want our spaces to support. We want to be able to iterate over the state space (for Value Iteration for example), and sometimes we want to be able to sample form the state space (used in some POMDP solvers). In this notebook, we will only look at iterable state spaces.</p><p>Since we can iterate over elements of an array, and our problem is small, we can store all of our states in an array. We also have a terminal state based on the definition of our problem. We can represent that as a location outside of the grid (i.e. <code>(-1, -1)</code>).</p><pre><code class="language-julia hljs">function POMDPs.states(mdp::GridWorldMDP)
+    states_array = GridWorldState[]
+    for x in 1:mdp.size_x
+        for y in 1:mdp.size_y
+            push!(states_array, GridWorldState(x, y))
+        end
+    end
+    push!(states_array, GridWorldState(-1, -1)) # Adding the terminal state
+    return states_array
+end</code></pre><p>Let&#39;s view some of the states in our state space:</p><pre><code class="language-julia hljs">@show states(mdp)[1:5]</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">5-element Vector{Main.GridWorldState}:
+ Main.GridWorldState(1, 1)
+ Main.GridWorldState(1, 2)
+ Main.GridWorldState(1, 3)
+ Main.GridWorldState(1, 4)
+ Main.GridWorldState(1, 5)</code></pre><p>We also need a other functions related to the state space. </p><pre><code class="language-julia hljs"># Check if a state is the terminal state
+POMDPs.isterminal(mdp::GridWorldMDP, s::GridWorldState) = s == GridWorldState(-1, -1)
+
+# Define the initial state distribution (always start in the bottom left)
+POMDPs.initialstate(mdp::GridWorldMDP) = Deterministic(GridWorldState(1, 1))
+
+# Function that returns the index of a state in the state space
+function POMDPs.stateindex(mdp::GridWorldMDP, s::GridWorldState)
+    if isterminal(mdp, s)
+        return length(states(mdp))
+    end
+
+    @assert 1 &lt;= s.x &lt;= mdp.size_x &quot;Invalid state&quot;
+    @assert 1 &lt;= s.y &lt;= mdp.size_y &quot;Invalid state&quot;
+
+    si = (s.x - 1) * mdp.size_y + s.y
+    return si
+end</code></pre><h3 id="Large-State-Spaces"><a class="docs-heading-anchor" href="#Large-State-Spaces">Large State Spaces</a><a id="Large-State-Spaces-1"></a><a class="docs-heading-anchor-permalink" href="#Large-State-Spaces" title="Permalink"></a></h3><p>If your problem is very large we probably do not want to store all of our states in an array. We can create an iterator using indexing functions to help us out. One way of doing this is to define a function that returns a state from an index and then construct an iterator. This is an example of how we can do that for the Grid World problem. </p><div class="admonition is-info" id="Note-924397e20137618a"><header class="admonition-header">Note<a class="admonition-anchor" href="#Note-924397e20137618a" title="Permalink"></a></header><div class="admonition-body"><p>If you run this section, you will redefine the <code>states(::GridWorldMDP)</code> that we just defined in the previous section.</p></div></div><pre><code class="language-julia hljs">    # Define the length of the state space, number of grid locations plus the terminal state
+    Base.length(mdp::GridWorldMDP) = mdp.size_x * mdp.size_y + 1
+
+    # `states` now returns the mdp, which we will construct our iterator from
+    POMDPs.states(mdp::GridWorldMDP) = mdp
+
+    function Base.getindex(mdp::GridWorldMDP, si::Int) # Enables mdp[si]
+        @assert si &lt;= length(mdp) &quot;Index out of bounds&quot;
+        @assert si &gt; 0  &quot;Index out of bounds&quot;
+
+        # First check if we are in the terminal state (which we define as the last state)
+        if si == length(mdp)
+            return GridWorldState(-1, -1)
+        end
+
+        # Otherwise, we need to calculate the x and y coordinates
+        y = (si - 1) % mdp.size_y + 1
+        x = div((si - 1), mdp.size_y) + 1
+        return GridWorldState(x, y)
+    end
+
+    function Base.getindex(mdp::GridWorldMDP, si_range::UnitRange{Int}) # Enables mdp[1:5]
+        return [getindex(mdp, si) for si in si_range]
+    end
+
+    Base.firstindex(mdp::GridWorldMDP) = 1 # Enables mdp[begin]
+    Base.lastindex(mdp::GridWorldMDP) = length(mdp) # Enables mdp[end]
+
+    # We can now construct an iterator
+    function Base.iterate(mdp::GridWorldMDP, ii::Int=1)
+        if ii &gt; length(mdp)
+            return nothing
+        end
+        s = getindex(mdp, ii)
+        return (s, ii + 1)
+    end</code></pre><p>Similar to above, let&#39;s iterate over a few of the states in our state space:</p><pre><code class="language-julia hljs">@show states(mdp)[1:5]
+@show mdp[begin]
+@show mdp[end]</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">Main.GridWorldState(-1, -1)</code></pre><h2 id="Grid-World-Action-Space"><a class="docs-heading-anchor" href="#Grid-World-Action-Space">Grid World Action Space</a><a id="Grid-World-Action-Space-1"></a><a class="docs-heading-anchor-permalink" href="#Grid-World-Action-Space" title="Permalink"></a></h2><p>The action space is the set of all actions available to the agent. In the grid world problem the action space consists of up, down, left, and right. We can define the action space by implementing a new method of the actions function.</p><pre><code class="language-julia hljs">POMDPs.actions(mdp::GridWorldMDP) = [:up, :down, :left, :right]</code></pre><p>Similar to the state space, we need a function that returns an index given an action.</p><pre><code class="language-julia hljs">function POMDPs.actionindex(mdp::GridWorldMDP, a::Symbol)
+    @assert in(a, actions(mdp)) &quot;Invalid action&quot;
+    return findfirst(x -&gt; x == a, actions(mdp))
+end</code></pre><h2 id="Grid-World-Transition-Function"><a class="docs-heading-anchor" href="#Grid-World-Transition-Function">Grid World Transition Function</a><a id="Grid-World-Transition-Function-1"></a><a class="docs-heading-anchor-permalink" href="#Grid-World-Transition-Function" title="Permalink"></a></h2><p>MDPs often define the transition function as <span>$T(s^{\prime} \mid s, a)$</span>, which is the probability of transitioning to state <span>$s^{\prime}$</span> given that we are in state <span>$s$</span> and take action <span>$a$</span>. For the POMDPs.jl interface, we define the transition function as a distribution over the next states. That is, we want <span>$T(\cdot \mid s, a)$</span> which is a function that takes in a state and an action and returns a distribution over the next states.</p><p>For our grid world example, there are only a few states to which the agent can transition and thus only a few states with nonzero probability in <span>$T(\cdot \mid s, a)$</span>. We can use the <code>SparseCat</code> distribution to represent this. The <code>SparseCat</code> distribution is a categorical distribution that only stores the nonzero probabilities. We can define our transition function as follows:</p><pre><code class="language-julia hljs">function POMDPs.transition(mdp::GridWorldMDP, s::GridWorldState, a::Symbol)
+    # If we are in the terminal state, we stay in the terminal state
+    if isterminal(mdp, s)
+        return SparseCat([s], [1.0])
+    end
+
+    # If we are in a positive reward state, we transition to the terminal state
+    if s in keys(mdp.reward_states_values) &amp;&amp; mdp.reward_states_values[s] &gt; 0
+        return SparseCat([GridWorldState(-1, -1)], [1.0])
+    end
+
+    # Probability of going in a direction other than the desired direction
+    tprob_other = (1 - mdp.tprob) / 3
+
+    new_state_up = GridWorldState(s.x, min(s.y + 1, mdp.size_y))
+    new_state_down = GridWorldState(s.x, max(s.y - 1, 1))
+    new_state_left = GridWorldState(max(s.x - 1, 1), s.y)
+    new_state_right = GridWorldState(min(s.x + 1, mdp.size_x), s.y)
+
+    new_state_vector = [new_state_up, new_state_down, new_state_left, new_state_right]
+    t_prob_vector = fill(tprob_other, 4)
+
+    if a == :up
+        t_prob_vector[1] = mdp.tprob
+    elseif a == :down
+        t_prob_vector[2] = mdp.tprob
+    elseif a == :left
+        t_prob_vector[3] = mdp.tprob
+    elseif a == :right
+        t_prob_vector[4] = mdp.tprob
+    else
+        error(&quot;Invalid action&quot;)
+    end
+
+    # Combine probabilities for states that are the same
+    for i in 1:4
+        for j in (i + 1):4
+            if new_state_vector[i] == new_state_vector[j]
+                t_prob_vector[i] += t_prob_vector[j]
+                t_prob_vector[j] = 0.0
+            end
+        end
+    end
+
+    # Remove states with zero probability
+    new_state_vector = new_state_vector[t_prob_vector .&gt; 0]
+    t_prob_vector = t_prob_vector[t_prob_vector .&gt; 0]
+
+    return SparseCat(new_state_vector, t_prob_vector)
+end</code></pre><p>Let&#39;s examline a few transitions:</p><pre><code class="language-julia hljs">@show transition(mdp, GridWorldState(1, 1), :up)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">                                                                         <span class="sgr97"><span class="sgr1">SparseCat distribution</span></span>           
+                                                               <span class="sgr90">┌                                        ┐</span> 
+   Main.GridWorldState(1, 2) <span class="sgr90">┤</span><span class="sgr32">■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■</span> 0.7 <span class="sgr90"> </span> 
+   Main.GridWorldState(1, 1) <span class="sgr90">┤</span><span class="sgr32">■■■■■■■■■■</span> 0.2                          <span class="sgr90"> </span> 
+   Main.GridWorldState(2, 1) <span class="sgr90">┤</span><span class="sgr32">■■■■■</span> 0.1                               <span class="sgr90"> </span> 
+                                                               <span class="sgr90">└                                        ┘</span> </code></pre><pre><code class="language-julia hljs">@show transition(mdp, GridWorldState(1, 1), :left)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">                                                                         <span class="sgr97"><span class="sgr1">SparseCat distribution</span></span>           
+                                                               <span class="sgr90">┌                                        ┐</span> 
+   Main.GridWorldState(1, 2) <span class="sgr90">┤</span><span class="sgr32">■■■■</span> 0.1                                <span class="sgr90"> </span> 
+   Main.GridWorldState(1, 1) <span class="sgr90">┤</span><span class="sgr32">■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■</span> 0.8 <span class="sgr90"> </span> 
+   Main.GridWorldState(2, 1) <span class="sgr90">┤</span><span class="sgr32">■■■■</span> 0.1                                <span class="sgr90"> </span> 
+                                                               <span class="sgr90">└                                        ┘</span> </code></pre><pre><code class="language-julia hljs">@show transition(mdp, GridWorldState(9, 3), :right)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">                                                                           <span class="sgr97"><span class="sgr1">SparseCat distribution</span></span>           
+                                                                 <span class="sgr90">┌                                        ┐</span> 
+   Main.GridWorldState(-1, -1) <span class="sgr90">┤</span><span class="sgr32">■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■</span> 1 <span class="sgr90"> </span> 
+                                                                 <span class="sgr90">└                                        ┘</span> </code></pre><pre><code class="language-julia hljs">@show transition(mdp, GridWorldState(-1, -1), :down)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">                                                                           <span class="sgr97"><span class="sgr1">SparseCat distribution</span></span>           
+                                                                 <span class="sgr90">┌                                        ┐</span> 
+   Main.GridWorldState(-1, -1) <span class="sgr90">┤</span><span class="sgr32">■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■</span> 1 <span class="sgr90"> </span> 
+                                                                 <span class="sgr90">└                                        ┘</span> </code></pre><h2 id="Grid-World-Reward-Function"><a class="docs-heading-anchor" href="#Grid-World-Reward-Function">Grid World Reward Function</a><a id="Grid-World-Reward-Function-1"></a><a class="docs-heading-anchor-permalink" href="#Grid-World-Reward-Function" title="Permalink"></a></h2><p>In our problem, we have a reward function that depends on the next state as well (i.e. if we hit a wall, we stay in the same state and get a reward of <span>$-1$</span>). We can still construct a reward function that only depends on the current state and action by using expectation over the next state. That is, we can define our reward function as <span>$R(s, a) = \mathbb{E}_{s^{\prime} \sim T(\cdot \mid s, a)}[R(s, a, s^{\prime})]$</span>.</p><pre><code class="language-julia hljs"># First, let&#39;s define the reward function given the state, action, and next state
+function POMDPs.reward(mdp::GridWorldMDP, s::GridWorldState, a::Symbol, sp::GridWorldState)
+    # If we are in the terminal state, we get a reward of 0
+    if isterminal(mdp, s)
+        return 0.0
+    end
+
+    # If we are in a positive reward state, we get the reward of that state
+    # For a positive reward, we transition to the terminal state, so we don&#39;t have
+    # to worry about the next state (i.g. hitting a wall)
+    if s in keys(mdp.reward_states_values) &amp;&amp; mdp.reward_states_values[s] &gt; 0
+        return mdp.reward_states_values[s]
+    end
+
+    # If we are in a negative reward state, we get the reward of that state
+    # If the negative reward state is on the edge of the grid, we can also be in this state
+    # and hit a wall, so we need to check for that
+    r = 0.0
+    if s in keys(mdp.reward_states_values) &amp;&amp; mdp.reward_states_values[s] &lt; 0
+        r += mdp.reward_states_values[s]
+    end
+
+    # If we hit a wall, we get a reward of -1
+    if s == sp
+        r += mdp.hit_wall_reward
+    end
+
+    return r
+end
+
+# Now we can define the reward function given the state and action
+function POMDPs.reward(mdp::GridWorldMDP, s::GridWorldState, a::Symbol)
+    r = 0.0
+    for (sp, p) in transition(mdp, s, a)
+        r += p * reward(mdp, s, a, sp)
+    end
+    return r
+end</code></pre><p>Let&#39;s examine a few rewards:</p><pre><code class="language-julia hljs">@show reward(mdp, GridWorldState(1, 1), :up)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">-0.20000000000000004</code></pre><pre><code class="language-julia hljs">@show reward(mdp, GridWorldState(1, 1), :left)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">-0.7999999999999999</code></pre><pre><code class="language-julia hljs">@show reward(mdp, GridWorldState(9, 3), :right)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">10.0</code></pre><pre><code class="language-julia hljs">@show reward(mdp, GridWorldState(-1, -1), :down)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">0.0</code></pre><pre><code class="language-julia hljs">@show reward(mdp, GridWorldState(2, 3), :up)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">0.0</code></pre><h2 id="Grid-World-Remaining-Functions"><a class="docs-heading-anchor" href="#Grid-World-Remaining-Functions">Grid World Remaining Functions</a><a id="Grid-World-Remaining-Functions-1"></a><a class="docs-heading-anchor-permalink" href="#Grid-World-Remaining-Functions" title="Permalink"></a></h2><p>We are almost done! We still need to define <code>discount</code>. Let&#39;s first use <code>POMDPLinter</code> to check if we have defined all the functions we need for DiscreteValueIteration:</p><pre><code class="language-julia hljs">using POMDPLinter
+
+@show_requirements POMDPs.solve(ValueIterationSolver(), mdp)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">INFO: POMDPLinter requirements for solve(::ValueIterationSolver, ::Union{MDP,POMDP}) and dependencies. ([✔] = implemented correctly; [X] = not implemented; [?] = could not determine)
+
+For solve(::ValueIterationSolver, ::Union{MDP,POMDP}):
+  [X] discount(::GridWorldMDP)
+  [✔] transition(::GridWorldMDP, ::GridWorldState, ::Symbol)
+  [✔] reward(::GridWorldMDP, ::GridWorldState, ::Symbol, ::GridWorldState)
+  [✔] stateindex(::GridWorldMDP, ::GridWorldState)
+  [✔] actionindex(::GridWorldMDP, ::Symbol)
+  [✔] actions(::GridWorldMDP, ::GridWorldState)
+  [✔] length(::GridWorldMDP)
+  [✔] length(::Array{Symbol1})
+  [✔] support(::SparseCat{Vector{Main.GridWorldState}Vector{Float64}})
+  [✔] pdf(::SparseCat{Vector{Main.GridWorldState}Vector{Float64}}, ::GridWorldState)
+For ordered_states(::Union{MDP,POMDP}) (in solve(::ValueIterationSolver, ::Union{MDP,POMDP})):
+  [✔] states(::GridWorldMDP)
+For ordered_actions(::Union{MDP,POMDP}) (in solve(::ValueIterationSolver, ::Union{MDP,POMDP})):
+  [✔] actions(::GridWorldMDP)
+Note: Missing methods are often due to incorrect importing. You must explicitly import POMDPs functions to add new methods.</code></pre><p>As we expected, we need to define <code>discount</code>.</p><pre><code class="language-julia hljs">function POMDPs.discount(mdp::GridWorldMDP)
+    return mdp.discount_factor
+end</code></pre><p>Let&#39;s check again:</p><pre><code class="language-julia hljs">@show_requirements POMDPs.solve(ValueIterationSolver(), mdp)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">INFO: POMDPLinter requirements for solve(::ValueIterationSolver, ::Union{MDP,POMDP}) and dependencies. ([✔] = implemented correctly; [X] = not implemented; [?] = could not determine)
+
+For solve(::ValueIterationSolver, ::Union{MDP,POMDP}):
+  [✔] discount(::GridWorldMDP)
+  [✔] transition(::GridWorldMDP, ::GridWorldState, ::Symbol)
+  [✔] reward(::GridWorldMDP, ::GridWorldState, ::Symbol, ::GridWorldState)
+  [✔] stateindex(::GridWorldMDP, ::GridWorldState)
+  [✔] actionindex(::GridWorldMDP, ::Symbol)
+  [✔] actions(::GridWorldMDP, ::GridWorldState)
+  [✔] length(::GridWorldMDP)
+  [✔] length(::Array{Symbol1})
+  [✔] support(::SparseCat{Vector{Main.GridWorldState}Vector{Float64}})
+  [✔] pdf(::SparseCat{Vector{Main.GridWorldState}Vector{Float64}}, ::GridWorldState)
+For ordered_states(::Union{MDP,POMDP}) (in solve(::ValueIterationSolver, ::Union{MDP,POMDP})):
+  [✔] states(::GridWorldMDP)
+For ordered_actions(::Union{MDP,POMDP}) (in solve(::ValueIterationSolver, ::Union{MDP,POMDP})):
+  [✔] actions(::GridWorldMDP)</code></pre><h2 id="Solving-the-Grid-World-MDP-(Value-Iteration)"><a class="docs-heading-anchor" href="#Solving-the-Grid-World-MDP-(Value-Iteration)">Solving the Grid World MDP (Value Iteration)</a><a id="Solving-the-Grid-World-MDP-(Value-Iteration)-1"></a><a class="docs-heading-anchor-permalink" href="#Solving-the-Grid-World-MDP-(Value-Iteration)" title="Permalink"></a></h2><p>Now that we have defined our MDP, we can solve it using Value Iteration. We will use the <code>ValueIterationSolver</code> from the <a href="https://github.com/JuliaPOMDP/DiscreteValueIteration.jl">DiscreteValueIteration</a> package. First, we construct the a Solver type which contains the solver parameters. Then we call <code>POMDPs.solve</code> to solve the MDP and return a policy.</p><pre><code class="language-julia hljs"># Initialize the problem (we have already done this, but just calling it again for completeness in the example)
+mdp = GridWorldMDP()
+
+# Initialize the solver with desired parameters
+solver = ValueIterationSolver(; max_iterations=100, belres=1e-3, verbose=true)
+
+# Solve for an optimal policy
+vi_policy = POMDPs.solve(solver, mdp)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">[Iteration 1   ] residual:         10 | iteration runtime:      0.197 ms, (  0.000197 s total)
+[Iteration 2   ] residual:        6.3 | iteration runtime:      0.188 ms, (  0.000385 s total)
+[Iteration 3   ] residual:       4.53 | iteration runtime:      0.193 ms, (  0.000578 s total)
+[Iteration 4   ] residual:       3.21 | iteration runtime:      0.175 ms, (  0.000753 s total)
+[Iteration 5   ] residual:       2.31 | iteration runtime:      0.175 ms, (  0.000928 s total)
+[Iteration 6   ] residual:       1.62 | iteration runtime:      0.175 ms, (    0.0011 s total)
+[Iteration 7   ] residual:       1.24 | iteration runtime:      0.174 ms, (   0.00128 s total)
+[Iteration 8   ] residual:       1.06 | iteration runtime:      0.186 ms, (   0.00146 s total)
+[Iteration 9   ] residual:      0.865 | iteration runtime:      0.171 ms, (   0.00163 s total)
+[Iteration 10  ] residual:      0.657 | iteration runtime:      0.173 ms, (   0.00181 s total)
+[Iteration 11  ] residual:      0.545 | iteration runtime:      0.170 ms, (   0.00198 s total)
+[Iteration 12  ] residual:      0.455 | iteration runtime:      0.174 ms, (   0.00215 s total)
+[Iteration 13  ] residual:      0.378 | iteration runtime:      0.171 ms, (   0.00232 s total)
+[Iteration 14  ] residual:      0.306 | iteration runtime:      0.181 ms, (    0.0025 s total)
+[Iteration 15  ] residual:      0.211 | iteration runtime:      0.175 ms, (   0.00268 s total)
+[Iteration 16  ] residual:      0.132 | iteration runtime:      0.174 ms, (   0.00285 s total)
+[Iteration 17  ] residual:     0.0778 | iteration runtime:      0.172 ms, (   0.00302 s total)
+[Iteration 18  ] residual:     0.0437 | iteration runtime:      0.174 ms, (    0.0032 s total)
+[Iteration 19  ] residual:     0.0237 | iteration runtime:      0.198 ms, (    0.0034 s total)
+[Iteration 20  ] residual:     0.0125 | iteration runtime:      0.174 ms, (   0.00357 s total)
+[Iteration 21  ] residual:    0.00649 | iteration runtime:      0.180 ms, (   0.00375 s total)
+[Iteration 22  ] residual:    0.00332 | iteration runtime:      0.177 ms, (   0.00393 s total)
+[Iteration 23  ] residual:    0.00167 | iteration runtime:      0.175 ms, (    0.0041 s total)
+[Iteration 24  ] residual:   0.000834 | iteration runtime:      0.184 ms, (   0.00428 s total)</code></pre><p>We can now use the policy to compute the optimal action for a given state:</p><pre><code class="language-julia hljs">s = GridWorldState(9, 2)
+@show action(vi_policy, s)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">:up</code></pre><pre><code class="language-julia hljs">s = GridWorldState(8, 3)
+@show action(vi_policy, s)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">:right</code></pre><h2 id="Solving-the-Grid-World-MDP-(MCTS)"><a class="docs-heading-anchor" href="#Solving-the-Grid-World-MDP-(MCTS)">Solving the Grid World MDP (MCTS)</a><a id="Solving-the-Grid-World-MDP-(MCTS)-1"></a><a class="docs-heading-anchor-permalink" href="#Solving-the-Grid-World-MDP-(MCTS)" title="Permalink"></a></h2><p>Similar to the process with Value Iteration, we can solve the MDP using MCTS. We will use the <code>MCTSSolver</code> from the <a href="https://github.com/JuliaPOMDP/MCTS.jl">MCTS</a> package.</p><pre><code class="language-julia hljs"># Initialize the problem (we have already done this, but just calling it again for completeness in the example)
+mdp = GridWorldMDP()
+
+# Initialize the solver with desired parameters
+solver = MCTSSolver(n_iterations=1000, depth=20, exploration_constant=10.0)
+
+# Now we construct a planner by calling POMDPs.solve. For online planners, the computation for the
+# optimal action occurs in the call to `action`.
+mcts_planner = POMDPs.solve(solver, mdp)</code></pre><p>Similar to the value iteration policy, we can use the policy to compute the action for a given state:</p><pre><code class="language-julia hljs">s = GridWorldState(9, 2)
+@show action(mcts_planner, s)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">:up</code></pre><pre><code class="language-julia hljs">s = GridWorldState(8, 3)
+@show action(mcts_planner, s)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">:right</code></pre><h2 id="Visualizing-the-Value-Iteration-Policy"><a class="docs-heading-anchor" href="#Visualizing-the-Value-Iteration-Policy">Visualizing the Value Iteration Policy</a><a id="Visualizing-the-Value-Iteration-Policy-1"></a><a class="docs-heading-anchor-permalink" href="#Visualizing-the-Value-Iteration-Policy" title="Permalink"></a></h2><p>We can visualize the value iteration policy by plotting the value function and the policy. We can use numerous plotting packages to do this, but we will use <a href="https://github.com/JuliaPlots/UnicodePlots.jl">UnicodePlots</a> for this example.</p><pre><code class="language-julia hljs">using UnicodePlots
+using Printf</code></pre><h3 id="Value-Function-as-a-Heatmap"><a class="docs-heading-anchor" href="#Value-Function-as-a-Heatmap">Value Function as a Heatmap</a><a id="Value-Function-as-a-Heatmap-1"></a><a class="docs-heading-anchor-permalink" href="#Value-Function-as-a-Heatmap" title="Permalink"></a></h3><p>We can plot the value function as a heatmap. The value function is a function over the state space, so we need to iterate over the state space and store the value at each state. We can use the <code>value</code> function to evaluate the value function at a given state.</p><pre><code class="language-julia hljs"># Initialize the value function array
+value_function = zeros(mdp.size_y, mdp.size_x)
+
+# Iterate over the state space and store the value at each state
+for s in states(mdp)
+    if isterminal(mdp, s)
+        continue
+    end
+    value_function[s.y, s.x] = value(vi_policy, s)
+end
+
+# Plot the value function
+heatmap(value_function;
+    title=&quot;GridWorld VI Value Function&quot;,
+    xlabel=&quot;x position&quot;,
+    ylabel=&quot;y position&quot;,
+    colormap=:inferno
+)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">                 <span class="sgr97"><span class="sgr1">GridWorld VI Value Function</span></span>     
+                 <span class="sgr90">┌──────────┐</span>  <span class="sgr90">10</span> 
+              <span class="sgr90">10</span> <span class="sgr90">│</span><span class="sgr48_5" style="background:#af005f"><span class="sgr38_5" style="color:#af5f5f">▄</span></span><span class="sgr38_5" style="color:#af5f5f"><span class="sgr48_5" style="background:#af5f5f">▄▄▄</span></span><span class="sgr48_5" style="background:#af5f5f"><span class="sgr38_5" style="color:#d75f5f">▄</span></span><span class="sgr38_5" style="color:#d75f5f"><span class="sgr48_5" style="background:#d75f5f">▄▄▄▄▄</span></span><span class="sgr90">│</span> <span class="sgr90">┌──┐</span>
+                 <span class="sgr90">│</span><span class="sgr48_5" style="background:#af5f5f"><span class="sgr38_5" style="color:#af5f5f">▄▄▄</span></span><span class="sgr38_5" style="color:#af5f5f"><span class="sgr48_5" style="background:#d75f5f">▄</span></span><span class="sgr48_5" style="background:#d75f5f"><span class="sgr38_5" style="color:#d75f5f">▄▄▄</span><span class="sgr38_5" style="color:#ff5f00">▄</span></span><span class="sgr38_5" style="color:#ff5f00"><span class="sgr48_5" style="background:#d75f00">▄</span><span class="sgr48_5" style="background:#d75f5f">▄</span></span><span class="sgr90">│</span> <span class="sgr90">│</span><span class="sgr48_5" style="background:#ffffaf"><span class="sgr38_5" style="color:#ffaf00">▄▄</span></span><span class="sgr90">│</span>
+   y position    <span class="sgr90">│</span><span class="sgr48_5" style="background:#af5f5f"><span class="sgr38_5" style="color:#af5f5f">▄▄</span><span class="sgr38_5" style="color:#d75f5f">▄</span></span><span class="sgr38_5" style="color:#d75f5f"><span class="sgr48_5" style="background:#5f005f">▄</span><span class="sgr48_5" style="background:#d75f5f">▄</span></span><span class="sgr48_5" style="background:#d75f5f"><span class="sgr38_5" style="color:#ff5f00">▄</span></span><span class="sgr48_5" style="background:#ff5f00"><span class="sgr38_5" style="color:#ff8700">▄</span></span><span class="sgr38_5" style="color:#ff8700"><span class="sgr48_5" style="background:#ff8700">▄</span></span><span class="sgr48_5" style="background:#ff8700"><span class="sgr38_5" style="color:#ffaf00">▄</span><span class="sgr38_5" style="color:#ff8700">▄</span></span><span class="sgr90">│</span> <span class="sgr90">│</span><span class="sgr48_5" style="background:#d75f5f"><span class="sgr38_5" style="color:#87005f">▄▄</span></span><span class="sgr90">│</span>
+                 <span class="sgr90">│</span><span class="sgr48_5" style="background:#af5f5f"><span class="sgr38_5" style="color:#af5f5f">▄▄</span></span><span class="sgr38_5" style="color:#af5f5f"><span class="sgr48_5" style="background:#d75f5f">▄</span></span><span class="sgr48_5" style="background:#d75f5f"><span class="sgr38_5" style="color:#000">▄</span></span><span class="sgr48_5" style="background:#d75f00"><span class="sgr38_5" style="color:#d75f5f">▄</span></span><span class="sgr48_5" style="background:#ff8700"><span class="sgr38_5" style="color:#ff8700">▄</span><span class="sgr38_5" style="color:#ffaf00">▄</span></span><span class="sgr48_5" style="background:#ffaf00"><span class="sgr38_5" style="color:#ffd75f">▄</span></span><span class="sgr48_5" style="background:#ffd75f"><span class="sgr38_5" style="color:#ffffaf">▄</span></span><span class="sgr48_5" style="background:#ffaf00"><span class="sgr38_5" style="color:#ffd75f">▄</span></span><span class="sgr90">│</span> <span class="sgr90">│</span><span class="sgr48_5" style="background:#5f005f"><span class="sgr38_5" style="color:#000">▄▄</span></span><span class="sgr90">│</span>
+               <span class="sgr90">1</span> <span class="sgr90">│</span><span class="sgr48_5" style="background:#af5f5f"><span class="sgr38_5" style="color:#af5f5f">▄▄</span></span><span class="sgr48_5" style="background:#d75f5f"><span class="sgr38_5" style="color:#d75f5f">▄▄</span></span><span class="sgr38_5" style="color:#d75f5f"><span class="sgr48_5" style="background:#d75f00">▄</span></span><span class="sgr48_5" style="background:#ff8700"><span class="sgr38_5" style="color:#ff5f00">▄</span><span class="sgr38_5" style="color:#ff8700">▄</span></span><span class="sgr38_5" style="color:#ff8700"><span class="sgr48_5" style="background:#ffaf00">▄</span></span><span class="sgr48_5" style="background:#ffd75f"><span class="sgr38_5" style="color:#ffaf00">▄</span></span><span class="sgr48_5" style="background:#ffaf00"><span class="sgr38_5" style="color:#ff8700">▄</span></span><span class="sgr90">│</span> <span class="sgr90">└──┘</span>
+                 <span class="sgr90">└──────────┘</span> <span class="sgr90">-7</span>  
+                  <span class="sgr90">1</span>       <span class="sgr90">10</span>      
+                  x position      </code></pre><div class="admonition is-info" id="Note-c0c2cc4aa74ece98"><header class="admonition-header">Note<a class="admonition-anchor" href="#Note-c0c2cc4aa74ece98" title="Permalink"></a></header><div class="admonition-body"><p>Rendering of unicode plots in the documentation is not optimal. For a better image, run this locally in a REPL.</p></div></div><h3 id="Visualizing-the-Value-Iteration-Policy-2"><a class="docs-heading-anchor" href="#Visualizing-the-Value-Iteration-Policy-2">Visualizing the Value Iteration Policy</a><a class="docs-heading-anchor-permalink" href="#Visualizing-the-Value-Iteration-Policy-2" title="Permalink"></a></h3><p>One way to visualize the policy is to plot the action that the policy takes at each state. </p><pre><code class="language-julia hljs"># Initialize the policy array
+policy_array = fill(:up, mdp.size_x, mdp.size_y)
+
+# Iterate over the state space and store the action at each state
+for s in states(mdp)
+    if isterminal(mdp, s)
+        continue
+    end
+    policy_array[s.x, s.y] = action(vi_policy, s)
+end
+
+# Let&#39;s define a mapping from symbols to unicode arrows
+arrow_map = Dict(
+    :up =&gt; &quot; ↑ &quot;,
+    :down =&gt; &quot; ↓ &quot;,
+    :left =&gt; &quot; ← &quot;,
+    :right =&gt; &quot; → &quot;
+)
+
+# Plot the policy to the terminal, with the origin in the bottom left
+@printf(&quot;        GridWorld VI Policy      \n&quot;)
+for y in mdp.size_y+1:-1:0
+    if y == mdp.size_y+1 || y == 0
+        for xi in 0:10
+            if xi == 0
+                print(&quot;   &quot;)
+            elseif y == mdp.size_y+1
+                print(&quot;___&quot;)
+            else
+                print(&quot;---&quot;)
+            end
+        end
+    else
+        for x in 0:mdp.size_x+1
+            if x == 0
+                @printf(&quot;%2d |&quot;, y)
+            elseif x == mdp.size_x + 1
+                print(&quot;|&quot;)
+            else
+                print(arrow_map[policy_array[x, y]])
+            end
+        end
+    end
+    println()
+    if y == 0
+        for xi in 0:10
+            if xi == 0
+                print(&quot;   &quot;)
+            else
+                print(&quot; $xi &quot;)
+            end
+        end
+    end
+end</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">        GridWorld VI Policy
+   ______________________________
+10 | →  ↓  ↓  ↓  ↓  ↓  ↓  ↓  ↓  ↓ |
+ 9 | →  →  →  →  ↓  ↓  ↓  →  ↓  ↓ |
+ 8 | →  →  →  →  →  ↓  ↓  ↑  ↓  ↓ |
+ 7 | →  →  →  →  →  →  ↓  ↓  ↓  ↓ |
+ 6 | →  ↓  ↓  →  →  →  ↓  ↓  ↓  ↓ |
+ 5 | →  →  →  →  →  →  →  ↓  ↓  ↓ |
+ 4 | →  →  →  →  →  →  →  →  ↓  ↓ |
+ 3 | →  ↓  ↓  →  →  →  →  →  ↑  ← |
+ 2 | →  →  →  →  →  →  →  →  ↑  ↑ |
+ 1 | →  →  →  →  →  →  ↑  ↑  ↑  ↑ |
+   ------------------------------
+    1  2  3  4  5  6  7  8  9  10</code></pre><h2 id="Seeing-a-Policy-In-Action"><a class="docs-heading-anchor" href="#Seeing-a-Policy-In-Action">Seeing a Policy In Action</a><a id="Seeing-a-Policy-In-Action-1"></a><a class="docs-heading-anchor-permalink" href="#Seeing-a-Policy-In-Action" title="Permalink"></a></h2><p>Another useful tool is to view the policy in action by creating a gif of a simulation. To accomplish this, we could use <a href="https://github.com/JuliaPOMDP/POMDPGifs.jl">POMDPGifs</a>. To use POMDPGifs, we need to extend the <a href="../POMDPTools/visualization/#POMDPTools.ModelTools.render"><code>POMDPTools.render</code></a> function to <code>GridWorldMDP</code>. Please reference <a href="../gallery/#Gallery-of-POMDPs.jl-Problems">Gallery of POMDPs.jl Problems</a> for examples of this process.</p></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../example_simulations/">« Simulations Examples</a><a class="docs-footer-nextpage" href="../gallery/">Gallery of POMDPs.jl Problems »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="auto">Automatic (OS)</option><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option><option value="catppuccin-latte">catppuccin-latte</option><option value="catppuccin-frappe">catppuccin-frappe</option><option value="catppuccin-macchiato">catppuccin-macchiato</option><option value="catppuccin-mocha">catppuccin-mocha</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 1.14.1 on <span class="colophon-date" title="Wednesday 10 September 2025 23:41">Wednesday 10 September 2025</span>. Using Julia version 1.11.6.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
