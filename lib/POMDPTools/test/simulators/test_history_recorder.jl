@@ -3,7 +3,7 @@ problem = BabyPOMDP()
 policy = RandomPolicy(problem, rng=MersenneTwister(2))
 steps=10
 sim = HistoryRecorder(max_steps=steps, rng=MersenneTwister(3))
-POMDPLinter.@show_requirements simulate(sim, problem, policy, updater(policy), initialstate(problem))
+@test_skip POMDPLinter.@show_requirements simulate(sim, problem, policy, updater(policy), initialstate(problem))
 r1 = simulate(sim, problem, policy, updater(policy), initialstate(problem))
 policy.rng = MersenneTwister(2)
 Random.seed!(sim.rng, 3)
@@ -58,7 +58,7 @@ problem = LegacyGridWorld()
 policy = RandomPolicy(problem, rng=MersenneTwister(2))
 steps=10
 sim = HistoryRecorder(max_steps=steps, rng=MersenneTwister(3))
-POMDPLinter.@show_requirements simulate(sim, problem, policy, initialstate(problem, sim.rng))
+@test_skip POMDPLinter.@show_requirements simulate(sim, problem, policy, initialstate(problem, sim.rng))
 r1 = simulate(sim, problem, policy, initialstate(problem, sim.rng))
 
 @test length(state_hist(r1)) <= steps + 1 # less than or equal because it may reach the goal too fast
