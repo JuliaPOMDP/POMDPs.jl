@@ -168,7 +168,7 @@ actions = function (b)
 end
 
 # output
-#1 (generic function with 1 method)
+#2 (generic function with 1 method)
 ```
 
 ### Transition and observation distributions
