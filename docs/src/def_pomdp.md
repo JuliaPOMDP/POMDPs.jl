@@ -158,7 +158,7 @@ end
 ```
 
 Similarly, in a POMDP, you may wish to only allow action `1` if the belief `b` assigns a nonzero probability to state `1`. This can be accomplished with
-```jldoctest ; output=false
+```jldoctest ; output=false, output=false, filter=r".* \(generic function.*\)"
 actions = function (b)
     if pdf(b, 1) > 0.0
         return [1,2,3]
