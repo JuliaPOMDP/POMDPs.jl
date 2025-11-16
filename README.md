@@ -125,7 +125,8 @@ Many models have been implemented using the POMDPs.jl interface for various proj
 | [DroneSurveillance](https://github.com/JuliaPOMDP/DroneSurveillance.jl) | [![Build status](https://github.com/JuliaPOMDP/DroneSurveillance.jl/workflows/CI/badge.svg)](https://github.com/JuliaPOMDP/DroneSurveillance.jl/actions) | [![codecov](https://codecov.io/gh/juliapomdp/DroneSurveillance.jl/branch/master/graph/badge.svg)](https://codecov.io/gh/juliapomdp/DroneSurveillance.jl) |
 | [ContinuumWorld](https://github.com/JuliaPOMDP/ContinuumWorld.jl) | [![CI](https://github.com/JuliaPOMDP/ContinuumWorld.jl/actions/workflows/CI.yml/badge.svg)](https://github.com/JuliaPOMDP/ContinuumWorld.jl/actions/workflows/CI.yml) | [![Coverage Status](https://coveralls.io/repos/JuliaPOMDP/ContinuumWorld.jl/badge.svg?branch=master&service=github)](https://coveralls.io/github/JuliaPOMDP/ContinuumWorld.jl?branch=master) |
 | [VDPTag2](https://github.com/JuliaPOMDP/VDPTag2.jl) | [![CI](https://github.com/JuliaPOMDP/VDPTag2.jl/actions/workflows/Ci.yml/badge.svg)](https://github.com/JuliaPOMDP/VDPTag2.jl/actions/workflows/Ci.yml) | [![codecov](https://codecov.io/github/JuliaPOMDP/VDPTag2.jl/graph/badge.svg)](https://codecov.io/github/JuliaPOMDP/VDPTag2.jl)
-| [RoombaPOMDPs](https://github.com/sisl/RoombaPOMDPs.jl) (Roomba Localization) | [![CI](https://github.com/sisl/RoombaPOMDPs.jl/actions/workflows/ci.yml/badge.svg)](https://github.com/sisl/RoombaPOMDPs.jl/actions/workflows/ci.yml)
+| [RoombaPOMDPs](https://github.com/sisl/RoombaPOMDPs.jl) | [![CI](https://github.com/sisl/RoombaPOMDPs.jl/actions/workflows/CI.yml/badge.svg)](https://github.com/sisl/RoombaPOMDPs.jl/actions/workflows/CI.yml) | [![codecov](https://codecov.io/gh/sisl/RoombaPOMDPs.jl/graph/badge.svg?token=jriMhZLz9I)](https://codecov.io/gh/sisl/RoombaPOMDPs.jl)
+
 
 
 #### MDP solvers:
