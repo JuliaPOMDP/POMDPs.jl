@@ -16,6 +16,42 @@
 - [`transition`](@ref) should be called *only* when you need access to the explicit transition probability distribution.
 - [`gen`](@ref) should *never* be called directly by a solver or simulator; it is only a tool for implementers (see above).
 
+## Why am I getting a cryptic `MethodError` from `Random.Sampler` or arithmetic on my state?
+
+A common mistake is to have `transition` return the *next state* directly rather than a *distribution over next states*. For example:
+
+```julia
+using POMDPs, QuickPOMDPs, POMDPTools
+
+m = QuickMDP(
+    states = [:a, :b],
+    actions = [:left, :right],
+    initialstate = Deterministic(:a),
+    discount = 0.9,
+    transition = (s, a) -> a == :right ? :b : :a,  # BUG: returns a state
+    reward = (s, a) -> s == :b ? 1.0 : 0.0,
+)
+
+simulate(RolloutSimulator(max_steps=5), m, RandomPolicy(m))
+```
+
+This produces an error like:
+
+```
+MethodError: no method matching Random.Sampler(::Type{TaskLocalRNG},
+    ::Random.SamplerTrivial{Symbol, Any}, ::Val{1})
+```
+
+If your states are numbers or arrays, the symptom is different — typically a deep `MethodError` from arithmetic on a `Vector{Float64}` produced by `rand` on the raw state — but the underlying cause is the same.
+
+[`transition`](@ref) must return a *distribution* — POMDPs.jl calls `rand(rng, ...)` on whatever you return. Wrap the next state in a distribution:
+
+```julia
+transition = (s, a) -> Deterministic(a == :right ? :b : :a)
+```
+
+For stochastic transitions, use [`SparseCat`](@ref), one of the other distributions in POMDPTools, or a distribution from `Distributions.jl`. If you only have a sampler, use [`ImplicitDistribution`](@ref implicit_distribution_section). The same requirement applies to [`observation`](@ref) and [`initialstate`](@ref).
+
 ## How do I save my policies?
 
 We recommend using [JLD2](https://github.com/JuliaIO/JLD2.jl) to save the whole policy object:
